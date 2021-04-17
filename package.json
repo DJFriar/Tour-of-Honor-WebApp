@@ -1,0 +1,24 @@
+{
+  "name": "tour-of-honor-webapp",
+  "version": "1.0.0",
+  "description": "WebApp for Tour of Honor",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJFriar/Tour-of-Honor-WebApp.git"
+  },
+  "author": "Ambitious Nerds, LLC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DJFriar/Tour-of-Honor-WebApp/issues"
+  },
+  "homepage": "https://github.com/DJFriar/Tour-of-Honor-WebApp#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pug": "^3.0.2"
+  }
+}
