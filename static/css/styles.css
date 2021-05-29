@@ -1,0 +1,81 @@
+body {
+  height: 100%;
+}
+
+.container {
+  padding: 12px;
+}
+
+main {
+  padding: 10px;
+}
+
+@media (min-width: 960px) {
+  main {
+    padding: 20px;
+  }
+}
+
+.hide-me {
+  display: none !important;
+}
+
+h2 {
+  font-size: 3em;
+  margin: 0px;
+}
+
+h3 {
+  font-size: 2.5em;
+  margin: 0px;
+}
+
+@media (max-width: 959px) {
+  h3 {
+    font-size: 1.75em;
+    /* color: #fff; */
+    margin: 0px;
+  }
+}
+
+h4 {
+  font-size: 2em;
+  margin: 0px;
+}
+
+@media (max-width: 959px) {
+  h4 {
+    font-size: 1.5em;
+    margin: 0px;
+  }
+}
+
+h5 {
+  font-size: 1.5em;
+  margin: 12px 0px;
+}
+
+h6 {
+  font-size: 1.25em;
+  margin: 12px 0px;
+}
+
+footer {
+  font-size: 0.75em;
+}
+
+.memorialData h4 {
+  margin-bottom: 12px;
+}
+
+#memorial-editor h4 {
+  margin-top: 20px;
+}
+
+#editMemorialInfo label {
+  margin-top: 12px;
+}
+
+form {
+  margin-bottom: 12px;
+}
