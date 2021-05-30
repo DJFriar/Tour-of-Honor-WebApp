@@ -16,8 +16,8 @@ module.exports = function (app) {
     res.render("pages/admin/user-management");
   })
 
-  app.get("/sponsor/state-management", async (req, res) => {
-    res.render("pages/sponsor/state-management");
+  app.get("/admin/pending-memorials", async (req, res) => {
+    res.render("pages/admin/pending-memorials");
   })
 
   app.get("/user-profile", async (req, res) => {

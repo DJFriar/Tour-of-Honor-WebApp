@@ -91,3 +91,11 @@ a.hidden-link:link,
 a.hidden-link:visited {
   color: #666;
 }
+
+.fa-clipboard-check {
+  color: #66666640
+}
+
+.greenCheckmark {
+  color: green;
+}
