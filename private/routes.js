@@ -12,7 +12,15 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-metadata");
   })
 
-  app.get("/admin/rider-management", async (req, res) => {
-    res.render("pages/admin/rider-management");
+  app.get("/admin/user-management", async (req, res) => {
+    res.render("pages/admin/user-management");
+  })
+
+  app.get("/sponsor/state-management", async (req, res) => {
+    res.render("pages/sponsor/state-management");
+  })
+
+  app.get("/user-profile", async (req, res) => {
+    res.render("pages/user-profile");
   })
 }

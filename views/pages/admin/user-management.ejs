@@ -5,24 +5,26 @@
 <body>
   <%- include('../../partials/topnav'); %>
   <main>
-    <h4>MEMORIAL METADATA</h4>
+    <h4>USER MANAGEMENT</h4>
     <div class="uk-container">
       <ul uk-tab>
-        <li><a href="#">Memorial Data</a></li>
-        <li><a href="#">Restrictions</a></li>
-        <li><a href="#">Categories</a></li>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Groups</a></li>
+        <li><a href="#">Sponsors</a></li>
       </ul>
 
       <ul class="uk-switcher uk-margin">
-        <!-- Memorial Data Tab -->
+        <!-- Users Tab -->
         <li>
-          <h5>MEMORIAL DATA</h5>
+          <h5>USERS</h5>
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
-                <th>Memorial Code</th>
-                <th>Heading</th>
-                <th>Text</th>
+                <th>Flag Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Member Of</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -31,13 +33,14 @@
             </tbody>
           </table>
         </li>
-        <!-- Restrictions Tab -->
+        <!-- Groups Tab -->
         <li>
-          <h5>RESTRICTIONS</h5>
+          <h5>GROUPS</h5>
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
-                <th>Restriction</th>
+                <th>Group Name</th>
+                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -46,14 +49,15 @@
             </tbody>
           </table>
         </li>
-        <!-- Categories Tab -->
+        <!-- Sponsor Tab -->
         <li>
-          <h5>CATEGORIES</h5>
+          <h5>SPONSORS</h5>
           <table class="uk-table uk-table-striped uk-table-small">
             <thead>
               <tr>
-                <th>Category Name</th>
-                <th>Short Code</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>States</th>
                 <th>Actions</th>
               </tr>
             </thead>
