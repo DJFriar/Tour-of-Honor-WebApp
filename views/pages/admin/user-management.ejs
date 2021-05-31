@@ -9,7 +9,6 @@
     <div class="uk-container">
       <ul uk-tab>
         <li><a href="#">Users</a></li>
-        <li><a href="#">Groups</a></li>
         <li><a href="#">Sponsors</a></li>
       </ul>
 
@@ -17,7 +16,7 @@
         <!-- Users Tab -->
         <li>
           <h5>USERS</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
+          <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
             <thead>
               <tr>
                 <th>Flag #</th>
@@ -29,54 +28,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>713</td>
-                <td>First</td>
-                <td>Last</td>
-                <td><a class="hidden-link" href="mailto:email@emailaddress.com">Email@Emailaddress.com</a></td>
-                <td>Role</td>
-                <td>DROPDOWN</td>
-              </tr>
-              <tr>
-                <td>512</td>
-                <td>First</td>
-                <td>Last</td>
-                <td><a class="hidden-link" href="mailto:email@emailaddress.com">Email@Emailaddress.com</a></td>
-                <td>Role</td>
-                <td>DROPDOWN</td>
-              </tr>
-            </tbody>
-          </table>
-        </li>
-        <!-- Groups Tab -->
-        <li>
-          <h5>GROUPS</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
-            <thead>
-              <tr>
-                <th>Group Name</th>
-                <th>Description</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Admin</td>
-                <td>Access to all features & functions</td>
-                <td>DROPDOWN</td>
-              </tr>
-              <tr>
-                <td>Sponsor</td>
-                <td>Access to state sponsor functions</td>
-                <td>DROPDOWN</td>
-              </tr>
+              <% userData.forEach(function(user) { %>
+                <tr>
+                  <td>
+                    <%= user.FlagNumber %>
+                  </td>
+                  <td>
+                    <%= user.FirstName %>
+                  </td>
+                  <td>
+                    <%= user.LastName %>
+                  </td>
+                  <td>
+                    <%= user.Email %>
+                  </td>
+                  <td>
+                    <%= user.Role %>
+                  </td>
+                  <td>
+                    <span class="deleteBonusButton" data-uid="<%- userData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editBonusButton" data-uid="<%- userData.ID %>"><i class="fal fa-edit"></i></span>
+                  </td>
+                </tr>
+              <% }) %>
             </tbody>
           </table>
         </li>
         <!-- Sponsor Tab -->
         <li>
           <h5>SPONSORS</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
+          <table class="uk-table uk-table-striped uk-table-small" id="sponsorsTable">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -86,12 +67,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>First</td>
-                <td>Last</td>
-                <td>CA, TX</td>
-                <td>DROPDOWN</td>
-              </tr>
+              <% sponsorData.forEach(function(sponsor) { %>
+                <tr>
+                  <td>
+                    <%= sponsor.FirstName %>
+                  </td>
+                  <td>
+                    <%= sponsor.LastName %>
+                  </td>
+                  <td>
+                    <%= sponsor.States %>
+                  </td>
+                  <td>
+                    <span class="deleteBonusButton" data-uid="<%- sponsorData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editBonusButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
+                  </td>
+                </tr>
+              <% }) %>
             </tbody>
           </table>
         </li>
@@ -101,4 +93,6 @@
   <footer>
     <%- include('../../partials/footer'); %>
   </footer>
+
+  <script src="/js/user-management.js"></script>
 </body>

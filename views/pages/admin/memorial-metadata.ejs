@@ -17,7 +17,7 @@
         <!-- Memorial Data Tab -->
         <li>
           <h5>MEMORIAL DATA</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
+          <table class="uk-table uk-table-striped uk-table-small" id="memorialMetadataTable">
             <thead>
               <tr>
                 <th>Memorial Code</th>
@@ -27,14 +27,30 @@
               </tr>
             </thead>
             <tbody>
-
+              <% memorialData.forEach(function(memorial) { %>
+                <tr>
+                  <td>
+                    <%= memorial.Memorial_ID %>
+                  </td>
+                  <td>
+                    <%= memorial.Heading %>
+                  </td>
+                  <td>
+                    <%= memorial.Text %>
+                  </td>
+                  <td>
+                    <span class="deleteBonusButton" data-uid="<%- memorialData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editBonusButton" data-uid="<%- memorialData.ID %>"><i class="fal fa-edit"></i></span>
+                  </td>
+                </tr>
+              <% }) %>
             </tbody>
           </table>
         </li>
         <!-- Restrictions Tab -->
         <li>
           <h5>RESTRICTIONS</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
+          <table class="uk-table uk-table-striped uk-table-small" id="restrictionsTable">
             <thead>
               <tr>
                 <th>Restriction</th>
@@ -42,14 +58,24 @@
               </tr>
             </thead>
             <tbody>
-
+              <% restrictionData.forEach(function(restriction) { %>
+                <tr>
+                  <td>
+                    <%= restriction.Name %>
+                  </td>
+                  <td>
+                    <span class="deleteBonusButton" data-uid="<%- restrictionData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editBonusButton" data-uid="<%- restrictionData.ID %>"><i class="fal fa-edit"></i></span>
+                  </td>
+                </tr>
+              <% }) %>
             </tbody>
           </table>
         </li>
         <!-- Categories Tab -->
         <li>
           <h5>CATEGORIES</h5>
-          <table class="uk-table uk-table-striped uk-table-small">
+          <table class="uk-table uk-table-striped uk-table-small" id="categoryTable">
             <thead>
               <tr>
                 <th>Category Name</th>
@@ -58,7 +84,20 @@
               </tr>
             </thead>
             <tbody>
-
+              <% categoryData.forEach(function(category) { %>
+                <tr>
+                  <td>
+                    <%= category.Name %>
+                  </td>
+                  <td>
+                    <%= category.ShortCode %>
+                  </td>
+                  <td>
+                    <span class="deleteBonusButton" data-uid="<%- categoryData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editBonusButton" data-uid="<%- categoryData.ID %>"><i class="fal fa-edit"></i></span>
+                  </td>
+                </tr>
+              <% }) %>
             </tbody>
           </table>
         </li>
@@ -68,4 +107,6 @@
   <footer>
     <%- include('../../partials/footer'); %>
   </footer>
+
+  <script src="/js/memorial-metadata.js"></script>
 </body>
