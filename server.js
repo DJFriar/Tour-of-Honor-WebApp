@@ -12,11 +12,11 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("static"));
-app.use(express.static("private"));
+
 // ================================================================================
 // ROUTES
 // ================================================================================
-require("./private/routes")(app);
+require("./routes/routes")(app);
 
 // =============================================================================
 // LISTENER

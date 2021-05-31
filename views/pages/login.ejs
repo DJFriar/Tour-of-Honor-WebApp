@@ -5,9 +5,27 @@
 <body>
   <%- include('../partials/topnav'); %>
   <main>
-    Put login stuff here
+    <div class="uk-container-xsmall uk-margin-auto">
+      <div class="">
+        <h2 class="uk-text-center">Login</h2>
+        <form class="login">
+          <div class="uk-margin">
+            <label class="uk-form-label" for="UserEmail">Email</label>
+            <input class="uk-input" id="UserEmail" type="email" placeholder="name@domain.com">
+          </div>
+          <div class="uk-margin">
+            <label class="uk-form-label" for="UserPassword">Password</label>
+            <input class="uk-input" id="UserPassword" type="password" placeholder="Password">
+          </div>
+          <button class="uk-button uk-button-primary uk-button-small">Login</button>
+        </form>
+        <p>Or sign up <a href="/signup">here</a></p>
+      </div>
+    </div>
   </main>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
+
+  <script type="text/javascript" src="js/login.js"></script>
 </body>

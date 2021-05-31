@@ -5,9 +5,40 @@
 <body>
   <%- include('../partials/topnav'); %>
   <main>
-    Put signup stuff here
+    <div class="uk-container-xsmall uk-margin-auto">
+      <div class="">
+        <h2 class="uk-text-center">Signup</h2>
+        <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="FirstName">First Name</label>
+            <input class="uk-input" id="FirstName" type="text" placeholder="Firstname">
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="LastName">Last Name</label>
+            <input class="uk-input" id="LastName" type="text" placeholder="Lastname">
+          </div>
+          <div class="uk-width-1-1@s">
+            <label class="uk-form-label" for="UserName">Username</label>
+            <input class="uk-input" id="UserName" type="text" placeholder="Username">
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="Email">Email</label>
+            <input class="uk-input" id="Email" type="email" placeholder="someone@domain.com">
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="Password">Password</label>
+            <input class="uk-input" id="Password" type="password" placeholder="******">
+          </div>
+          <div class="uk-width-1-2@s">If you already have a login, please click <a href="/login">here</a>.</div>
+          <div class="uk-width-1-2@s"><button type="button" id="createUserButton" class="uk-button uk-button-primary">Create Account</button></div>
+        </form>
+      </div>
+    </div>
   </main>
+
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
+
+  <script type="text/javascript" src="/js/signup.js"></script>
 </body>
