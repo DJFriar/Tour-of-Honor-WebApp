@@ -1,0 +1,55 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include('../partials/topnav'); %>
+  <h4>2021 MEMORIALS</h4>
+  <main>
+    <!-- #region Memorial Table -->
+    <table class="uk-table uk-table-striped uk-table-small" id="auxMemorialTable">
+      <thead>
+        <tr>
+          <th>Memorial Code</th>
+          <th>Memorial Name</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Access</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% memorialData.forEach(function(memorial) { %>
+          <tr>
+            <td>
+              <%= memorial.Code %>
+            </td>
+            <td>
+              <%= memorial.Name %>
+            </td>
+            <td>
+              <%= memorial.City %>
+            </td>
+            <td>
+              <%= memorial.State %>
+            </td>
+            <td>
+              <%= memorial.Access %>
+            </td>
+            <td>
+              <span class="deleteBonusButton" data-uid="<%- memorial.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+              <span class="editBonusButton" data-uid="<%- memorial.ID %>"><i class="fal fa-edit"></i></span>&nbsp;
+              <span class="submitBonusButton" data-uid="<%- memorial.ID %>"><i class="fad fa-camera-alt"></i></span>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <!-- #endregion -->
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+
+  <script type="text/javascript" src="/js/memorials.js"></script>
+</body>

@@ -9,7 +9,7 @@
     <div class="addMemorialBtnDiv">
       <button type="button" class="uk-button uk-button-default addMemorialButton">Add New Memorial</button>
     </div>
-    <!-- Add New Memorial Form -->
+    <!-- #region Add New Memorial Form -->
     <div class="hide-me" id="editMemorialInfo">
       <h5>ADD NEW MEMORIAL</h5>
       <form class="uk-grid-small uk-form-stacked" action="/api/memorial" method="POST" uk-grid>
@@ -83,8 +83,8 @@
         </div>
       </form>
     </div>
-    
-    <!-- Memorial Table -->
+    <!-- #endregion -->
+    <!-- #region Memorial Table -->
     <h5>AUXILIARY MEMORIALS</h5>
     <table class="uk-table uk-table-striped uk-table-small" id="auxMemorialTable">
       <thead>
@@ -123,11 +123,12 @@
         <% }) %>
       </tbody>
     </table>
+    <!-- #endregion -->
   </main>
 
   <footer>
     <%- include('../../partials/footer'); %>
   </footer>
 
-  <script src="/js/aux-memorial-editor.js"></script>
+  <script type="text/javascript" src="/js/aux-memorial-editor.js"></script>
 </body>

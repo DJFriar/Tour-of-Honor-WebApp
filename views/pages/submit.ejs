@@ -5,7 +5,12 @@
 <body>
   <%- include('../partials/topnav'); %>
   <main>
-    Put submit stuff here
+    <h5>SUBMIT <%= targetMemorial[0].Category.toUpperCase() %> <%= targetMemorial[0].Code %></h5>
+    <p><%= targetMemorial[0].Name %> (<%= targetMemorial[0].City %>, <%= targetMemorial[0].State %>)</p>
+    <div>
+      <img class="sampleImage" src="/images/GS005.jpg">
+    </div>
+    <div>Image Submission Wells Here</div>
   </main>
   <footer>
     <%- include('../partials/footer'); %>

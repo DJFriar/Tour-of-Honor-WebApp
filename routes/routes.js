@@ -154,12 +154,22 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/user-profile", async (req, res) => {
-    res.render("pages/user-profile");
+  app.get("/livefeed", async (req,res) => {
+    res.render("pages/livefeed");
   });
 
   app.get("/login", async (req, res) => {
     res.render("pages/login");
+  });
+
+  app.get("/memorials", async (req, res) => {
+    var memorialData = [
+      { "ID":1, "Code":"TX2", "Name":"Central Texas Veterans Memorial", "City":"Brownwood", "State":"TX", "Access":"24/7" },
+      { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
+    ]
+    res.render("pages/memorials", {
+      memorialData
+    });
   });
 
   app.get("/signup", async (req, res) => {
@@ -167,7 +177,16 @@ module.exports = function (app) {
   });
 
   app.get("/submit", async (req, res) => {
-    res.render("pages/submit");
+    var targetMemorial = [
+      { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
+    ]
+    res.render("pages/submit", {
+      targetMemorial
+    });
+  });
+
+  app.get("/user-profile", async (req, res) => {
+    res.render("pages/user-profile");
   });
 
   //#endregion
