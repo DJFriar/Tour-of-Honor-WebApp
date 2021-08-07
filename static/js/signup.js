@@ -13,15 +13,16 @@ $(document).ready(() => {
 
     // Make sure that neither email nor password are blank.
     if (!newUser.Email || !newUser.Password) {
+      handleLoginErr("Blank field detected.");
       return;
     }
     // If we have an email and password, then post the new user
-    $.ajax("/api/user", {
+    $.ajax("/api/v1/user", {
       type: "POST",
       data: newUser
     })
       .then(() => {
-        window.location.replace("/signin");
+        window.location.replace("/user-profile");
       })
       .catch(handleLoginErr);
   });

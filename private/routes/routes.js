@@ -1,50 +1,58 @@
+var path = require("path");
+const db = require("../../models");
+const q = require("../../private/queries");
+const moment = require("moment");
+// Requiring our custom middleware for checking if a user is logged in
+const isAuthenticated = require("../../config/isAuthenticated");
+const isAdmin = require("../../config/isAdmin");
+
 module.exports = function (app) {
 
   // ===============================================================================
   //#region CREATE (POST)
   // ===============================================================================
 
-  app.post('/api/category', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.post('/api/v1/category', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.post('/api/login', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    return true;
-  });
+  // app.post('/api/v1/login', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   return true;
+  // });
 
-  app.post('/api/memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/aux-memorial-editor");
-  });
+  // app.post('/api/v1/memorial', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/aux-memorial-editor");
+  // });
 
-  app.post('/api/pending-memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/state-memorial-editor");
-  });
+  // app.post('/api/v1/pending-memorial', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/state-memorial-editor");
+  // });
 
-  app.post('/api/restriction', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.post('/api/v1/restriction', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.post('/api/user', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    return true;
-  });
+  // app.post('/api/v1/user', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   return true;
+  // });
 
   //#endregion
   // ===============================================================================
@@ -196,19 +204,19 @@ module.exports = function (app) {
   //#region UPDATE (PUT)
   // ===============================================================================
 
-  app.put('/api/category', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.put('/api/v1/category', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.put('/api/memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/aux-memorial-editor");
-  });
+  // app.put('/api/v1/memorial', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/aux-memorial-editor");
+  // });
 
   app.put('/pending-memorial', function (req, res) {
     console.log("====== req.body ======");
@@ -217,19 +225,19 @@ module.exports = function (app) {
     res.redirect("/admin/state-memorial-editor");
   });
 
-  app.put('/api/restriction', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.put('/api/v1/restriction', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.put('/api/user', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    return true;
-  });
+  // app.put('/api/v1/user', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   return true;
+  // });
 
   //#endregion
   // ===============================================================================
@@ -238,40 +246,40 @@ module.exports = function (app) {
   //#region DELETE (DELETE)
   // ===============================================================================
 
-  app.delete('/api/category', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.delete('/api/v1/category', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.delete('/api/memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/aux-memorial-editor");
-  });
+  // app.delete('/api/v1/memorial', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/aux-memorial-editor");
+  // });
 
-  app.delete('/api/pending-memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/state-memorial-editor");
-  });
+  // app.delete('/api/v1/pending-memorial', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/state-memorial-editor");
+  // });
 
-  app.delete('/api/restriction', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/memorial-metadata");
-  });
+  // app.delete('/api/v1/restriction', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   res.redirect("/admin/memorial-metadata");
+  // });
 
-  app.delete('/api/user', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    return true;
-  });
+  // app.delete('/api/v1/user', function (req, res) {
+  //   console.log("====== req.body ======");
+  //   console.log(req.body);
+  //   // Call API here
+  //   return true;
+  // });
 
   //#endregion
   // ===============================================================================
