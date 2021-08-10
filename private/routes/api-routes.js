@@ -139,11 +139,11 @@ module.exports = function (app) {
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
     function (req, res) {
-      db.Memorial.create({
+      db.Submission.create({
         UserID: req.body.UserID,
         MemorialID: req.body.MemorialID,
-        PrimaryImage: req.body.PrimaryImage,
-        OptionalImage: req.body.OptionalImage,
+        PrimaryImage: req.body.images[0],
+        OptionalImage: req.body.images[1],
         Status: 0 // 0 = Pending Approval
       })
       res.redirect("/memorials");
