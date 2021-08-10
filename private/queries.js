@@ -2,6 +2,19 @@ const db = require("../models");
 const { Op, QueryTypes } = require("sequelize");
 const { sequelize } = require("../models");
 
+module.exports.queryAllCategories = async function queryAllCategories(id) {
+  try {
+    var result = await db.Category.findAll({
+      where: {
+        Active: 1
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserRights = async function queryUserRights(user) {
   try {
     var result = await db.user.findAll({
@@ -15,20 +28,33 @@ module.exports.queryUserRights = async function queryUserRights(user) {
   }
 }
 
-module.exports.queryAllBonusItems = async function queryAllBonusItems(id = false) {
+module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   try {
     if (id) {
-      var result = await db.bonusItem.findAll({
+      var result = await db.Memorial.findAll({
         raw: true,
         where: {
           id: id
         }
       })
     } else {
-      var result = await db.bonusItem.findAll({
+      var result = await db.Memorial.findAll({
         raw: true,
       })
     }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryMemorial = async function queryMemorial(memCode) {
+  try {
+    var result = await sequelize.query("SELECT * FROM Memorials WHERE Code = ?",
+    {
+      replacements: [memCode],
+      type: QueryTypes.SELECT
+    })
     return result;
   } catch (err) {
     throw err;

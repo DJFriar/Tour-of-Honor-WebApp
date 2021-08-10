@@ -100,3 +100,8 @@ a.hidden-link:visited {
 .greenCheckmark {
   color: green;
 }
+
+.sampleImage {
+  width: 30%;
+  margin-bottom: 0;
+}

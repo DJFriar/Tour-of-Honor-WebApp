@@ -171,12 +171,17 @@ module.exports = function (app) {
   });
 
   app.get("/memorials", async (req, res) => {
-    var memorialData = [
-      { "ID":1, "Code":"TX2", "Name":"Central Texas Veterans Memorial", "City":"Brownwood", "State":"TX", "Access":"24/7" },
-      { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
-    ]
+    var Memorials = await q.queryAllMemorials();
     res.render("pages/memorials", {
-      memorialData
+      Memorials
+    });
+  });
+
+  app.get("/memorial/:memCode", async (req, res) => {
+    const memCode = req.params.memCode;
+    var MemorialData = await q.queryMemorial(memCode);
+    res.render("pages/memorial", {
+      MemorialData
     });
   });
 
@@ -185,11 +190,15 @@ module.exports = function (app) {
   });
 
   app.get("/submit", async (req, res) => {
+    var Categories = await q.queryAllCategories();
     var targetMemorial = [
       { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
+      { "Memorial_ID":"3", "Category":"Huey", "Code":"H802", "Name":"159220 - AH-1J SeaCobra", "City":"Addison", "State":"TX", "SampleImage":"H802.jpg" },
+
     ]
     res.render("pages/submit", {
-      targetMemorial
+      targetMemorial,
+      Categories
     });
   });
 

@@ -134,33 +134,19 @@ module.exports = function (app) {
   // 
 
   // Accept the image the user uploaded, resize it and save it.
-  app.post('/submit-bonus',
+  app.post('/submit-memorial',
     uploadSubmission.uploadImages,
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
     function (req, res) {
-      //Write data to the respective DB
-      if (req.body.BonusType === "Odo") {
-        db.bonusLog.create({
-          bike_id: req.body.bike_id,
-          user_id: req.user.id,
-          bonus_id: null,
-          odoValue: req.body.odoValue,
-          imageName: req.body.images[0],
-          iStatus: 0 // 0 = Pending Approval
-        })
-      }
-      if (req.body.BonusType === "GT") {
-        db.bonusLog.create({
-          bike_id: req.body.bike_id,
-          user_id: req.user.id,
-          bonus_id: req.body.bonus_id,
-          odoValue: null,
-          imageName: req.body.images[0],
-          iStatus: 0 // 0 = Pending Approval
-        })
-      }
-      res.redirect("/submit");
+      db.Memorial.create({
+        UserID: req.body.UserID,
+        MemorialID: req.body.MemorialID,
+        PrimaryImage: req.body.PrimaryImage,
+        OptionalImage: req.body.OptionalImage,
+        Status: 0 // 0 = Pending Approval
+      })
+      res.redirect("/memorials");
     }
   );
 

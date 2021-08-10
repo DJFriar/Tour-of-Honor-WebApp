@@ -1,0 +1,48 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include('../partials/topnav'); %>
+  <h4 style="text-align:center"><%= MemorialData[0].Name %> (<%= MemorialData[0].Code %>)</h4>
+  <main>
+    <div>
+      <img class="sampleImage uk-align-center" src="/images/<%= MemorialData[0].SampleImage %>">
+      <div class="uk-align-center" style="width: 30%; margin-top: 0; margin-bottom: 0;">
+        <div class="uk-align-left"><%= MemorialData[0].Code %></div>
+        <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
+      </div>
+    </div>
+    <div>
+      <p>Flavor text goes here</p>
+    </div>
+    <div>
+      <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
+        <div class="uk-grid-small uk-child-width-expand@s" uk-grid>
+          <div>&nbsp;</div>
+          <div>
+            <label for="input-primary" id="inputPrimaryLabel">
+              <img class="primaryImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+            </label>
+            <input type="file" name="image-to-submit" id="input-primary" class="form-control-file border hide-me" />
+          </div>
+          <div>
+            <label for="input-optional" id="inputOptionalLabel">
+              <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+            </label>
+            <input type="file" name="image-to-submit" id="input-optional" class="form-control-file border hide-me" />
+          </div>
+          <div>&nbsp;</div>
+        </div>
+        <div class="uk-align-center">
+          <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
+          <button class="uk-button uk-button-primary bonusField" id="saveSubmission">Submit</button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="/js/memorial.js"></script>
+</body>
