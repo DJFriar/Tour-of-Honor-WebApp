@@ -1,0 +1,54 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include('../partials/topnav'); %>
+  <h4>Pending Submissions</h4>
+  <main>
+    <table class="uk-table uk-table-striped uk-table-small" id="ScoringTable">
+      <thead>
+        <tr>
+          <th>SubID</th>
+          <th>Rider</th>
+          <th>Memorial</th>
+          <th>Location</th>
+          <th>Date Submitted</th>
+          <!-- <th>Actions</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <% Submissions.forEach(function(submission) { %>
+          <% if(submission.Status === 0) { %> 
+            <tr>
+              <td>
+                <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
+              </td>
+              <td>
+                <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)
+              </td>
+              <td>
+                <%= submission.Code %>
+              </td>
+              <td>
+                <%= submission.City %>, <%= submission.State %>
+              </td>
+              <td>
+                <%= moment(submission.createdAt).format('D MMM YYYY @ kk:mm').toUpperCase(); %>
+              </td>
+              <!-- <td>
+                <span class="deleteBonusButton" data-uid="<%- submission.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                <span class="editBonusButton" data-uid="<%- submission.ID %>"><i class="fal fa-edit"></i></span>&nbsp;
+                <span class="submitBonusButton" data-uid="<%- submission.ID %>"><i class="fad fa-camera-alt"></i></span>
+              </td> -->
+            </tr>
+            <% } %>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="js/scoring.js"></script>
+</body>

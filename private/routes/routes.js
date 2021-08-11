@@ -65,6 +65,25 @@ module.exports = function (app) {
     res.render("pages/index");
   });
 
+  app.get("/scoring/", async (req, res) => {
+    var Submissions = await q.querySubmissions();
+    res.render("pages/scoring", {
+      Submissions,
+      moment: moment
+    });
+  });
+
+  app.get("/submission/:id", async (req, res) => {
+    const id = req.params.id;
+    var Submissions = await q.querySubmissions(id);
+    console.log("==== Submission Detail Data ====");
+    console.log(Submissions);
+    res.render("pages/submission", {
+      Submissions,
+      moment: moment
+    });
+  });
+
   app.get("/admin/aux-memorial-editor", async (req, res) => {
     var categoryData = [
       { "ID":"0", "Name":"Testing", "ShortCode":"TEST" },

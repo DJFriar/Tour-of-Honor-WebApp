@@ -1,0 +1,64 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <%- include('../partials/topnav'); %>
+  <div id="toh-scoring-page">
+    <h4>Pending Submission #<%= Submissions[0].id %></h4>
+    <main>
+      <div class="" uk-grid>
+        <div class="uk-width-2-3">
+          <div>
+            <img class="toh-scoring-sampleImage uk-align-center" data-src="https://www.tourofhonor.com/2021appimages/<%= Submissions[0].SampleImage %>" width="434"
+            height="370" uk-img>
+          </div>
+          <div class="uk-grid-small uk-child-width-expand" uk-grid>
+            <div>
+              <img class="toh-scoring-primaryImage uk-align-center" data-src="/uploads/<%= Submissions[0].PrimaryImage %>" width="434"
+              height="370" uk-img>
+            </div>
+            <div>
+              <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
+              height="370" uk-img>
+            </div>
+          </div>
+        </div>
+        <div class="uk-width-1-3">
+          <div class="uk-text-center" id="approvalButtons">
+            <button class="uk-button uk-button-danger rejectButton" data-submissionid="<%= Submissions[0].id %>">
+              <i class="far fa-thumbs-down"></i>&nbsp; Reject
+            </button>
+            <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
+              <i class="far fa-thumbs-up"></i>&nbsp; Approve
+            </button>
+          </div>
+          <dl class="uk-description-list uk-description-list-divider">
+            <dt>
+              Submission Info<br/>
+              <span class="toh-label toh-flag">
+                <%= Submissions[0].Code %>
+              </span>
+            </dt>
+            <dd>
+              <%= moment(Submissions[0].createdAt).format('D MMM YYYY @ kk:mm').toUpperCase(); %>
+            </dd>
+            <dt>
+              Rider Info<br/>
+              <span class="toh-label toh-flag">
+                <%= Submissions[0].FlagNumber %>
+              </span>
+            </dt>
+            <dd>
+              <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="/js/submission.js"></script>
+</body>

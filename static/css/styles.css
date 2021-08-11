@@ -105,3 +105,34 @@ a.hidden-link:visited {
   width: 30%;
   margin-bottom: 0;
 }
+
+.toh-label {
+  display: inline-block;
+  padding: 4px;
+  background: #444;
+  line-height: 1.5;
+  font-size: .875rem;
+  color: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.toh-flag {
+  padding: 4px 10px;
+  background-color: #444;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.05em;
+}
+
+.toh-button-green {
+  background-color: green;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+#toh-scoring-page {
+  padding: 0px 24px;
+}

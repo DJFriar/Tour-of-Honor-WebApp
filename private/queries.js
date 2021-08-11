@@ -48,6 +48,26 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
   }
 }
 
+module.exports.querySubmissions = async function querySubmissions(id = false) {
+  try {
+    if (id) {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id WHERE s.id = ?",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT
+      })
+    } else {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id",
+      {
+        type: QueryTypes.SELECT
+      })
+    }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryMemorial = async function queryMemorial(memCode) {
   try {
     var result = await sequelize.query("SELECT * FROM Memorials WHERE Code = ?",
