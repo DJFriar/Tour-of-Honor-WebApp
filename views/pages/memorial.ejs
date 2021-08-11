@@ -3,8 +3,15 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <h4 style="text-align:center"><%= MemorialData[0].Name %> (<%= MemorialData[0].Code %>)</h4>
+  <% if(NotificationText) { %>
+    <%- include('../partials/notice'); %>
+  <% } %>
   <main>
     <div>
       <img class="sampleImage uk-align-center" src="https://www.tourofhonor.com/2021appimages/<%= MemorialData[0].SampleImage %>">

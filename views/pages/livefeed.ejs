@@ -3,7 +3,11 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <main>
     Put live feed stuff here
   </main>

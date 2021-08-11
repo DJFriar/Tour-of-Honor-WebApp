@@ -136,3 +136,16 @@ a.hidden-link:visited {
 #toh-scoring-page {
   padding: 0px 24px;
 }
+
+.toh-notice-banner {
+  background-color: indianred;
+  color: black;
+  font-weight: 500;
+  border: 1 solid black;
+  border-radius: 12px;
+  margin: 8px 24px;
+}
+
+.uk-navbar-container {
+  background-color: #000 !important;
+}

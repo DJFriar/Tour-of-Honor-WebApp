@@ -3,7 +3,11 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <h4>Pending Submissions</h4>
   <main>
     <table class="uk-table uk-table-striped uk-table-small" id="ScoringTable">

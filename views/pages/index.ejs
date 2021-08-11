@@ -3,9 +3,15 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <main>
-    <p>Put homepage stuff here</p>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
     <h6>ADMIN</h6>
     <a href="/admin/aux-memorial-editor">Auxiliary Memorial Editor</a><br />
     <a href="/admin/state-memorial-editor">State Memorial Editor</a><br />

@@ -3,9 +3,16 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <div id="toh-scoring-page">
     <h4>Pending Submission #<%= Submissions[0].id %></h4>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
     <main>
       <div class="" uk-grid>
         <div class="uk-width-2-3">

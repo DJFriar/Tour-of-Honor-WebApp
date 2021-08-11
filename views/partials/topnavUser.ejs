@@ -1,0 +1,85 @@
+<!-- Desktop Navigation -->
+<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+  <nav class="uk-navbar-container" uk-navbar="mode: click" id="master-topnav">
+    <div class="uk-navbar-left">
+      <a class="uk-navbar-item uk-logo uk-hidden@s" href="/">TOH</a>
+      <a class="uk-navbar-item uk-logo uk-visible@s" href="/">Tour of Honor</a>
+    </div>
+    <div class="uk-navbar-right">
+      <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a>
+      <a href="#" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
+      <ul class="uk-navbar-nav uk-visible@m">
+        <% if(User.isAdmin) { %>
+          <li>
+            <a href="#">Admin</a>
+            <div class="uk-navbar-dropdown">
+              <ul class="uk-nav uk-navbar-dropdown-nav">
+                <!-- <li><a href="/admin">Admin Tools</a></li> -->
+                <li><a href="/scoring">Scoring Dashboard</a></li>
+              </ul>
+            </div>
+          </li>
+        <% } %>
+        <% if(User.FlagNumber) { %>
+          <li>
+            <a href="#">Rally</a>
+            <div class="uk-navbar-dropdown">
+              <ul class="uk-nav uk-navbar-dropdown-nav">
+                <li><a href="/livefeed">Live Feed</a></li>
+                <li><a href="/memorials">Memorials</a></li>
+                <!-- <li><a href="/stats">Stats</a></li> -->
+              </ul>
+            </div>
+          </li>
+        <% } else { %>
+          <li>
+            <a href="#">Rally</a>
+            <div class="uk-navbar-dropdown">
+              <ul class="uk-nav uk-navbar-dropdown-nav">
+                <li><a href="/livefeed">Live Feed</a></li>
+              </ul>
+            </div>
+          </li>
+        <% } %>
+        <!-- <li><a href="/2021" class="hidden-link">2021</a></li> -->
+        <!-- <li><a href="/history" class="hidden-link">History</a></li> -->
+        <!-- <li>
+          <a href="#">More</a>
+          <div class="uk-navbar-dropdown">
+            <ul class="uk-nav uk-navbar-dropdown-nav">
+              <li><a href="/covid1000">COVID-1000</a></li>
+              <li><a href="/2020">2020</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div>
+        </li> -->
+        <li>
+          <a href="#"><i class="fal fa-user-circle fa-lg"></i></a>
+          <div class="uk-navbar-dropdown">
+            <ul class="uk-nav uk-navbar-dropdown-nav">
+              <li><a href="/user-profile" class="hidden-link">Profile</a></li>
+              <!-- <li id="topnavLogin"><a href="/login" class="hidden-link">Login&nbsp;<span class="fal fa-sign-in fa-lg"></span></a></li> -->
+              <li id="topnavLogout" class="hidden-link"><a href="/logout" class="hidden-link">Logout&nbsp;<span class="fal fa-sign-out fa-lg"></span></a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<!-- Mobile Navigation -->
+<div id="mobilenav" uk-offcanvas="flip: true" class="uk-offcanvas">
+  <div class="uk-offcanvas-bar">
+    <ul class="uk-nav">
+      <!-- <li><a href="/2021" class="hidden-link">2021</a></li> -->
+      <li><a href="/history" class="hidden-link">History</a></li>
+      <li class="uk-parent">
+        <a href="#">More</a>
+        <ul class="uk-nav-sub">
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

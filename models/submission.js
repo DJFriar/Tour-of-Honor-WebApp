@@ -20,6 +20,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    Notes: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   });
 
   return Submission;

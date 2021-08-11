@@ -31,15 +31,15 @@ module.exports.queryUserRights = async function queryUserRights(user) {
 module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   try {
     if (id) {
-      var result = await db.Memorial.findAll({
-        raw: true,
-        where: {
-          id: id
-        }
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE m.ID = ?",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT
       })
     } else {
-      var result = await db.Memorial.findAll({
-        raw: true,
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id",
+      {
+        type: QueryTypes.SELECT
       })
     }
     return result;

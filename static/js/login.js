@@ -31,9 +31,9 @@ $(document).ready(() => {
     })
       .then((res) => {
         if (res.isAdmin) {
-          window.location.replace("/review");
+          window.location.replace("/scoring");
         } else {
-          window.location.replace("/submit");
+          window.location.replace("/memorials");
         }
       })
       .catch(err => {

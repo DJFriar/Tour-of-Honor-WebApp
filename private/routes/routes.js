@@ -61,24 +61,40 @@ module.exports = function (app) {
   //#region READ (GET)
   // ===============================================================================
 
-  app.get("/", async (req,res) => {
-    res.render("pages/index");
+  app.get("/", isAuthenticated, async (req,res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/index", {
+      activeUser,
+      User: req.user,
+      NotificationText: "These links may not work as they are just for testing purposes."
+    });
   });
 
-  app.get("/scoring/", async (req, res) => {
+  app.get("/scoring/", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var Submissions = await q.querySubmissions();
     res.render("pages/scoring", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       Submissions,
       moment: moment
     });
   });
 
-  app.get("/submission/:id", async (req, res) => {
+  app.get("/submission/:id", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     const id = req.params.id;
     var Submissions = await q.querySubmissions(id);
     console.log("==== Submission Detail Data ====");
     console.log(Submissions);
     res.render("pages/submission", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       Submissions,
       moment: moment
     });
@@ -108,7 +124,8 @@ module.exports = function (app) {
     res.render("pages/admin/aux-memorial-editor", {
       categoryData,
       auxMemorialData,
-      restrictionData
+      restrictionData,
+      NotificationText: ""
     });
   });
   
@@ -136,7 +153,8 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-metadata", {
       categoryData,
       memorialData,
-      restrictionData
+      restrictionData,
+      NotificationText: "",
     });
   });
 
@@ -159,7 +177,8 @@ module.exports = function (app) {
     res.render("pages/admin/state-memorial-editor", {
       pendingMemorialData,
       restrictionData,
-      stateMemorialData
+      stateMemorialData,
+      NotificationText: "",
     });
   });
 
@@ -177,52 +196,83 @@ module.exports = function (app) {
     ]
     res.render("pages/admin/user-management", {
       sponsorData,
-      userData
+      userData,
+      NotificationText: "",
     });
   });
 
-  app.get("/livefeed", async (req,res) => {
-    res.render("pages/livefeed");
+  app.get("/livefeed", isAuthenticated, async (req,res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/livefeed", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+    });
   });
 
   app.get("/login", async (req, res) => {
-    res.render("pages/login");
+    res.render("pages/login", {
+      NotificationText: ""
+    });
   });
 
-  app.get("/memorials", async (req, res) => {
+  app.get("/memorials", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var Memorials = await q.queryAllMemorials();
     res.render("pages/memorials", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       Memorials
     });
   });
 
-  app.get("/memorial/:memCode", async (req, res) => {
+  app.get("/memorial/:memCode", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     const memCode = req.params.memCode;
     var MemorialData = await q.queryMemorial(memCode);
     res.render("pages/memorial", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       MemorialData
     });
   });
 
   app.get("/signup", async (req, res) => {
-    res.render("pages/signup");
+    res.render("pages/signup", {
+      NotificationText: ""
+    });
   });
 
-  app.get("/submit", async (req, res) => {
+  app.get("/submit", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var Categories = await q.queryAllCategories();
     var targetMemorial = [
       { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
       { "Memorial_ID":"3", "Category":"Huey", "Code":"H802", "Name":"159220 - AH-1J SeaCobra", "City":"Addison", "State":"TX", "SampleImage":"H802.jpg" },
-
     ]
     res.render("pages/submit", {
+      activeUser,
+      User: req.user,
       targetMemorial,
+      NotificationText: "",
       Categories
     });
   });
 
-  app.get("/user-profile", async (req, res) => {
-    res.render("pages/user-profile");
+  app.get("/user-profile", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    res.render("pages/user-profile", {
+      activeUser,
+      User: req.user,
+      NotificationText: ""
+    });
   });
 
   //#endregion

@@ -3,9 +3,16 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
   <main>
-    Put user profile stuff here
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <p>Put user profile stuff here</p>
   </main>
   <footer>
     <%- include('../partials/footer'); %>
