@@ -24,7 +24,9 @@
           <th>City</th>
           <th>State</th>
           <th>Access</th>
-          <th>Actions</th>
+          <% if(User.isAdmin) { %>
+            <th>Actions</th>
+          <% } %>
         </tr>
       </thead>
       <tbody>
@@ -48,11 +50,13 @@
             <td>
               <%= memorial.Access %>
             </td>
-            <td>
-              <span class="deleteBonusButton" data-uid="<%- memorial.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
-              <span class="editBonusButton" data-uid="<%- memorial.ID %>"><i class="fal fa-edit"></i></span>&nbsp;
-              <span class="submitBonusButton" data-uid="<%- memorial.ID %>"><i class="fad fa-camera-alt"></i></span>
-            </td>
+            <% if(User.isAdmin) { %>
+              <td>
+                <span class="deleteBonusButton" data-uid="<%- memorial.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                <span class="editBonusButton" data-uid="<%- memorial.ID %>"><i class="fal fa-edit"></i></span>&nbsp;
+                <span class="submitBonusButton" data-uid="<%- memorial.ID %>"><i class="fad fa-camera-alt"></i></span>
+              </td>
+            <% } %>
           </tr>
         <% }) %>
       </tbody>

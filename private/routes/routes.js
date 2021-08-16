@@ -265,13 +265,24 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/stats", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/stats", {
+      activeUser,
+      User: req.user,
+      NotificationText: "This page has not been developed yet."
+    });
+  });
+
   app.get("/user-profile", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    console.log(req.user);
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
-      NotificationText: "This page is currently not functional, but should be done by Wednesday the 18th of August."
+      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again."
     });
   });
 

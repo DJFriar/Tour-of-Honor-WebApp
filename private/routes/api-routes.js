@@ -163,15 +163,17 @@ module.exports = function (app) {
   // 
 
   // Handle Profile Updates
-  app.put("/profile", function (req, res) {
+  app.put("/api/v1/user", function (req, res) {
     db.User.update({
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       UserName: req.body.UserName,
+      FlagNumber: req.body.FlagNumber,
       Email: req.body.Email,
-      ZipCode: req.body.ZipCode
+      ZipCode: req.body.ZipCode,
+      isAdmin: req.body.isAdmin
     }, {
-      where: { id: req.body.userID }
+      where: { id: req.body.UserID }
     });
     res.send("success");
   })
