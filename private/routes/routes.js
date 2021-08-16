@@ -224,7 +224,7 @@ module.exports = function (app) {
     res.render("pages/memorials", {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: "Yep, I did totally forget to make an Add New Memorial button. I will get on this pronto.",
       Memorials
     });
   });
@@ -237,7 +237,7 @@ module.exports = function (app) {
     res.render("pages/memorial", {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: "Submitting a memorial will error out if you do not have a flag number on your profile.",
       MemorialData
     });
   });
@@ -271,7 +271,7 @@ module.exports = function (app) {
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
-      NotificationText: ""
+      NotificationText: "This page is currently not functional, but should be done by Wednesday the 18th of August."
     });
   });
 

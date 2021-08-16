@@ -12,8 +12,19 @@
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
+    <h2 class="uk-text-center">User Profile</h2>
     <p>Put user profile stuff here</p>
-    
+    <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="FirstName">First Name</label>
+        <input class="uk-input" id="FirstName" type="text" placeholder="Firstname">
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="Password">Password</label>
+        <input class="uk-input" id="Password" type="password" placeholder="******">
+      </div>
+      <div class="uk-width-1-2@s"><button type="button" id="createUserButton" class="uk-button uk-button-primary">Update User Profile</button></div>
+    </form>
   </main>
   <footer>
     <%- include('../partials/footer'); %>
