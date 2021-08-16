@@ -33,7 +33,7 @@
         <% Memorials.forEach(function(memorial) { %>
           <tr>
             <td>
-              <a href="/memorial/<%= memorial.Code %>"><%= memorial.Code %></a>
+              <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= memorial.Code %>"><%= memorial.Code %></a></span>
             </td>
             <td>
               <%= memorial.CategoryName %>
