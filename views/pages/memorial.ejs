@@ -20,30 +20,33 @@
         <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
       </div>
     </div>
-    <div>
-      <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
-        <div class="uk-grid-small uk-child-width-expand@s" uk-grid>
-          <div>&nbsp;</div>
-          <div>
-            <label for="input-primary" id="inputPrimaryLabel">
-              <img class="primaryImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
-            </label>
-            <input type="file" name="image-to-submit" id="input-primary" class="form-control-file border hide-me" />
+    <% if(User.FlagNumber) { %>
+      <div>
+        <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
+          <div class="uk-grid-small uk-child-width-expand@s" uk-grid>
+            <div>&nbsp;</div>
+            <div>
+              <label for="input-primary" id="inputPrimaryLabel">
+                <img class="primaryImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+              </label>
+              <input type="file" name="image-to-submit" id="input-primary" class="form-control-file border hide-me" />
+            </div>
+            <div>
+              <label for="input-optional" id="inputOptionalLabel">
+                <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+              </label>
+              <input type="file" name="image-to-submit" id="input-optional" class="form-control-file border hide-me" />
+            </div>
+            <div>&nbsp;</div>
           </div>
-          <div>
-            <label for="input-optional" id="inputOptionalLabel">
-              <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
-            </label>
-            <input type="file" name="image-to-submit" id="input-optional" class="form-control-file border hide-me" />
+          <input type="hidden" id="MemorialID" name="MemorialID" value="<%= MemorialData[0].id %>">
+          <div class="uk-align-center">
+            <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
+            <button class="uk-button uk-button-primary bonusField" id="saveSubmission">Submit</button>
           </div>
-          <div>&nbsp;</div>
-        </div>
-        <div class="uk-align-center">
-          <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
-          <button class="uk-button uk-button-primary bonusField" id="saveSubmission">Submit</button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    <% } %>
   </main>
   <footer>
     <%- include('../partials/footer'); %>

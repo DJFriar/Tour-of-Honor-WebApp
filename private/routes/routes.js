@@ -67,7 +67,7 @@ module.exports = function (app) {
     res.render("pages/index", {
       activeUser,
       User: req.user,
-      NotificationText: ""
+      NotificationText: "There is no content here, yet."
     });
   });
 
@@ -94,7 +94,7 @@ module.exports = function (app) {
     res.render("pages/submission", {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
       Submissions,
       moment: moment
     });
@@ -234,6 +234,7 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     const memCode = req.params.memCode;
     var MemorialData = await q.queryMemorial(memCode);
+    console.log(MemorialData);
     res.render("pages/memorial", {
       activeUser,
       User: req.user,

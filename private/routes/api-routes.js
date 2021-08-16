@@ -140,7 +140,7 @@ module.exports = function (app) {
     uploadSubmission.getResult,
     function (req, res) {
       db.Submission.create({
-        UserID: req.body.UserID,
+        UserID: req.user.id,
         MemorialID: req.body.MemorialID,
         PrimaryImage: req.body.images[0],
         OptionalImage: req.body.images[1],
