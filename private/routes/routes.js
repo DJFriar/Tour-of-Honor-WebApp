@@ -67,7 +67,7 @@ module.exports = function (app) {
     res.render("pages/index", {
       activeUser,
       User: req.user,
-      NotificationText: "These links may not work as they are just for testing purposes."
+      NotificationText: ""
     });
   });
 
