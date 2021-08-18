@@ -1,9 +1,11 @@
 body {
   /* font-family: 'Cinzel', serif; */
   /* font-family: 'Source Code Pro', monospace; */
-  font-family: 'Raleway', sans-serif;
+  /* font-family: 'Raleway', sans-serif; */
+  font-family: Arial, Helvetica, sans-serif;
   height: 100%;
-  background-color: #FFE684;
+  background-color: #C0DFFD;
+  /* background-color: #FFE684; */
 }
 
 .container {
@@ -25,13 +27,15 @@ main {
 }
 
 h2 {
-  font-family: 'Stardos Stencil', sans-serif;
+  /* font-family: 'Stardos Stencil', sans-serif; */
+  font-weight: 600;
   font-size: 3em;
   margin: 0px;
 }
 
 h3 {
-  font-family: 'Stardos Stencil', sans-serif;
+  /* font-family: 'Stardos Stencil', sans-serif; */
+  font-weight: 600;
   font-size: 2.5em;
   margin: 0px;
 }
@@ -45,7 +49,8 @@ h3 {
 }
 
 h4 {
-  font-family: 'Stardos Stencil', sans-serif;
+  /* font-family: 'Stardos Stencil', sans-serif; */
+  font-weight: 600;
   font-size: 2em;
   margin: 0px;
 }
@@ -58,19 +63,22 @@ h4 {
 }
 
 h5 {
-  font-family: 'Stardos Stencil', sans-serif;
+  /* font-family: 'Stardos Stencil', sans-serif; */
+  font-weight: 600;
   font-size: 1.5em;
   margin: 12px 0px;
 }
 
 h6 {
-  font-family: 'Stardos Stencil', sans-serif;
+  /* font-family: 'Stardos Stencil', sans-serif; */
+  font-weight: 600;
   font-size: 1.25em;
   margin: 12px 0px;
 }
 
 footer {
-  font-family: 'Raleway', sans-serif;
+  /* font-family: 'Raleway', sans-serif; */
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 0.75em;
 }
 
@@ -104,7 +112,7 @@ a.hidden-link:visited {
 }
 
 .sampleImage {
-  width: 30%;
+  width: 80%;
   margin-bottom: 0;
 }
 
