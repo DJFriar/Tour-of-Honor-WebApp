@@ -247,7 +247,7 @@ module.exports = function (app) {
     res.render("pages/memorial", {
       activeUser,
       User: req.user,
-      NotificationText: "Submitting a memorial will error out if you do not have a flag number on your profile.",
+      NotificationText: "Submitting a memorial will error out if you do not have a flag number on your profile. There is still an error that appears if the file size is too large. The optional second image seems to be causing an error.",
       MemorialData
     });
   });
