@@ -71,6 +71,16 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/admin", isAuthenticated, async (req,res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/admin", {
+      activeUser,
+      User: req.user,
+      NotificationText: "Only the Memorial Editor works at this time."
+    });
+  });
+
   app.get("/scoring/", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -100,36 +110,25 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/admin/aux-memorial-editor", async (req, res) => {
-    var categoryData = [
-      { "ID":"0", "Name":"Testing", "ShortCode":"TEST" },
-      { "ID":"2", "Name":"Doughboy", "ShortCode": "DB" },
-      { "ID":"3", "Name":"Huey", "ShortCode": "Huey" },
-      { "ID":"4", "Name":"Gold Star Family", "ShortCode": "GSF" },
-      { "ID":"5", "Name":"War Dogs", "ShortCode": "K9" },
-      { "ID":"6", "Name":"Madonna of the Trail", "ShortCode": "MotT" },
-      { "ID":"7", "Name":"9/11", "ShortCode": "9/11" }
-    ]
-    var auxMemorialData = [
-      { "ID":1, "Code":"TX2", "Name":"Central Texas Veterans Memorial", "City":"Brownwood", "State":"TX", "Access":"24/7" },
-      { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
-    ]
-    var restrictionData = [
-      { "ID":"0", "Name":"None" },
-      { "ID":"1", "Name":"Military Base" },
-      { "ID":"2", "Name":"Private Property" },
-      { "ID":"3", "Name":"Unavailable" },
-      { "ID":"4", "Name":"Construction" }
-    ]
+  app.get("/admin/aux-memorial-editor", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    var categoryData = await q.queryAllCategories();
+    var MemorialData = await q.queryAllMemorials();
+    var restrictionData = await q.queryAllRestrictions();
     res.render("pages/admin/aux-memorial-editor", {
+      activeUser,
+      User: req.user,
       categoryData,
-      auxMemorialData,
+      MemorialData,
       restrictionData,
-      NotificationText: ""
+      NotificationText: "At this time there is no edit functionality, however the delete does work."
     });
   });
   
-  app.get("/admin/memorial-metadata", async (req, res) => {
+  app.get("/admin/memorial-metadata", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var categoryData = [
       { "ID":"0", "Name":"Testing", "ShortCode":"TEST" },
       { "ID":"1", "Name":"Tour of Honor", "ShortCode": "TOH" },
@@ -151,6 +150,8 @@ module.exports = function (app) {
       { "ID":"4", "Name":"Construction" }
     ]
     res.render("pages/admin/memorial-metadata", {
+      activeUser,
+      User: req.user,
       categoryData,
       memorialData,
       restrictionData,
@@ -158,7 +159,9 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/admin/state-memorial-editor", async (req, res) => {
+  app.get("/admin/state-memorial-editor", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var pendingMemorialData = [
       { "ID":1, "Name":"WW2 Memorial", "City":"Telluride", "State":"CO", "Access":"24/7" },
       { "ID":2, "Name":"Springfield Veterans Memorial", "City":"Springfield", "State":"MO", "Access":"Dusk to Dawn" }
@@ -175,6 +178,8 @@ module.exports = function (app) {
       { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
     ]
     res.render("pages/admin/state-memorial-editor", {
+      activeUser,
+      User: req.user,
       pendingMemorialData,
       restrictionData,
       stateMemorialData,
@@ -182,7 +187,9 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/admin/user-management", async (req, res) => {
+  app.get("/admin/user-management", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
     var groupData = [
       { "ID":"1", "FlagNumber":"512", "FirstName":"Keisha", "LastName":"Perry", "Email":"keisha@hey.com", "Role":"Sponsor" }
     ]
@@ -195,6 +202,8 @@ module.exports = function (app) {
       { "ID":"2", "FlagNumber":"512", "FirstName":"Keisha", "LastName":"Perry", "Email":"keisha@hey.com", "Role":"Sponsor" }
     ]
     res.render("pages/admin/user-management", {
+      activeUser,
+      User: req.user,
       sponsorData,
       userData,
       NotificationText: "",
@@ -224,7 +233,7 @@ module.exports = function (app) {
     res.render("pages/memorials", {
       activeUser,
       User: req.user,
-      NotificationText: "Yep, I did totally forget to make an Add New Memorial button. I will get on this pronto.",
+      NotificationText: "",
       Memorials
     });
   });

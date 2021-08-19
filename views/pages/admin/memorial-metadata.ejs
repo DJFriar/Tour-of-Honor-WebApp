@@ -3,7 +3,11 @@
 </head>
 
 <body>
-  <%- include('../../partials/topnav'); %>
+  <% if(activeUser) { %>
+    <%- include('../../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../../partials/topnav'); %>
+  <% } %>
   <main>
     <h4>MEMORIAL METADATA</h4>
     <div class="uk-container">

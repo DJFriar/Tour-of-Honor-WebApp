@@ -14,13 +14,24 @@ module.exports = function (app) {
   // Create a Memorial
   app.post("/api/v1/memorial", (req, res) => {
     db.Memorial.create({
-      MemorialCode: req.body.MemorialCode,
-      MemorialName: req.body.MemorialName,
-      MemorialDescription: req.body.MemorialDescription,
-      MemorialRequirements: req.body.MemorialRequirements,
+      Code: req.body.MemorialCode,
+      Name: req.body.MemorialName,
+      Category: req.body.MemorialCategory,
+      Region: req.body.MemorialRegion,
+      Latitude: req.body.MemorialLatitude,
+      Longitude: req.body.MemorialLongitude,
+      Address1: req.body.MemorialAddress1,
+      Address2: req.body.MemorialAddress2,
+      City: req.body.MemorialCity,
+      State: req.body.MemorialState,
+      Access: req.body.MemorialAccess,
+      MultiImage: req.body.MultiImage,
+      SampleImage: req.body.SampleImage,
+      Restrictions: req.body.MemorialRestrictions,
       RallyYear: 2021,
     }).then(() => {
-      res.status(202).send();
+      // res.status(202).send();
+      res.redirect("/admin/aux-memorial-editor");
     });
   });
 

@@ -15,6 +15,17 @@ module.exports.queryAllCategories = async function queryAllCategories(id) {
   }
 }
 
+module.exports.queryAllRestrictions = async function queryAllRestrictions() {
+  try {
+    var result = await db.Restriction.findAll({
+      raw: true
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserRights = async function queryUserRights(user) {
   try {
     var result = await db.user.findAll({

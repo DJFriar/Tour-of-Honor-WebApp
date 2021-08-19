@@ -1,0 +1,29 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
+  <h4>Rally Admin Tool</h4>
+  <main>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <a href="/admin/aux-memorial-editor">Memorial Editor</a><br />
+    <!-- <a href="/admin/state-memorial-editor">State Memorial Editor</a><br /> -->
+    State Memorial Editor<br />
+    <!-- <a href="/admin/memorial-metadata">Memorial Metadata</a><br /> -->
+    Memorial Metadata<br/>
+    <!-- <a href="/admin/user-management">User Management</a><br /> -->
+    User Management
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="/js/memorial.js"></script>
+</body>
+
+    
