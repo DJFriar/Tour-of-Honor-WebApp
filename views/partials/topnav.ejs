@@ -6,8 +6,8 @@
       <a class="uk-navbar-item uk-logo uk-visible@s" href="/">Tour of Honor</a>
     </div>
     <div class="uk-navbar-right">
+      <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a>
-      <a href="#" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <ul class="uk-navbar-nav uk-visible@m">
         <li><a href="/">Home</a></li>
         <li><a href="/scoring">Scoring</a></li>
@@ -28,4 +28,25 @@
       </ul>
     </div>
   </nav>
+</div>
+
+<!-- Mobile Navigation -->
+<div id="mobilenav" uk-offcanvas="flip: true" class="uk-offcanvas">
+  <div class="uk-offcanvas-bar">
+    <ul class="uk-nav">
+      <li class="uk-parent">
+        <a href="#">Rally</a>
+        <ul class="uk-nav-sub">
+          <li><a href="/memorials">Memorials</a></li>
+          <li><a href="/livefeed">Live Feed</a></li>
+        </ul>
+      </li>
+      <li class="uk-parent">
+        <a href="#"><i class="fal fa-user-circle fa-lg"></i></a>
+        <ul class="uk-nav-sub">
+          <li id="topnavLogin"><a href="/login">Login&nbsp;<span class="fal fa-sign-in fa-lg"></span></a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </div>
