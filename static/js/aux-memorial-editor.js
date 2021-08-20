@@ -7,4 +7,17 @@
       $("#editMemorialInfo").toggleClass("hide-me");
       $(".addMemorialBtnDiv").toggleClass("hide-me");
     });
+
+    // Handle Delete Bonus Button
+    $(".deleteMemorialButton").on("click", function() {
+      var id = $(this).data("uid");
+
+      $.ajax("/api/v1/memorial/" + id, {
+        type: "DELETE"
+      }).then(
+        function() {
+          location.reload();
+        }
+      );
+    });
   });
