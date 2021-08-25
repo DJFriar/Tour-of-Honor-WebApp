@@ -17,8 +17,10 @@
       <div class="" uk-grid>
         <div class="uk-width-2-3">
           <div>
-            <img class="toh-scoring-sampleImage uk-align-center" data-src="https://www.tourofhonor.com/2021appimages/<%= Submissions[0].SampleImage %>" width="434"
+            <a href="https://www.tourofhonor.com/2021appimages/<%= Submissions[0].SampleImage %>" target="_blank">
+              <img class="toh-scoring-sampleImage uk-align-center" data-src="https://www.tourofhonor.com/2021appimages/<%= Submissions[0].SampleImage %>" width="434"
             height="370" uk-img>
+            </a>
           </div>
           <div class="uk-grid-small uk-child-width-expand" uk-grid>
             <div>
@@ -28,8 +30,10 @@
               </a>
             </div>
             <div>
-              <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
+              <a href="/uploads/<%= Submissions[0].OptionalImage %>" target="_blank">
+                <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
               height="370" uk-img>
+              </a>
             </div>
           </div>
         </div>
