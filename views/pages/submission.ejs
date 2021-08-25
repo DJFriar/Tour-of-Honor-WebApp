@@ -24,16 +24,23 @@
           </div>
           <div class="uk-grid-small uk-child-width-expand" uk-grid>
             <div>
+              
               <a href="/uploads/<%= Submissions[0].PrimaryImage %>" target="_blank">
                 <img class="toh-scoring-primaryImage uk-align-center" data-src="/uploads/<%= Submissions[0].PrimaryImage %>" width="434"
               height="370" uk-img>
               </a>
             </div>
             <div>
-              <a href="/uploads/<%= Submissions[0].OptionalImage %>" target="_blank">
-                <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
-              height="370" uk-img>
-              </a>
+              <% if(Submissions[0].OptionalImage) { %>
+                <a href="/uploads/<%= Submissions[0].OptionalImage %>" target="_blank">
+                  <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
+                height="370" uk-img>
+                </a>
+              <% } else { %>
+                <img class="toh-scoring-optionalImage uk-align-center" data-src="/images/OptionalImageNotProvided.png" width="434"
+                height="370" uk-img>
+              <% } %>
+
             </div>
           </div>
         </div>
