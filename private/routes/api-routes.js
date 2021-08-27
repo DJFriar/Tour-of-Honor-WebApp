@@ -169,6 +169,18 @@ module.exports = function (app) {
     res.send("success");
   })
 
+  // Delete a Submission
+  app.delete("/handle-submission/:id", (req, res) => {
+    const id = req.params.id;
+    db.Submission.destroy({
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
+
   // 
   // Profile Related
   // 

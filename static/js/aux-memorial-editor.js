@@ -8,7 +8,7 @@
       $(".addMemorialBtnDiv").toggleClass("hide-me");
     });
 
-    // Handle Delete Bonus Button
+    // Handle Delete Memorial Button
     $(".deleteMemorialButton").on("click", function() {
       var id = $(this).data("uid");
 

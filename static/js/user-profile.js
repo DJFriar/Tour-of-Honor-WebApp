@@ -1,5 +1,6 @@
 $(document).ready(() => {
   $('#riderSubmissionHistory').DataTable();
+
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
     let isAdmin = 0;
@@ -30,6 +31,19 @@ $(document).ready(() => {
       data: updateUserProfile
     }).then(
       function() { location.reload(); }
+    );
+  });
+
+  // Handle Delete Submission
+  $(".deleteSubmissionButton").on("click", function() {
+    var id = $(this).data("uid");
+
+    $.ajax("/handle-submission/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        location.reload();
+      }
     );
   });
 
