@@ -15,14 +15,14 @@
   <main>
     <div class="uk-child-width-expand@s" uk-grid>
       <div>
-        <div>
+        <div class="" uk-grid>
           <img class="sampleImage uk-align-center" src="https://www.tourofhonor.com/2021appimages/<%= MemorialData[0].SampleImage %>">
-          <div class="uk-align-center" style="width: 80%; margin-top: 0; margin-bottom: 0;">
+          <div class="uk-align-center" style="width: 73%; margin-top: 0; margin-bottom: 0;">
             <div class="uk-align-left"><%= MemorialData[0].Code %></div>
             <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
           </div>
         </div>
-        <% if(User.FlagNumber) { %>
+        <% if(User.FlagNumber && SubmissionStatus[0].Status >= 2) { %>
           <div>
             <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
               <div class="uk-grid-large uk-child-width-expand@s" uk-grid>
@@ -45,6 +45,16 @@
                 <button class="uk-button uk-button-primary bonusField" id="saveSubmission">Submit</button>
               </div>
             </form>
+          </div>
+        <% } %>
+        <% if(User.FlagNumber && SubmissionStatus[0].Status == 0) { %>
+          <div class="uk-align-center" style="width:80%">
+            <p style="text-align: center">This memorial has a pending submission. If you need to correct it, please delete this submission from your <a href="/user-profile">User Profile</a> and resubmit.</p>
+          </div>
+        <% } %>
+        <% if(User.FlagNumber && SubmissionStatus[0].Status == 1) { %>
+          <div class="uk-align-center">
+            <p style="text-align: center;">This memorial has already been earned.</p>
           </div>
         <% } %>
       </div>

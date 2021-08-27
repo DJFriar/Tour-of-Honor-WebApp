@@ -13,6 +13,7 @@
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
+    <h5>My Profile Info</h5>
     <form class="signup uk-grid-small uk-form-stacked" uk-grid>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="FirstName">First Name</label>
@@ -48,6 +49,39 @@
       </div>
       <div class="uk-width-1-2@s"><button type="button" id="saveProfileEdits" class="uk-button uk-button-primary" data-userid="<%= User.id %>">Update User Profile</button></div>
     </form>
+    <div>
+      <h5>Submission History</h5>
+      <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% RiderSubmissionHistory.forEach(function(riderSubmission) { %>
+            <tr>
+              <td>
+                <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= riderSubmission.Code %>"><%= riderSubmission.Code %></a></span>
+              </td>
+              <td>
+                <%= riderSubmission.Category %>
+              </td>
+              <td>
+                <%= riderSubmission.Status %>
+              </td>
+              <td>
+                <% if(riderSubmission.StatusID == 0) { %> 
+                  <span class="deleteBonusButton" data-uid="<%- riderSubmission.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
   </main>
   <footer>
     <%- include('../partials/footer'); %>

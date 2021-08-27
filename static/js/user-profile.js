@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  $('#riderSubmissionHistory').DataTable();
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
     let isAdmin = 0;

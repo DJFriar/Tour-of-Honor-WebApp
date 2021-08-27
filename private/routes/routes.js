@@ -239,16 +239,20 @@ module.exports = function (app) {
   });
 
   app.get("/memorial/:memCode", isAuthenticated, async (req, res) => {
-    var activeUser = false
+    var activeUser = false;
     if (req.user) { activeUser = true };
     const memCode = req.params.memCode;
     var MemorialData = await q.queryMemorial(memCode);
-    console.log(MemorialData);
+    var SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+    if(SubmissionStatus.length == 0) {
+      SubmissionStatus.unshift({Status: 3});
+    }
     res.render("pages/memorial", {
       activeUser,
       User: req.user,
       NotificationText: "Submitting a memorial will error out if you do not have a flag number on your profile. There is still an error that appears if the file size is too large. The optional second image seems to be causing an error.",
-      MemorialData
+      MemorialData,
+      SubmissionStatus
     });
   });
 
@@ -288,11 +292,14 @@ module.exports = function (app) {
   app.get("/user-profile", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
     console.log(req.user);
+    console.log(RiderSubmissionHistory);
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
-      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again."
+      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again.",
+      RiderSubmissionHistory
     });
   });
 
