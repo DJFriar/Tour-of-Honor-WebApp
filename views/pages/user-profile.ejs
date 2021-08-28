@@ -71,7 +71,11 @@
                 <%= riderSubmission.Category %>
               </td>
               <td>
-                <%= riderSubmission.Status %>
+                <% if(riderSubmission.Notes) { %> 
+                  <span uk-tooltip="<%= riderSubmission.Notes %>"><i class="far fa-exclamation-triangle"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } else { %>
+                  <%= riderSubmission.Status %>
+                <% } %>
               </td>
               <td>
                 <!-- <%= dt.fromJSDate(riderSubmission.createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %> -->
@@ -79,7 +83,7 @@
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 0) { %> 
-                  <span class="deleteSubmissionButton" data-uid="<%- riderSubmission.id %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                  <span class="deleteSubmissionButton" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="far fa-trash-alt"></i></span>&nbsp;
                 <% } %>
               </td>
             </tr>

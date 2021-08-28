@@ -16,10 +16,12 @@ $(document).ready(function () {
   });
 
   // Handle Reject Button
-  $(".rejectButton").on("click", function() {
+  $(".rejectConfirmation").on("click", function() {
     var subID = $(this).data("submissionid");
+    var rejectionReason = $("#rejectNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
+      Notes: rejectionReason,
       Status: 2
     };
 

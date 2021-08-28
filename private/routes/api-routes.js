@@ -163,7 +163,10 @@ module.exports = function (app) {
 
   // Update submissions
   app.put("/handle-submission", function (req, res) {
-    db.Submission.update({ Status: req.body.Status }, {
+    db.Submission.update({
+      Status: req.body.Status,
+      Notes:  req.body.Notes
+    }, {
       where: { id: req.body.SubmissionID }
     });
     res.send("success");
