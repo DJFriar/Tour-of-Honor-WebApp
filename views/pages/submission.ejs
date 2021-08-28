@@ -61,7 +61,8 @@
               </span>
             </dt>
             <dd>
-              <%= dt.fromJSDate(Submissions[0].createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %>
+              <!-- <%= dt.fromJSDate(Submissions[0].createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %> -->
+              <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
             </dd>
             <dt>
               Rider Info<br/>

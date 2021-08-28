@@ -38,7 +38,8 @@
                 <%= submission.City %>, <%= submission.State %>
               </td>
               <td>
-                <%= dt.fromJSDate(submission.createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %>
+                <!-- <%= dt.fromJSDate(submission.createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %> -->
+                <%= dt.fromJSDate(submission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
               </td>
               <!-- <td>
                 <span class="deleteBonusButton" data-uid="<%- submission.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;

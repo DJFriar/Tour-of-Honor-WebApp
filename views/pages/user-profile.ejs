@@ -57,7 +57,7 @@
             <th>Code</th>
             <th>Category</th>
             <th>Status</th>
-            <th>Date Updated</th>
+            <th>Date Submitted</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -74,7 +74,8 @@
                 <%= riderSubmission.Status %>
               </td>
               <td>
-                <%= dt.fromJSDate(riderSubmission.updatedAt).toLocaleString(); %>
+                <!-- <%= dt.fromJSDate(riderSubmission.createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %> -->
+                <%= dt.fromJSDate(riderSubmission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 0) { %> 
