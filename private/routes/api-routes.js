@@ -14,7 +14,7 @@ module.exports = function (app) {
   // Create a Memorial
   app.post("/api/v1/memorial", (req, res) => {
     db.Memorial.create({
-      Code: req.body.MemorialCode,
+      Code: req.body.MemorialCode.toUpperCase(),
       Name: req.body.MemorialName,
       Category: req.body.MemorialCategory,
       Region: req.body.MemorialRegion,
@@ -23,7 +23,7 @@ module.exports = function (app) {
       Address1: req.body.MemorialAddress1,
       Address2: req.body.MemorialAddress2,
       City: req.body.MemorialCity,
-      State: req.body.MemorialState,
+      State: req.body.MemorialState.toUpperCase(),
       Access: req.body.MemorialAccess,
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
@@ -86,7 +86,7 @@ module.exports = function (app) {
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       UserName: req.body.UserName,
-      Email: req.body.Email,
+      Email: req.body.Email.toLowerCase(),
       Password: req.body.Password
     })
       .then(() => {
