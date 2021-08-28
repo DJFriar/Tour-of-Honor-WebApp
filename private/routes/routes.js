@@ -1,7 +1,7 @@
 var path = require("path");
 const db = require("../../models");
 const q = require("../../private/queries");
-const moment = require("moment");
+const { DateTime } = require("luxon");
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../../config/isAuthenticated");
 const isAdmin = require("../../config/isAdmin");
@@ -90,7 +90,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Submissions,
-      moment: moment
+      dt: DateTime
     });
   });
 
@@ -106,7 +106,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
       Submissions,
-      moment: moment
+      dt: DateTime
     });
   });
 
@@ -299,7 +299,8 @@ module.exports = function (app) {
       activeUser,
       User: req.user,
       NotificationText: "Changes work, but they currently they are not visible until you logout and back in again.",
-      RiderSubmissionHistory
+      RiderSubmissionHistory,
+      dt: DateTime
     });
   });
 

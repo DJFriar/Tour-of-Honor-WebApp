@@ -61,7 +61,7 @@
               </span>
             </dt>
             <dd>
-              <%= moment(Submissions[0].createdAt).format('D MMM YYYY @ kk:mm').toUpperCase(); %>
+              <%= dt.fromJSDate(Submissions[0].createdAt).toLocaleString(dt.DATETIME_SHORT); %>
             </dd>
             <dt>
               Rider Info<br/>

@@ -1,6 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
-const moment = require("moment");
+const { DateTime } = require("luxon");
+
 
 const multerStorage = multer.memoryStorage();
 
@@ -41,7 +42,7 @@ const resizeImages = async (req, res, next) => {
       } else {
         BonusID = "ODO";
       }
-      const currentTimestamp = moment().unix(); // Appends the unix timestamp to the file to avoid overwriting.
+      const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
       const newFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}.jpg`;
 
       await sharp(file.buffer)

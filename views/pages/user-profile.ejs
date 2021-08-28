@@ -57,6 +57,7 @@
             <th>Code</th>
             <th>Category</th>
             <th>Status</th>
+            <th>Date Updated</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -71,6 +72,9 @@
               </td>
               <td>
                 <%= riderSubmission.Status %>
+              </td>
+              <td>
+                <%= dt.fromJSDate(riderSubmission.updatedAt).toLocaleString(); %>
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 0) { %> 
