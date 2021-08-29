@@ -40,7 +40,6 @@
                 <img class="toh-scoring-optionalImage uk-align-center" data-src="/images/OptionalImageNotProvided.png" width="434"
                 height="370" uk-img>
               <% } %>
-
             </div>
           </div>
         </div>
@@ -61,7 +60,6 @@
               </span>
             </dt>
             <dd>
-              <!-- <%= dt.fromJSDate(Submissions[0].createdAt).toLocaleString({...dt.DATETIME_SHORT, hour12: false}); %> -->
               <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
             </dd>
             <dt>

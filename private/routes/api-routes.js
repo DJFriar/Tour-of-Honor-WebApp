@@ -1,6 +1,7 @@
 // Requiring our models and passport as we've configured it
 const db = require("../../models");
 const uploadSubmission = require("../../controllers/uploadSubmission");
+const uploadImages = require("../../controllers/uploadImages");
 const passport = require("../../config/passport");
 const multer = require('multer');
 const isAuthenticated = require("../../config/isAuthenticated");
@@ -149,6 +150,7 @@ module.exports = function (app) {
     uploadSubmission.uploadImages,
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
+    // uploadImages,
     function (req, res) {
       db.Submission.create({
         UserID: req.user.id,

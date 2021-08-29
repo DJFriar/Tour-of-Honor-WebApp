@@ -18,10 +18,11 @@ const upload = multer({
   fileFilter: multerFilter
 });
 
-const uploadFiles = upload.array("image-to-submit", 1); // limit to 1 image
+// const uploadFiles = upload.array("input-primary", 1); // limit to 1 image
+const uploadMultiple = upload.fields([{ name: 'input-primary', maxCount: 1 }, { name: 'input-optional', maxCount: 1 }]);
 
 const uploadImages = (req, res, next) => {
-  uploadFiles(req, res, err => {
+  uploadMultiple(req, res, err => {
     if (err) {
       return res.send(err);
     }
@@ -31,29 +32,29 @@ const uploadImages = (req, res, next) => {
 
 const resizeImages = async (req, res, next) => {
   if (!req.files) return;
+  const riderFlagNumber = 714;
+  const BonusID = "TEST";
+  const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
 
   req.body.images = [];
   await Promise.all(
-    req.files.map(async file => {
-      const riderFlagNumber = 714;
-      var BonusID = "";
-      if (req.body.BonusID) {
-        BonusID = "GT" + req.body.BonusID;
-      } else {
-        BonusID = "ODO";
-      }
-      const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
-      const newFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}.jpg`;
-
+    req.files['input-primary'].map(async file => {
+      const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
       await sharp(file.buffer)
-        // .resize(1024, 768, {
-        //   position: 'left top'
-        // })
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
-        .toFile(`static/uploads/${newFilename}`);
+        .toFile(`static/uploads/${primaryFilename}`);
 
-      req.body.images.push(newFilename);
+      req.body.images.unshift(primaryFilename);
+    }),
+    req.files['input-optional'].map(async file => {
+      const optionalFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-2.jpg`;
+      await sharp(file.buffer)
+        .toFormat("jpeg")
+        .jpeg({ quality: 80 })
+        .toFile(`static/uploads/${optionalFilename}`);
+
+      req.body.images.push(optionalFilename);
     })
   );
   next();
