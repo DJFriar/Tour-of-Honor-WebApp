@@ -1,5 +1,7 @@
 $(document).ready(() => {
-  $('#riderSubmissionHistory').DataTable();
+  $('#riderSubmissionHistory').DataTable({
+    "order": [[ 3, "desc" ]]
+  });
 
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {

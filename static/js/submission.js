@@ -1,9 +1,22 @@
 $(document).ready(function () {
+
+  $("#submissionNotes").on("input", function () { 
+    var submissionNotes = $("#submissionNotes").val().trim()
+    if (submissionNotes.length >= 5) {
+      $(".rejectButton").removeAttr("disabled");
+      $("#rejectButtonSpan").removeAttr("uk-tooltip");
+    } else {
+      $(".rejectButton").attr("disabled", "disabled");      
+    }
+  });
+
   // Handle Approve Button
   $(".approveButton").on("click", function() {
     var subID = $(this).data("submissionid");
+    var submissionNotes = $("#submissionNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
+      Notes: submissionNotes,
       Status: 1
     };
 
@@ -16,12 +29,12 @@ $(document).ready(function () {
   });
 
   // Handle Reject Button
-  $(".rejectConfirmation").on("click", function() {
+  $(".rejectButton").on("click", function() {
     var subID = $(this).data("submissionid");
-    var rejectionReason = $("#rejectNotes").val().trim()
+    var submissionNotes = $("#submissionNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
-      Notes: rejectionReason,
+      Notes: submissionNotes,
       Status: 2
     };
 
@@ -31,5 +44,6 @@ $(document).ready(function () {
     }).then(
       function() { location.assign("/scoring"); }
     );
+    
   });
 })

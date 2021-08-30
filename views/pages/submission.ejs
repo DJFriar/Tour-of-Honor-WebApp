@@ -44,14 +44,21 @@
           </div>
         </div>
         <div class="uk-width-1-3">
-          <div class="uk-text-center" id="approvalButtons">
-            <button class="uk-button uk-button-danger rejectButton" uk-toggle="target: #rejectionModal">
-              <i class="far fa-thumbs-down"></i>&nbsp; Reject
-            </button>
+          <div class="submissionNotesSection">
+            <label class="uk-form-label" for="submissionNotes">Submission Notes</label>
+            <textarea class="uk-textarea" id="submissionNotes" rows="4" placeholder="" value="<%= Submissions[0].Notes %>"></textarea>
+          </div>
+          <div class="uk-text-center toh-mb-18" id="approvalButtons">
+            <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
+              <button class="uk-button uk-button-danger rejectButton" disabled data-submissionid="<%= Submissions[0].id %>">
+                <i class="far fa-thumbs-down"></i>&nbsp; Reject
+              </button>
+            </span>
             <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
               <i class="far fa-thumbs-up"></i>&nbsp; Approve
             </button>
           </div>
+          
           <dl class="uk-description-list uk-description-list-divider">
             <dt>
               Submission Info<br/>
@@ -75,7 +82,7 @@
         </div>
       </div>
       <!-- This is the modal -->
-      <div id="rejectionModal" uk-modal>
+      <!-- <div id="rejectionModal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Reject Submission</h2>
             <label class="uk-form-label" for="rejectNotes">Reason for Rejection</label>
@@ -85,7 +92,7 @@
                 <button class="uk-button uk-button-primary rejectConfirmation" type="button" data-submissionid="<%= Submissions[0].id %>">Confirm</button>
             </p>
         </div>
-      </div>
+      </div> -->
     </main>
     <footer>
       <%- include('../partials/footer'); %>
