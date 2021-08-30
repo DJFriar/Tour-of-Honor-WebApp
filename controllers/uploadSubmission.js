@@ -37,26 +37,40 @@ const resizeImages = async (req, res, next) => {
   const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
 
   req.body.images = [];
-  await Promise.all(
-    req.files['input-primary'].map(async file => {
-      const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
-      await sharp(file.buffer)
-        .toFormat("jpeg")
-        .jpeg({ quality: 90 })
-        .toFile(`static/uploads/${primaryFilename}`);
-
-      req.body.images.unshift(primaryFilename);
-    }),
-    req.files['input-optional'].map(async file => {
-      const optionalFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-2.jpg`;
-      await sharp(file.buffer)
-        .toFormat("jpeg")
-        .jpeg({ quality: 80 })
-        .toFile(`static/uploads/${optionalFilename}`);
-
-      req.body.images.push(optionalFilename);
-    })
-  );
+  if(req.files['input-optional']) {
+    await Promise.all(
+      req.files['input-primary'].map(async file => {
+        const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
+        await sharp(file.buffer)
+          .toFormat("jpeg")
+          .jpeg({ quality: 90 })
+          .toFile(`static/uploads/${primaryFilename}`);
+  
+        req.body.images.unshift(primaryFilename);
+      }),
+      req.files['input-optional'].map(async file => {
+        const optionalFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-2.jpg`;
+        await sharp(file.buffer)
+          .toFormat("jpeg")
+          .jpeg({ quality: 80 })
+          .toFile(`static/uploads/${optionalFilename}`);
+  
+        req.body.images.push(optionalFilename);
+      })
+    );
+  } else {
+    await Promise.all(
+      req.files['input-primary'].map(async file => {
+        const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
+        await sharp(file.buffer)
+          .toFormat("jpeg")
+          .jpeg({ quality: 90 })
+          .toFile(`static/uploads/${primaryFilename}`);
+  
+        req.body.images.unshift(primaryFilename);
+      })
+    );
+  }
   next();
 };
 
