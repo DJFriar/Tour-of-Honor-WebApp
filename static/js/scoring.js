@@ -1,3 +1,5 @@
 $(document).ready(function () {
-  $('#ScoringTable').DataTable();
+  $('#ScoringTable').DataTable({
+    "order": [[ 0, "desc" ]]
+  });
 })
