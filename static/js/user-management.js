@@ -15,7 +15,9 @@ $(document).ready(function() {
         console.log(res);
         $("#EditUserID").val(res.id);
         $("#EditUserName").val(res.UserName);
-        $("#EditFlagNumber").val(res.FlagNumber);
+        if (res.FlagNumber > 0) {
+          $("#EditFlagNumber").val(res.FlagNumber);
+        }
         $("#EditFirstName").val(res.FirstName);
         $("#EditLastName").val(res.LastName);
         $("#EditEmail").val(res.Email);
@@ -42,13 +44,19 @@ $(document).ready(function() {
   // Handle Save Changes Button
   $("#saveUserChangesButton").on("click", function() {
     var id = $("#EditUserID").val();
+    var FlagNumber = 0;
     var isAdmin = false;
+
+    if (parseInt($("#EditFlagNumber").val(),10) > 0) {
+      FlagNumber = parseInt($("#EditFlagNumber").val(),10);
+    }
     if ($("#isAdmin").prop("checked") == true) {
       isAdmin = true
     }
+    
     var updateUser = {
       UserID: id,
-      FlagNumber: $("#EditFlagNumber").val().trim(),
+      FlagNumber: FlagNumber,
       UserName: $("#EditUserName").val().trim(),
       FirstName: $("#EditFirstName").val().trim(),
       LastName: $("#EditLastName").val().trim(),
@@ -56,6 +64,7 @@ $(document).ready(function() {
       ZipCode: $("#EditZipCode").val().trim(),
       isAdmin: isAdmin
     };
+    console.log(updateUser);
     $.ajax("/api/v1/user/", {
       type: "put",
       data: updateUser

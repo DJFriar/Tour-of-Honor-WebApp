@@ -35,7 +35,9 @@
               <% Users.forEach(function(user) { %>
                 <tr>
                   <td>
-                    <%= user.FlagNumber %>
+                    <% if(user.FlagNumber > 0) { %>
+                      <%= user.FlagNumber %>
+                    <% } %>
                   </td>
                   <td>
                     <%= user.FirstName %>
