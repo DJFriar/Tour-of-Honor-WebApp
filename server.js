@@ -34,6 +34,7 @@ app.use(passport.session());
 // ================================================================================
 require("./private/routes/routes")(app);
 require("./private/routes/api-routes")(app);
+require("./private/routes/app-routes")(app);
 
 // =============================================================================
 // LISTENER
