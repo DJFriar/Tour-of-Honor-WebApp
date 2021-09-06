@@ -54,6 +54,9 @@ module.exports = function(sequelize, DataTypes) {
       RallyYear: {
           type: DataTypes.INTEGER
       },
+      URL: {
+        type: DataTypes.STRING,
+    },
   });
 
   return Memorial;

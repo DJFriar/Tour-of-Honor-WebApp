@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
-  $("#submissionNotes").on("input", function () { 
-    var submissionNotes = $("#submissionNotes").val().trim()
-    if (submissionNotes.length >= 5) {
+  $("#scorerNotes").on("input", function () { 
+    var scorerNotes = $("#scorerNotes").val().trim()
+    if (scorerNotes.length >= 5) {
       $(".rejectButton").removeAttr("disabled");
       $("#rejectButtonSpan").removeAttr("uk-tooltip");
     } else {
@@ -13,10 +13,10 @@ $(document).ready(function () {
   // Handle Approve Button
   $(".approveButton").on("click", function() {
     var subID = $(this).data("submissionid");
-    var submissionNotes = $("#submissionNotes").val().trim()
+    var scorerNotes = $("#scorerNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
-      Notes: submissionNotes,
+      ScorerNotes: scorerNotes,
       Status: 1
     };
 
@@ -34,7 +34,7 @@ $(document).ready(function () {
     var submissionNotes = $("#submissionNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
-      Notes: submissionNotes,
+      ScorerNotes: submissionNotes,
       Status: 2
     };
 

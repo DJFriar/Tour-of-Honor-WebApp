@@ -25,6 +25,10 @@
         <% if(User.FlagNumber && SubmissionStatus[0].Status >= 2) { %>
           <div>
             <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
+              <div class="uk-text-center toh-mb-18">
+                <input class="uk-checkbox" type="checkbox" name="hasPillion" id="hasPillion">
+                <label for="hasPillion" id="inputPillionLabel">Include Passenger</label>
+              </div>
               <div class="uk-grid-large uk-child-width-expand@s" uk-grid>
                 <div>
                   <label for="input-primary" id="inputPrimaryLabel">
@@ -40,7 +44,7 @@
                 </div>
               </div>
               <input type="hidden" id="MemorialID" name="MemorialID" value="<%= MemorialData[0].id %>">
-              <div class="uk-align-center">
+              <div class="uk-text-center toh-mt-18">
                 <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
                 <span id="buttonSpan" uk-tooltip="Primary Image Required"><button disabled class="uk-button uk-button-primary bonusField" id="saveSubmission" >Submit</button></span>
               </div>
@@ -64,7 +68,8 @@
         <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
         <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
         GPS: <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
-        Access: <%= MemorialData[0].Access %>
+        Access: <%= MemorialData[0].Access %><br>
+        <% if(MemorialData[0].URL) { %> Related Link: <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a><% } %>
       </div>
     </div>
   </main>

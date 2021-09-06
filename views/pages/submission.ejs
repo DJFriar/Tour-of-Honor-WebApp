@@ -24,7 +24,6 @@
           </div>
           <div class="uk-grid-small uk-child-width-expand" uk-grid>
             <div>
-              
               <a href="/uploads/<%= Submissions[0].PrimaryImage %>" target="_blank">
                 <img class="toh-scoring-primaryImage uk-align-center" data-src="/uploads/<%= Submissions[0].PrimaryImage %>" width="434"
               height="370" uk-img>
@@ -44,9 +43,9 @@
           </div>
         </div>
         <div class="uk-width-1-3">
-          <div class="submissionNotesSection">
-            <label class="uk-form-label" for="submissionNotes">Submission Notes</label>
-            <textarea class="uk-textarea" id="submissionNotes" rows="4" placeholder="" value="<%= Submissions[0].Notes %>"></textarea>
+          <div class="scorerNotesSection toh-mb-18">
+            <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
+            <textarea class="uk-textarea" id="scorerNotes" rows="4" placeholder="" value="<%= Submissions[0].ScorerNotes %>"></textarea>
           </div>
           <div class="uk-text-center toh-mb-18" id="approvalButtons">
             <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
@@ -69,6 +68,14 @@
             <dd>
               <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
             </dd>
+            <% if(Submissions[0].RiderNotes) { %> 
+              <dt>
+                Rider Notes
+              </dt>
+              <dd>
+                <%= Submissions[0].RiderNotes %>
+              </dd>
+            <% } %>
             <dt>
               Rider Info<br/>
               <span class="toh-label toh-flag">

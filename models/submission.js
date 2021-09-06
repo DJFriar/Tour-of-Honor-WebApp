@@ -20,7 +20,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    Notes: {
+    RiderNotes: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    ScorerNotes: {
       type: DataTypes.STRING,
       allowNull: true,
     }
