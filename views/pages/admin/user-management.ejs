@@ -13,7 +13,7 @@
     <div class="uk-container">
       <ul uk-tab>
         <li><a href="#">Users</a></li>
-        <li><a href="#">Sponsors</a></li>
+        <!-- <li><a href="#">Sponsors</a></li> -->
       </ul>
 
       <ul class="uk-switcher uk-margin">
@@ -32,7 +32,7 @@
               </tr>
             </thead>
             <tbody>
-              <% userData.forEach(function(user) { %>
+              <% Users.forEach(function(user) { %>
                 <tr>
                   <td>
                     <%= user.FlagNumber %>
@@ -47,11 +47,17 @@
                     <%= user.Email %>
                   </td>
                   <td>
-                    <%= user.Role %>
+                    <% if(user.isAdmin) { %>
+                      Admin
+                    <% } else { %>
+                      User
+                    <% } %>
                   </td>
                   <td>
-                    <span class="deleteBonusButton" data-uid="<%- userData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
-                    <span class="editBonusButton" data-uid="<%- userData.ID %>"><i class="fal fa-edit"></i></span>
+                    <!-- <button class="uk-button uk-button-text" type="button"><span class="deleteUserButton" data-uid="<%- user.ID %>"><i class="far fa-trash-alt"></i></span></button>&nbsp; -->
+                    <span class="deleteUserButton" data-uid="<%- user.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <!-- <button class="uk-button uk-button-text" type="button" uk-toggle="target: #userDetailEditModal" ><span class="editUserButton" ><i class="fal fa-edit"></i></span></button> -->
+                    <span class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit"></i></span>
                   </td>
                 </tr>
               <% }) %>
@@ -83,8 +89,8 @@
                     <%= sponsor.States %>
                   </td>
                   <td>
-                    <span class="deleteBonusButton" data-uid="<%- sponsorData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
-                    <span class="editBonusButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
+                    <span class="deleteSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                    <span class="editSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
                   </td>
                 </tr>
               <% }) %>
@@ -92,6 +98,10 @@
           </table>
         </li>
       </ul>
+    </div>
+    <!-- This is the user edit modal -->
+    <div id="userDetailEditModal" class="modal">
+      <%- include('../../partials/userDetailEditor'); %>
     </div>
   </main>
   <footer>

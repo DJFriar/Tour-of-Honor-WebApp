@@ -204,5 +204,17 @@ module.exports = function (app) {
     });
     res.send("success");
   })
+
+  // Fetch a User
+  app.get("/api/v1/user/:id", (req, res) => {
+    const id = req.params.id;
+    db.User.findOne({
+      where: {
+        id: id
+      }
+    }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
   
 }

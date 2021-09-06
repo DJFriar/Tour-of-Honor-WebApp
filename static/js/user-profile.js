@@ -5,12 +5,9 @@ $(document).ready(() => {
 
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
-    let isAdmin = 0;
-    if ($("#isAdmin").is(":checked")) { isAdmin = 1 };
     var UserID = $(this).data("userid");
     var updateUserProfile = {
       UserID,
-      isAdmin: isAdmin,
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
       UserName: $("#UserName").val().trim(),
@@ -18,9 +15,6 @@ $(document).ready(() => {
       Email: $("#Email").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
     }
-
-    console.log("==== updateUserProfile ====");
-    console.log(updateUserProfile);
 
     // Make sure that email field isn't blank.
     if (!updateUserProfile.Email) {

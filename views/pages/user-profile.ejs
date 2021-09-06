@@ -40,12 +40,7 @@
         <input class="uk-input" id="ZipCode" type="zipcode" placeholder="zip" value="<%= User.ZipCode %>">
       </div>
       <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="isAdmin">isAdmin?</label>
-        <% if(User.isAdmin) { %>
-          <label><input class="uk-checkbox" id="isAdmin" type="checkbox" checked value="1"> Admin</label>
-        <% } else { %>
-          <label><input class="uk-checkbox" id="isAdmin" type="checkbox" value="1"> Admin</label>
-        <% } %>
+        &nbsp;
       </div>
       <div class="uk-width-1-2@s"><button type="button" id="saveProfileEdits" class="uk-button uk-button-primary" data-userid="<%= User.id %>">Update User Profile</button></div>
     </form>

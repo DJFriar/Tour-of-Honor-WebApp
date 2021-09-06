@@ -77,7 +77,7 @@ module.exports = function (app) {
     res.render("pages/admin", {
       activeUser,
       User: req.user,
-      NotificationText: "Only the Memorial Editor works at this time."
+      NotificationText: "The User Memorial now works as well. Use this to control the admin permission."
     });
   });
 
@@ -190,22 +190,16 @@ module.exports = function (app) {
   app.get("/admin/user-management", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var groupData = [
-      { "ID":"1", "FlagNumber":"512", "FirstName":"Keisha", "LastName":"Perry", "Email":"keisha@hey.com", "Role":"Sponsor" }
-    ]
+    var Users = await q.queryAllUsers();
     var sponsorData = [
       { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
       { "ID":"2", "FirstName":"Billy", "LastName":"Gibbons", "States":"TX" }
-    ]
-    var userData = [
-      { "ID":"1", "FlagNumber":"713", "FirstName":"Tommy", "LastName":"Craft", "Email":"tommy.craft@icloud.com", "Role":"Admin" },
-      { "ID":"2", "FlagNumber":"512", "FirstName":"Keisha", "LastName":"Perry", "Email":"keisha@hey.com", "Role":"Sponsor" }
     ]
     res.render("pages/admin/user-management", {
       activeUser,
       User: req.user,
       sponsorData,
-      userData,
+      Users,
       NotificationText: "",
     });
   });
