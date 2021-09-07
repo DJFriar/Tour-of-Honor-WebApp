@@ -62,13 +62,13 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
 module.exports.querySubmissions = async function querySubmissions(id = false) {
   try {
     if (id) {
-      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id WHERE s.id = ?",
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id WHERE s.id = ?",
       {
         replacements: [id],
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id",
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id",
       {
         type: QueryTypes.SELECT
       })
@@ -292,7 +292,7 @@ module.exports.queryMemorialStatusByRider = async function queryMemorialStatusBy
 
 module.exports.querySubmissionsByRider = async function querySubmissionsByRider(rider) {
   try {
-    var result = await sequelize.query("SELECT s.id, s.UserId, s.MemorialID, s.Status AS 'StatusID', CASE s.Status WHEN 1 THEN 'Approved' WHEN 2 THEN 'Rejected' ELSE 'Pending' END Status, s.ScorerNotes, s.RiderNotes, s.PrimaryImage, s.OptionalImage, s.createdAt, s.updatedAt, m.Code, m.Name, c.Name AS Category, u.FirstName, u.LastName, u.UserName, u.FlagNumber, u.isActive, u.isAdmin FROM Submissions s LEFT JOIN Memorials m ON m.id = s.MemorialID LEFT JOIN Categories c ON c.id = m.Category INNER JOIN Users u ON u.id = s.UserID WHERE s.UserID = ? ORDER BY s.createdAt DESC",
+    var result = await sequelize.query("SELECT s.id, s.UserId, s.MemorialID, s.Status AS 'StatusID', CASE s.Status WHEN 1 THEN 'Approved' WHEN 2 THEN 'Rejected' ELSE 'Pending' END Status, s.ScorerNotes, s.RiderNotes, s.PrimaryImage, s.OptionalImage, s.createdAt, s.updatedAt, m.Code, m.Name, c.Name AS Category, u.FirstName, u.LastName, u.UserName, u.Email, u.FlagNumber, u.isActive, u.isAdmin FROM Submissions s LEFT JOIN Memorials m ON m.id = s.MemorialID LEFT JOIN Categories c ON c.id = m.Category INNER JOIN Users u ON u.id = s.UserID WHERE s.UserID = ? ORDER BY s.createdAt DESC",
     {
       replacements: [rider],
       type: QueryTypes.SELECT

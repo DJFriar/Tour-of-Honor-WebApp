@@ -25,10 +25,13 @@
         <% if(User.FlagNumber && SubmissionStatus[0].Status >= 2) { %>
           <div>
             <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
-              <div class="uk-text-center toh-mb-18">
-                <input class="uk-checkbox" type="checkbox" name="hasPillion" id="hasPillion">
-                <label for="hasPillion" id="inputPillionLabel">Include Passenger</label>
-              </div>
+              <% if(User.PillionFlagNumber > 0) { %>
+                <div class="uk-text-center toh-mb-18">
+                  <input class="uk-checkbox" type="checkbox" name="hasPillion" id="hasPillion">
+                  <label for="hasPillion" id="inputPillionLabel">Include Passenger</label>
+                  <input type="hidden" id="PillionFlagNumber" name="PillionFlagNumber" value="<%= User.PillionFlagNumber %>">
+                </div>
+              <% } %>
               <div class="uk-grid-large uk-child-width-expand@s" uk-grid>
                 <div>
                   <label for="input-primary" id="inputPrimaryLabel">

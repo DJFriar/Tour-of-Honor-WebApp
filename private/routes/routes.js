@@ -288,7 +288,7 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
     console.log(req.user);
-    console.log(RiderSubmissionHistory);
+
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,

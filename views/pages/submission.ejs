@@ -81,25 +81,21 @@
               <span class="toh-label toh-flag">
                 <%= Submissions[0].FlagNumber %>
               </span>
+              <% if(Submissions[0].OtherRiders) { %> 
+                <span class="toh-label toh-flag">
+                  <%= Submissions[0].OtherRiders %>
+                </span>
+              <% } %>
             </dt>
             <dd>
               <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
             </dd>
+            <dd>
+              <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
+            </dd>
           </dl>
         </div>
       </div>
-      <!-- This is the modal -->
-      <!-- <div id="rejectionModal" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <h2 class="uk-modal-title">Reject Submission</h2>
-            <label class="uk-form-label" for="rejectNotes">Reason for Rejection</label>
-            <input class="uk-input" id="rejectNotes" type="text" value="<%= Submissions[0].RejectNotes %>">
-            <p class="uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-primary rejectConfirmation" type="button" data-submissionid="<%= Submissions[0].id %>">Confirm</button>
-            </p>
-        </div>
-      </div> -->
     </main>
     <footer>
       <%- include('../partials/footer'); %>

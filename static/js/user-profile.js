@@ -12,6 +12,7 @@ $(document).ready(() => {
       LastName: $("#LastName").val().trim(),
       UserName: $("#UserName").val().trim(),
       FlagNumber: $("#FlagNumber").val().trim(),
+      PillionFlagNumber: $("#PillionFlagNumber").val().trim(),
       Email: $("#Email").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
     }

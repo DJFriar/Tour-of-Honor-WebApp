@@ -151,11 +151,17 @@ module.exports = function (app) {
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
     function (req, res) {
+      PillionFlagNumber = 0;
+      if (req.body.hasPillion) {
+        console.log("Pillion Detected");
+        PillionFlagNumber = req.user.PillionFlagNumber.toString();
+      }
       db.Submission.create({
         UserID: req.user.id,
         MemorialID: req.body.MemorialID,
         PrimaryImage: req.body.images[0],
         OptionalImage: req.body.images[1],
+        OtherRiders: PillionFlagNumber,
         Status: 0 // 0 = Pending Approval
       })
       res.redirect("/memorials");
@@ -196,6 +202,7 @@ module.exports = function (app) {
       LastName: req.body.LastName,
       UserName: req.body.UserName,
       FlagNumber: req.body.FlagNumber,
+      PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
       ZipCode: req.body.ZipCode,
       isAdmin: req.body.isAdmin

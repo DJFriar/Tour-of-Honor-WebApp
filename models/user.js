@@ -37,6 +37,9 @@ module.exports = function(sequelize, DataTypes) {
     FlagNumber: {
       type: DataTypes.INTEGER,
     },
+    PillionFlagNumber: {
+      type: DataTypes.INTEGER,
+    },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: 0
