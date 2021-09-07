@@ -161,6 +161,7 @@ module.exports = function (app) {
         MemorialID: req.body.MemorialID,
         PrimaryImage: req.body.images[0],
         OptionalImage: req.body.images[1],
+        RiderNotes: req.body.RiderNotes,
         OtherRiders: PillionFlagNumber,
         Status: 0 // 0 = Pending Approval
       })
