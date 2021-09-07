@@ -13,10 +13,16 @@ $(document).ready(function () {
   // Handle Approve Button
   $(".approveButton").on("click", function() {
     var subID = $(this).data("submissionid");
-    var scorerNotes = $("#scorerNotes").val().trim()
+    var scorerNotes = $("#scorerNotes").val().trim();
+    var submitterID = $("#SubmissionUserID").val();
+    var submittedMemorialID = $("#SubmissionMemorialID").val();
+    var submittedOtherRiders = $("#SubmissionOtherRiders").val();
     var submissionInfo = {
       SubmissionID: subID,
       ScorerNotes: scorerNotes,
+      SubmittedMemorialID: submittedMemorialID,
+      SubmittedUserID: submitterID,
+      SubmittedOtherRiders: submittedOtherRiders,
       Status: 1
     };
 

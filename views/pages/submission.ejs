@@ -93,6 +93,11 @@
             <dd>
               <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
             </dd>
+            <dd>
+              <input type="hidden" id="SubmissionMemorialID" name="SubmissionMemorialID" value="<%= Submissions[0].MemorialID %>">
+              <input type="hidden" id="SubmissionUserID" name="SubmissionUserID" value="<%= Submissions[0].UserID %>">
+              <input type="hidden" id="SubmissionOtherRiders" name="SubmissionOtherRiders" value="<%= Submissions[0].OtherRiders %>">
+            </dd>
           </dl>
         </div>
       </div>
