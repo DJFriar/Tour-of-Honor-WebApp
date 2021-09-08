@@ -205,3 +205,11 @@ a.hidden-link:visited {
   text-decoration: none;
   cursor: pointer;
 }
+
+.uk-checkbox {
+  background-color: #fff;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  background-color: #f8f8f8 !important;
+}
