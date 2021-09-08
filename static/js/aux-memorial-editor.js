@@ -1,5 +1,7 @@
   $(document).ready(function() {
-    $('#auxMemorialTable').DataTable();
+    $('#auxMemorialTable').DataTable({
+      pageLength: 100
+    });
 
     // Handle Edit Memorial Button
     $(".editMemorialButton").on("click", function() {
