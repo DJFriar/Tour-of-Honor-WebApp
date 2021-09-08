@@ -25,6 +25,7 @@ module.exports = function (app) {
       Address2: req.body.MemorialAddress2,
       City: req.body.MemorialCity,
       State: req.body.MemorialState.toUpperCase(),
+      URL: req.body.MemorialURL.toLowerCase(),
       Access: req.body.MemorialAccess,
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
