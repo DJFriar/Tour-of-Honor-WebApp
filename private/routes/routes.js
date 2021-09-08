@@ -122,7 +122,7 @@ module.exports = function (app) {
       categoryData,
       MemorialData,
       restrictionData,
-      NotificationText: "At this time there is no edit functionality, however the delete does work."
+      NotificationText: ""
     });
   });
   

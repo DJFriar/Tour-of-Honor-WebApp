@@ -50,15 +50,25 @@ module.exports = function (app) {
   })
 
   // Update a Memorial
-  app.put("/api/v1/memorial/:id", function (req, res) {
+  app.put("/api/v1/memorial", function (req, res) {
     db.Memorial.update({ 
-      MemorialCode: req.body.MemorialCode,
-      MemorialName: req.body.MemorialName,
-      MemorialDescription: req.body.MemorialDescription,
-      MemorialRequirements: req.body.MemorialRequirements,
-      RallyYear: 2021,
+      Code: req.body.Code.toUpperCase(),
+      Name: req.body.Name,
+      Category: req.body.Category,
+      Region: req.body.Region,
+      Latitude: req.body.Latitude,
+      Longitude: req.body.Longitude,
+      Address1: req.body.Address1,
+      Address2: req.body.Address2,
+      City: req.body.City,
+      State: req.body.State.toUpperCase(),
+      URL: req.body.URL.toLowerCase(),
+      Access: req.body.Access,
+      MultiImage: req.body.MultiImage,
+      SampleImage: req.body.SampleImage,
+      Restrictions: req.body.Restrictions
     }, {
-      where: { id: req.body.memorial_id }
+      where: { id: req.body.MemorialID }
     });
     res.send("success");
   })

@@ -4,15 +4,12 @@ $(document).ready(function() {
 
   // Handle Edit User Button
   $(".editUserButton").on("click", function() {
-    console.log("edit user button clicked");
     var id = $(this).data("uid");
     $(".modal").css("display","block");
     $.ajax("/api/v1/user/" + id, {
       type: "GET",
     }).then(
       function(res) {
-        console.log("==== User Response ====");
-        console.log(res);
         $("#EditUserID").val(res.id);
         $("#EditUserName").val(res.UserName);
         if (res.FlagNumber > 0) {
@@ -64,7 +61,6 @@ $(document).ready(function() {
       ZipCode: $("#EditZipCode").val().trim(),
       isAdmin: isAdmin
     };
-    console.log(updateUser);
     $.ajax("/api/v1/user/", {
       type: "put",
       data: updateUser

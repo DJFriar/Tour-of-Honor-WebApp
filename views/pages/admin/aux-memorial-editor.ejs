@@ -14,7 +14,7 @@
       <%- include('../../partials/notice'); %>
     <% } %>
     <div class="addMemorialBtnDiv" style="margin-top: 8px;">
-      <button type="button" class="uk-button uk-button-default addMemorialButton">Add New Memorial</button>
+      <button type="button" class="uk-button uk-button-primary addMemorialButton">Add New Memorial</button>
     </div>
     <!-- #region Add New Memorial Form -->
     <div class="hide-me" id="editMemorialInfo">
@@ -98,8 +98,8 @@
         
         <div style="margin-top: 16px;">
           <label class="uk-form-label">&nbsp;</label>
-          <button class="uk-button uk-button-default uk-button-small addMemorialButton">Cancel</button>
-          <button class="uk-button uk-button-default uk-button-small" id="saveAuxMemorial">Save</button>
+          <button class="uk-button uk-button-secondary uk-button-small addMemorialButton">Cancel</button>
+          <button class="uk-button uk-button-primary uk-button-small" id="saveAuxMemorial">Save</button>
         </div>
       </form>
     </div>
@@ -137,13 +137,17 @@
             </td>
             <td>
               <span class="deleteMemorialButton" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt"></i></span>&nbsp;
-              <!-- <span class="editBonusButton" data-uid="<%- memorial.ID %>"><i class="fal fa-edit"></i></span> -->
+              <span class="editMemorialButton" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i></span>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
     <!-- #endregion -->
+    <!-- This is the user edit modal -->
+    <div id="memorialEditModal" class="modal">
+      <%- include('../../partials/memorialEditModal'); %>
+    </div>
   </main>
 
   <footer>
