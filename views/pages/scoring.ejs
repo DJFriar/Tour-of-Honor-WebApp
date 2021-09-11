@@ -29,7 +29,7 @@
                 <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
               </td>
               <td>
-                <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders) { %> <span><i class="far fa-user-friends"></i></span> <% } %> 
+                <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="far fa-user-friends"></i></span> <% } %> 
               </td>
               <td>
                 <span style="font-family: 'Source Code Pro', monospace;"><%= submission.Code %></span>

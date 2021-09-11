@@ -81,7 +81,7 @@
               <span class="toh-label toh-flag">
                 <%= Submissions[0].FlagNumber %>
               </span>
-              <% if(Submissions[0].OtherRiders) { %> 
+              <% if(Submissions[0].OtherRiders && Submissions[0].OtherRiders != 0) { %> 
                 <span class="toh-label toh-flag">
                   <%= Submissions[0].OtherRiders %>
                 </span>
