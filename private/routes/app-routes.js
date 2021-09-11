@@ -240,6 +240,18 @@ module.exports = function (app) {
     res.send("success");
   })
 
+    // Delete a User
+    app.delete("/api/v1/user/:id", (req, res) => {
+      const id = req.params.id;
+      db.User.destroy({
+        where: {
+          id: id
+        }
+      }).then(() => {
+        res.status(202).send();
+      });
+    });
+
   // Fetch a User
   app.get("/api/v1/user/:id", (req, res) => {
     const id = req.params.id;

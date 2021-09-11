@@ -71,4 +71,16 @@ $(document).ready(function() {
     );
   });
 
+  // Handle Delete User Button
+  $(".deleteUserButton").on("click", function() {
+    var id = $(this).data("uid");
+    $.ajax("/api/v1/user/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        location.reload();
+      }
+    );
+  });
+
 });
