@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  $('#usersTable').DataTable();
+  $('#usersTable').DataTable({
+    pageLength: 100
+  });
   $('#sponsorsTable').DataTable();
 
   // Handle Edit User Button

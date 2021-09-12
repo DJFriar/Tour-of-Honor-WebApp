@@ -1,6 +1,7 @@
 $(document).ready(() => {
   $('#riderSubmissionHistory').DataTable({
-    "order": [[ 3, "desc" ]]
+    "order": [[ 3, "desc" ]],
+    "pageLength": 25
   });
 
   // Save changes to user profile
