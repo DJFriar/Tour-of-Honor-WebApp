@@ -277,6 +277,16 @@ module.exports.queryCompletedIDsByRider = async function queryCompletedIDsByRide
   }
 }
 
+module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemorialsByAllRiders() {
+  try {
+    var result = await sequelize.query("SELECT CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx LEFT JOIN Users u ON emx.UserID = u.id INNER JOIN Memorials m ON emx.MemorialID = m.id GROUP BY emx.UserID",
+    { type: QueryTypes.SELECT });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryMemorialStatusByRider = async function queryMemorialStatusByRider(rider, memCode) {
   try {
     var result = await sequelize.query("SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE s.UserID = ? AND m.Code = ? ORDER BY s.updatedAt DESC LIMIT 1",

@@ -276,10 +276,15 @@ module.exports = function (app) {
   app.get("/stats", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
+    var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    console.log("==== totalEarnedByRider ====");
+    console.log(totalEarnedByRider);
+
     res.render("pages/stats", {
       activeUser,
       User: req.user,
-      NotificationText: "This page has not been developed yet."
+      NotificationText: "This page has not been developed yet.",
+      totalEarnedByRider
     });
   });
 
