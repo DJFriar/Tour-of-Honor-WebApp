@@ -182,8 +182,11 @@ module.exports = function (app) {
 
   // Update submissions
   app.put("/handle-submission", function (req, res) {
+    console.log("==== db.Submission.update ====");
+    console.log(req.body);
     // Update the submission record to mark it as scored
     db.Submission.update({
+
       Status: req.body.Status,
       ScorerNotes:  req.body.ScorerNotes,
       RiderNotes: req.body.RiderNotes
@@ -191,7 +194,8 @@ module.exports = function (app) {
       where: { id: req.body.SubmissionID }
     });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
-    if(req.body.Status = 1) {
+    if(req.body.Status == 1) {
+      console.log("==== db.EarnedMemorialsXref.create ====");
       db.EarnedMemorialsXref.create({
         UserID: req.body.SubmittedUserID,
         MemorialID: req.body.SubmittedMemorialID
