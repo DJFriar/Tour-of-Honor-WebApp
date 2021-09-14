@@ -71,9 +71,9 @@
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 2) { %> 
-                  <span uk-tooltip="<%= riderSubmission.Notes %>"><i class="far fa-exclamation-triangle"></i>&nbsp;<%= riderSubmission.Status %></span>
-                <% } else if(riderSubmission.Notes) { %>
-                  <span uk-tooltip="<%= riderSubmission.Notes %>"><i class="far fa-comment-alt-lines"></i>&nbsp;<%= riderSubmission.Status %></span>
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="far fa-exclamation-triangle"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } else if(riderSubmission.ScorerNotes) { %>
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="far fa-comment-alt-lines"></i>&nbsp;<%= riderSubmission.Status %></span>
                 <% } %>
               </td>
               <td>
