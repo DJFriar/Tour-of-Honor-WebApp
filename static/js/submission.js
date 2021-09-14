@@ -37,10 +37,10 @@ $(document).ready(function () {
   // Handle Reject Button
   $(".rejectButton").on("click", function() {
     var subID = $(this).data("submissionid");
-    var submissionNotes = $("#submissionNotes").val().trim()
+    var scorerNotes = $("#scorerNotes").val().trim()
     var submissionInfo = {
       SubmissionID: subID,
-      ScorerNotes: submissionNotes,
+      ScorerNotes: scorerNotes,
       Status: 2
     };
 
