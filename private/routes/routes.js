@@ -283,7 +283,7 @@ module.exports = function (app) {
     res.render("pages/stats", {
       activeUser,
       User: req.user,
-      NotificationText: "This page has not been developed yet.",
+      NotificationText: "",
       totalEarnedByRider
     });
   });
