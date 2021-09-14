@@ -13,6 +13,9 @@
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
+    <% if(Submissions[0].Status != 0) { %>
+      <%- include('../partials/notice', { NotificationText: 'This submission has already been scored.' }); %>
+    <% } %>
     <main>
       <div class="" uk-grid>
         <div class="uk-width-2-3">
@@ -45,7 +48,12 @@
         <div class="uk-width-1-3">
           <div class="scorerNotesSection toh-mb-18">
             <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
-            <textarea class="uk-textarea" id="scorerNotes" rows="4" placeholder="" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+            <% if(Submissions[0].Status == 0) { %>
+              <textarea class="uk-textarea" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+            <% } else { %>
+              <textarea class="uk-textarea" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+            <% } %>
+            
           </div>
           <div class="uk-text-center toh-mb-18" id="approvalButtons">
             <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
@@ -53,9 +61,15 @@
                 <i class="far fa-thumbs-down"></i>&nbsp; Reject
               </button>
             </span>
-            <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
-              <i class="far fa-thumbs-up"></i>&nbsp; Approve
-            </button>
+            <% if(Submissions[0].Status == 0) { %>
+              <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
+                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+              </button>
+            <% } else { %>
+              <button class="uk-button uk-button-disabled" disabled data-submissionid="<%= Submissions[0].id %>">
+                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+              </button>
+            <% } %>
           </div>
           
           <dl class="uk-description-list uk-description-list-divider">
