@@ -26,13 +26,6 @@ module.exports = function (app) {
   //   return true;
   // });
 
-  // app.post('/api/v1/memorial', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/aux-memorial-editor");
-  // });
-
   // app.post('/api/v1/pending-memorial', function (req, res) {
   //   console.log("====== req.body ======");
   //   console.log(req.body);
@@ -110,13 +103,13 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/admin/aux-memorial-editor", isAuthenticated, async (req, res) => {
+  app.get("/admin/memorial-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
     var categoryData = await q.queryAllCategories();
     var MemorialData = await q.queryAllMemorials();
     var restrictionData = await q.queryAllRestrictions();
-    res.render("pages/admin/aux-memorial-editor", {
+    res.render("pages/admin/memorial-editor", {
       activeUser,
       User: req.user,
       categoryData,
@@ -310,20 +303,6 @@ module.exports = function (app) {
   //#region UPDATE (PUT)
   // ===============================================================================
 
-  // app.put('/api/v1/category', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.put('/api/v1/memorial', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/aux-memorial-editor");
-  // });
-
   app.put('/pending-memorial', function (req, res) {
     console.log("====== req.body ======");
     console.log(req.body);
@@ -357,13 +336,6 @@ module.exports = function (app) {
   //   console.log(req.body);
   //   // Call API here
   //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.delete('/api/v1/memorial', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/aux-memorial-editor");
   // });
 
   // app.delete('/api/v1/pending-memorial', function (req, res) {

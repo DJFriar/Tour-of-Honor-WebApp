@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('#auxMemorialTable').DataTable({
+  $('#memorialTable').DataTable({
     pageLength: 100
   });
 });

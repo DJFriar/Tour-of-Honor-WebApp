@@ -33,7 +33,7 @@ module.exports = function (app) {
       RallyYear: 2021,
     }).then(() => {
       // res.status(202).send();
-      res.redirect("/admin/aux-memorial-editor");
+      res.redirect("/admin/memorial-editor");
     });
   });
 
