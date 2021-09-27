@@ -75,7 +75,7 @@
           <dl class="uk-description-list uk-description-list-divider">
             <dt>
               Submission Info<br/>
-              <span class="toh-label toh-flag">
+              <span class="toh-label toh-id-flag">
                 <%= Submissions[0].Code %>
               </span>
             </dt>
@@ -92,13 +92,15 @@
             <% } %>
             <dt>
               Rider Info<br/>
-              <span class="toh-label toh-flag">
+              <span class="toh-label toh-rider-flag">
                 <%= Submissions[0].FlagNumber %>
               </span>
-              <% if(Submissions[0].OtherRiders && Submissions[0].OtherRiders != 0) { %> 
-                <span class="toh-label toh-flag">
-                  <%= Submissions[0].OtherRiders %>
-                </span>
+              <% if(Submissions[0].OtherRiders && Submissions[0].OtherRiders != 0) { %>
+                <% OtherRidersArray.forEach(function(otherRider) { %> 
+                  <span class="toh-label toh-rider-flag">
+                    <%= otherRider %>
+                  </span>
+                <% }) %>
               <% } %>
             </dt>
             <dd>

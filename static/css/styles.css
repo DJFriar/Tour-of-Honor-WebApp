@@ -128,11 +128,20 @@ a.hidden-link:visited {
   text-transform: uppercase;
 }
 
-.toh-flag {
+.toh-rider-flag {
+  padding: 4px 10px;
+  background-color: yellow;
+  color:#000;
+  border: black 1px solid;
+  font-weight: 600;
+  font-size: 1.05em;
+}
+
+.toh-id-flag {
   padding: 4px 10px;
   background-color: #444;
   color: #fff;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.05em;
 }
 

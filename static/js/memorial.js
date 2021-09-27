@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
   $("#input-primary").bind("change keyup", function () {      
     if ($("#input-primary").val() != "") {
       $(this).closest("form").find(":submit").removeAttr("disabled");
@@ -10,6 +9,13 @@ $(document).ready(function() {
     }
   });
 
+  $("#isGroupSubmission").change(function() {
+    if (this.checked) {
+      $("#GroupRiderInfoDiv").removeClass("hide-me")
+    } else {
+      $("#GroupRiderInfoDiv").addClass("hide-me")
+    }
+  });
 
   let handlePrimaryPhoto = function (input, placeToInsertImagePreview) {
     if (input.files) {

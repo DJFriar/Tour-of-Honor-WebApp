@@ -88,17 +88,21 @@ module.exports = function (app) {
   });
 
   app.get("/submission/:id", isAuthenticated, async (req, res) => {
+    OtherRidersArray = [];
     var activeUser = false
     if (req.user) { activeUser = true };
     const id = req.params.id;
     var Submissions = await q.querySubmissions(id);
     console.log("==== Submission Detail Data ====");
     console.log(Submissions);
+    OtherFlags = Submissions[0].OtherRiders;
+    OtherRidersArray = OtherFlags.split(',');
     res.render("pages/submission", {
       activeUser,
       User: req.user,
       NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
       Submissions,
+      OtherRidersArray,
       dt: DateTime
     });
   });
