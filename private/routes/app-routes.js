@@ -162,10 +162,16 @@ module.exports = function (app) {
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
     function (req, res) {
+      RiderArray = [];
       PillionFlagNumber = 0;
       if (req.body.hasPillion) {
-        console.log("Pillion Detected");
         PillionFlagNumber = req.user.PillionFlagNumber.toString();
+        RiderArray.push(PillionFlagNumber);      
+      }
+      if (req.body.isGroupSubmission) {
+        GroupRiders = req.body.GroupRiderInfo;
+        GroupRiderArray = GroupRiders.split(',');
+        RiderArray = RiderArray.concat(GroupRiderArray);
       }
       db.Submission.create({
         UserID: req.user.id,
@@ -173,7 +179,7 @@ module.exports = function (app) {
         PrimaryImage: req.body.images[0],
         OptionalImage: req.body.images[1],
         RiderNotes: req.body.RiderNotes,
-        OtherRiders: PillionFlagNumber,
+        OtherRiders: RiderArray.toString(),
         Status: 0 // 0 = Pending Approval
       })
       res.redirect("/memorials");
@@ -186,7 +192,6 @@ module.exports = function (app) {
     console.log(req.body);
     // Update the submission record to mark it as scored
     db.Submission.update({
-
       Status: req.body.Status,
       ScorerNotes:  req.body.ScorerNotes,
       RiderNotes: req.body.RiderNotes
@@ -196,6 +201,9 @@ module.exports = function (app) {
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if(req.body.Status == 1) {
       console.log("==== db.EarnedMemorialsXref.create ====");
+      ApprovedRiders = [];
+      PillionFlagNumber = req.body.SubmittedUserID.toString();
+      RiderArray.push(PillionFlagNumber);  
       db.EarnedMemorialsXref.create({
         UserID: req.body.SubmittedUserID,
         MemorialID: req.body.SubmittedMemorialID
