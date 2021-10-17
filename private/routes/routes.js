@@ -8,47 +8,6 @@ const isAdmin = require("../../config/isAdmin");
 
 module.exports = function (app) {
 
-  // ===============================================================================
-  //#region CREATE (POST)
-  // ===============================================================================
-
-  // app.post('/api/v1/category', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.post('/api/v1/login', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   return true;
-  // });
-
-  // app.post('/api/v1/pending-memorial', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/state-memorial-editor");
-  // });
-
-  // app.post('/api/v1/restriction', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.post('/api/v1/user', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   return true;
-  // });
-
-  //#endregion
-  // ===============================================================================
 
   // ===============================================================================
   //#region READ (GET)
@@ -112,6 +71,8 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     var categoryData = await q.queryAllCategories();
     var MemorialData = await q.queryAllMemorials();
+    console.log("==== MemorialData (Routes) ====");
+    console.log(MemorialData);
     var restrictionData = await q.queryAllRestrictions();
     res.render("pages/admin/memorial-editor", {
       activeUser,
@@ -217,6 +178,12 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/login2", async (req, res) => {
+    res.render("pages/login2", {
+      NotificationText: ""
+    });
+  });
+
   app.get("/memorials", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -234,15 +201,19 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     const memCode = req.params.memCode;
     var MemorialData = await q.queryMemorial(memCode);
+    var MemorialText = await q.queryMemorialText(memCode);
     var SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
     if(SubmissionStatus.length == 0) {
       SubmissionStatus.unshift({Status: 3});
     }
+    console.log("==== MemorialText (Routes) ====");
+    console.log(MemorialText);
     res.render("pages/memorial", {
       activeUser,
       User: req.user,
       NotificationText: "",
       MemorialData,
+      MemorialText,
       SubmissionStatus
     });
   });

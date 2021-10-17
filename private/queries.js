@@ -92,6 +92,20 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
   }
 }
 
+
+module.exports.queryMemorialText = async function queryMemorialText(memCode) {
+  try {
+    var result = await sequelize.query("SELECT m.Code, mt.* FROM Memorials m INNER JOIN MemorialMeta mt ON m.id = mt.MemorialID WHERE m.Code = ?",
+    {
+      replacements: [memCode],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryAllBonusesWithStatus = async function queryAllBonusesWithStatus(rider) {
   try {
     var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0 AND bl.user_id = ?",

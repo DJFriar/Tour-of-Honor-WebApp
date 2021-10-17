@@ -9,7 +9,7 @@ const upload = multer({ dest: '../static/uploads' });
 
 module.exports = function (app) { 
   // 
-  // Memorial Related
+  // Memorial Info Related
   //
 
   // Create a Memorial
@@ -84,6 +84,24 @@ module.exports = function (app) {
       res.status(202).send();
     });
   });
+
+  //
+  // Memorial Text Related
+  //
+
+  // Fetch a Memorial Text Entry
+  app.get("/api/v1/memorial-text/:id", (req, res) => {
+    const id = req.params.id;
+    db.MemorialMeta.findOne({
+      where: {
+        id: id
+      }
+    }).then(function (dbPost) {
+      console.log("==== memorial-text response ====");
+      console.log(res);
+      res.json(dbPost);
+    });
+  })
 
   // 
   // Authentication Related
@@ -276,5 +294,5 @@ module.exports = function (app) {
       res.json(dbPost);
     });
   })
-  
+
 }

@@ -31,7 +31,7 @@ $(document).ready(() => {
     })
       .then((res) => {
         if (res.isAdmin) {
-          window.location.replace("/scoring");
+          window.location.replace("/admin");
         } else {
           window.location.replace("/memorials");
         }

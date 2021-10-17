@@ -1,12 +1,42 @@
   $(document).ready(function() {
     $('#memorialTable').DataTable({
-      pageLength: 100
+      pageLength: 100,
+      columns: [
+        { "width": "12%" },
+        { "width": "30%" },
+        { "width": "16%" },
+        { "width": "8%" },
+        { "width": "8%" },
+        null
+      ]
     });
 
+    // Handle Bulk Upload Button
+    $(".bulkAddMemorialButton").on("click", function(e) {
+      e.preventDefault();
+      $("#bulkAddMemorialFile").toggleClass("hide-me");
+    })
+
+    // Handle csv upload
+    var data;
+    function handleFileSelect(e) {
+      var file=e.target.files[0];
+
+      Papa.parse(file, {
+        header: true,
+        dynamicTyping: true,
+        complete: function(results) {
+          data = results;
+        }
+      });
+    }
+    $("#csv-file").change(handleFileSelect);
+
     // Handle Edit Memorial Button
-    $(".editMemorialButton").on("click", function() {
+    $(".editMemorialInfoBtn").on("click", function() {
       var id = $(this).data("uid");
-      $(".modal").css("display","block");
+      $("#memorialInfoEditModal").css("display","block");
+      $(".uk-dropdown").removeClass("uk-open");
       $.ajax("/api/v1/memorial/"+ id, {
         type: "GET",
       }).then(
@@ -37,11 +67,29 @@
       )
     })
 
+    // Handle Edit Memorial Button
+    $(".editMemorialTextBtn").on("click", function() {
+      var id = $(this).data("uid");
+      $("#memorialTextEditModal").css("display","block");
+      $(".uk-dropdown").removeClass("uk-open");
+      $.ajax("/api/v1/memorial-text/"+ id, {
+        type: "GET",
+      }).then(
+        function(res) {
+          console.log("==== Memorial Text Response ====");
+          console.log(res);
+          $("#EditMemorialTextID").val(res.id);
+          $("#MemorialTextHeading").val(res.Category);
+          $("#MemorialText").val(res.Region);
+        }
+      )
+    })
+
     // Handle add new memorial toggle
-    $(".addMemorialButton").on("click", function(event) {
-      event.preventDefault();
+    $(".addMemorialButton").on("click", function(e) {
+      e.preventDefault();
       $("#editMemorialInfo").toggleClass("hide-me");
-      $(".addMemorialBtnDiv").toggleClass("hide-me");
+      $(".memorialBtnDiv").toggleClass("hide-me");
     });
 
     // Handle Delete Memorial Button

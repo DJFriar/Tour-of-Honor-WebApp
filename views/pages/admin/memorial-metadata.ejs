@@ -9,8 +9,9 @@
     <%- include('../../partials/topnav'); %>
   <% } %>
   <main>
+    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
     <h4>MEMORIAL METADATA</h4>
-    <div class="uk-container">
+    <div class="admin-container">
       <ul uk-tab>
         <li><a href="#">Memorial Data</a></li>
         <li><a href="#">Restrictions</a></li>
@@ -21,6 +22,9 @@
         <!-- Memorial Data Tab -->
         <li>
           <h5>MEMORIAL DATA</h5>
+          <div class="memorialDataBtnDiv" style="margin: 8px;">
+            <button type="button" class="uk-button uk-button-primary addMemorialDataButton">Add Memorial Data</button>
+          </div>
           <table class="uk-table uk-table-striped uk-table-small" id="memorialMetadataTable">
             <thead>
               <tr>
@@ -106,6 +110,10 @@
           </table>
         </li>
       </ul>
+    </div>
+    <!-- This is the memorial edit modal -->
+    <div id="memorialDataEditModal" class="modal">
+      <%- include('../../partials/memorialDataEditModal'); %>
     </div>
   </main>
   <footer>

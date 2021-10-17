@@ -9,13 +9,21 @@
     <%- include('../../partials/topnav'); %>
   <% } %>
   <main>
+    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
     <h4>MEMORIAL EDITOR</h4>
+
     <% if(NotificationText) { %>
       <%- include('../../partials/notice'); %>
     <% } %>
-    <div class="addMemorialBtnDiv" style="margin-top: 8px;">
+    <div class="memorialBtnDiv" style="margin-top: 8px;">
       <button type="button" class="uk-button uk-button-primary addMemorialButton">Add New Memorial</button>
+      <!-- <button type="button" class="uk-button uk-button-primary bulkAddMemorialButton">Bulk Add Memorials</button> -->
     </div>
+    <!-- #region Bulk Upload New Memorials -->
+    <div class="hide-me" id="bulkAddMemorialFile">
+      <input type="file" id="csv-file" name="csv-file">
+    </div>
+    <!-- #endregion -->
     <!-- #region Add New Memorial Form -->
     <div class="hide-me" id="editMemorialInfo">
       <h5>ADD NEW MEMORIAL</h5>
@@ -136,17 +144,27 @@
               <%= memorial.Access %>
             </td>
             <td>
-              <span class="deleteMemorialButton" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt"></i></span>&nbsp;
-              <span class="editMemorialButton" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i></span>
+              <div class="uk-inline">
+                <button class="uk-button uk-button-default" type="button">Actions</button>
+                <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
+                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i> Edit Memorial Info</span></button>
+                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialTextBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i> Edit Memorial Text</span></button>
+                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt"></i> Delete Memorial</span></button>
+                </div>
+              </div>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
     <!-- #endregion -->
-    <!-- This is the user edit modal -->
-    <div id="memorialEditModal" class="modal">
-      <%- include('../../partials/memorialEditModal'); %>
+    <!-- This is the Memorial Info edit modal -->
+    <div id="memorialInfoEditModal" class="modal">
+      <%- include('../../partials/memorialInfoEditModal'); %>
+    </div>
+    <!-- This is the Memorial Text edit modal -->
+    <div id="memorialTextEditModal" class="modal">
+      <%- include('../../partials/memorialTextEditModal'); %>
     </div>
   </main>
 

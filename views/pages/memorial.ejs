@@ -76,15 +76,29 @@
           </div>
         <% } %>
       </div>
+      <!-- BEGIN: Right hand column -->
       <div>
-        <%= MemorialData[0].Name %><br/>
-        <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
-        <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
-        <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
-        GPS: <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
-        Access: <%= MemorialData[0].Access %><br>
-        <% if(MemorialData[0].URL) { %> Related Link: <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a><% } %>
+        <div id="memorialInfo">
+          <h6>Memorial Info</h6>
+          <%= MemorialData[0].Name %><br/>
+          <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
+          <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
+          <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
+          GPS: <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
+          Access: <%= MemorialData[0].Access %><br>
+          <% if(MemorialData[0].URL) { %> Related Link: <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a><% } %>
+        </div>
+        <hr>
+        <div id="memorialMetadata">
+          <% MemorialText.forEach(function(memText) { %>
+            <p>
+              <h6><%= memText.Heading %></h6>
+              <%= memText.Text %>
+            </p>
+          <% }) %>
+        </div>
       </div>
+      <!-- END: Right hand column -->
     </div>
   </main>
   <footer>

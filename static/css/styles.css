@@ -1,14 +1,14 @@
 body {
-  /* font-family: 'Cinzel', serif; */
-  /* font-family: 'Source Code Pro', monospace; */
-  /* font-family: 'Raleway', sans-serif; */
   font-family: Arial, Helvetica, sans-serif;
   background-color: #C0DFFD;
-  /* background-color: #FFE684; */
 }
 
 .container {
   padding: 12px;
+}
+
+.admin-container {
+  padding: 8px 48px;
 }
 
 main {
@@ -26,14 +26,12 @@ main {
 }
 
 h2 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
   font-weight: 600;
   font-size: 3em;
   margin: 0px;
 }
 
 h3 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
   font-weight: 600;
   font-size: 2.5em;
   margin: 0px;
@@ -62,21 +60,18 @@ h4 {
 }
 
 h5 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
   font-weight: 600;
   font-size: 1.5em;
   margin: 12px 0px;
 }
 
 h6 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
   font-weight: 600;
   font-size: 1.25em;
   margin: 12px 0px;
 }
 
 footer {
-  /* font-family: 'Raleway', sans-serif; */
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.75em;
 }
@@ -85,9 +80,9 @@ footer {
   margin-bottom: 12px;
 }
 
-#memorial-editor h4 {
+/* #memorial-editor h4 {
   margin-top: 20px;
-}
+} */
 
 #editMemorialInfo label {
   margin-top: 12px;
@@ -168,8 +163,16 @@ a.hidden-link:visited {
   background-color: #000 !important;
 }
 
+.uk-dropdown {
+  min-width: 220px !important;
+}
+
 .submissionNotesSection {
   margin-bottom: 18px;
+}
+
+.toh-mb-8 {
+  margin-bottom: 8px;
 }
 
 .toh-mb-18 {
@@ -195,7 +198,6 @@ a.hidden-link:visited {
 }
 
 .modal-content {
-  /* background-color: #fefefe; */
   background-color: #C0DFFD;
   margin: 15% auto;
   padding: 20px;
@@ -221,4 +223,8 @@ a.hidden-link:visited {
 
 .dataTables_wrapper .dataTables_filter input {
   background-color: #f8f8f8 !important;
+}
+
+.no-link-underline .uk-button-link {
+  text-decoration: none !important;
 }
