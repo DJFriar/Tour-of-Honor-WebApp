@@ -147,9 +147,9 @@
               <div class="uk-inline">
                 <button class="uk-button uk-button-default" type="button">Actions</button>
                 <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
-                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i> Edit Memorial Info</span></button>
-                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialTextBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit"></i> Edit Memorial Text</span></button>
-                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt"></i> Delete Memorial</span></button>
+                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit fa-fw"></i> Edit Memorial Info</span></button>
+                  <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fal fa-edit fa-fw"></i> Edit Memorial Text</span></a>
+                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt fa-fw"></i> Delete Memorial</span></button>
                 </div>
               </div>
             </td>
@@ -161,10 +161,6 @@
     <!-- This is the Memorial Info edit modal -->
     <div id="memorialInfoEditModal" class="modal">
       <%- include('../../partials/memorialInfoEditModal'); %>
-    </div>
-    <!-- This is the Memorial Text edit modal -->
-    <div id="memorialTextEditModal" class="modal">
-      <%- include('../../partials/memorialTextEditModal'); %>
     </div>
   </main>
 

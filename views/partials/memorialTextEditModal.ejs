@@ -1,12 +1,13 @@
 <div class="modal-content">
   <span class="close">&times;</span>
-  <h4>Edit Memorial Text for XXXX</h4>
+  <h4>Edit Memorial Text for <%= MemorialData[0].Code %></h4>
+  <h6 style="margin: 0px; margin-bottom: 4px;"><%= MemorialData[0].Name %> - <%= MemorialData[0].City %>, <%= MemorialData[0].State %></h6>
   <form class="uk-grid-small uk-form-stacked" uk-grid>
-    <input class="uk-input" id="EditMemorialID" type="hidden" placeholder="">
+    <input class="uk-input" id="EditMemorialID" type="hidden" placeholder="" value="<%= MemorialData[0].id %>">
     <input class="uk-input" id="EditMemorialTextID" type="hidden" placeholder="">
     <div class="uk-width-1-1@s" style="margin: 8px 0;">
       <label class="uk-form-label" for="MemorialTextHeading">Memorial Heading</label>
-      <input class="uk-input uk-width-1-1" type="text" name="MemorialTextHeading" id="MemorialTextHeading" placeholder="memorialHeading">
+      <input class="uk-input uk-width-1-1" type="text" name="MemorialTextHeading" id="MemorialTextHeading" placeholder="">
     </div>
     <div class="uk-width-1-1@s">
       <label class="uk-form-label" for="MemorialText">Memorial Text</label>
@@ -15,7 +16,7 @@
     <div>
       <label class="uk-form-label">&nbsp;</label>
       <button class="uk-button uk-button-default uk-button-small" id="cancelButton">Cancel</button>
-      <button class="uk-button uk-button-primary uk-button-small" id="saveMemorialTextChangesButton">Save</button>
+      <button class="uk-button uk-button-primary uk-button-small" id="saveMemTextChangesBtn">Save</button>
     </div>
   </form>
 </div>

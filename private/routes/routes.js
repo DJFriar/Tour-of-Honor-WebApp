@@ -71,8 +71,6 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     var categoryData = await q.queryAllCategories();
     var MemorialData = await q.queryAllMemorials();
-    console.log("==== MemorialData (Routes) ====");
-    console.log(MemorialData);
     var restrictionData = await q.queryAllRestrictions();
     res.render("pages/admin/memorial-editor", {
       activeUser,
@@ -80,6 +78,21 @@ module.exports = function (app) {
       categoryData,
       MemorialData,
       restrictionData,
+      NotificationText: ""
+    });
+  });
+
+  app.get("/admin/memorial-text/:memCode", isAuthenticated, async (req, res) => {
+    const memCode = req.params.memCode;
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    var MemorialData = await q.queryMemorial(memCode);
+    var MemorialText = await q.queryMemorialText(memCode);
+    res.render("pages/admin/memorial-text", {
+      activeUser,
+      User: req.user,
+      MemorialData,
+      MemorialText,
       NotificationText: ""
     });
   });
@@ -178,12 +191,6 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/login2", async (req, res) => {
-    res.render("pages/login2", {
-      NotificationText: ""
-    });
-  });
-
   app.get("/memorials", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -206,8 +213,6 @@ module.exports = function (app) {
     if(SubmissionStatus.length == 0) {
       SubmissionStatus.unshift({Status: 3});
     }
-    console.log("==== MemorialText (Routes) ====");
-    console.log(MemorialText);
     res.render("pages/memorial", {
       activeUser,
       User: req.user,

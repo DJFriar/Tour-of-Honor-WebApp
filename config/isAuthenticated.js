@@ -5,10 +5,6 @@ module.exports = function(req, res, next) {
   publicPages = ["/", "/login", "/signup", "/history", "/contact"];
   privatePages = ["/admin", "/user-profile", "/review", "/submit"]
 
-  console.log("==== source ====");
-  console.log(source);
-  console.log(req.originalUrl);
-
   // Logged in, private page
   if (req.user && !publicPages.includes(source)) {
     req.user.destinationURL = req.originalUrl;

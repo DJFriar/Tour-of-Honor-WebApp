@@ -89,6 +89,17 @@ module.exports = function (app) {
   // Memorial Text Related
   //
 
+  // Create a Memorial Text Entry
+  app.post("/api/v1/memorial-text", (req, res) => {
+    db.MemorialMeta.create({
+      MemorialID: req.body.MemorialID,
+      Heading: req.body.Heading,
+      Text: req.body.Text
+    }).then(() => {
+      res.redirect('back');
+    });
+  });
+
   // Fetch a Memorial Text Entry
   app.get("/api/v1/memorial-text/:id", (req, res) => {
     const id = req.params.id;
@@ -97,11 +108,33 @@ module.exports = function (app) {
         id: id
       }
     }).then(function (dbPost) {
-      console.log("==== memorial-text response ====");
-      console.log(res);
       res.json(dbPost);
     });
   })
+
+  // Update a Memorial Text Entry
+  app.put("/api/v1/memorial-text", function (req, res) {
+    db.MemorialMeta.update({ 
+      MemorialID: req.body.MemorialID,
+      Heading: req.body.Heading,
+      Text: req.body.Text
+    }, {
+      where: { id: req.body.id }
+    });
+    res.send("success");
+  })
+
+  // Delete a Memorial Text Entry
+  app.delete("/api/v1/memorial-text/:id", (req, res) => {
+    const id = req.params.id;
+    db.MemorialMeta.destroy({
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
 
   // 
   // Authentication Related
@@ -206,8 +239,6 @@ module.exports = function (app) {
 
   // Update submissions
   app.put("/handle-submission", function (req, res) {
-    console.log("==== db.Submission.update ====");
-    console.log(req.body);
     // Update the submission record to mark it as scored
     db.Submission.update({
       Status: req.body.Status,

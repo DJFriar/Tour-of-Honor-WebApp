@@ -21,7 +21,6 @@
     var data;
     function handleFileSelect(e) {
       var file=e.target.files[0];
-
       Papa.parse(file, {
         header: true,
         dynamicTyping: true,
@@ -32,7 +31,7 @@
     }
     $("#csv-file").change(handleFileSelect);
 
-    // Handle Edit Memorial Button
+    // Handle Edit Memorial Info Button
     $(".editMemorialInfoBtn").on("click", function() {
       var id = $(this).data("uid");
       $("#memorialInfoEditModal").css("display","block");
@@ -45,8 +44,6 @@
           if (res.MultiImage) {
             MultiImageBool = 1;
           }
-          console.log("==== Memorial Response ====");
-          console.log(res);
           $("#EditMemorialID").val(res.id);
           $("#EditMemorialCode").val(res.Code);
           $("#EditMemorialCategory").val(res.Category);
@@ -67,7 +64,7 @@
       )
     })
 
-    // Handle Edit Memorial Button
+    // Handle Edit Memorial Text Button
     $(".editMemorialTextBtn").on("click", function() {
       var id = $(this).data("uid");
       $("#memorialTextEditModal").css("display","block");
@@ -76,8 +73,6 @@
         type: "GET",
       }).then(
         function(res) {
-          console.log("==== Memorial Text Response ====");
-          console.log(res);
           $("#EditMemorialTextID").val(res.id);
           $("#MemorialTextHeading").val(res.Category);
           $("#MemorialText").val(res.Region);
@@ -93,7 +88,7 @@
     });
 
     // Handle Delete Memorial Button
-    $(".deleteMemorialButton").on("click", function() {
+    $(".deleteMemorialBtn").on("click", function() {
       var id = $(this).data("uid");
       $.ajax("/api/v1/memorial/" + id, {
         type: "DELETE"

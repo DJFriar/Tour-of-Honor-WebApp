@@ -95,7 +95,7 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
 
 module.exports.queryMemorialText = async function queryMemorialText(memCode) {
   try {
-    var result = await sequelize.query("SELECT m.Code, mt.* FROM Memorials m INNER JOIN MemorialMeta mt ON m.id = mt.MemorialID WHERE m.Code = ?",
+    var result = await sequelize.query("SELECT m.Code, mt.* FROM Memorials m INNER JOIN MemorialMeta mt ON m.id = mt.MemorialID WHERE m.Code = ? ORDER BY Heading",
     {
       replacements: [memCode],
       type: QueryTypes.SELECT

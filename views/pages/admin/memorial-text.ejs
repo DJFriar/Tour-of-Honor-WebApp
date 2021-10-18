@@ -1,0 +1,85 @@
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+
+<body>
+  <% if(activeUser) { %>
+    <%- include('../../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../../partials/topnav'); %>
+  <% } %>
+  <main>
+    <a href="/admin/memorial-editor" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Memorial Editor</button></a>
+    <h4>MEMORIAL TEXT EDITOR</h4>
+    <% if(NotificationText) { %>
+      <%- include('../../partials/notice'); %>
+    <% } %>
+    <div class="admin-container">
+      <h6>Editing Text for <%= MemorialData[0].Code %> (<%= MemorialData[0].Name %> - <%= MemorialData[0].City %>, <%= MemorialData[0].State %>)</h6>
+      <div class="memorialTextBtnDiv" style="margin: 8px 0;">
+        <button type="button" class="uk-button uk-button-primary addMemorialTextBtn">Add Memorial Text</button>
+      </div>
+      <!-- #region Add New Memorial Text Form -->
+      <div class="hide-me" id="addMemorialTextInfo">
+        <h5>ADD NEW MEMORIAL TEXT</h5>
+        <form class="uk-grid-small uk-form-stacked" action="/api/v1/memorial-text" method="POST" uk-grid>
+          <input class="uk-input" id="EditMemorialID" name = "MemorialID" type="hidden" placeholder="" value="<%= MemorialData[0].id %>">
+          <!-- <input class="uk-input" id="EditMemorialTextID" type="hidden" placeholder=""> -->
+          <div class="uk-width-1-1@s" style="margin: 8px 0;">
+            <label class="uk-form-label" for="MemorialTextHeading">Memorial Heading</label>
+            <input class="uk-input uk-width-1-1" type="text" name="Heading" id="NewMemorialTextHeading" placeholder="memorialHeading">
+          </div>
+          <div class="uk-width-1-1@s">
+            <label class="uk-form-label" for="MemorialText">Memorial Text</label>
+            <textarea class="uk-textarea" rows="5" name="Text" id="NewMemorialText" placeholder=""></textarea>
+          </div>
+          <div class="toh-mb-8">
+            <label class="uk-form-label">&nbsp;</label>
+            <button class="uk-button uk-button-secondary uk-button-small addMemorialTextBtn">Cancel</button>
+            <button class="uk-button uk-button-primary uk-button-small" id="saveNewMemTextBtn">Save</button>
+          </div>
+        </form>
+      </div>
+      <!-- #endregion -->
+      <table class="uk-table uk-table-striped uk-table-small" id="memorialTextTable">
+        <thead>
+          <tr>
+            <th>Heading</th>
+            <th>Text</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% MemorialText.forEach(function(memText) { %>
+            <tr>
+              <td>
+                <%= memText.Heading %>
+              </td>
+              <td>
+                <%= memText.Text %>
+              </td>
+              <td>
+                <div class="uk-inline">
+                  <button class="uk-button uk-button-default" type="button">Actions</button>
+                  <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
+                    <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemTextBtn" data-uid="<%- memText.id %>"><i class="fal fa-edit fa-fw"></i> Edit Mem Text</span></button>
+                    <button class="uk-button uk-button-link" type="button"><span class="deleteMemTextBtn" data-uid="<%- memText.id %>"><i class="far fa-trash-alt fa-fw"></i> Delete Mem Text</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!-- This is the memorial edit modal -->
+    <div id="memorialTextEditModal" class="modal">
+      <%- include('../../partials/memorialTextEditModal'); %>
+    </div>
+  </main>
+  <footer>
+    <%- include('../../partials/footer'); %>
+  </footer>
+
+  <script type="text/javascript" src="/js/memorial-text.js"></script>
+</body>
