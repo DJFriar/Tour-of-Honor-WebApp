@@ -246,6 +246,23 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/riders", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    var riderList = await q.queryAllRiders();
+    var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    console.log("==== riderList ====");
+    console.log(riderList);
+
+    res.render("pages/rider-list", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      riderList,
+      totalEarnedByRider
+    });
+  });
+
   app.get("/stats", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };

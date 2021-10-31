@@ -119,6 +119,28 @@ module.exports.queryAllBonusesWithStatus = async function queryAllBonusesWithSta
   }
 }
 
+module.exports.queryRiderWithStats = async function queryRiderWithStats(rider = false) {
+  try {
+    if (rider) {
+      var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0 AND bl.user_id = ?",
+      {
+        replacements: [rider],
+        type: QueryTypes.SELECT
+      });
+    } else {
+      var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0",
+      {
+        replacements: [rider],
+        type: QueryTypes.SELECT
+      });
+    }
+    
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryAllRiders = async function queryAllRiders(rider = false) {
   try {
     if (rider) {
