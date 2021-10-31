@@ -12,8 +12,10 @@ $(document).ready(function() {
   $("#isGroupSubmission").change(function() {
     if (this.checked) {
       $("#GroupRiderInfoDiv").removeClass("hide-me")
+      $("#GroupRiderInfo").prop("required", true);
     } else {
       $("#GroupRiderInfoDiv").addClass("hide-me")
+      $("#GroupRiderInfo").prop("required", false);
     }
   });
 
