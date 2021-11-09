@@ -1,6 +1,6 @@
 const db = require("../models");
 const { Op, QueryTypes } = require("sequelize");
-const { sequelize } = require("../models");
+const { sequelize, Sequelize } = require("../models");
 
 module.exports.queryAllCategories = async function queryAllCategories(id) {
   try {
@@ -38,6 +38,34 @@ module.exports.queryUserRights = async function queryUserRights(user) {
     throw err;
   }
 }
+
+module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
+  try {
+    var result = await db.User.findAll({
+      where: {
+        FlagNum: {
+          [Sequelize.Op.in]: [flag]
+        } 
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+// module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
+//   try {
+//     var result = await sequelize.query("SELECT id FROM Users WHERE FlagNumber = ?",
+//     {
+//       replacements: [flag],
+//       type: QueryTypes.SELECT
+//     })
+//     return result;
+//   } catch (err) {
+//     throw err;
+//   }
+// }
 
 module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   try {
@@ -315,7 +343,7 @@ module.exports.queryCompletedIDsByRider = async function queryCompletedIDsByRide
 
 module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemorialsByAllRiders() {
   try {
-    var result = await sequelize.query("SELECT CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx LEFT JOIN Users u ON emx.UserID = u.id INNER JOIN Memorials m ON emx.MemorialID = m.id GROUP BY emx.UserID",
+    var result = await sequelize.query("SELECT emx.FlagNum AS 'Flag Number', CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx LEFT JOIN Users u ON emx.FlagNum = u.FlagNumber INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNum, u.FirstName, u.LastName",
     { type: QueryTypes.SELECT });
     return result;
   } catch (err) {

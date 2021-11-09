@@ -16,12 +16,14 @@ $(document).ready(function () {
     var scorerNotes = $("#scorerNotes").val().trim();
     var submitterID = $("#SubmissionUserID").val();
     var submittedMemorialID = $("#SubmissionMemorialID").val();
+    var submittedFlagNumber = $("#SubmissionFlagNum").val();
     var submittedOtherRiders = $("#SubmissionOtherRiders").val();
     var submissionInfo = {
       SubmissionID: subID,
       ScorerNotes: scorerNotes,
       SubmittedMemorialID: submittedMemorialID,
       SubmittedUserID: submitterID,
+      SubmittedFlagNumber: submittedFlagNumber,
       SubmittedOtherRiders: submittedOtherRiders,
       Status: 1
     };

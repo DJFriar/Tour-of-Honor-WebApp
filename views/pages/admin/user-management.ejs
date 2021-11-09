@@ -69,7 +69,35 @@
         <!-- Rider Registration -->
         <li>
           <h5>RIDER REGISTRATION</h5>
-          <p>Put form here.</p>
+          <p>Use the below form to add a rider to the system and send out the welcome email.</p>
+          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="FirstName">First Name</label>
+              <input class="uk-input" id="FirstName" type="text" placeholder="First Name">
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="LastName">Last Name</label>
+              <input class="uk-input" id="LastName" type="text" placeholder="Last Name">
+            </div>
+            <div class="uk-width-1-1@s">
+              <label class="uk-form-label" for="Email">Email</label>
+              <input class="uk-input" id="Email" type="email" placeholder="someone@domain.com">
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="FlagNum">Flag Number</label>
+              <input class="uk-input" id="FlagNum" type="FlagNum" placeholder="###">
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
+              <input class="uk-input" id="ShirtSize" type="text" placeholder="XL">
+            </div>
+            <!-- <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="LastName">Last Name</label>
+              <input class="uk-input" id="LastName" type="text" placeholder="Last Name">
+            </div> -->
+            <!-- <div class="uk-width-1-2@s">&nbsp;</div> -->
+            <div class="uk-width-1-1@s uk-text-center uk-align-center"><button type="button" id="createUserButton" class="uk-button uk-button-primary">Send Welcome Email</button></div>
+          </form>
         </li>
         <!-- Sponsor Tab -->
         <li>

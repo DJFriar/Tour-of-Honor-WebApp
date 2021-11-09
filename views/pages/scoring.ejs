@@ -32,7 +32,7 @@
                 <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="far fa-user-friends"></i></span> <% } %> 
               </td>
               <td>
-                <span style="font-family: 'Source Code Pro', monospace;"><%= submission.Code %></span>
+                <%= submission.Code %>
               </td>
               <td>
                 <%= submission.City %>, <%= submission.State %>

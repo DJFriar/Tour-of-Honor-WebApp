@@ -11,8 +11,6 @@ module.exports = function(req, res, next) {
     // return res.redirect(req.session.returnTo || '/');
     // req.session.redirect = null;
     // return res.render(source, { activeUser: true, user: req.user });
-    console.log("==== isAuthenticated req.user ====");
-    console.log(req.user);
     return next();
   }
 

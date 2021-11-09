@@ -1,5 +1,6 @@
 // Requiring our models and passport as we've configured it
 const db = require("../../models");
+const q = require("../../private/queries");
 const uploadSubmission = require("../../controllers/uploadSubmission");
 const uploadImages = require("../../controllers/uploadImages");
 const passport = require("../../config/passport");
@@ -240,30 +241,31 @@ module.exports = function (app) {
   // Update submissions
   app.put("/handle-submission", function (req, res) {
     // Update the submission record to mark it as scored
-    db.Submission.update({
-      Status: req.body.Status,
-      ScorerNotes:  req.body.ScorerNotes,
-      RiderNotes: req.body.RiderNotes
-    }, {
-      where: { id: req.body.SubmissionID }
-    });
+    // db.Submission.update({
+    //   Status: req.body.Status,
+    //   ScorerNotes:  req.body.ScorerNotes,
+    //   RiderNotes: req.body.RiderNotes
+    // }, {
+    //   where: { id: req.body.SubmissionID }
+    // });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if(req.body.Status == 1) {
-      console.log("==== db.EarnedMemorialsXref.create ====");
-      ApprovedRiders = [];
-      PillionFlagNumber = req.body.SubmittedUserID.toString();
-      RiderArray.push(PillionFlagNumber);  
+      // Grant credit to the submitter
       db.EarnedMemorialsXref.create({
-        UserID: req.body.SubmittedUserID,
-        MemorialID: req.body.SubmittedMemorialID
+        FlagNum: req.body.SubmittedFlagNumber,
+        MemorialID: req.body.SubmittedMemorialID,
+        RallyYear: 2021
       });
+      // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
-        console.log("==== Other Riders Detected ====");
-        // TODO: Write logic to add records for everyone in the other riders field.
-        // db.EarnedMemorialsXref.create({
-        //   UserID: req.body.SubmittedOtherRiders,
-        //   MemorialID: req.body.SubmittedMemorialID
-        // });
+        var RiderFlagArray = req.body.SubmittedOtherRiders.split(",");
+        RiderFlagArray.forEach(rider => {
+          db.EarnedMemorialsXref.create({
+            FlagNum: rider,
+            MemorialID: req.body.SubmittedMemorialID,
+            RallyYear: 2021
+          });
+        });
       }
     }
     res.send("success");
