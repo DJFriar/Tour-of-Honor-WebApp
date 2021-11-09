@@ -343,7 +343,7 @@ module.exports.queryCompletedIDsByRider = async function queryCompletedIDsByRide
 
 module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemorialsByAllRiders() {
   try {
-    var result = await sequelize.query("SELECT emx.FlagNum AS 'Flag Number', CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx LEFT JOIN Users u ON emx.FlagNum = u.FlagNumber INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNum, u.FirstName, u.LastName",
+    var result = await sequelize.query("SELECT emx.FlagNum, CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx INNER JOIN Flags f ON emx.FlagNum = f.FlagNum LEFT JOIN Users u ON f.UserID = u.id INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNum, u.FirstName, u.LastName",
     { type: QueryTypes.SELECT });
     return result;
   } catch (err) {
