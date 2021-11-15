@@ -21,6 +21,11 @@ main {
   }
 }
 
+hr {
+  border-top: 1px solid black;
+  margin-top: 0;
+}
+
 .hide-me {
   display: none !important;
 }
@@ -160,7 +165,21 @@ a.hidden-link:visited {
 }
 
 .uk-navbar-container {
-  background-color: #000 !important;
+  background-color: #C0DFFD !important;
+}
+
+.uk-logo {
+  color:black !important;
+}
+
+.uk-navbar-nav > li > a {
+  font-size: 1.1em;
+  color:black !important;
+}
+
+.uk-navbar-dropdown-nav > li > a {
+  font-size: 1.1em;
+  color:black !important;
 }
 
 .uk-dropdown {
@@ -169,6 +188,10 @@ a.hidden-link:visited {
 
 .submissionNotesSection {
   margin-bottom: 18px;
+}
+
+.toh-logo {
+  height: 80px
 }
 
 .toh-mb-8 {
