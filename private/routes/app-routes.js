@@ -1,12 +1,17 @@
 // Requiring our models and passport as we've configured it
 const db = require("../../models");
 const q = require("../../private/queries");
+const ejs = require("ejs");
 const uploadSubmission = require("../../controllers/uploadSubmission");
 const uploadImages = require("../../controllers/uploadImages");
 const passport = require("../../config/passport");
 const multer = require('multer');
 const isAuthenticated = require("../../config/isAuthenticated");
 const upload = multer({ dest: '../static/uploads' });
+const sendEmail = require("../sendEmail");
+const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
+
 
 module.exports = function (app) { 
   // 
@@ -33,7 +38,6 @@ module.exports = function (app) {
       Restrictions: req.body.MemorialRestrictions,
       RallyYear: 2021,
     }).then(() => {
-      // res.status(202).send();
       res.redirect("/admin/memorial-editor");
     });
   });
@@ -145,11 +149,11 @@ module.exports = function (app) {
   // how we configured our Sequelize User Model. If the user is created successfully, proceed to log the user in,
   // otherwise send back an error
   app.post("/api/v1/user", (req, res) => {
-    console.log("user post API hit");
     db.User.create({
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       UserName: req.body.UserName,
+      FlagNumber: req.body.FlagNumber,
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password
     })
@@ -162,6 +166,116 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
   });
+
+  app.post("/api/v1/welcomeemail", async (req, res) => {
+    const UserName = req.body.UserName
+    try {
+      // Send the welcome email.
+      const WelcomeLink = `${process.env.BASE_URL}/welcome/${UserName}`;
+      let emailBody = await ejs.renderFile("./views/emails/emailRiderWelcome.ejs", {
+        FirstName: req.body.FirstName,
+        Email: req.body.Email,
+        FlagNumber: req.body.FlagNumber,
+        ShirtStyle: req.body.ShirtStyle,
+        ShirtSize: req.body.ShirtSize,
+        EmailNotes: req.body.EmailNotes,
+        URL: WelcomeLink 
+      })
+      await sendEmail(req.body.Email, "Welcome to the Tour of Honor", emailBody);
+      res.send("Welcome Email Sent");
+    } catch (error) {
+      res.send("An error occurred while sending welcome email.");
+      console.log(error);
+    }
+  })
+
+  // Handle New Rider Onboarding
+  app.put("/api/v1/rideronboarding", function (req, res) {
+    let Password = req.body.Password;
+    const encryptedPassword = bcrypt.hashSync(
+        Password,
+        bcrypt.genSaltSync(10),
+        null
+      );
+    db.User.update({
+      UserName: req.body.UserName,
+      ZipCode: req.body.ZipCode,
+      Password: encryptedPassword
+    }, {
+      where: { id: req.body.UserID }
+    }).then(() => {
+      console.log("User Onboarded Successfully");
+      res.status(202).send();
+    })
+    .catch(err => {
+      console.log("Rider Onboarding Error Encountered");
+      res.status(401).json(err);
+    });
+  })
+
+  app.post("/api/v1/resetpasswordrequest", async (req, res) => {
+    try {
+      // Look for the user in the DB
+      const User = await db.User.findOne({ 
+        where: { 
+          Email: req.body.Email 
+        }
+      });
+      // Error if the user isn't found.
+      if (!User) {
+        return res.status(400).send("User email not found.");
+      }
+      // See if a token already exists for the user.
+      let ResetToken = await db.ResetToken.findOne({ 
+        where: {
+          user_id: User.id 
+        }
+      });
+      // If not, create a new token.
+      if (!ResetToken) {
+        CreateToken = await db.ResetToken.create({
+          user_id: User.id,
+          Token: crypto.randomBytes(32).toString("hex")
+        })
+        .then((data) => {
+          ResetToken = data;
+        })
+        .catch(err => {
+          console.log("Error creating token");
+          res.status(401).json(err);
+        })
+      }
+      // Send the password reset email.
+      const PWResetLink = `${process.env.BASE_URL}/forgotpassword/${User.id}/${ResetToken.Token}`;
+      let emailBody = await ejs.renderFile("./views/emails/emailPasswordReset.ejs", { URL: PWResetLink })
+      await sendEmail(User.Email, "Tour of Honor Scoring Portal - Password Reset Request", emailBody);
+      res.send("Password reset link sent to your email account");
+    } catch (error) {
+      res.send("An error occurred while resetting user's password.");
+      console.log(error);
+    }
+  });
+
+  // Handle User Password Change
+  app.put("/api/v1/resetpasswordaction", function (req, res) {
+    let Password = req.body.Password;
+    const encryptedPassword = bcrypt.hashSync(
+        Password,
+        bcrypt.genSaltSync(10),
+        null
+      );
+    // Update user's password
+    db.User.update({
+      Password: encryptedPassword
+    }, {
+      where: { id: req.body.UserID} 
+    });
+    // Remove the token that was created.
+    db.ResetToken.destroy({
+      where: { user_id: req.body.UserID }
+    });
+    res.send("success");
+  })
 
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the profile page.
@@ -304,17 +418,17 @@ module.exports = function (app) {
     res.send("success");
   })
 
-    // Delete a User
-    app.delete("/api/v1/user/:id", (req, res) => {
-      const id = req.params.id;
-      db.User.destroy({
-        where: {
-          id: id
-        }
-      }).then(() => {
-        res.status(202).send();
-      });
+  // Delete a User
+  app.delete("/api/v1/user/:id", (req, res) => {
+    const id = req.params.id;
+    db.User.destroy({
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(202).send();
     });
+  });
 
   // Fetch a User
   app.get("/api/v1/user/:id", (req, res) => {

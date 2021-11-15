@@ -85,4 +85,97 @@ $(document).ready(function() {
     );
   });
 
+  // Handle Rider Registration
+  $("#createUserButton").on("click", function() {
+    var randomUserName = randomString(8);
+    var newUser = {
+      FirstName: $("#FirstName").val().trim(),
+      LastName: $("#LastName").val().trim(),
+      Email: $("#Email").val().trim(),
+      UserName: randomUserName,
+      Password: randomString(14),
+      FlagNumber: $("#FlagNum").val().trim()
+    };
+
+    var welcomeEmailInfo = {
+      FirstName: $("#FirstName").val().trim(),
+      Email: $("#Email").val().trim(),
+      UserName: randomUserName,
+      FlagNumber: $("#FlagNum").val().trim(),
+      ShirtStyle: $("#ShirtStyle").val(),
+      ShirtSize: $("#ShirtSize").val().trim(),
+      EmailNotes: $("#EmailNotes").val().trim()
+    }
+
+    // Make sure that first name isn't blank.
+    if (!newUser.FirstName) {
+      alert("First Name is required.");
+      return;
+    }
+
+    // Make sure that last name isn't blank.
+    if (!newUser.LastName) {
+      alert("Last Name is required.");
+      return;
+    }
+
+    // Make sure that email isn't blank.
+    if (!newUser.Email) {
+      alert("Email address is required.");
+      return;
+    }
+
+    // Make sure that flag isn't blank.
+    if (!newUser.FlagNumber) {
+      alert("Flag Number is required.");
+      return;
+    }
+
+    // Make sure that shirt size isn't blank.
+    if (welcomeEmailInfo.ShirtStyle != "Donation") {
+      if(!welcomeEmailInfo.ShirtSize) {
+        alert("Shirt Size is required.");
+        return;
+      }
+    }
+
+    // If shirt is donated, set a false value for ShirtSize
+    if (welcomeEmailInfo.ShirtStyle == "Donation") {
+      welcomeEmailInfo.ShirtSize = "Donated";
+    }
+
+    // Create the new rider
+    $.ajax("/api/v1/user", {
+      type: "POST",
+      data: newUser
+    })
+      .then(() => {
+        console.log("Rider Profile Added");
+        sendWelcomeEmail();
+      })
+      .catch(handleRegistrationError);
+
+    function sendWelcomeEmail() {
+      // Send the user a welcome email.
+      $.ajax("/api/v1/welcomeemail", {
+        type: "POST",
+        data: welcomeEmailInfo
+      })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch(handleRegistrationError);
+    }
+  })
+
+  function handleRegistrationError(err) {
+    console.log(err.responseJSON.errors[0].message);
+    alert(err.responseJSON.errors[0].message);
+    return;
+  }
+
 });
+
+const randomString = (length = 14) => {
+  return Math.random().toString(16).substr(2, length);
+};

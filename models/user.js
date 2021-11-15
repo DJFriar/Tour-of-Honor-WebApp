@@ -36,6 +36,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     FlagNumber: {
       type: DataTypes.INTEGER,
+      allowNull: false
     },
     PillionFlagNumber: {
       type: DataTypes.INTEGER,
@@ -46,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     isActive: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 0
+      defaultValue: 1
     }
   });
 

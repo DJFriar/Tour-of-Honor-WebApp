@@ -26,6 +26,32 @@ module.exports.queryAllRestrictions = async function queryAllRestrictions() {
   }
 }
 
+module.exports.queryTokenValidity = async function queryTokenValidity(id, token) {
+  try {
+    var result = await sequelize.query("SELECT COUNT(id) AS Valid FROM ResetTokens WHERE user_id = ? AND Token = ?",
+    {
+      replacements: [id, token],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryNewRiderValidation = async function queryNewRiderValidation(username) {
+  try {
+    var result = await sequelize.query("SELECT * FROM Users WHERE UserName = ?",
+    {
+      replacements: [username],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserRights = async function queryUserRights(user) {
   try {
     var result = await db.user.findAll({

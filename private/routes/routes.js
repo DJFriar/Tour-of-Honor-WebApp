@@ -175,6 +175,25 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/forgotpassword", async (req,res) => {
+    res.render("pages/forgot-password", {
+      NotificationText: "",
+      UserID: 0,
+      TokenValidity: [{ "Valid":2 }]
+    });
+  })
+
+  app.get("/forgotpassword/:id/:token", async (req,res) => {
+    const UserID = req.params.id;
+    const Token = req.params.token;
+    var TokenValidity = await q.queryTokenValidity(UserID, Token);
+    res.render("pages/forgot-password", {
+      NotificationText: "",
+      UserID,
+      TokenValidity
+    });
+  })
+
   app.get("/livefeed", isAuthenticated, async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -246,14 +265,31 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/welcome", async (req, res) => {
+    res.render("pages/welcome-rider", {
+      NotificationText: "",
+      ValidateNewRider: [{ "id":0 }]
+    });
+  });
+
+  app.get("/welcome/:username", async (req, res) => {
+    const UserName = req.params.username
+    var ValidateNewRider = await q.queryNewRiderValidation(UserName);
+    if(!ValidateNewRider[0]) {
+      res.redirect("/welcome");
+    } else {
+      res.render("pages/welcome-rider", {
+        NotificationText: "",
+        ValidateNewRider
+      });
+    }
+  });
+
   app.get("/riders", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
     var riderList = await q.queryAllRiders();
     var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
-    console.log("==== riderList ====");
-    console.log(riderList);
-
     res.render("pages/rider-list", {
       activeUser,
       User: req.user,

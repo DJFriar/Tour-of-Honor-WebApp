@@ -10,17 +10,57 @@
   <% } %>
   <main>
     <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>USER MANAGEMENT</h4>
-    <div class="admin-container">
+    <h4>RIDER MANAGEMENT</h4>
+    <div class="admin-container" id='tabs'>
       <ul uk-tab>
-        <li><a href="#">Users</a></li>
-        <li><a href="#">Rider Registration</a></li>
+        <li><a href="#registration">Rider Registration</a></li>
+        <li><a href="#riders">Riders</a></li>
         <!-- <li><a href="#">Sponsors</a></li> -->
       </ul>
 
       <ul class="uk-switcher uk-margin">
+        <!-- Rider Registration -->
+        <li id="registration">
+          <h5>RIDER REGISTRATION</h5>
+          <p>Use the below form to add a rider to the system and send out the welcome email.</p>
+          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="FirstName">First Name</label>
+              <input required class="uk-input" id="FirstName" type="text" placeholder="First Name">
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="LastName">Last Name</label>
+              <input required class="uk-input" id="LastName" type="text" placeholder="Last Name">
+            </div>
+            <div class="uk-width-1-1@s">
+              <label class="uk-form-label" for="Email">Email</label>
+              <input required class="uk-input" id="Email" type="email" placeholder="someone@domain.com">
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="FlagNum">Flag Number</label>
+              <input required class="uk-input" id="FlagNum" type="FlagNum" placeholder="###">
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="ShirtStyle">Shirt Style</label>
+              <select required class="uk-select" name="ShirtStyle" id="ShirtStyle">
+                <option value="Short-Sleeved">Short-Sleeved</option>
+                <option value="Long-Sleeved">Long-Sleeved</option>
+                <option value="Donation">No Shirt</option>
+              </select>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
+              <input required class="uk-input" id="ShirtSize" type="text" placeholder="XL">
+            </div>
+            <div class="uk-width-1-1@s">
+              <label class="uk-form-label" for="EmailNotes" id="EmailNotesLabel">Additional Email Text</label>
+              <textarea class="uk-textarea" rows="3" name="EmailNotes" id="EmailNotes" placeholder=""></textarea>
+            </div>
+            <div class="uk-width-1-1@s uk-text-center uk-align-center"><button type="button" id="createUserButton" class="uk-button uk-button-primary">Send Welcome Email</button></div>
+          </form>
+        </li>
         <!-- Users Tab -->
-        <li>
+        <li id="riders">
           <h5>USERS</h5>
           <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
             <thead>
@@ -65,39 +105,6 @@
               <% }) %>
             </tbody>
           </table>
-        </li>
-        <!-- Rider Registration -->
-        <li>
-          <h5>RIDER REGISTRATION</h5>
-          <p>Use the below form to add a rider to the system and send out the welcome email.</p>
-          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="FirstName">First Name</label>
-              <input class="uk-input" id="FirstName" type="text" placeholder="First Name">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="LastName">Last Name</label>
-              <input class="uk-input" id="LastName" type="text" placeholder="Last Name">
-            </div>
-            <div class="uk-width-1-1@s">
-              <label class="uk-form-label" for="Email">Email</label>
-              <input class="uk-input" id="Email" type="email" placeholder="someone@domain.com">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input class="uk-input" id="FlagNum" type="FlagNum" placeholder="###">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
-              <input class="uk-input" id="ShirtSize" type="text" placeholder="XL">
-            </div>
-            <!-- <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="LastName">Last Name</label>
-              <input class="uk-input" id="LastName" type="text" placeholder="Last Name">
-            </div> -->
-            <!-- <div class="uk-width-1-2@s">&nbsp;</div> -->
-            <div class="uk-width-1-1@s uk-text-center uk-align-center"><button type="button" id="createUserButton" class="uk-button uk-button-primary">Send Welcome Email</button></div>
-          </form>
         </li>
         <!-- Sponsor Tab -->
         <li>

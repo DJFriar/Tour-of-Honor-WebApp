@@ -13,7 +13,7 @@ $(document).ready(() => {
 
     // Make sure that neither email nor password are blank.
     if (!newUser.Email || !newUser.Password) {
-      handleLoginErr("Blank field detected.");
+      handleSignupError("Blank field detected.");
       return;
     }
     // If we have an email and password, then post the new user
@@ -24,10 +24,10 @@ $(document).ready(() => {
       .then(() => {
         window.location.replace("/user-profile");
       })
-      .catch(handleLoginErr);
+      .catch(handleSignupError);
   });
 
-  function handleLoginErr(err) {
+  function handleSignupError(err) {
     console.log(err);
     $("#alert .msg").text(err.responseJSON);
     $("#alert").fadeIn(500);
