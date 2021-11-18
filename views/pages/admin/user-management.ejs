@@ -38,20 +38,71 @@
             </div>
             <div class="uk-width-1-3@s">
               <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input required class="uk-input" id="FlagNum" type="FlagNum" placeholder="###">
+              <input required class="uk-input" id="FlagNum" type="number" placeholder="###">
             </div>
             <div class="uk-width-1-3@s">
               <label class="uk-form-label" for="ShirtStyle">Shirt Style</label>
               <select required class="uk-select" name="ShirtStyle" id="ShirtStyle">
-                <option value="Short-Sleeved">Short-Sleeved</option>
-                <option value="Long-Sleeved">Long-Sleeved</option>
+                <option value="Men's Short-Sleeved">Short-Sleeved (Mens)</option>
+                <option value="Men's Long-Sleeved">Long-Sleeved (Mens)</option>
+                <option value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
+                <!-- <option value="Ladies Long-Sleeved">Long-Sleeved (Ladies)</option> -->
                 <option value="Donation">No Shirt</option>
               </select>
             </div>
             <div class="uk-width-1-3@s">
               <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
-              <input required class="uk-input" id="ShirtSize" type="text" placeholder="XL">
+              <select required class="uk-select" name="ShirtSize" id="ShirtSize">
+                <option value="Small">SM</option>
+                <option value="Medium">MD</option>
+                <option value="Large">LG</option>
+                <option selected value="XL">XL</option>
+                <option value="2X">2X</option>
+                <option value="3X">3X</option>
+                <option value="4X">4X</option>
+                <option value="5X">5X</option>
+              </select>
             </div>
+            <div class="uk-width-1-1@s">
+              <input class="uk-checkbox" type="checkbox" name="hasPassenger" id="hasPassenger">
+                <label for="hasPassenger" id="hasPassengerLabel">Include Passenger</label>
+            </div>
+
+              <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
+                <label class="uk-form-label" for="PassengerFirstName">Passenger First Name</label>
+                <input required class="uk-input" id="PassengerFirstName" type="text" placeholder="First Name">
+              </div>
+              <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
+                <label class="uk-form-label" for="PassengerLastName">Passenger Last Name</label>
+                <input required class="uk-input" id="PassengerLastName" type="text" placeholder="Last Name">
+              </div>
+              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                <label class="uk-form-label" for="PassengerFlagNum">Passenger Flag Number</label>
+                <input required class="uk-input" id="PassengerFlagNum" type="number" placeholder="###">
+              </div>
+              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                <label class="uk-form-label" for="PassengerShirtStyle">Passenger Shirt Style</label>
+                <select required class="uk-select" name="PassengerShirtStyle" id="PassengerShirtStyle">
+                  <option value="Men's Short-Sleeved">Short-Sleeved (Mens)</option>
+                  <option value="Men's Long-Sleeved">Long-Sleeved (Mens)</option>
+                  <option value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
+                  <!-- <option value="Ladies Long-Sleeved">Long-Sleeved (Ladies)</option> -->
+                  <option value="Donation">No Shirt</option>
+                </select>
+              </div>
+              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                <label class="uk-form-label" for="PassengerShirtSize">Passenger Shirt Size</label>
+                <select required class="uk-select" name="PassengerShirtSize" id="PassengerShirtSize">
+                  <option value="Small">SM</option>
+                  <option value="Medium">MD</option>
+                  <option value="Large">LG</option>
+                  <option value="XL">XL</option>
+                  <option value="2X">2X</option>
+                  <option value="3X">3X</option>
+                  <option value="4X">4X</option>
+                  <option value="5X">5X</option>
+                </select>
+              </div>
             <div class="uk-width-1-1@s">
               <label class="uk-form-label" for="EmailNotes" id="EmailNotesLabel">Additional Email Text</label>
               <textarea class="uk-textarea" rows="3" name="EmailNotes" id="EmailNotes" placeholder=""></textarea>

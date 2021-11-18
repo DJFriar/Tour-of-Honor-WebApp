@@ -179,6 +179,11 @@ module.exports = function (app) {
         ShirtStyle: req.body.ShirtStyle,
         ShirtSize: req.body.ShirtSize,
         EmailNotes: req.body.EmailNotes,
+        PassengerFirstName: req.body.PassengerFirstName,
+        PassengerEmail: req.body.PassengerEmail,
+        PassengerFlagNumber: req.body.PassengerFlagNumber,
+        PassengerShirtStyle: req.body.PassengerShirtStyle,
+        PassengerShirtSize: req.body.PassengerShirtSize,
         URL: WelcomeLink 
       })
       await sendEmail(req.body.Email, "Welcome to the Tour of Honor", emailBody);

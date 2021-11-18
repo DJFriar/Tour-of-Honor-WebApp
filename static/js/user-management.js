@@ -4,6 +4,24 @@ $(document).ready(function() {
   });
   $('#sponsorsTable').DataTable();
 
+  $("#hasPassenger").change(function() {
+    if (this.checked) {
+      $(".PassengerInfoDiv").removeClass("hide-me")
+      $("#PassengerFirstName").prop("required", true);
+      $("#PassengerLastName").prop("required", true);
+      $("#PassengerFlagNum").prop("required", true);
+      $("#PassengerShirtStyle").prop("required", true);
+      $("#PassengerShirtSize").prop("required", true);
+    } else {
+      $(".PassengerInfoDiv").addClass("hide-me")
+      $("#PassengerFirstName").prop("required", false);
+      $("#PassengerLastName").prop("required", false);
+      $("#PassengerFlagNum").prop("required", false);
+      $("#PassengerShirtStyle").prop("required", false);
+      $("#PassengerShirtSize").prop("required", false);
+    }
+  });
+
   // Handle Edit User Button
   $(".editUserButton").on("click", function() {
     var id = $(this).data("uid");
@@ -104,44 +122,89 @@ $(document).ready(function() {
       FlagNumber: $("#FlagNum").val().trim(),
       ShirtStyle: $("#ShirtStyle").val(),
       ShirtSize: $("#ShirtSize").val().trim(),
+      PassengerFirstName: $("#PassengerFirstName").val().trim(),
+      PassengerLastName: $("#PassengerLastName").val().trim(),
+      PassengerEmail: "",
+      PassengerUserName: randomUserName,
+      PassengerFlagNumber: $("#PassengerFlagNum").val().trim(),
+      PassengerShirtStyle: $("#PassengerShirtStyle").val(),
+      PassengerShirtSize: $("#PassengerShirtSize").val().trim(),
       EmailNotes: $("#EmailNotes").val().trim()
     }
 
-    // Make sure that first name isn't blank.
+    // Make sure that rider first name isn't blank.
     if (!newUser.FirstName) {
-      alert("First Name is required.");
+      alert("Rider's First Name is required.");
       return;
     }
 
-    // Make sure that last name isn't blank.
+    // Make sure that rider last name isn't blank.
     if (!newUser.LastName) {
-      alert("Last Name is required.");
+      alert("Rider's Last Name is required.");
       return;
     }
 
-    // Make sure that email isn't blank.
+    // Make sure that rider email isn't blank.
     if (!newUser.Email) {
-      alert("Email address is required.");
+      alert("Rider's Email address is required.");
       return;
     }
 
-    // Make sure that flag isn't blank.
+    // Make sure that rider flag isn't blank.
     if (!newUser.FlagNumber) {
-      alert("Flag Number is required.");
+      alert("Rider's Flag Number is required.");
       return;
     }
 
-    // Make sure that shirt size isn't blank.
+    // Make sure that rider shirt size isn't blank.
     if (welcomeEmailInfo.ShirtStyle != "Donation") {
       if(!welcomeEmailInfo.ShirtSize) {
-        alert("Shirt Size is required.");
+        alert("Rider's Shirt Size is required.");
         return;
+      }
+    }
+
+    //Check Passenger Info
+    if (hasPassenger) {
+      // Make sure that passenger first name isn't blank.
+      if (!welcomeEmailInfo.PassengerFirstName) {
+        alert("Passenger's First Name is required.");
+        return;
+      }
+
+      // Make sure that passenger last name isn't blank.
+      if (!welcomeEmailInfo.PassengerLastName) {
+        alert("Passenger's Last Name is required.");
+        return;
+      }
+
+      // Make sure that passenger email isn't blank.
+      // if (!welcomeEmailInfo.PassengerEmail) {
+      //   alert("Passenger's Email address is required.");
+      //   return;
+      // }
+
+      // Make sure that passenger flag isn't blank.
+      if (!welcomeEmailInfo.PassengerFlagNumber) {
+        alert("Passenger's Flag Number is required.");
+        return;
+      }
+
+      // Make sure that passenger shirt size isn't blank.
+      if (welcomeEmailInfo.PassengerShirtStyle != "Donation") {
+        if(!welcomeEmailInfo.PassengerShirtSize) {
+          alert("Passenger's Shirt Size is required.");
+          return;
+        }
       }
     }
 
     // If shirt is donated, set a false value for ShirtSize
     if (welcomeEmailInfo.ShirtStyle == "Donation") {
       welcomeEmailInfo.ShirtSize = "Donated";
+    }
+    if (welcomeEmailInfo.PassengerShirtStyle == "Donation") {
+      welcomeEmailInfo.PassengerShirtSize = "Donated";
     }
 
     // Create the new rider

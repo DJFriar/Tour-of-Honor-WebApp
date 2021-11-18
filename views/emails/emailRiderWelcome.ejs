@@ -1,14 +1,25 @@
-<p>Hi <%= FirstName %>,</p>
+<% if(!PassengerFirstName) { %>
+  <p>Hi <%= FirstName %>,</p>
+<% } %>
+<% if(PassengerFirstName) { %>
+  <p>Hi <%= FirstName %> and <%= PassengerFirstName %>,</p>
+<% } %>
 <p>Thank you for participating in the Tour of Honor!  We hope you find the experience as rewarding as we've had putting it together.</p>
 <p>For 2022 we are excited to announce a brand new Scoring Portal. Please click <a href="<%= URL %>">here</a> to setup your Scoring Portal profile. We strongly recommend doing this now so that you will be all ready to submit your memorials as soon as the tour starts on April 1, 2022.</p>
 <p>We suggest bookmarking the <a href="toh-portal.ambitiousnerds.com">Tour of Honor Scoring Portal</a> as you will be using this site to submit your memorial visits throughout the tour.</p>
 <p>If you have any questions, please <a href="mailto:dave.brooks@tourofhonor.com">email us</a> or you can ask other riders in the <a href="https://www.facebook.com/groups/130290830851907/">Tour of Honor Facebook Group</a>. There's also a FAQ page on the website at <a href="http://tourofhonor.com/pages/rules.html">tourofhonor.com/rules</a> and you can stay updated by "liking" the <a href="https://www.facebook.com/TourofHonor/">Tour of Honor Facebook Page</a>.</p>
-<p>IMPORTANT:  Registration packets will be mailed February 19, 2022.  If ANY of your contact information changes, please email the changes to <a href="mailto:dave.brooks@tourofhonor.com">Dave</a>. We cannot be held responsible for mailings going to an old address. Please double check the spelling of your name, etc. on your <a href="toh-portal.ambitiousnerds.com/user-profile">User Profile</a> because that's what will be used on trophies and certificates.</p>
+<p>If ANY of your contact information changes, please email the changes to <a href="mailto:dave.brooks@tourofhonor.com">Dave</a>. We cannot be held responsible for mailings going to an old address. Please double check the spelling of your name, etc. on your <a href="toh-portal.ambitiousnerds.com/user-profile">User Profile</a> because that's what will be used on trophies and certificates.</p>
 <% if(ShirtStyle != "Donation") { %>
-  <p>We have you down for an <%= ShirtSize %> <%= ShirtStyle %> shirt and Flag #<%= FlagNumber %>.</p>
+  <p>We have you down for a <%= ShirtSize %> <%= ShirtStyle %> shirt and Flag #<%= FlagNumber %>.</p>
 <% } %>
 <% if(ShirtStyle == "Donation") { %>
   <p>You are Flag #<%= FlagNumber %> and have chosen to donate the cost of the shirt to charity.</p>
+<% } %>
+<% if(PassengerShirtStyle != "Donation") { %>
+  <p>We have <%= PassengerFirstName %> down for a <%= PassengerShirtSize %> <%= PassengerShirtStyle %> shirt and Flag #<%= PassengerFlagNumber %>.</p>
+<% } %>
+<% if(PassengerShirtStyle == "Donation") { %>
+  <p><%= PassengerFirstName %> will be Flag #<%= PassengerFlagNumber %> and has chosen to donate the cost of the shirt to charity.</p>
 <% } %>
 
 <% if(EmailNotes) { %>
