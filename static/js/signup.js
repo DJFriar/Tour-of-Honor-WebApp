@@ -7,6 +7,7 @@ $(document).ready(() => {
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
       UserName: $("#UserName").val().trim(),
+      FlagNumber: 000,
       Email: $("#Email").val().trim(),
       Password: $("#Password").val().trim()
     };
