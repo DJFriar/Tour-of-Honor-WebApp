@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  hasPassenger = false;
   $('#usersTable').DataTable({
     pageLength: 100
   });
@@ -6,19 +7,21 @@ $(document).ready(function() {
 
   $("#hasPassenger").change(function() {
     if (this.checked) {
-      $(".PassengerInfoDiv").removeClass("hide-me")
+      $(".PassengerInfoDiv").removeClass("hide-me");
       $("#PassengerFirstName").prop("required", true);
       $("#PassengerLastName").prop("required", true);
       $("#PassengerFlagNum").prop("required", true);
       $("#PassengerShirtStyle").prop("required", true);
       $("#PassengerShirtSize").prop("required", true);
+      hasPassenger = true;
     } else {
-      $(".PassengerInfoDiv").addClass("hide-me")
+      $(".PassengerInfoDiv").addClass("hide-me");
       $("#PassengerFirstName").prop("required", false);
       $("#PassengerLastName").prop("required", false);
       $("#PassengerFlagNum").prop("required", false);
       $("#PassengerShirtStyle").prop("required", false);
       $("#PassengerShirtSize").prop("required", false);
+      hasPassenger = false;
     }
   });
 
