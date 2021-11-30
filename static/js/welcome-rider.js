@@ -56,9 +56,15 @@ $(document).ready(() => {
       data: updateRider
     })
       .then(() => {
-        window.location.replace("/login");
+        $.ajax("/api/v1/bike", {
+          type: "POST",
+          data: updateRider
+        })
+          .then(() => {
+            window.location.replace("/login");
+          })
+          .catch(handleWelcomeRiderError);
       })
-      .catch(handleWelcomeRiderError);
   });
 
   function handleWelcomeRiderError(err) {
