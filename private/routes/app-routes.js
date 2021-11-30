@@ -304,13 +304,13 @@ module.exports = function (app) {
   // 
 
   // Create a Bike
-  app.post("/api/v1/bike", isAuthenticated, (req, res) => {
+  app.post("/api/v1/bike", (req, res) => {
     db.Bike.create({
-      user_id: req.user.id,
+      user_id: req.body.UserID,
       BikeName: req.body.BikeName,
-      Year: req.body.Year,
-      Make: req.body.Make,
-      Model: req.body.Model,
+      Year: req.body.BikeYear,
+      Make: req.body.BikeMake,
+      Model: req.body.BikeModel,
     }).then(() => {
       res.status(202).send();
     });

@@ -43,12 +43,48 @@
         <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
         <input class="uk-input" id="PillionFlagNumber" type="text" placeholder="Flag Number" value="<%= User.PillionFlagNumber %>">
       </div>
-      <div class="uk-width-1-2@s">
+      <div class="uk-width-1-2@s uk-text-center">
         <label class="uk-form-label" for="saveProfileEdits">&nbsp;</label>
         <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary" data-userid="<%= User.id %>">Update User Profile</button>
+        <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary">Reset Login Password</button>
       </div>
     </form>
-    <div>
+    <div class="toh-mt-18">
+      <h5>Bike Info</h5>
+      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+        <thead>
+          <tr>
+            <th>NickName</th>
+            <th>Year</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% RiderBikeInfo.forEach(function(Bike) { %>
+            <tr>
+              <td>
+                <%= Bike.Name %>
+              </td>
+              <td>
+                <%= Bike.Year %>
+              </td>
+              <td>
+                <%= Bike.Make %>
+              </td>
+              <td>
+                <%= Bike.Model %>
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div class="toh-mt-18">
       <h5>Submission History</h5>
       <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
         <thead>
