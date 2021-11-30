@@ -13,14 +13,18 @@ module.exports = function (app) {
   //#region READ (GET)
   // ===============================================================================
 
-  app.get("/", isAuthenticated, async (req,res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.render("pages/index", {
-      activeUser,
-      User: req.user,
-      NotificationText: "There is no content here, yet."
-    });
+  // app.get("/", isAuthenticated, async (req,res) => {
+  //   var activeUser = false
+  //   if (req.user) { activeUser = true };
+  //   res.render("pages/index", {
+  //     activeUser,
+  //     User: req.user,
+  //     NotificationText: "There is no content here, yet."
+  //   });
+  // });
+
+  app.get("/", async (req,res) => {
+    res.redirect('/memorials');
   });
 
   app.get("/admin", isAuthenticated, async (req,res) => {
