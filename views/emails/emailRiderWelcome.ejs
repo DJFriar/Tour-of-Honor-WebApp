@@ -15,10 +15,10 @@
 <% if(ShirtStyle == "Donation") { %>
   <p>You are Flag #<%= FlagNumber %> and have chosen to donate the cost of the shirt to charity.</p>
 <% } %>
-<% if(PassengerShirtStyle != "Donation") { %>
+<% if(PassengerFirstName && PassengerShirtSize != "Donation") { %>
   <p>We have <%= PassengerFirstName %> down for a <%= PassengerShirtSize %> <%= PassengerShirtStyle %> shirt and Flag #<%= PassengerFlagNumber %>.</p>
 <% } %>
-<% if(PassengerShirtStyle == "Donation") { %>
+<% if(PassengerFirstName && PassengerShirtStyle == "Donation") { %>
   <p><%= PassengerFirstName %> will be Flag #<%= PassengerFlagNumber %> and has chosen to donate the cost of the shirt to charity.</p>
 <% } %>
 
