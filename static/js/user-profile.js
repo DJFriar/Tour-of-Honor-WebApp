@@ -4,6 +4,11 @@ $(document).ready(() => {
     "pageLength": 25
   });
 
+  $('#riderBikeInfo').DataTable({
+    "order": [[ 3, "desc" ]],
+    "pageLength": 25
+  });
+
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
     var UserID = $(this).data("userid");

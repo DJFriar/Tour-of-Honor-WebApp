@@ -49,7 +49,42 @@
         <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary">Reset Login Password</button>
       </div>
     </form>
-    <div>
+    <div class="toh-mt-18">
+      <h5>Bike Info</h5>
+      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+        <thead>
+          <tr>
+            <th>NickName</th>
+            <th>Year</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% RiderBikeInfo.forEach(function(Bike) { %>
+            <tr>
+              <td>
+                <%= Bike.Name %>
+              </td>
+              <td>
+                <%= Bike.Year %>
+              </td>
+              <td>
+                <%= Bike.Make %>
+              </td>
+              <td>
+                <%= Bike.Model %>
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div class="toh-mt-18">
       <h5>Submission History</h5>
       <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
         <thead>
