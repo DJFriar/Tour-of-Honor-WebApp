@@ -29,7 +29,7 @@ module.exports = function (app) {
     res.render("pages/admin", {
       activeUser,
       User: req.user,
-      NotificationText: "The User Memorial now works as well. Use this to control the admin permission."
+      NotificationText: ""
     });
   });
 
@@ -194,7 +194,7 @@ module.exports = function (app) {
     });
   })
 
-  app.get("/livefeed", isAuthenticated, async (req,res) => {
+  app.get("/livefeed", async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
     res.render("pages/livefeed", {
@@ -210,7 +210,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/memorials", isAuthenticated, async (req, res) => {
+  app.get("/memorials", async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
     var Memorials = await q.queryAllMemorials();
@@ -318,13 +318,15 @@ module.exports = function (app) {
     var activeUser = false;
     if (req.user) { activeUser = true };
     var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
+    var RiderBikeInfo = await q.queryAllBikes(req.user.id);
     console.log(req.user);
 
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
-      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again.",
+      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again. Bike info is still in progress.",
       RiderSubmissionHistory,
+      RiderBikeInfo,
       dt: DateTime
     });
   });

@@ -258,14 +258,14 @@ module.exports.queryAllScorers = async function queryAllScorers(sponsor = false)
 module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
   try {
     if (rider) {
-      var result = await db.bike.findAll({
+      var result = await db.Bike.findAll({
         raw: true,
         where: {
           user_id: rider
         }
       })
     } else {
-      var result = await db.bike.findAll({
+      var result = await db.Bike.findAll({
         raw: true
       })
     }
