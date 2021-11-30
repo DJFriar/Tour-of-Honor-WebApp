@@ -31,7 +31,7 @@ $(document).ready(() => {
       function() { location.reload(); }
     );
   });
-
+  
   // Handle Delete Submission
   $(".deleteSubmissionButton").on("click", function() {
     var id = $(this).data("uid");
@@ -43,6 +43,11 @@ $(document).ready(() => {
         location.reload();
       }
     );
+  });
+
+  // Handle Reset Password Button
+  $("#resetPasswordLink").on("click", function() {
+    window.location.replace("/forgotpassword");
   });
 
   function handleLoginErr(err) {

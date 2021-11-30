@@ -43,9 +43,10 @@
         <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
         <input class="uk-input" id="PillionFlagNumber" type="text" placeholder="Flag Number" value="<%= User.PillionFlagNumber %>">
       </div>
-      <div class="uk-width-1-2@s">
+      <div class="uk-width-1-2@s uk-text-center">
         <label class="uk-form-label" for="saveProfileEdits">&nbsp;</label>
         <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary" data-userid="<%= User.id %>">Update User Profile</button>
+        <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary">Reset Login Password</button>
       </div>
     </form>
     <div>
