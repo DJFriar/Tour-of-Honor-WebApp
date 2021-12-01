@@ -36,7 +36,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: 2021,
+      RallyYear: 2022,
     }).then(() => {
       res.redirect("/admin/memorial-editor");
     });
@@ -157,12 +157,20 @@ module.exports = function (app) {
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password
     })
-      .then(() => {
-        console.log("User Created Successfully");
-        res.status(202).send();
+      .then((x) => {
+        db.Flag.create({
+          FlagNum: req.body.FlagNumber,
+          UserID: x.id,
+          RallyYear: 2022,
+        })
+        .then((y) => {
+          console.log("User Created Successfully");
+          res.status(202).json(y);
+        })
       })
       .catch(err => {
         console.log("Signup API Error Encountered");
+        console.log(err);
         res.status(401).json(err);
       });
   });
@@ -373,7 +381,7 @@ module.exports = function (app) {
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
-        RallyYear: 2021
+        RallyYear: 2022
       });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
@@ -382,7 +390,7 @@ module.exports = function (app) {
           db.EarnedMemorialsXref.create({
             FlagNum: rider,
             MemorialID: req.body.SubmittedMemorialID,
-            RallyYear: 2021
+            RallyYear: 2022
           });
         });
       }
