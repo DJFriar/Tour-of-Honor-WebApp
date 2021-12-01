@@ -109,6 +109,7 @@ $(document).ready(function() {
   // Handle Rider Registration
   $("#createUserButton").on("click", function() {
     var randomUserName = randomString(8);
+    var randomPassUserName = randomString(8);
     var newUser = {
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
@@ -116,6 +117,15 @@ $(document).ready(function() {
       UserName: randomUserName,
       Password: randomString(14),
       FlagNumber: $("#FlagNum").val().trim()
+    };
+
+    var newPassenger = {
+      FirstName: $("#PassengerFirstName").val().trim(),
+      LastName: $("#PassengerLastName").val().trim(),
+      Email: randomPassUserName + '@placeholder.com',
+      UserName: randomPassUserName,
+      Password: randomString(14),
+      FlagNumber: $("#PassengerFlagNum").val().trim()
     };
 
     var welcomeEmailInfo = {
@@ -215,8 +225,13 @@ $(document).ready(function() {
       type: "POST",
       data: newUser
     })
-      .then(() => {
-        console.log("Rider Profile Added");
+      .then((res) => {
+        if(hasPassenger) {
+          $.ajax("/api/v1/user", {
+            type: "POST",
+            data: newPassenger
+          })
+        }
         sendWelcomeEmail();
       })
       .catch(handleRegistrationError);

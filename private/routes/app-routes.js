@@ -157,12 +157,20 @@ module.exports = function (app) {
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password
     })
-      .then(() => {
-        console.log("User Created Successfully");
-        res.status(202).send();
+      .then((x) => {
+        db.Flag.create({
+          FlagNum: req.body.FlagNumber,
+          UserID: x.id,
+          RallyYear: 2022,
+        })
+        .then((y) => {
+          console.log("User Created Successfully");
+          res.status(202).json(y);
+        })
       })
       .catch(err => {
         console.log("Signup API Error Encountered");
+        console.log(err);
         res.status(401).json(err);
       });
   });
