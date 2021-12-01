@@ -36,7 +36,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: 2021,
+      RallyYear: 2022,
     }).then(() => {
       res.redirect("/admin/memorial-editor");
     });
@@ -373,7 +373,7 @@ module.exports = function (app) {
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
-        RallyYear: 2021
+        RallyYear: 2022
       });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
@@ -382,7 +382,7 @@ module.exports = function (app) {
           db.EarnedMemorialsXref.create({
             FlagNum: rider,
             MemorialID: req.body.SubmittedMemorialID,
-            RallyYear: 2021
+            RallyYear: 2022
           });
         });
       }
