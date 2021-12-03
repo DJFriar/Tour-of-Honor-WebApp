@@ -7,4 +7,11 @@ module.exports = function (app) {
       res.json(memorials);
     });
   })
+
+  // Fetch all Users
+  app.get("/api/v1/users/", (req, res) => {
+    db.User.findAll({ }).then(function (users) {
+      res.json(users);
+    });
+  })
 }
