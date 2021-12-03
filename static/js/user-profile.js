@@ -12,13 +12,19 @@ $(document).ready(() => {
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
     var UserID = $(this).data("userid");
+    var PillionFlagNumberInput = $("#PillionFlagNumber").val().trim();
+    if (!PillionFlagNumberInput) {
+      PillionFlagNumberInput = 0;
+    }
+    console.log(PillionFlagNumberInput);
+
     var updateUserProfile = {
       UserID,
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
       UserName: $("#UserName").val().trim(),
       FlagNumber: $("#FlagNumber").val().trim(),
-      PillionFlagNumber: $("#PillionFlagNumber").val().trim(),
+      PillionFlagNumber: PillionFlagNumberInput,
       Email: $("#Email").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
     }
@@ -28,6 +34,8 @@ $(document).ready(() => {
       handleLoginErr("Blank field detected.");
       return;
     }
+
+    // 
 
     $.ajax("/api/v1/user", {
       type: "PUT",
