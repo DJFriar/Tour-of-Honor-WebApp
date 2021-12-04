@@ -1,6 +1,6 @@
 $(document).ready(() => {
   $('#riderList').DataTable({
-    "order": [[ 1, "desc" ]],
+    "order": [[ 0, "asc" ]],
     "pageLength": 50
   });
 });
