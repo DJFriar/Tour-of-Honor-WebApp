@@ -26,7 +26,7 @@ $(document).ready(function() {
   });
 
   // Handle Edit User Button
-  $(".editUserButton").on("click", function() {
+  $("#usersTable").on("click", ".editUserButton", function() {
     var id = $(this).data("uid");
     $(".modal").css("display","block");
     $.ajax("/api/v1/user/" + id, {

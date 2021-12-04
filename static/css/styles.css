@@ -251,3 +251,8 @@ a.hidden-link:visited {
 .no-link-underline .uk-button-link {
   text-decoration: none !important;
 }
+
+.editUserButton {
+  font-size: .8em;
+  cursor: pointer;
+}
