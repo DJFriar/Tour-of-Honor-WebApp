@@ -226,19 +226,24 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/memorial/:memCode", isAuthenticated, async (req, res) => {
+  app.get("/memorial/:memCode", async (req, res) => {
     var activeUser = false;
-    if (req.user) { activeUser = true };
     const memCode = req.params.memCode;
     var MemorialData = await q.queryMemorial(memCode);
     var MemorialText = await q.queryMemorialText(memCode);
-    var SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+    var SubmissionStatus = [];
+    var UserData = [];
+    if (req.user) { 
+      activeUser = true;
+      UserData = req.user
+      SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+    };
     if(SubmissionStatus.length == 0) {
       SubmissionStatus.unshift({Status: 3});
     }
     res.render("pages/memorial", {
       activeUser,
-      User: req.user,
+      User: UserData,
       NotificationText: "",
       MemorialData,
       MemorialText,
