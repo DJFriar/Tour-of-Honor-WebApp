@@ -91,9 +91,9 @@
         <hr>
         <div id="memorialMetadata">
           <% MemorialText.forEach(function(memText) { %>
+            <h6><%= memText.Heading %></h6>
             <p>
-              <h6><%= memText.Heading %></h6>
-              <%= memText.Text %>
+              <%- memText.Text %>
             </p>
           <% }) %>
         </div>
