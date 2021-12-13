@@ -67,7 +67,7 @@ module.exports = function (app) {
       Address2: req.body.Address2,
       City: req.body.City,
       State: req.body.State.toUpperCase(),
-      URL: req.body.URL.toLowerCase(),
+      URL: req.body.URL,
       Access: req.body.Access,
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
