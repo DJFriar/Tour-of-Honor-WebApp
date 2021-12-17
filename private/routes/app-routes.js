@@ -14,6 +14,20 @@ const bcrypt = require("bcryptjs");
 
 
 module.exports = function (app) { 
+
+  // Check Flag Number Validity
+  app.get("/api/v1/flag/:id", (req,res) => {
+    const id = req.params.id;
+    db.Flag.findOne({
+      where: {
+        FlagNum: id,
+        RallyYear: 2021
+      }
+    }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
+
   // 
   // Memorial Info Related
   //
