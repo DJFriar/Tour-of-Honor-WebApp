@@ -1,5 +1,6 @@
 $(document).ready(function() {
-  existingFlagNumberFound = false;
+  existingRiderFlagNumberFound = false;
+  existingPassengerFlagNumberFound = false;
   hasPassenger = false;
   $('#usersTable').DataTable({
     pageLength: 100
@@ -107,7 +108,7 @@ $(document).ready(function() {
     );
   });
 
-  // Check Flag Number Uniqueness
+  // Check Rider Flag Number Uniqueness
   $("#FlagNum").on("input paste", function() {
     var id = $(this).val();
     if (id) {
@@ -116,16 +117,36 @@ $(document).ready(function() {
       }).then(
         function(flagInfo) {
           if (flagInfo) {
-            existingFlagNumberFound = true;
+            existingRiderFlagNumberFound = true;
             $("#FlagNum").css("border","4px solid red")
           } else {
-            existingFlagNumberFound = false;
+            existingRiderFlagNumberFound = false;
             $("#FlagNum").css("border","none")
           }
         }
       );
     }
   })
+
+    // Check Passenger Flag Number Uniqueness
+    $("#PassengerFlagNum").on("input paste", function() {
+      var id = $(this).val();
+      if (id) {
+        $.ajax("/api/v1/flag/" + id, {
+          type: "GET"
+        }).then(
+          function(flagInfo) {
+            if (flagInfo) {
+              existingPassengerFlagNumberFound = true;
+              $("#PassengerFlagNum").css("border","4px solid red")
+            } else {
+              existingPassengerFlagNumberFound = false;
+              $("#PassengerFlagNum").css("border","none")
+            }
+          }
+        );
+      }
+    })
 
   // Handle Rider Registration
   $("#createUserButton").on("click", function() {
@@ -190,8 +211,8 @@ $(document).ready(function() {
       return;
     }
 
-    if (existingFlagNumberFound) {
-      alert("Flag Number must be unique.");
+    if (existingRiderFlagNumberFound) {
+      alert("Rider's Flag Number must be unique.");
       return;
     }
 
@@ -226,6 +247,11 @@ $(document).ready(function() {
       // Make sure that passenger flag isn't blank.
       if (!welcomeEmailInfo.PassengerFlagNumber) {
         alert("Passenger's Flag Number is required.");
+        return;
+      }
+
+      if (existingPassengerFlagNumberFound) {
+        alert("Passenger's Flag Number must be unique.");
         return;
       }
 
