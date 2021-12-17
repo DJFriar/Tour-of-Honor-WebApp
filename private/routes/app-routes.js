@@ -21,7 +21,7 @@ module.exports = function (app) {
     db.Flag.findOne({
       where: {
         FlagNum: id,
-        RallyYear: 2021
+        RallyYear: 2022
       }
     }).then(function (dbPost) {
       res.json(dbPost);
