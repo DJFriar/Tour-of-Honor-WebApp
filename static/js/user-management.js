@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  existingFlagNumberFound = false;
   hasPassenger = false;
   $('#usersTable').DataTable({
     pageLength: 100
@@ -106,6 +107,26 @@ $(document).ready(function() {
     );
   });
 
+  // Check Flag Number Uniqueness
+  $("#FlagNum").on("input paste", function() {
+    var id = $(this).val();
+    if (id) {
+      $.ajax("/api/v1/flag/" + id, {
+        type: "GET"
+      }).then(
+        function(flagInfo) {
+          if (flagInfo) {
+            existingFlagNumberFound = true;
+            $("#FlagNum").css("border","4px solid red")
+          } else {
+            existingFlagNumberFound = false;
+            $("#FlagNum").css("border","none")
+          }
+        }
+      );
+    }
+  })
+
   // Handle Rider Registration
   $("#createUserButton").on("click", function() {
     var randomUserName = randomString(8);
@@ -166,6 +187,11 @@ $(document).ready(function() {
     // Make sure that rider flag isn't blank.
     if (!newUser.FlagNumber) {
       alert("Rider's Flag Number is required.");
+      return;
+    }
+
+    if (existingFlagNumberFound) {
+      alert("Flag Number must be unique.");
       return;
     }
 
