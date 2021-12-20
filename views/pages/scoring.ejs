@@ -10,12 +10,25 @@
   <% } %>
   <h4>Pending Submissions</h4>
   <main>
+    <div>
+      <div class="uk-align-center uk-text-center submissionFilterButtons">
+        <button class="uk-button uk-button-primary submissionFilterButton showAllSubmissions">All</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showTOHSubmissions">State Memorials</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton show911Submissions">9/11</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showDBSubmissions">Doughboys</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showGSFSubmissions">Gold Star Family</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showHueySubmissions">Hueys</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showMadonnaSubmissions">Madonna Trail</button>
+        <button class="uk-button uk-button-secondary submissionFilterButton showK9Submissions">War Dogs/K9</button>
+      </div>
+    </div>
     <table class="uk-table uk-table-striped uk-table-small" id="ScoringTable">
       <thead>
         <tr>
           <th>SubID</th>
           <th>Rider</th>
           <th>Memorial</th>
+          <th>Category</th>
           <th>Location</th>
           <th>Date Submitted</th>
           <!-- <th>Actions</th> -->
@@ -33,6 +46,9 @@
               </td>
               <td>
                 <%= submission.Code %>
+              </td>
+              <td>
+                <%= submission.CatName %>
               </td>
               <td>
                 <%= submission.City %>, <%= submission.State %>
