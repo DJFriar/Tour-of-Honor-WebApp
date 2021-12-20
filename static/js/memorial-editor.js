@@ -32,7 +32,7 @@
     $("#csv-file").change(handleFileSelect);
 
     // Handle Edit Memorial Info Button
-    $(".editMemorialInfoBtn").on("click", function() {
+    $("#memorialTable").on("click", "editMemorialInfoBtn", function() {
       var id = $(this).data("uid");
       $("#memorialInfoEditModal").css("display","block");
       $(".uk-dropdown").removeClass("uk-open");
