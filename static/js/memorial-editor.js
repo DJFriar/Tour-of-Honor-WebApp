@@ -32,7 +32,7 @@
     $("#csv-file").change(handleFileSelect);
 
     // Handle Edit Memorial Info Button
-    $("#memorialTable").on("click", "editMemorialInfoBtn", function() {
+    $("#memorialTable").on("click", ".editMemorialInfoBtn", function() {
       var id = $(this).data("uid");
       $("#memorialInfoEditModal").css("display","block");
       $(".uk-dropdown").removeClass("uk-open");
@@ -65,20 +65,20 @@
     })
 
     // Handle Edit Memorial Text Button
-    $(".editMemorialTextBtn").on("click", function() {
-      var id = $(this).data("uid");
-      $("#memorialTextEditModal").css("display","block");
-      $(".uk-dropdown").removeClass("uk-open");
-      $.ajax("/api/v1/memorial-text/"+ id, {
-        type: "GET",
-      }).then(
-        function(res) {
-          $("#EditMemorialTextID").val(res.id);
-          $("#MemorialTextHeading").val(res.Category);
-          $("#MemorialText").val(res.Region);
-        }
-      )
-    })
+    // $(".editMemorialTextBtn").on("click", function() {
+    //   var id = $(this).data("uid");
+    //   $("#memorialTextEditModal").css("display","block");
+    //   $(".uk-dropdown").removeClass("uk-open");
+    //   $.ajax("/api/v1/memorial-text/"+ id, {
+    //     type: "GET",
+    //   }).then(
+    //     function(res) {
+    //       $("#EditMemorialTextID").val(res.id);
+    //       $("#MemorialTextHeading").val(res.Category);
+    //       $("#MemorialText").val(res.Region);
+    //     }
+    //   )
+    // })
 
     // Handle add new memorial toggle
     $(".addMemorialButton").on("click", function(e) {
