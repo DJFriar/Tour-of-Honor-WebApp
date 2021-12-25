@@ -301,6 +301,27 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
   }
 }
 
+module.exports.queryNextPendingSubmissions = async function queryNextPendingSubmissions(category) {
+  try {
+    if (category == "all") {
+      var result = await sequelize.query("SELECT id FROM Submissions WHERE Status = 0 LIMIT 1",
+      {
+        type: QueryTypes.SELECT
+      });
+    } else {
+      var result = await sequelize.query("SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.Status = 0 LIMIT 1",
+      {
+        replacements: [category],
+        type: QueryTypes.SELECT
+      });
+    }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 module.exports.queryPendingBonusDetail = async function queryPendingBonusDetail(id) {
   try {
     var result = await db.bonusItem.findAll({

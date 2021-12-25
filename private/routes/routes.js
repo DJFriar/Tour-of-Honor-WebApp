@@ -50,20 +50,33 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/submission/undefined", isAuthenticated, async (req, res) => {
+    res.redirect("/scoring");
+  })
+
   app.get("/submission/:id", isAuthenticated, async (req, res) => {
     OtherRidersArray = [];
     var activeUser = false
     if (req.user) { activeUser = true };
     const id = req.params.id;
-    var Submissions = await q.querySubmissions(id);
+    try {
+      var Submissions = await q.querySubmissions(id);
+    } catch {
+      console.log("querySubmissions failed for id " + id);
+      alert("An error was encountered");
+    }
     console.log("==== Submission Detail Data ====");
     console.log(Submissions);
-    OtherFlags = Submissions[0].OtherRiders;
-    OtherRidersArray = OtherFlags.split(',');
+    if (Submissions) {
+      OtherFlags = Submissions[0].OtherRiders;
+      OtherRidersArray = OtherFlags.split(',');
+    }
+
     res.render("pages/submission", {
       activeUser,
       User: req.user,
-      NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
+      // NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
+      NotificationText: "",
       Submissions,
       OtherRidersArray,
       dt: DateTime

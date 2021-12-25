@@ -382,13 +382,13 @@ module.exports = function (app) {
   // Update submissions
   app.put("/handle-submission", function (req, res) {
     // Update the submission record to mark it as scored
-    // db.Submission.update({
-    //   Status: req.body.Status,
-    //   ScorerNotes:  req.body.ScorerNotes,
-    //   RiderNotes: req.body.RiderNotes
-    // }, {
-    //   where: { id: req.body.SubmissionID }
-    // });
+    db.Submission.update({
+      Status: req.body.Status,
+      ScorerNotes:  req.body.ScorerNotes,
+      RiderNotes: req.body.RiderNotes
+    }, {
+      where: { id: req.body.SubmissionID }
+    });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if(req.body.Status == 1) {
       // Grant credit to the submitter
@@ -465,6 +465,15 @@ module.exports = function (app) {
         id: id
       }
     }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
+
+  // Fetch Next Submission ID
+  app.get("/api/v1/submission/:category", (req, res) => {
+    const category = req.params.category.toLowerCase();
+    q.queryNextPendingSubmissions(category)
+      .then(function (dbPost) {
       res.json(dbPost);
     });
   })

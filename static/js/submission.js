@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  var selectedFilter = "All";
+  selectedFilter = localStorage.getItem("categoryFilter");
+  console.log("==== submission Detail Loaded ====");
+  console.log("selectedFilter = " + selectedFilter);
+  $("#selectFilterValue").text(selectedFilter);
 
   $("#scorerNotes").on("input", function () { 
     var scorerNotes = $("#scorerNotes").val().trim()
@@ -32,7 +37,7 @@ $(document).ready(function () {
       type: "PUT",
       data: submissionInfo
     }).then(
-      function() { location.assign("/scoring"); }
+      goToNextPendingSubmission(selectedFilter)
     );
   });
 
@@ -50,8 +55,18 @@ $(document).ready(function () {
       type: "PUT",
       data: submissionInfo
     }).then(
-      function() { location.assign("/scoring"); }
+      goToNextPendingSubmission(selectedFilter)
     );
     
   });
+
+  function goToNextPendingSubmission(category) {
+    $.ajax("/api/v1/submission/" + category, {
+      type: "GET"
+    }).then(
+      function(res) { 
+        location.assign("/submission/" + res[0].id); 
+      }
+    )
+  }
 })
