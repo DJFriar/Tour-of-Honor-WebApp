@@ -65,25 +65,34 @@ module.exports = function (app) {
     const id = req.params.id;
     try {
       var Submissions = await q.querySubmissions(id);
+      if (Submissions.length == 0) {
+        res.redirect("/error");
+      } else {
+        OtherFlags = Submissions[0].OtherRiders;
+        OtherRidersArray = OtherFlags.split(',');
+        console.log("==== Submission Detail Data ====");
+        console.log(Submissions);
+        res.render("pages/submission", {
+          activeUser,
+          User: req.user,
+          NotificationText: "",
+          Submissions,
+          OtherRidersArray,
+          dt: DateTime
+        });
+      }
     } catch {
       console.log("querySubmissions failed for id " + id);
-      alert("An error was encountered");
     }
-    console.log("==== Submission Detail Data ====");
-    console.log(Submissions);
-    if (Submissions) {
-      OtherFlags = Submissions[0].OtherRiders;
-      OtherRidersArray = OtherFlags.split(',');
-    }
+  });
 
-    res.render("pages/submission", {
+  app.get("/error", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/error", {
       activeUser,
       User: req.user,
-      // NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
-      NotificationText: "",
-      Submissions,
-      OtherRidersArray,
-      dt: DateTime
+      NotificationText: ""
     });
   });
 
