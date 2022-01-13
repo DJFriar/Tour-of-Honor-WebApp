@@ -8,7 +8,6 @@ const isAdmin = require("../../config/isAdmin");
 
 module.exports = function (app) {
 
-
   // ===============================================================================
   //#region READ (GET)
   // ===============================================================================
@@ -40,7 +39,11 @@ module.exports = function (app) {
   app.get("/scoring/", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var Submissions = await q.querySubmissions();
+    try {
+      var Submissions = await q.querySubmissions();
+    } catch {
+      console.log("Error encountered: querySubmissions");
+    }
     res.render("pages/scoring", {
       activeUser,
       User: req.user,
@@ -50,32 +53,66 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/submission/undefined", isAuthenticated, async (req, res) => {
+    res.redirect("/scoring");
+  })
+
   app.get("/submission/:id", isAuthenticated, async (req, res) => {
     OtherRidersArray = [];
     var activeUser = false
     if (req.user) { activeUser = true };
     const id = req.params.id;
-    var Submissions = await q.querySubmissions(id);
-    console.log("==== Submission Detail Data ====");
-    console.log(Submissions);
-    OtherFlags = Submissions[0].OtherRiders;
-    OtherRidersArray = OtherFlags.split(',');
-    res.render("pages/submission", {
+    try {
+      var Submissions = await q.querySubmissions(id);
+      if (Submissions.length == 0) {
+        res.redirect("/error");
+      } else {
+        OtherFlags = Submissions[0].OtherRiders;
+        OtherRidersArray = OtherFlags.split(',');
+        console.log("==== Submission Detail Data ====");
+        console.log(Submissions);
+        res.render("pages/submission", {
+          activeUser,
+          User: req.user,
+          NotificationText: "",
+          Submissions,
+          OtherRidersArray,
+          dt: DateTime
+        });
+      }
+    } catch {
+      console.log("querySubmissions failed for id " + id);
+    }
+  });
+
+  app.get("/error", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/error", {
       activeUser,
       User: req.user,
-      NotificationText: "Currently, clicking on Reject or Approve will return you to the list of pending submissions. This will be changed to auto advance to the next pending submission in a future update.",
-      Submissions,
-      OtherRidersArray,
-      dt: DateTime
+      NotificationText: ""
     });
   });
 
   app.get("/admin/memorial-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var categoryData = await q.queryAllCategories();
-    var MemorialData = await q.queryAllMemorials();
-    var restrictionData = await q.queryAllRestrictions();
+    try {
+      var categoryData = await q.queryAllCategories();
+    } catch {
+      console.log("Error encountered: queryAllCategories");
+    }
+    try {
+      var MemorialData = await q.queryAllMemorials();
+    } catch {
+      console.log("Error encountered: queryAllMemorials");
+    }
+    try {
+      var restrictionData = await q.queryAllRestrictions();
+    } catch {
+      console.log("Error encountered: queryAllRestrictions");
+    }
     res.render("pages/admin/memorial-editor", {
       activeUser,
       User: req.user,
@@ -90,8 +127,16 @@ module.exports = function (app) {
     const memCode = req.params.memCode;
     var activeUser = false
     if (req.user) { activeUser = true };
-    var MemorialData = await q.queryMemorial(memCode);
-    var MemorialText = await q.queryMemorialText(memCode);
+    try {
+      var MemorialData = await q.queryMemorial(memCode);
+    } catch {
+      console.log("Error encountered: queryMemorial");
+    }
+    try {
+      var MemorialText = await q.queryMemorialText(memCode);
+    } catch {
+      console.log("Error encountered: queryMemorialText");
+    }
     res.render("pages/admin/memorial-text", {
       activeUser,
       User: req.user,
@@ -100,7 +145,7 @@ module.exports = function (app) {
       NotificationText: ""
     });
   });
-  
+
   app.get("/admin/memorial-metadata", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -165,7 +210,11 @@ module.exports = function (app) {
   app.get("/admin/user-management", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var Users = await q.queryAllUsers();
+    try {
+      var Users = await q.queryAllUsers();
+    } catch {
+      console.log("Error encountered: queryAllUsers");
+    }
     var sponsorData = [
       { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
       { "ID":"2", "FirstName":"Billy", "LastName":"Gibbons", "States":"TX" }
@@ -190,7 +239,11 @@ module.exports = function (app) {
   app.get("/forgotpassword/:id/:token", async (req,res) => {
     const UserID = req.params.id;
     const Token = req.params.token;
-    var TokenValidity = await q.queryTokenValidity(UserID, Token);
+    try {
+      var TokenValidity = await q.queryTokenValidity(UserID, Token);
+    } catch {
+      console.log("Error encountered: queryTokenValidity");
+    }
     res.render("pages/forgot-password", {
       NotificationText: "",
       UserID,
@@ -217,7 +270,11 @@ module.exports = function (app) {
   app.get("/memorials", async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var Memorials = await q.queryAllMemorials();
+    try {
+      var Memorials = await q.queryAllMemorials();
+    } catch {
+      console.log("Error encountered: queryAllMemorials");
+    }
     res.render("pages/memorials", {
       activeUser,
       User: req.user,
@@ -229,14 +286,26 @@ module.exports = function (app) {
   app.get("/memorial/:memCode", async (req, res) => {
     var activeUser = false;
     const memCode = req.params.memCode;
-    var MemorialData = await q.queryMemorial(memCode);
-    var MemorialText = await q.queryMemorialText(memCode);
+    try {
+      var MemorialData = await q.queryMemorial(memCode);
+    } catch {
+      console.log("Error encountered: queryMemorial");
+    }
+    try {
+      var MemorialText = await q.queryMemorialText(memCode);
+    } catch {
+      console.log("Error encountered: queryMemorialText");
+    }
     var SubmissionStatus = [];
     var UserData = [];
     if (req.user) { 
       activeUser = true;
       UserData = req.user
-      SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+      try {
+        SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+      } catch {
+        console.log("Error encountered: queryMemorialStatusByRider");
+      }
     };
     if(SubmissionStatus.length == 0) {
       SubmissionStatus.unshift({Status: 3});
@@ -260,7 +329,12 @@ module.exports = function (app) {
   app.get("/submit", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var Categories = await q.queryAllCategories();
+    try {
+      var Categories = await q.queryAllCategories();
+    } catch {
+      console.log("Error encountered: queryAllCategories");
+    }
+
     var targetMemorial = [
       { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
       { "Memorial_ID":"3", "Category":"Huey", "Code":"H802", "Name":"159220 - AH-1J SeaCobra", "City":"Addison", "State":"TX", "SampleImage":"H802.jpg" },
@@ -283,7 +357,11 @@ module.exports = function (app) {
 
   app.get("/welcome/:username", async (req, res) => {
     const UserName = req.params.username
-    var ValidateNewRider = await q.queryNewRiderValidation(UserName);
+    try {
+      var ValidateNewRider = await q.queryNewRiderValidation(UserName);
+    } catch {
+      console.log("Error encountered: queryNewRiderValidation");
+    }
     if(!ValidateNewRider[0]) {
       res.redirect("/welcome");
     } else {
@@ -297,8 +375,16 @@ module.exports = function (app) {
   app.get("/riders", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var riderList = await q.queryAllRiders();
-    var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    try {
+      var riderList = await q.queryAllRiders();
+    } catch {
+      console.log("Error encountered: queryAllRiders");
+    }
+    try {
+      var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    } catch {
+      console.log("Error encountered: queryEarnedMemorialsByAllRiders");
+    }
     res.render("pages/rider-list", {
       activeUser,
       User: req.user,
@@ -311,9 +397,11 @@ module.exports = function (app) {
   app.get("/stats", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
-    console.log("==== totalEarnedByRider ====");
-    console.log(totalEarnedByRider);
+    try {
+      var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    } catch {
+      console.log("Error encountered: queryEarnedMemorialsByAllRiders");
+    }
 
     res.render("pages/stats", {
       activeUser,
@@ -326,8 +414,16 @@ module.exports = function (app) {
   app.get("/user-profile", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
-    var RiderBikeInfo = await q.queryAllBikes(req.user.id);
+    try {
+      var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: querySubmissionsByRider");
+    }
+    try {
+      var RiderBikeInfo = await q.queryAllBikes(req.user.id);
+    } catch {
+      console.log("Error encountered: queryAllBikes");
+    }
     console.log(req.user);
 
     res.render("pages/user-profile", {
@@ -354,56 +450,7 @@ module.exports = function (app) {
     res.redirect("/admin/state-memorial-editor");
   });
 
-  // app.put('/api/v1/restriction', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.put('/api/v1/user', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   return true;
-  // });
-
   //#endregion
-  // ===============================================================================
-
-  // ===============================================================================
-  //#region DELETE (DELETE)
-  // ===============================================================================
-
-  // app.delete('/api/v1/category', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.delete('/api/v1/pending-memorial', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/state-memorial-editor");
-  // });
-
-  // app.delete('/api/v1/restriction', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   res.redirect("/admin/memorial-metadata");
-  // });
-
-  // app.delete('/api/v1/user', function (req, res) {
-  //   console.log("====== req.body ======");
-  //   console.log(req.body);
-  //   // Call API here
-  //   return true;
-  // });
-
-  //#endregion
-  // ===============================================================================
+  // ===============================================================================  
 
 }

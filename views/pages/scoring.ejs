@@ -25,6 +25,7 @@
     <table class="uk-table uk-table-striped uk-table-small" id="ScoringTable">
       <thead>
         <tr>
+          <th>HiddenID</th>
           <th>SubID</th>
           <th>Rider</th>
           <th>Memorial</th>
@@ -38,6 +39,9 @@
         <% Submissions.forEach(function(submission) { %>
           <% if(submission.Status === 0) { %> 
             <tr>
+              <td>
+                <%= submission.id %>
+              </td>
               <td>
                 <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
               </td>

@@ -1,8 +1,19 @@
 $(document).ready(function () {
   var table = $('#ScoringTable').DataTable({
     "order": [[ 0, "asc" ]],
-    "pageLength": 100
+    "pageLength": 100,
+    "columnDefs": [
+      {
+        "targets": [0],
+        "visible": false,
+        "Searchable": false
+      }
+    ]
   });
+
+  localStorage.setItem("categoryFilter","All");
+
+  var tableData  = table.rows().data();
 
   // Handle Filter Buttons
   $('.showAllSubmissions').on('click', () => {
@@ -10,6 +21,7 @@ $(document).ready(function () {
     $(".submissionFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
     $(".showAllSubmissions").removeClass("uk-button-secondary").addClass("uk-button-primary");
     setSubmissionFilter("All");
+    
   })
   $('.showTOHSubmissions').on('click', () => {
     $(".submissionFilterButton").prevAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
@@ -55,14 +67,21 @@ $(document).ready(function () {
   })
 
   function setSubmissionFilter(category) {
+    localStorage.setItem("categoryFilter",category);
     if (category == "All") {
-      table.column(3)
+      table.column(4)
       .search("")
       .draw()
+      tableData = table.rows({order:'current', search:'applied'}).data();
+      console.log("==== tableData ====");
+      console.log(tableData);
     } else {
-      table.column(3)
+      table.column(4)
       .search(category)
       .draw()
+      tableData = table.rows({order:'current', search:'applied'}).data();
+      console.log("==== tableData ====");
+      console.log(tableData);
     }
   }
 })
