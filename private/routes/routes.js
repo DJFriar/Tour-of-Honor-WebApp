@@ -8,7 +8,6 @@ const isAdmin = require("../../config/isAdmin");
 
 module.exports = function (app) {
 
-
   // ===============================================================================
   //#region READ (GET)
   // ===============================================================================
@@ -146,7 +145,7 @@ module.exports = function (app) {
       NotificationText: ""
     });
   });
-  
+
   app.get("/admin/memorial-metadata", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
