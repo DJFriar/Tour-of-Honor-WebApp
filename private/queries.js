@@ -146,6 +146,18 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
   }
 }
 
+module.exports.queryMemorialData = async function queryMemorialData(id) {
+  try {
+    var result = await sequelize.query("SELECT c.Name AS CategoryName, r.Name AS RestrictionName, m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id INNER JOIN Restrictions r ON m.Restrictions = r.id WHERE m.id = ? LIMIT 1",
+    {
+      replacements: [id],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
 
 module.exports.queryMemorialText = async function queryMemorialText(memCode) {
   try {
