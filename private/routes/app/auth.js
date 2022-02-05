@@ -19,7 +19,13 @@ router.post("/", async (req, res) => {
   }
 
   const token = jwt.sign(
-    { userId: UserData.id, name: UserData.UserName, email: UserData.Email, flag: UserData.FlagNumber },
+    { UserID: UserData.id, 
+      FirstName: UserData.FirstName, 
+      LastName: UserData.LastName, 
+      Email: UserData.Email, 
+      FlagNumber: UserData.FlagNumber,
+      ZipCode: UserData.ZipCode
+    },
     process.env.JWT_SECRET
   );
   res.send(token);
