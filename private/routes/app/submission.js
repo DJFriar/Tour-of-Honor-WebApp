@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../models");
-// const q = require("../../queries");
 const { DateTime } = require("luxon");
 const fileUpload = require("express-fileupload");
 

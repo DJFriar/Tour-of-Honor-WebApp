@@ -5,6 +5,7 @@ const session = require("express-session");
 const passport = require("./config/passport");
 const memorial = require("./private/routes/app/memorial");
 const memorials = require("./private/routes/app/memorials");
+const restriction = require("./private/routes/app/restriction");
 const submission = require("./private/routes/app/submission");
 
 
@@ -41,6 +42,7 @@ require("./private/routes/web/be-routes")(app);
 require("./private/routes/web/fe-routes")(app);
 app.use("/api/v1/memorial", memorial);
 app.use("/api/v1/memorials", memorials);
+app.use("/api/v1/restriction", restriction);
 app.use("/api/v1/submission", submission);
 
 // =============================================================================

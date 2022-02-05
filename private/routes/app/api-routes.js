@@ -1,7 +1,5 @@
 const db = require("../../../models");
 const q = require("../../queries");
-const { DateTime } = require("luxon");
-const fileUpload = require("express-fileupload");
 
 module.exports = function (app) { 
 
@@ -67,18 +65,6 @@ module.exports = function (app) {
       }
     }).then(function (user) {
       res.json(user);
-    });
-  })
-
-  // Fetch a specific Restriction
-  app.get("/api/v1/restriction/:id", (req, res) => {
-    const id = req.params.id;
-    db.Restriction.findOne({
-      where: {
-        id: id
-      }
-    }).then(function (restriction) {
-      res.json(restriction);
     });
   })
 
