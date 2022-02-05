@@ -65,11 +65,24 @@ module.exports.queryUserRights = async function queryUserRights(user) {
   }
 }
 
+module.exports.queryFindUserByEmail = async function queryFindUserByEmail(email) {
+  try {
+    var result = await db.User.findAll({
+      where: {
+        Email: email
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
   try {
     var result = await db.User.findAll({
       where: {
-        FlagNum: {
+        FlagNumber: {
           [Sequelize.Op.in]: [flag]
         } 
       }

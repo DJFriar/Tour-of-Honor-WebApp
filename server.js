@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const express = require("express");
 const session = require("express-session");
+
+const auth = require("./private/routes/app/auth");
 const passport = require("./config/passport");
 const memorial = require("./private/routes/app/memorial");
 const memorials = require("./private/routes/app/memorials");
@@ -40,6 +42,7 @@ app.use(passport.session());
 require("./private/routes/app/api-routes")(app);
 require("./private/routes/web/be-routes")(app);
 require("./private/routes/web/fe-routes")(app);
+app.use("/api/v1/auth", auth);
 app.use("/api/v1/memorial", memorial);
 app.use("/api/v1/memorials", memorials);
 app.use("/api/v1/restriction", restriction);
