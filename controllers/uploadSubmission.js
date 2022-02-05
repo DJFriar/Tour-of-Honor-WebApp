@@ -24,6 +24,8 @@ const uploadMultiple = upload.fields([{ name: 'input-primary', maxCount: 1 }, { 
 const uploadImages = (req, res, next) => {
   uploadMultiple(req, res, err => {
     if (err) {
+      console.log("uploadMultiple errored");
+      console.log(err);
       return res.send(err);
     }
     next();

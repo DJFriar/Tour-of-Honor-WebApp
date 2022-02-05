@@ -102,7 +102,7 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id",
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id ORDER BY m.State, m.City, m.Category",
       {
         type: QueryTypes.SELECT
       })
