@@ -1,14 +1,14 @@
 // Requiring our models and passport as we've configured it
-const db = require("../../models");
-const q = require("../../private/queries");
+const db = require("../../../models");
+const q = require("../../queries");
 const ejs = require("ejs");
-const uploadSubmission = require("../../controllers/uploadSubmission");
-const uploadImages = require("../../controllers/uploadImages");
-const passport = require("../../config/passport");
+const uploadSubmission = require("../../../controllers/uploadSubmission");
+const uploadImages = require("../../../controllers/uploadImages");
+const passport = require("../../../config/passport");
 const multer = require('multer');
-const isAuthenticated = require("../../config/isAuthenticated");
+const isAuthenticated = require("../../../config/isAuthenticated");
 const upload = multer({ dest: '../static/uploads' });
-const sendEmail = require("../sendEmail");
+const sendEmail = require("../../sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 
