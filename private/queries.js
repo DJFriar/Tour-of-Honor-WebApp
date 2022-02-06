@@ -65,11 +65,24 @@ module.exports.queryUserRights = async function queryUserRights(user) {
   }
 }
 
+module.exports.queryFindUserByEmail = async function queryFindUserByEmail(email) {
+  try {
+    var result = await db.User.findAll({
+      where: {
+        Email: email
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
   try {
     var result = await db.User.findAll({
       where: {
-        FlagNum: {
+        FlagNumber: {
           [Sequelize.Op.in]: [flag]
         } 
       }
@@ -102,7 +115,7 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id",
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id ORDER BY m.State, m.City, m.Category",
       {
         type: QueryTypes.SELECT
       })

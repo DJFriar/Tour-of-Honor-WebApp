@@ -1,10 +1,10 @@
 var path = require("path");
-const db = require("../../models");
-const q = require("../../private/queries");
+const db = require("../../../models");
+const q = require("../../queries");
 const { DateTime } = require("luxon");
 // Requiring our custom middleware for checking if a user is logged in
-const isAuthenticated = require("../../config/isAuthenticated");
-const isAdmin = require("../../config/isAdmin");
+const isAuthenticated = require("../../../config/isAuthenticated");
+const isAdmin = require("../../../config/isAdmin");
 
 module.exports = function (app) {
 

@@ -2,7 +2,13 @@ require("dotenv").config();
 
 const express = require("express");
 const session = require("express-session");
+
+const auth = require("./private/routes/app/auth");
 const passport = require("./config/passport");
+const memorial = require("./private/routes/app/memorial");
+const memorials = require("./private/routes/app/memorials");
+const restriction = require("./private/routes/app/restriction");
+const submission = require("./private/routes/app/submission");
 
 // ==============================================================================
 // CONFIGURATION
@@ -16,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("static"));
 app.use(express.static("private"));
-
 
 // We need to use sessions to keep track of our user's login status
 app.use(
@@ -32,9 +37,14 @@ app.use(passport.session());
 // ================================================================================
 // ROUTES
 // ================================================================================
-require("./private/routes/routes")(app);
-require("./private/routes/api-routes")(app);
-require("./private/routes/app-routes")(app);
+require("./private/routes/app/api-routes")(app);
+require("./private/routes/web/be-routes")(app);
+require("./private/routes/web/fe-routes")(app);
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/memorial", memorial);
+app.use("/api/v1/memorials", memorials);
+app.use("/api/v1/restriction", restriction);
+app.use("/api/v1/submission", submission);
 
 // =============================================================================
 // LISTENER

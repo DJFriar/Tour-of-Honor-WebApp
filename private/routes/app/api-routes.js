@@ -1,13 +1,7 @@
-const db = require("../../models");
-const q = require("../../private/queries");
+const db = require("../../../models");
+const q = require("../../queries");
 
 module.exports = function (app) { 
-  // Fetch all Memorials
-  app.get("/api/v1/memorials/", (req, res) => {
-    db.Memorial.findAll({ }).then(function (memorials) {
-      res.json(memorials);
-    });
-  })
 
   // Fetch Memorial list
   app.get("/api/v1/memorial-list/", async (req, res) => {
@@ -42,17 +36,7 @@ module.exports = function (app) {
     res.json(MemorialData);
   })
 
-  // Fetch a Memorial Text Entry
-  app.get("/api/v1/memorial-text/:id", (req, res) => {
-    const id = req.params.id;
-    db.MemorialMeta.findAll({
-      where: {
-        MemorialID: id
-      }
-    }).then(function (dbPost) {
-      res.json(dbPost);
-    });
-  })
+
 
   // Fetch all active Categories
   app.get("/api/v1/categories/", (req, res) => {
@@ -84,15 +68,4 @@ module.exports = function (app) {
     });
   })
 
-  // Fetch a specific Restriction
-  app.get("/api/v1/restriction/:id", (req, res) => {
-    const id = req.params.id;
-    db.Restriction.findOne({
-      where: {
-        id: id
-      }
-    }).then(function (restriction) {
-      res.json(restriction);
-    });
-  })
 }
