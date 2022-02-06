@@ -34,15 +34,17 @@ const uploadImages = (req, res, next) => {
 
 const resizeImages = async (req, res, next) => {
   if (!req.files) return;
-  const riderFlagNumber = 714;
-  const BonusID = "TEST";
+  console.log("==== resizeImages ====");
+  console.log(req.body);
+  const riderFlagNumber = req.user.FlagNumber;
+  const MemorialID = req.body.MemorialCode;
   const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
 
   req.body.images = [];
   if(req.files['input-optional']) {
     await Promise.all(
       req.files['input-primary'].map(async file => {
-        const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
+        const primaryFilename = `${riderFlagNumber}-${MemorialID}-${currentTimestamp}-1.jpg`;
         await sharp(file.buffer)
           .toFormat("jpeg")
           .jpeg({ quality: 90 })
@@ -51,7 +53,7 @@ const resizeImages = async (req, res, next) => {
         req.body.images.unshift(primaryFilename);
       }),
       req.files['input-optional'].map(async file => {
-        const optionalFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-2.jpg`;
+        const optionalFilename = `${riderFlagNumber}-${MemorialID}-${currentTimestamp}-2.jpg`;
         await sharp(file.buffer)
           .toFormat("jpeg")
           .jpeg({ quality: 80 })
@@ -63,7 +65,7 @@ const resizeImages = async (req, res, next) => {
   } else {
     await Promise.all(
       req.files['input-primary'].map(async file => {
-        const primaryFilename = `${riderFlagNumber}-${BonusID}-${currentTimestamp}-1.jpg`;
+        const primaryFilename = `${riderFlagNumber}-${MemorialID}-${currentTimestamp}-1.jpg`;
         await sharp(file.buffer)
           .toFormat("jpeg")
           .jpeg({ quality: 90 })

@@ -10,7 +10,6 @@ const memorials = require("./private/routes/app/memorials");
 const restriction = require("./private/routes/app/restriction");
 const submission = require("./private/routes/app/submission");
 
-
 // ==============================================================================
 // CONFIGURATION
 // ==============================================================================
@@ -23,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("static"));
 app.use(express.static("private"));
-
 
 // We need to use sessions to keep track of our user's login status
 app.use(
