@@ -65,11 +65,24 @@ module.exports.queryUserRights = async function queryUserRights(user) {
   }
 }
 
+module.exports.queryFindUserByEmail = async function queryFindUserByEmail(email) {
+  try {
+    var result = await db.User.findAll({
+      where: {
+        Email: email
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
   try {
     var result = await db.User.findAll({
       where: {
-        FlagNum: {
+        FlagNumber: {
           [Sequelize.Op.in]: [flag]
         } 
       }
@@ -102,7 +115,7 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id",
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id ORDER BY m.State, m.City, m.Category",
       {
         type: QueryTypes.SELECT
       })
@@ -146,6 +159,18 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
   }
 }
 
+module.exports.queryMemorialData = async function queryMemorialData(id) {
+  try {
+    var result = await sequelize.query("SELECT c.Name AS CategoryName, r.Name AS RestrictionName, m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id INNER JOIN Restrictions r ON m.Restrictions = r.id WHERE m.id = ? LIMIT 1",
+    {
+      replacements: [id],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
 
 module.exports.queryMemorialText = async function queryMemorialText(memCode) {
   try {
