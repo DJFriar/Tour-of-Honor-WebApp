@@ -10,7 +10,7 @@ router.post('/',
   (req, res) => {
     console.log(req.body.UserID);
     const images = req.files.images;
-    const RiderFlag = "714";
+    const RiderFlag = req.body.RiderFlag;
     let primaryFile = {};
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
