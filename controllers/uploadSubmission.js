@@ -2,7 +2,6 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { DateTime } = require("luxon");
 
-
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -18,7 +17,6 @@ const upload = multer({
   fileFilter: multerFilter
 });
 
-// const uploadFiles = upload.array("input-primary", 1); // limit to 1 image
 const uploadMultiple = upload.fields([{ name: 'input-primary', maxCount: 1 }, { name: 'input-optional', maxCount: 1 }]);
 
 const uploadImages = (req, res, next) => {
