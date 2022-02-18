@@ -149,7 +149,16 @@
                   </td>
                   <td>
                     <!-- <span class="deleteUserButton" data-uid="<%- user.id %>"><i class="far fa-trash-alt"></i></span>&nbsp; -->
-                    <span class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit</span>
+                    <div class="uk-inline">
+                      <button class="uk-button uk-button-default" type="button">Click</button>
+                      <div uk-dropdown="mode: click">
+                        <div class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit User</div>
+                        <% if(!user.ZipCode) { %>
+                          <br />
+                          <div class="sendProfileEmailButton" data-uid="<%- user.id %>"><i class="fal fa-envelope fa-lg"></i> Send Welcome Email</div>
+                        <% } %>
+                      </div>
+                  </div>
                   </td>
                 </tr>
               <% }) %>
