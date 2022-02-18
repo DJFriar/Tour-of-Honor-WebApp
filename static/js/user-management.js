@@ -108,6 +108,30 @@ $(document).ready(function() {
     );
   });
 
+    // Handle Send Profile Email Button
+    $("#usersTable").on("click", ".sendProfileEmailButton", function() {
+      var id = $(this).data("uid");
+      var profileData = { };
+      $.ajax("/api/v1/user/" + id, {
+        type: "GET",
+      }).then(
+        function(res) {
+          profileData.FlagNumber = res.FlagNumber;
+          profileData.UserName = res.UserName;
+          profileData.FirstName = res.FirstName;
+          profileData.Email = res.Email;
+          $.ajax("/api/v1/portalemail", {
+            type: "POST",
+            data: profileData
+          }).then(
+            function() {
+              location.reload();
+            }
+          )
+        }
+      )
+    })
+
   // Check Rider Flag Number Uniqueness
   $("#FlagNum").on("input paste", function() {
     var id = $(this).val();

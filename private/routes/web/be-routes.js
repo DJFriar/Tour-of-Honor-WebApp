@@ -189,11 +189,12 @@ module.exports = function (app) {
       });
   });
 
+  // Send welcome email to newly registered email
   app.post("/api/v1/welcomeemail", async (req, res) => {
     const UserName = req.body.UserName
     try {
-      // Send the welcome email.
       const WelcomeLink = `${process.env.BASE_URL}/welcome/${UserName}`;
+      const ScoringPortalLink = `${process.env.BASE_URL}`;
       let emailBody = await ejs.renderFile("./views/emails/emailRiderWelcome.ejs", {
         FirstName: req.body.FirstName,
         Email: req.body.Email,
@@ -206,12 +207,34 @@ module.exports = function (app) {
         PassengerFlagNumber: req.body.PassengerFlagNumber,
         PassengerShirtStyle: req.body.PassengerShirtStyle,
         PassengerShirtSize: req.body.PassengerShirtSize,
-        URL: WelcomeLink 
+        URL: WelcomeLink,
+        PortalURL: ScoringPortalLink
       })
       await sendEmail(req.body.Email, "Welcome to the Tour of Honor", emailBody);
       res.send("Welcome Email Sent");
     } catch (error) {
       res.send("An error occurred while sending welcome email.");
+      console.log(error);
+    }
+  })
+
+  // Send a portal sign up email
+  app.post("/api/v1/portalemail", async (req, res) => {
+    const UserName = req.body.UserName
+    try {
+      const WelcomeLink = `${process.env.BASE_URL}/welcome/${UserName}`;
+      const ScoringPortalLink = `${process.env.BASE_URL}`;
+      let emailBody = await ejs.renderFile("./views/emails/emailProfileRegistration.ejs", {
+        FirstName: req.body.FirstName,
+        Email: req.body.Email,
+        FlagNumber: req.body.FlagNumber,
+        URL: WelcomeLink,
+        PortalURL: ScoringPortalLink
+      })
+      await sendEmail(req.body.Email, "Tour of Honor Scoring Portal Registration", emailBody);
+      res.send("Portal Email Sent");
+    } catch (error) {
+      res.send("An error occurred while sending portal email.");
       console.log(error);
     }
   })
