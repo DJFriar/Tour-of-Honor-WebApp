@@ -260,3 +260,9 @@ a.hidden-link:visited {
 .largerLabel {
   font-size: 1.1em;
 }
+
+.toh-alert {
+  text-align: center;
+  color: indianred;
+  font-size: 1.2em;
+}
