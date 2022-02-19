@@ -13,8 +13,19 @@
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
-    <p>Below is a list of every Memorial in the Tour of Honor.</p>
-    <p>Note that state memorials will not be visible until April 1, 2022 at 00:01 EST.</p>
+    <div>
+      <div class="uk-align-center uk-text-center memorialFilterButtons">
+        <button class="uk-button uk-button-primary memorialFilterButton showAllMemorials">All</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showTOHMemorials">State Memorials</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton show911Memorials">9/11</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showDBMemorials">Doughboys</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showGSFMemorials">Gold Star Family</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showHueyMemorials">Hueys</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showMadonnaMemorials">Madonna Trail</button>
+        <button class="uk-button uk-button-secondary memorialFilterButton showK9Memorials">War Dogs/K9</button>
+      </div>
+    </div>
+    <p class="toh-alert">Note that state memorials will not be visible until April 1, 2022 at 00:01 EST.</p>
     <!-- #region Memorial Table -->
     <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
       <thead>

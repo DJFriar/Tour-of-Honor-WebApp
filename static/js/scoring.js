@@ -73,15 +73,11 @@ $(document).ready(function () {
       .search("")
       .draw()
       tableData = table.rows({order:'current', search:'applied'}).data();
-      console.log("==== tableData ====");
-      console.log(tableData);
     } else {
       table.column(4)
       .search(category)
       .draw()
       tableData = table.rows({order:'current', search:'applied'}).data();
-      console.log("==== tableData ====");
-      console.log(tableData);
     }
   }
 })
