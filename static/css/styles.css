@@ -256,3 +256,13 @@ a.hidden-link:visited {
   cursor: pointer;
   font-size: 1em;
 }
+
+.largerLabel {
+  font-size: 1.1em;
+}
+
+.toh-alert {
+  text-align: center;
+  color: indianred;
+  font-size: 1.2em;
+}
