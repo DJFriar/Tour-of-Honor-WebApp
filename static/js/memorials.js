@@ -63,12 +63,12 @@ $(document).ready(function() {
   function setMemorialFilter(category) {
     localStorage.setItem("memorialCategoryFilter",category);
     if (category == "All") {
-      table.column(2)
+      table.column(1)
       .search("")
       .draw()
       tableData = table.rows({order:'current', search:'applied'}).data();
     } else {
-      table.column(2)
+      table.column(1)
       .search(category)
       .draw()
       tableData = table.rows({order:'current', search:'applied'}).data();
