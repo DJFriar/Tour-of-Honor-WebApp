@@ -210,7 +210,7 @@ module.exports = function (app) {
         URL: WelcomeLink,
         PortalURL: ScoringPortalLink
       })
-      await sendEmail(req.body.Email, "Welcome to the Tour of Honor", emailBody);
+      await sendEmail(req.body.Email, "Welcome to the Tour of Honor [IMPORTANT, PLEASE READ]", emailBody);
       res.send("Welcome Email Sent");
     } catch (error) {
       res.send("An error occurred while sending welcome email.");
@@ -231,7 +231,7 @@ module.exports = function (app) {
         URL: WelcomeLink,
         PortalURL: ScoringPortalLink
       })
-      await sendEmail(req.body.Email, "Tour of Honor Scoring Portal Registration", emailBody);
+      await sendEmail(req.body.Email, "Tour of Honor Scoring Portal Registration [IMPORTANT, PLEASE READ]", emailBody);
       res.send("Portal Email Sent");
     } catch (error) {
       res.send("An error occurred while sending portal email.");
