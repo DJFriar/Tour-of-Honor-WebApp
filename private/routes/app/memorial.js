@@ -20,7 +20,8 @@ router.get("/text/:id", (req, res) => {
   db.MemorialMeta.findAll({
     where: {
       MemorialID: id
-    }
+    },
+    order: [[ "Heading", "ASC" ]]
   }).then(function (dbPost) {
     res.json(dbPost);
   });
