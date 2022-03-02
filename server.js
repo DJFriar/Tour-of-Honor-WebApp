@@ -16,6 +16,9 @@ const submission = require("./private/routes/app/submission");
 const app = express();
 const PORT = process.env.PORT || 3700;
 const db = require("./models");
+app.locals.envName = process.env.NODE_ENV;
+app.locals.envNameShort = process.env.NODE_ENV_SHORT;
+app.locals.envIsProd = process.env.IS_PROD;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
