@@ -8,6 +8,13 @@ module.exports = {
     host: process.env.DBHOST,
     dialect: "mysql"
   },
+  Testing: {
+    username: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: process.env.DATABASE,
+    host: process.env.DBHOST,
+    dialect: "mysql"
+  },
   Production: {
     username: process.env.DBUSER,
     password: process.env.DBPASS,
