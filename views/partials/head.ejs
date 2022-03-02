@@ -1,7 +1,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tour of Honor</title>
+  <% if(!envIsProd) { %>
+    <title><%= envNameShort %> - TOH Scoring Portal</title>
+  <% } else { %>
+    <title>Tour of Honor Scoring Portal</title>
+  <% } %>
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.5/dist/css/uikit.min.css" />
   <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>
   <link rel="stylesheet" href="/css/styles.css" />
