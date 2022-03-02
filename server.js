@@ -16,6 +16,11 @@ const submission = require("./private/routes/app/submission");
 const app = express();
 const PORT = process.env.PORT || 3700;
 const db = require("./models");
+app.locals.envName = process.env.NODE_ENV;
+app.locals.envNameShort = process.env.NODE_ENV_SHORT;
+app.locals.envIsProd = false;
+
+if (process.env.IS_PROD === "true") { app.locals.envIsProd = true; };
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -52,6 +57,7 @@ app.use("/api/v1/submission", submission);
 db.sequelize.sync()
   .then(() => {
     app.listen(PORT, () => {
+      console.log("==> 🌎  Server running in " + app.locals.envName + " mode. isProd is " + app.locals.envIsProd + ".");
       console.log(
         "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
         PORT,

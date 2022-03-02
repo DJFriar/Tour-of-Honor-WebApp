@@ -3,7 +3,6 @@ const db = require("../../../models");
 const q = require("../../queries");
 const ejs = require("ejs");
 const uploadSubmission = require("../../../controllers/uploadSubmission");
-const uploadImages = require("../../../controllers/uploadImages");
 const passport = require("../../../config/passport");
 const multer = require('multer');
 const isAuthenticated = require("../../../config/isAuthenticated");
