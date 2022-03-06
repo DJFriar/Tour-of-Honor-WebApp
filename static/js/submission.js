@@ -1,8 +1,6 @@
 $(document).ready(function () {
   var selectedFilter = "All";
   selectedFilter = localStorage.getItem("categoryFilter");
-  console.log("==== submission Detail Loaded ====");
-  console.log("selectedFilter = " + selectedFilter);
   $("#selectFilterValue").text(selectedFilter);
 
   $("#scorerNotes").on("input", function () { 
