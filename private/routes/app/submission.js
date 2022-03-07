@@ -11,6 +11,7 @@ router.post('/',
     console.log(req.body.UserID);
     const images = req.files.images;
     const RiderFlag = req.body.RiderFlag;
+    const OtherRiders = req.body.OtherRiders;
     let primaryFile = {};
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
@@ -64,7 +65,7 @@ router.post('/',
       PrimaryImage: primaryFilename,
       OptionalImage: optionalFilename,
       RiderNotes: req.body.RiderNotes,
-      OtherRiders: RiderArray.toString(),
+      OtherRiders: req.body.OtherRiders,
       Status: 0 // 0 = Pending Approval
     });
     res.send({result:"success"});

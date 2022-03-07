@@ -106,6 +106,32 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
 //   }
 // }
 
+module.exports.queryAllMemorialsWithUserStatus = async function queryAllMemorialsWithUserStatus(id) {
+  try {
+    var result = await sequelize.query("SELECT s.Status AS 'RiderStatus',m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? ORDER BY m.State, m.City, m.Category",
+    {
+      replacements: [id],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryMemorialStatusByUser = async function queryMemorialStatusByUser(memId, userId) {
+  try {
+    var result = await sequelize.query("SELECT Status FROM Submissions WHERE MemorialID = ? AND UserID = ? ORDER BY updatedAt DESC LIMIT 1",
+    {
+      replacements: [memId, userId],
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   try {
     if (id) {
