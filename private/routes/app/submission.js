@@ -3,6 +3,18 @@ const router = express.Router();
 const db = require("../../../models");
 const { DateTime } = require("luxon");
 const fileUpload = require("express-fileupload");
+const q = require("../../queries");
+
+// Fetch submissions for given user ID
+router.get('/byUser/:id', async (req,res) => {
+  const id = req.params.id;
+  try {
+    var RiderSubmissionHistory = await q.querySubmissionsByRider(id);
+  } catch {
+    console.log("Error encountered: querySubmissionsByRider");
+  }
+  res.json(RiderSubmissionHistory);
+})
 
 // Submit from Mobile App
 router.post('/',
@@ -44,20 +56,6 @@ router.post('/',
         }
       })
     }
-
-    const RiderArray = [];
-    // PillionFlagNumber = 0;
-    // if (req.body.hasPillion) {
-    //   PillionFlagNumber = req.user.PillionFlagNumber.toString();
-    //   RiderArray.push(PillionFlagNumber);      
-    // }
-    // if (req.body.isGroupSubmission) {
-    //   GroupRiders = req.body.GroupRiderInfo;
-    //   GroupRiderArray = GroupRiders.split(',');
-    //   RiderArray = RiderArray.concat(GroupRiderArray);
-    // }
-
-    // console.log(req);
 
     db.Submission.create({
       UserID: req.body.UserID,
