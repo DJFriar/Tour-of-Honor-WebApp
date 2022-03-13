@@ -32,8 +32,6 @@ const uploadImages = (req, res, next) => {
 
 const resizeImages = async (req, res, next) => {
   if (!req.files) return;
-  console.log("==== resizeImages ====");
-  console.log(req.body);
   const riderFlagNumber = req.user.FlagNumber;
   const MemorialID = req.body.MemorialCode;
   const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
