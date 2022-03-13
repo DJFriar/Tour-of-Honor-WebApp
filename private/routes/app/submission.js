@@ -3,6 +3,18 @@ const router = express.Router();
 const db = require("../../../models");
 const { DateTime } = require("luxon");
 const fileUpload = require("express-fileupload");
+const q = require("../../queries");
+
+// Fetch submissions for given user ID
+router.get('/byUser/:id', async (req,res) => {
+  const id = req.params.id;
+  try {
+    var RiderSubmissionHistory = await q.querySubmissionsByRider(id);
+  } catch {
+    console.log("Error encountered: querySubmissionsByRider");
+  }
+  res.json(RiderSubmissionHistory);
+})
 
 // Submit from Mobile App
 router.post('/',
@@ -11,6 +23,7 @@ router.post('/',
     console.log(req.body.UserID);
     const images = req.files.images;
     const RiderFlag = req.body.RiderFlag;
+    const OtherRiders = req.body.OtherRiders;
     let primaryFile = {};
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
@@ -44,27 +57,13 @@ router.post('/',
       })
     }
 
-    const RiderArray = [];
-    // PillionFlagNumber = 0;
-    // if (req.body.hasPillion) {
-    //   PillionFlagNumber = req.user.PillionFlagNumber.toString();
-    //   RiderArray.push(PillionFlagNumber);      
-    // }
-    // if (req.body.isGroupSubmission) {
-    //   GroupRiders = req.body.GroupRiderInfo;
-    //   GroupRiderArray = GroupRiders.split(',');
-    //   RiderArray = RiderArray.concat(GroupRiderArray);
-    // }
-
-    // console.log(req);
-
     db.Submission.create({
       UserID: req.body.UserID,
       MemorialID: req.body.MemorialID,
       PrimaryImage: primaryFilename,
       OptionalImage: optionalFilename,
       RiderNotes: req.body.RiderNotes,
-      OtherRiders: RiderArray.toString(),
+      OtherRiders: req.body.OtherRiders,
       Status: 0 // 0 = Pending Approval
     });
     res.send({result:"success"});
