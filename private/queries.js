@@ -135,13 +135,13 @@ module.exports.queryMemorialStatusByUser = async function queryMemorialStatusByU
 module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   try {
     if (id) {
-      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE m.ID = ?",
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.ID = ?",
       {
         replacements: [id],
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id ORDER BY m.State, m.City, m.Category",
+      var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 ORDER BY m.State, m.City, m.Category",
       {
         type: QueryTypes.SELECT
       })
