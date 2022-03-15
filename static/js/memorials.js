@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   });
 
-  localStorage.setItem("memorialCategoryFilter","All");
+  localStorage.setItem("memorialCategoryFilter","Tour of Honor");
 
   var tableData  = table.rows().data();
 
@@ -58,6 +58,18 @@ $(document).ready(function() {
     $(".MemorialFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
     $(".showHueyMemorials").removeClass("uk-button-secondary").addClass("uk-button-primary");
     setMemorialFilter("Hueys");
+  })
+  $('.showSOLMemorials').on('click', () => {
+    $(".MemorialFilterButton").prevAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".MemorialFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".showSOLMemorials").removeClass("uk-button-secondary").addClass("uk-button-primary");
+    setMemorialFilter("Statue of Liberty");
+  })
+  $('.showCemeteryMemorials').on('click', () => {
+    $(".MemorialFilterButton").prevAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".MemorialFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".showCemeteryMemorials").removeClass("uk-button-secondary").addClass("uk-button-primary");
+    setMemorialFilter("Cemetery");
   })
 
   function setMemorialFilter(category) {

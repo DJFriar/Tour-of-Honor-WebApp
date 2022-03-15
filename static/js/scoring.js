@@ -65,6 +65,18 @@ $(document).ready(function () {
     $(".showHueySubmissions").removeClass("uk-button-secondary").addClass("uk-button-primary");
     setSubmissionFilter("Hueys");
   })
+  $('.showSOLMemorials').on('click', () => {
+    $(".MemorialFilterButton").prevAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".MemorialFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".showSOLMemorials").removeClass("uk-button-secondary").addClass("uk-button-primary");
+    setSubmissionFilter("Statue of Liberty");
+  })
+  $('.showCemeteryMemorials').on('click', () => {
+    $(".MemorialFilterButton").prevAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".MemorialFilterButton").nextAll().removeClass("uk-button-primary").addClass("uk-button-secondary");
+    $(".showCemeteryMemorials").removeClass("uk-button-secondary").addClass("uk-button-primary");
+    setSubmissionFilter("Cemetery");
+  })
 
   function setSubmissionFilter(category) {
     localStorage.setItem("categoryFilter",category);
