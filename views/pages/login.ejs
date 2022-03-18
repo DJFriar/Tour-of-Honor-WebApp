@@ -2,7 +2,7 @@
   <%- include('../partials/head'); %>
 </head>
 
-<body style="background-color: rgba(245, 75, 75, 0.708)">
+<body <%- envIsProd ? '' : 'style="background-color: rgba(245, 75, 75, 0.708)"'%>>
   <%- include('../partials/topnav'); %>
   <main>
     <div class="uk-container-xsmall uk-margin-auto">
