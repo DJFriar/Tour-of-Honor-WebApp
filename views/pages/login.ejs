@@ -2,13 +2,18 @@
   <%- include('../partials/head'); %>
 </head>
 
-<body>
+<body style="background-color: rgba(245, 75, 75, 0.708)">
   <%- include('../partials/topnav'); %>
   <main>
     <div class="uk-container-xsmall uk-margin-auto">
       <div class="">
-        <h3 class="uk-text-center">Scoring Portal Login</h3>
-        <p class="uk-text-center">Please login below using the <strong>email address</strong> and <strong>password</strong> that you registered with.</p>
+        <% if(envIsProd) { %>
+          <h3 class="uk-text-center">Scoring Portal Login</h3>
+          <p class="uk-text-center">Please login below using the <strong>email address</strong> and <strong>password</strong> that you registered with.</p>
+        <% } else { %>
+          <h3 class="uk-text-center">TOH Test Site</h3>
+          <p class="uk-text-center" style="color: black;font-weight: 600; font-size: xx-large;">This site is accessible to TOH staff only. If you are a rider, then you want to go to <a href="https://scoring.tourofhonor.com">https://scoring.tourofhonor.com</a></p>
+        <% } %>
         <form class="login">
           <div class="uk-margin">
             <label class="uk-form-label largerLabel" for="UserEmail">Email Address</label>
@@ -21,7 +26,9 @@
           <button class="uk-button uk-button-primary uk-button-small">Login</button>
           <span style="font-size: .9em; padding-left: 16px"><a href="/forgotpassword">Forgot Password?</a></span>
         </form>
-        <p>If you have not registered for the 2022 rally, please click <a href="https://www.tourofhonor.com/pages/register.html">here</a>.</p>
+        <% if(envIsProd) { %>
+          <p>If you have not registered for the 2022 rally, please click <a href="https://www.tourofhonor.com/pages/register.html">here</a>.</p>
+        <% } %>
       </div>
     </div>
   </main>
