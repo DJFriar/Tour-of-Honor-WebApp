@@ -23,7 +23,7 @@ module.exports = function (app) {
   // });
 
   app.get("/", async (req,res) => {
-    res.redirect('/memorials');
+    res.redirect('/login');
   });
 
   app.get("/admin", isAuthenticated, async (req,res) => {
@@ -204,6 +204,22 @@ module.exports = function (app) {
       restrictionData,
       stateMemorialData,
       NotificationText: "",
+    });
+  });
+
+  app.get("/admin/trophy-editor", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    // try {
+    //   var Users = await q.queryAllUsers();
+    // } catch {
+    //   console.log("Error encountered: queryAllUsers");
+    // }
+
+    res.render("pages/admin/trophy-editor", {
+      activeUser,
+      User: req.user,
+      NotificationText: "Under Construction",
     });
   });
 
