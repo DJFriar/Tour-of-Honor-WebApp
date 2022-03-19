@@ -13,7 +13,7 @@ $(document).ready(() => {
   $("#saveProfileEdits").on("click", function() {
     var UserID = $(this).data("userid");
     var PillionFlagNumberInput = $("#PillionFlagNumber").val().trim();
-    if (!PillionFlagNumberInput) {
+    if (!PillionFlagNumberInput || PillionFlagNumberInput == "N/A") {
       PillionFlagNumberInput = 0;
     }
     console.log(PillionFlagNumberInput);
@@ -41,7 +41,7 @@ $(document).ready(() => {
       type: "PUT",
       data: updateUserProfile
     }).then(
-      function() { location.reload(); }
+      function() { location.replace("/logout"); }
     );
   });
   
