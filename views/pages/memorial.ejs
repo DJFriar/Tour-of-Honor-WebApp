@@ -8,7 +8,16 @@
   <% } else { %>
     <%- include('../partials/topnav'); %>
   <% } %>
-  <h4 style="text-align:center"><%= MemorialData[0].Name %> (<%= MemorialData[0].Code %>)</h4>
+  <h4 style="text-align:center">
+    <%= MemorialData[0].Name %> 
+    (<%= MemorialData[0].Code %>) &nbsp;
+    <% if(SubmissionStatus[0].Status == 0) { %>
+      <i class="fal fa-clock"></i>
+    <% } %>
+    <% if(SubmissionStatus[0].Status == 1) { %>
+      <i class="fas fa-shield-check" color="green"></i>
+    <% } %>
+  </h4>
   <% if(NotificationText) { %>
     <%- include('../partials/notice'); %>
   <% } %>
@@ -16,7 +25,6 @@
     <div class="uk-child-width-expand@s" uk-grid>
       <div>
         <div class="" uk-grid>
-          <!-- <img class="sampleImage uk-align-center" src="https://www.tourofhonor.com/2022appimages/<%= MemorialData[0].SampleImage %>"> -->
           <img class="sampleImage uk-align-center" src="http://images.tourofhonor.com/SampleImages/<%= MemorialData[0].SampleImage %>">
           <div class="uk-align-center" style="width: 73%; margin-top: 0; margin-bottom: 0;">
             <div class="uk-align-left"><%= MemorialData[0].Code %></div>
@@ -81,14 +89,19 @@
       <!-- BEGIN: Right hand column -->
       <div>
         <div id="memorialInfo">
-          <h6>Memorial Info</h6>
+          <p class="toh-miniHeader">Address</p>
           <%= MemorialData[0].Name %><br/>
           <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
           <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
           <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
-          GPS: <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
-          Access: <%= MemorialData[0].Access %><br>
-          <% if(MemorialData[0].URL) { %> Related Link: <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a><% } %>
+          <p class="toh-miniHeader">GPS Coordinates</p>
+          <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
+          <p class="toh-miniHeader">Access Restrictions</p>
+          <%= MemorialData[0].Access %><br>
+          <% if(MemorialData[0].URL) { %> 
+            <p class="toh-miniHeader">Related Link</p>
+            <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a>
+          <% } %>
         </div>
         <hr>
         <div id="memorialMetadata">

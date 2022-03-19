@@ -112,10 +112,17 @@
                 <%= riderSubmission.Category %>
               </td>
               <td>
+                <% if(riderSubmission.StatusID == 0) { %> 
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fal fa-clock"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } %>
+                <% if(riderSubmission.StatusID == 1) { %> 
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-check" color="green"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } %>
                 <% if(riderSubmission.StatusID == 2) { %> 
-                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="far fa-exclamation-triangle"></i>&nbsp;<%= riderSubmission.Status %></span>
-                <% } else if(riderSubmission.ScorerNotes) { %>
-                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="far fa-comment-alt-lines"></i>&nbsp;<%= riderSubmission.Status %></span>
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } %>
+                <% if(riderSubmission.ScorerNotes) { %>
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="far fa-comment-alt-lines"></i></span>
                 <% } %>
               </td>
               <td>
