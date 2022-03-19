@@ -445,7 +445,7 @@ module.exports = function (app) {
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
-      NotificationText: "Changes work, but they currently they are not visible until you logout and back in again. Bike info is still in progress.",
+      NotificationText: "",
       RiderSubmissionHistory,
       RiderBikeInfo,
       dt: DateTime
