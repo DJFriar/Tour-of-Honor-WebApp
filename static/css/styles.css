@@ -85,6 +85,10 @@ footer {
   margin-bottom: 12px;
 }
 
+#memorialInfo {
+  margin-bottom: 12;
+}
+
 /* #memorial-editor h4 {
   margin-top: 20px;
 } */
@@ -265,4 +269,11 @@ a.hidden-link:visited {
   text-align: center;
   color: indianred;
   font-size: 1.2em;
+}
+
+.toh-miniHeader {
+  font-size: .9em;
+  font-weight: bold;
+  margin-bottom: 0;
+  text-transform: uppercase;
 }
