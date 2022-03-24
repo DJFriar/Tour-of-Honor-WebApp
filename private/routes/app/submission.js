@@ -22,7 +22,7 @@ router.post('/',
   (req, res) => {
     const images = req.files.images;
     const RiderFlag = req.body.RiderFlag;
-    let OtherRiders = "";
+    RiderArray = [];
     let primaryFile = {};
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
@@ -30,7 +30,9 @@ router.post('/',
     const optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
 
     if (req.body.OtherRiders != "undefined" && req.body.OtherRiders != "") {
-      OtherRiders = req.body.OtherRiders;
+      GroupRiders = req.body.OtherRiders;
+      GroupRiderArray = GroupRiders.split(',');
+      RiderArray = RiderArray.concat(GroupRiderArray);
     }
 
     if (!req.files) {
@@ -67,7 +69,7 @@ router.post('/',
       PrimaryImage: primaryFilename,
       OptionalImage: optionalFilename,
       RiderNotes: req.body.RiderNotes,
-      OtherRiders: OtherRiders,
+      OtherRiders: RiderArray.toString(),
       Status: 0 // 0 = Pending Approval
     });
     res.send({result:"success"});
