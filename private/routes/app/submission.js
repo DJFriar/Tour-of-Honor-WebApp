@@ -20,15 +20,19 @@ router.get('/byUser/:id', async (req,res) => {
 router.post('/',
   fileUpload(),
   (req, res) => {
-    console.log(req.body.UserID);
     const images = req.files.images;
     const RiderFlag = req.body.RiderFlag;
-    const OtherRiders = req.body.OtherRiders;
+    let OtherRiders = "";
     let primaryFile = {};
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
     const primaryFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-1.jpg`;
     const optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
+
+    if (req.body.OtherRiders != "undefined" && req.body.OtherRiders != "") {
+      OtherRiders = req.body.OtherRiders;
+    }
+
     if (!req.files) {
       console.log("No files were uploaded");
       return res.status(400).send("No files were uploaded.");
@@ -63,7 +67,7 @@ router.post('/',
       PrimaryImage: primaryFilename,
       OptionalImage: optionalFilename,
       RiderNotes: req.body.RiderNotes,
-      OtherRiders: req.body.OtherRiders,
+      OtherRiders: OtherRiders,
       Status: 0 // 0 = Pending Approval
     });
     res.send({result:"success"});

@@ -63,6 +63,7 @@ $(document).ready(function () {
       type: "GET"
     }).then(
       function(res) { 
+        console.log("Going to submission " + res[0].id)
         location.assign("/submission/" + res[0].id); 
       }
     )
