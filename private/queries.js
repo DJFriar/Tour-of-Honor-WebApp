@@ -360,7 +360,7 @@ module.exports.queryNextPendingSubmissions = async function queryNextPendingSubm
         type: QueryTypes.SELECT
       });
     } else {
-      var result = await sequelize.query("SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.Status = 0 LIMIT 1",
+      var result = await sequelize.query("SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.Status = 0 ORDER BY s.id ASC LIMIT 1",
       {
         replacements: [category],
         type: QueryTypes.SELECT
