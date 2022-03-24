@@ -24,7 +24,8 @@ router.post("/", async (req, res) => {
       LastName: UserData.LastName, 
       Email: UserData.Email, 
       FlagNumber: UserData.FlagNumber,
-      ZipCode: UserData.ZipCode
+      ZipCode: UserData.ZipCode,
+      PassengerFlag: UserData.PillionFlagNumber
     },
     process.env.JWT_SECRET
   );
