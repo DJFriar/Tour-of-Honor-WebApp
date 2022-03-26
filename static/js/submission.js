@@ -39,6 +39,25 @@ $(document).ready(function () {
     );
   });
 
+  // Handle Skip Button
+  $(".skipButton").on("click", function() {
+    var subID = $(this).data("submissionid");
+    var scorerNotes = $("#scorerNotes").val().trim()
+    var submissionInfo = {
+      SubmissionID: subID,
+      ScorerNotes: scorerNotes,
+      Status: 3
+    };
+
+    $.ajax("/handle-submission", {
+      type: "PUT",
+      data: submissionInfo
+    }).then(
+      goToNextPendingSubmission(selectedFilter)
+    );
+    
+  })
+
   // Handle Reject Button
   $(".rejectButton").on("click", function() {
     var subID = $(this).data("submissionid");
@@ -68,4 +87,15 @@ $(document).ready(function () {
       }
     )
   }
+
+  // function skipPendingSubmission(category, subID) {
+  //   $.ajax("/api/v1/skipsubmission/" + category + "/" + subID, {
+  //     type: "GET"
+  //   }).then(
+  //     function(res) { 
+  //       console.log("Skipped " + subID + ". Going to submission " + res[0].id)
+  //       location.assign("/submission/" + res[0].id); 
+  //     }
+  //   )
+  // }
 })
