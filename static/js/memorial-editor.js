@@ -87,6 +87,22 @@
       $(".memorialBtnDiv").toggleClass("hide-me");
     });
 
+    // Handle Image Needed checkbox
+    $("#ImageNeeded").change(function() {
+      if (this.checked) {
+        $("#SampleImage").val("imageNeeded.png");
+      } else {
+        $("#SampleImage").val("");
+      }
+    });
+    $("#EditImageNeeded").change(function() {
+      if (this.checked) {
+        $("#EditSampleImage").val("imageNeeded.png");
+      } else {
+        $("#EditSampleImage").val("");
+      }
+    });
+
     // Handle Delete Memorial Button
     $(".deleteMemorialBtn").on("click", function() {
       var id = $(this).data("uid");
