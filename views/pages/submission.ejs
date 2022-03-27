@@ -14,7 +14,7 @@
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
-    <% if(Submissions[0].Status != 0) { %>
+    <% if(Submissions[0].Status != 0 && Submissions[0].Status != 3) { %>
       <%- include('../partials/notice', { NotificationText: 'This submission has already been scored.' }); %>
     <% } %>
     <main>
@@ -49,7 +49,7 @@
         <div class="uk-width-1-3">
           <div class="scorerNotesSection toh-mb-18">
             <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
-            <% if(Submissions[0].Status == 0) { %>
+            <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
               <textarea class="uk-textarea" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
             <% } else { %>
               <textarea class="uk-textarea" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
@@ -62,7 +62,12 @@
                 <i class="far fa-thumbs-down"></i>&nbsp; Reject
               </button>
             </span>
-            <% if(Submissions[0].Status == 0) { %>
+            <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
+              <button class="uk-button uk-button-primary skipButton" data-submissionid="<%= Submissions[0].id %>">
+                <i class="fas fa-forward"></i>&nbsp; Skip
+              </button>
+            </span>
+            <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
               <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
                 <i class="far fa-thumbs-up"></i>&nbsp; Approve
               </button>

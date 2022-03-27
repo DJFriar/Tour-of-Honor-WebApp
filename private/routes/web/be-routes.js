@@ -500,4 +500,14 @@ module.exports = function (app) {
     });
   })
 
+  // Skip Submission
+  // app.get("/api/v1/skipsubmission/:category/:id", (req, res) => {
+  //   const category = req.params.category.toLowerCase();
+  //   const subid = req.params.id.toLowerCase();
+  //   q.querySkipPendingSubmission(category, subid)
+  //     .then(function (dbPost) {
+  //     res.json(dbPost);
+  //   });
+  // })
+
 }

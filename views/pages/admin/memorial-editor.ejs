@@ -86,7 +86,9 @@
           </select>
         </div>
         <div class="uk-width-1-3@s">
-          <label class="uk-form-label" for="SampleImage">Sample Image (2021PA3.jpg)</label>
+          <label class="uk-form-label" for="SampleImage">Sample Image (2021PA3.jpg)
+            <input style="margin-left: 85;" class="uk-checkbox" type="checkbox" name="ImageNeeded" id="ImageNeeded"> Request Image?
+          </label>
           <input class="uk-input uk-width-1-1" type="text" name="SampleImage" id="SampleImage" placeholder="sampleImage">
         </div>
         <div class="uk-width-1-6@s">
@@ -147,9 +149,9 @@
               <div class="uk-inline">
                 <button class="uk-button uk-button-default" type="button">Actions</button>
                 <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
-                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fal fa-edit fa-fw"></i> Edit Memorial Info</span></button>
-                  <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fal fa-edit fa-fw"></i> Edit Memorial Text</span></a>
-                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="far fa-trash-alt fa-fw"></i> Delete Memorial</span></button>
+                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fa-regular fa-pen-to-square"></i> Edit Memorial Info</span></button>
+                  <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fa-regular fa-pen-to-square"></i> Edit Memorial Text</span></a>
+                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="fa-regular fa-trash-can"></i> Delete Memorial</span></button>
                 </div>
               </div>
             </td>
