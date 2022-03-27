@@ -155,13 +155,13 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
 module.exports.querySubmissions = async function querySubmissions(id = false) {
   try {
     if (id) {
-      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN \"Pending\" WHEN s.Status = 1 THEN \"Approved\" WHEN s.Status = 2 THEN \"Rejected\" WHEN s.Status = 3 THEN \"Held\" END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
       {
         replacements: [id],
         type: QueryTypes.SELECT
       })
     } else {
-      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id",
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN \"Pending\" WHEN s.Status = 1 THEN \"Approved\" WHEN s.Status = 2 THEN \"Rejected\" WHEN s.Status = 3 THEN \"Held\" END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id",
       {
         type: QueryTypes.SELECT
       })
@@ -363,6 +363,27 @@ module.exports.queryNextPendingSubmissions = async function queryNextPendingSubm
       var result = await sequelize.query("SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.Status = 0 ORDER BY s.id ASC LIMIT 1",
       {
         replacements: [category],
+        type: QueryTypes.SELECT
+      });
+    }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.querySkipPendingSubmission = async function querySkipPendingSubmission(category, id) {
+  try {
+    if (category == "all") {
+      var result = await sequelize.query("SELECT id FROM Submissions WHERE Status = 0 AND id <> ? LIMIT 1",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT
+      });
+    } else {
+      var result = await sequelize.query("SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.id <> ? AND s.Status = 0 ORDER BY s.id ASC LIMIT 1",
+      {
+        replacements: [category, id],
         type: QueryTypes.SELECT
       });
     }
