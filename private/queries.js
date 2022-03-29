@@ -472,9 +472,9 @@ module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemor
 
 module.exports.queryMemorialStatusByRider = async function queryMemorialStatusByRider(rider, memCode) {
   try {
-    var result = await sequelize.query("SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE s.UserID = ? AND m.Code = ? ORDER BY s.updatedAt DESC LIMIT 1",
+    var result = await sequelize.query("SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNum FROM Flags WHERE UserID = ?), OtherRiders)) ORDER BY s.updatedAt DESC LIMIT 1",
     {
-      replacements: [rider, memCode],
+      replacements: [memCode, rider, rider],
       type: QueryTypes.SELECT
     });
     return result;
