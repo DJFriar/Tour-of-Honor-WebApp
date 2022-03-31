@@ -1,0 +1,25 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body <%- envIsProd ? '' : 'style="background-color: rgba(245, 75, 75, 0.708)"'%>>
+  <main>
+    <div class="uk-container-xsmall uk-margin-auto">
+      <div class="">
+        <% if(envIsProd) { %>
+          <h3 class="uk-text-center">Scoring Portal Is Disabled</h3>
+          <p class="uk-text-center">The Scoring Portal is disabled to allow for final preparations before the 2022 Rally kicks off. It will be re-enabled approximately 15 minutes before the rally starts.</p>
+        <% } else { %>
+          <h3 class="uk-text-center">TOH Test Site</h3>
+          <p class="uk-text-center">The Scoring Portal is disabled to allow for final preparations before the 2022 Rally kicks off. It will be re-enabled approximately 15 minutes before the rally starts.</p>
+        <% } %>
+        <% if(envIsProd) { %>
+          <p>If you have not registered for the 2022 rally, please click <a href="https://www.tourofhonor.com/pages/register.html">here</a>.</p>
+        <% } %>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+</body>
