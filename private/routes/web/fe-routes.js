@@ -244,6 +244,12 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/disabled", async (req, res) => {
+    res.render("pages/disabled", {
+      NotificationText: ""
+    });
+  });
+
   app.get("/forgotpassword", async (req,res) => {
     res.render("pages/forgot-password", {
       NotificationText: "",
@@ -277,8 +283,24 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/login", async (req, res) => {
-    res.render("pages/login", {
+  // Enable this to put the site in maintence mode
+  app.get("/login", async (req,res) => {
+    res.redirect('/disabled');
+  });
+
+  // app.get("/login", async (req, res) => {
+  //   res.render("pages/login", {
+  //     NotificationText: ""
+  //   });
+  // });
+
+  app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+  });
+
+  app.get("/secretdoor", async (req, res) => {
+    res.render("pages/secretdoor", {
       NotificationText: ""
     });
   });
