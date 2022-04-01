@@ -470,7 +470,33 @@ module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemor
   }
 }
 
+module.exports.queryMemorialIDbyMemCode = async function queryMemorialIDbyMemCode(memCode) {
+  try {
+    var result = await sequelize.query("SELECT id from Memorials WHERE Code = ? LIMIT 1",
+    {
+      replacements: [memCode],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryMemorialStatusByRider = async function queryMemorialStatusByRider(rider, memCode) {
+  try {
+    var result = await sequelize.query("SELECT id FROM EarnedMemorialsXref WHERE FlagNum = ? AND MemorialID = ?",
+    {
+      replacements: [rider, memCode],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.querySubmissionStatusByRider = async function querySubmissionStatusByRider(rider, memCode) {
   try {
     var result = await sequelize.query("SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNum FROM Flags WHERE UserID = ?), OtherRiders)) ORDER BY s.updatedAt DESC LIMIT 1",
     {

@@ -395,6 +395,26 @@ module.exports = function (app) {
     }
   );
 
+  // Handle Manual Entry
+  app.put("/handle-alt-entry", async (req, res) => {
+    const memCode = req.body.MemorialCode;
+    var memID = 0;
+    try {
+      var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
+      memID = memIDResponse[0].id;
+    } catch (error) {
+      console.log("Error counterted when getting memorial ID.");
+    }
+    if(memID > 0) {
+      db.EarnedMemorialsXref.create({
+        FlagNum: req.body.FlagNumber,
+        MemorialID: memID,
+        RallyYear: 2022
+      });
+    }
+    res.send("success");
+  })
+
   // Update submissions
   app.put("/handle-submission", function (req, res) {
     // Update the submission record to mark it as scored
