@@ -95,6 +95,22 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/admin/alt-entry", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    // try {
+    //   var Users = await q.queryAllUsers();
+    // } catch {
+    //   console.log("Error encountered: queryAllUsers");
+    // }
+
+    res.render("pages/admin/alt-entry", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+    });
+  });
+
   app.get("/admin/memorial-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -210,16 +226,17 @@ module.exports = function (app) {
   app.get("/admin/trophy-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    // try {
-    //   var Users = await q.queryAllUsers();
-    // } catch {
-    //   console.log("Error encountered: queryAllUsers");
-    // }
+    try {
+      var Regions = await q.queryRegionList();
+    } catch {
+      console.log("Error encountered: queryRegionList");
+    }
 
     res.render("pages/admin/trophy-editor", {
       activeUser,
       User: req.user,
-      NotificationText: "Under Construction",
+      NotificationText: "",
+      Regions
     });
   });
 
@@ -324,6 +341,13 @@ module.exports = function (app) {
   app.get("/memorial/:memCode", async (req, res) => {
     var activeUser = false;
     const memCode = req.params.memCode;
+    var memID = 0;
+    try {
+      var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
+      memID = memIDResponse[0].id;
+    } catch (error) {
+      console.log("Error counterted when getting memorial ID.");
+    }
     try {
       var MemorialData = await q.queryMemorial(memCode);
     } catch {
@@ -334,15 +358,22 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryMemorialText");
     }
+    var MemorialStatus = 0;
     var SubmissionStatus = [];
     var UserData = [];
     if (req.user) { 
       activeUser = true;
       UserData = req.user
       try {
-        SubmissionStatus = await q.queryMemorialStatusByRider(req.user.id, memCode);
+        var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
+        MemorialStatus = MemorialStatusResponse[0].id;
       } catch {
         console.log("Error encountered: queryMemorialStatusByRider");
+      }
+      try {
+        SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
+      } catch {
+        console.log("Error encountered: querySubmissionStatusByRider");
       }
     };
     if(SubmissionStatus.length == 0) {
@@ -353,6 +384,7 @@ module.exports = function (app) {
       User: UserData,
       NotificationText: "",
       MemorialData,
+      MemorialStatus,
       MemorialText,
       SubmissionStatus
     });
