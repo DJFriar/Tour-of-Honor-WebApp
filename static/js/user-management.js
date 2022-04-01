@@ -90,9 +90,7 @@ $(document).ready(function() {
       type: "put",
       data: updateUser
     }).then(
-      function() {
-        location.reload();
-      }
+      function() { location.reload(); }
     );
   });
 

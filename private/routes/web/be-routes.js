@@ -395,6 +395,26 @@ module.exports = function (app) {
     }
   );
 
+  // Handle Manual Entry
+  app.put("/handle-alt-entry", async (req, res) => {
+    const memCode = req.body.MemorialCode;
+    var memID = 0;
+    try {
+      var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
+      memID = memIDResponse[0].id;
+    } catch (error) {
+      console.log("Error counterted when getting memorial ID.");
+    }
+    if(memID > 0) {
+      db.EarnedMemorialsXref.create({
+        FlagNum: req.body.FlagNumber,
+        MemorialID: memID,
+        RallyYear: 2022
+      });
+    }
+    res.send("success");
+  })
+
   // Update submissions
   app.put("/handle-submission", function (req, res) {
     // Update the submission record to mark it as scored
@@ -494,14 +514,25 @@ module.exports = function (app) {
     });
   })
 
-  // Skip Submission
-  // app.get("/api/v1/skipsubmission/:category/:id", (req, res) => {
-  //   const category = req.params.category.toLowerCase();
-  //   const subid = req.params.id.toLowerCase();
-  //   q.querySkipPendingSubmission(category, subid)
-  //     .then(function (dbPost) {
-  //     res.json(dbPost);
-  //   });
-  // })
 
+  // Handle Trophy Awards
+  app.put("/api/v1/award-trophy", async (req, res) => {
+    const flagNumber = req.body.FlagNumber;
+    var userID = 0;
+    try {
+      var userIDResponse = await q.queryUserIDFromFlagNum(flagNumber);
+      userID = userIDResponse[0].id;
+    } catch (error) {
+      console.log("Error counterted when getting memorial ID.");
+    }
+    if(userID > 0) {
+      db.EarnedTrophiesXref.create({
+        RegionID: req.body.RegionID,
+        PlaceNum: req.body.TrophyPlace,
+        UserID: userID,
+        RallyYear: 2022
+      });
+    }
+    res.send("success");
+  })
 }
