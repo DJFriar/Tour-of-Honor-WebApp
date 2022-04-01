@@ -226,16 +226,17 @@ module.exports = function (app) {
   app.get("/admin/trophy-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    // try {
-    //   var Users = await q.queryAllUsers();
-    // } catch {
-    //   console.log("Error encountered: queryAllUsers");
-    // }
+    try {
+      var Regions = await q.queryRegionList();
+    } catch {
+      console.log("Error encountered: queryRegionList");
+    }
 
     res.render("pages/admin/trophy-editor", {
       activeUser,
       User: req.user,
       NotificationText: "",
+      Regions
     });
   });
 

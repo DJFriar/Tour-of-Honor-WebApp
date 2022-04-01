@@ -567,3 +567,15 @@ module.exports.queryPointsEarnedByRider = async function queryMileageRiddenByRid
     throw err;
   }
 }
+
+module.exports.queryRegionList = async function queryRegionList() {
+  try {
+    var result = await sequelize.query("SELECT id, Region FROM Regions",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
