@@ -301,15 +301,15 @@ module.exports = function (app) {
   });
 
   // Enable this to put the site in maintence mode
-  app.get("/login", async (req,res) => {
-    res.redirect('/disabled');
-  });
-
-  // app.get("/login", async (req, res) => {
-  //   res.render("pages/login", {
-  //     NotificationText: ""
-  //   });
+  // app.get("/login", async (req,res) => {
+  //   res.redirect('/disabled');
   // });
+
+  app.get("/login", async (req, res) => {
+    res.render("pages/login", {
+      NotificationText: ""
+    });
+  });
 
   app.get("/logout", (req, res) => {
     req.logout();
