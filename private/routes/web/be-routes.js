@@ -403,7 +403,7 @@ module.exports = function (app) {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (error) {
-      console.log("Error counterted when getting memorial ID.");
+      console.log("Error encountered when getting memorial ID.");
     }
     if(memID > 0) {
       db.EarnedMemorialsXref.create({
@@ -517,14 +517,6 @@ module.exports = function (app) {
 
   // Handle Trophy Awards
   app.put("/api/v1/award-trophy", async (req, res) => {
-    const flagNumber = req.body.FlagNumber;
-    var userID = 0;
-    try {
-      var userIDResponse = await q.queryUserIDFromFlagNum(flagNumber);
-      userID = userIDResponse[0].id;
-    } catch (error) {
-      console.log("Error counterted when getting memorial ID.");
-    }
     db.Trophy.update({
       FlagNumbers: req.body.FlagNumbers
     }, {

@@ -362,7 +362,7 @@ module.exports = function (app) {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (error) {
-      console.log("Error counterted when getting memorial ID.");
+      console.log("Error encountered when getting memorial ID.");
     }
     try {
       var MemorialData = await q.queryMemorial(memCode);
