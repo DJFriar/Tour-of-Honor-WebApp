@@ -231,12 +231,18 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryRegionList");
     }
+    try {
+      var TrophyList = await q.queryTrophiesList();
+    } catch {
+      console.log("Error encountered: queryTrophiesList");
+    }
 
     res.render("pages/admin/trophy-editor", {
       activeUser,
       User: req.user,
       NotificationText: "",
-      Regions
+      Regions,
+      TrophyList
     });
   });
 
@@ -301,15 +307,15 @@ module.exports = function (app) {
   });
 
   // Enable this to put the site in maintence mode
-  app.get("/login", async (req,res) => {
-    res.redirect('/disabled');
-  });
-
-  // app.get("/login", async (req, res) => {
-  //   res.render("pages/login", {
-  //     NotificationText: ""
-  //   });
+  // app.get("/login", async (req,res) => {
+  //   res.redirect('/disabled');
   // });
+
+  app.get("/login", async (req, res) => {
+    res.render("pages/login", {
+      NotificationText: ""
+    });
+  });
 
   app.get("/logout", (req, res) => {
     req.logout();
@@ -478,6 +484,29 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       totalEarnedByRider
+    });
+  });
+
+  app.get("/trophies", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    try {
+      var Regions = await q.queryRegionList();
+    } catch {
+      console.log("Error encountered: queryRegionList");
+    }
+    try {
+      var TrophyList = await q.queryTrophiesList();
+    } catch {
+      console.log("Error encountered: queryTrophiesList");
+    }
+
+    res.render("pages/trophies", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      Regions,
+      TrophyList
     });
   });
 
