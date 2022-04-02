@@ -267,6 +267,16 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/changelog", async (req,res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.render("pages/changelog", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+    });
+  });
+
   app.get("/disabled", async (req, res) => {
     res.render("pages/disabled", {
       NotificationText: ""

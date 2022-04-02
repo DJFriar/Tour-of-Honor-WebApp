@@ -1,0 +1,55 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
+  <main>
+    <h4>Change Log</h4>
+    <% if(NotificationText) { %>
+      <%- include('../../partials/notice'); %>
+    <% } %>
+    &nbsp;<br/>
+    <div class="changes-container" id='tabs'>
+      <ul uk-tab>
+        <li><a href="#web">Web Portal</a></li>
+        <li><a href="#mobile">Android & iPhone Apps</a></li>
+      </ul>
+
+      <ul class="uk-switcher uk-margin">
+        <!-- Web Portal -->
+        <li id="web">
+          <h6>22.4.1.245</h6>
+          <ul>
+            <li>Added Trophy Status page. This page will show all the regions and what flag numbers, if any, have earned that trophy.</li>
+            <li>Added an admin page for awarding trophies.</li>
+            <li>Added this Changelog page.</li>
+          </ul>
+          <h6>22.3.31.236</h6>
+          <ul>
+            <li>Preparations for rally start.</li>
+            <li>Fixed some minor grammatical errors.</li>
+          </ul>
+        </li>
+        <!-- Mobile Apps -->
+        <li id="mobile">
+          <h6>3.2.1</h6>
+          <ul>
+            <li>When a memorial is submitted and that window disappears, the detail view is now instantly updated with the “pending” status.</li>
+            <li>Passenger flag is now shown on the User Profile tab (or if not set, N/A is displayed).</li>
+            <li>If a Passenger flag has been set in a user's profile, then the app will detect this and display the “Include Passenger” toggle on the submission page.</li>
+            <li>Various other bug fixes and performance enhancements.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <!-- <script type="text/javascript" src="js/changelog.js"></script> -->
+</body>
