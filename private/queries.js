@@ -570,7 +570,19 @@ module.exports.queryPointsEarnedByRider = async function queryMileageRiddenByRid
 
 module.exports.queryRegionList = async function queryRegionList() {
   try {
-    var result = await sequelize.query("SELECT id, Region FROM Regions",
+    var result = await sequelize.query("SELECT id, Region FROM Regions ORDER BY Region",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryTrophiesList = async function queryTrophiesList() {
+  try {
+    var result = await sequelize.query("SELECT r.Region, t.PlaceNum, t.FlagNumbers FROM Trophies t LEFT JOIN Regions r ON t.RegionID = r.id",
     {
       type: QueryTypes.SELECT
     });
