@@ -3,11 +3,11 @@ $(document).ready(() => {
   $("#awardTrophy").on("click", function() {
     var regionID = $("#TrophyRegion").val();
     var trophyPlace = $("#TrophyPlace").val();
-    var flagNumbers = $("#FlagNums").val();
+    var flagNumber = $("#FlagNum").val();
     var trophyData = {
       RegionID: regionID,
       TrophyPlace: trophyPlace,
-      FlagNumbers: flagNumbers,
+      FlagNumber: flagNumber,
     };
 
     $.ajax("/api/v1/award-trophy", {

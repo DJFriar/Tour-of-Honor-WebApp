@@ -23,6 +23,9 @@
       <ul class="uk-switcher uk-margin">
         <!-- Trophies -->
         <li id="trophies">
+          <h6>Award Trophy</h6>
+          <p>Choose the region, the place and then enter the flag number(s) that you want to award the trophy to. If more than one flag number, separate them by a comma without any spaces as shown in the box. 
+            If you make a mistake, you can just enter it again as it updates the record everytime you click Award Trophy.</p>
           <form class="signup uk-grid-small uk-form-stacked" uk-grid>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="TrophyRegion">Trophy Region</label>
@@ -37,21 +40,36 @@
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="TrophyPlace">Trophy Place</label>
               <select required class="uk-select" name="TrophyPlace" id="TrophyPlace">
-                <option value="1">1st</option>
-                <option value="2">2nd</option>
-                <option value="3">3rd</option>
+                <option value="1st">1st</option>
+                <option value="2nd">2nd</option>
+                <option value="3rd">3rd</option>
               </select>
             </div>
             <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input required class="uk-input" id="FlagNum" type="number" placeholder="###">
+              <label class="uk-form-label" for="FlagNums">Flag Numbers</label>
+              <input required class="uk-input" id="FlagNums" type="text" placeholder="###,###">
             </div>
             <div class="uk-width-1-4@s ">
               <label class="uk-form-label" for="awardTrophy">&nbsp;</label>
               <button type="button" id="awardTrophy" class="uk-button uk-button-primary">Award Trophy</button>
             </div>
           </form>
-          <p>DataTable Goes Here</p>
+          <br />
+          <h6>Trophy Statuses</h6>
+          <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
+            <% Regions.forEach(function(region) { %>
+              <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                  <h3 class="uk-card-title"><%= region.Region %></h3>
+                  <% TrophyList.forEach(function(trophy) { %> 
+                    <% if(trophy.Region == region.Region) { %>
+                      <p><%= trophy.PlaceNum %> - <% if(trophy.FlagNumbers) { %> <%= trophy.FlagNumbers %> <% } else { %> Available  <% } %></p>
+                    <% } %>
+                  <% }) %>
+                </div>
+              </div>
+            <% }) %>
+          </div>
         </li>
         <!-- Awards -->
         <li id="awards">

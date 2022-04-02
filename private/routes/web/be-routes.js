@@ -525,14 +525,14 @@ module.exports = function (app) {
     } catch (error) {
       console.log("Error counterted when getting memorial ID.");
     }
-    if(userID > 0) {
-      db.EarnedTrophiesXref.create({
+    db.Trophy.update({
+      FlagNumbers: req.body.FlagNumbers
+    }, {
+      where: { 
         RegionID: req.body.RegionID,
-        PlaceNum: req.body.TrophyPlace,
-        UserID: userID,
-        RallyYear: 2022
-      });
-    }
+        PlaceNum: req.body.TrophyPlace
+      }
+    })
     res.send("success");
   })
 }
