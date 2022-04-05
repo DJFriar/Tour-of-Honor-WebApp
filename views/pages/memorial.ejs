@@ -94,7 +94,7 @@
           <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
           <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
           <p class="toh-miniHeader">GPS Coordinates</p>
-          <%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %><br/>
+          <a href="https://www.google.com/maps/@<%= MemorialData[0].Latitude %>,<%= MemorialData[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %></a>
           <p class="toh-miniHeader">Access Restrictions</p>
           <%= MemorialData[0].Access %><br>
           <% if(MemorialData[0].URL) { %> 
