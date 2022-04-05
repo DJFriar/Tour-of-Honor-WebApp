@@ -20,10 +20,9 @@
     <main>
       <div class="" uk-grid>
         <div class="uk-width-2-3">
-          <div>
+          <div style="text-align: center;">
             <a href="http://images.tourofhonor.com/SampleImages/<%= Submissions[0].SampleImage %>" target="_blank">
-              <img class="toh-scoring-sampleImage uk-align-center" data-src="http://images.tourofhonor.com/SampleImages/<%= Submissions[0].SampleImage %>" width="434"
-            height="370" uk-img>
+              <img class="toh-scoring-sampleImage" data-src="http://images.tourofhonor.com/SampleImages/<%= Submissions[0].SampleImage %>" width="434" height="370" uk-img>
             </a>
           </div>
           <div class="uk-grid-small uk-child-width-expand" uk-grid>
@@ -80,10 +79,24 @@
           
           <dl class="uk-description-list uk-description-list-divider">
             <dt>
-              Submission Info<br/>
+              Memorial Info<br />
               <span class="toh-label toh-id-flag">
                 <%= Submissions[0].Code %>
               </span>
+            </dt>
+            <dd>
+              <div style="margin-bottom: 8">
+                <%= Submissions[0].Name %> <br />
+                <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
+                <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
+              </div>
+              MultiImage: <%= Submissions[0].MultiImage %> <br />
+              Access: <%= Submissions[0].Access %> <br />
+              Restrictions: <%= Submissions[0].Restrictions %> <br />
+            </dd>
+            <dt>
+              Submission Date<br/>
+
             </dt>
             <dd>
               <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
