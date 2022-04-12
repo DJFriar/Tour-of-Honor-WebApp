@@ -58,7 +58,7 @@
           <div class="uk-text-center toh-mb-18" id="approvalButtons">
             <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
               <button class="uk-button uk-button-danger rejectButton" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-down"></i>&nbsp; Reject
+                <i class="fas fa-thumbs-down"></i>&nbsp; Reject
               </button>
             </span>
             <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
@@ -68,11 +68,11 @@
             </span>
             <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
               <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } else { %>
               <button class="uk-button uk-button-disabled" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } %>
           </div>
