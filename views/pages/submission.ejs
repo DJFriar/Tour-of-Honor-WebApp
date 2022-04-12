@@ -90,16 +90,33 @@
                 <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
                 <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
               </div>
-              MultiImage: <%= Submissions[0].MultiImage %> <br />
               Access: <%= Submissions[0].Access %> <br />
-              Restrictions: <%= Submissions[0].Restrictions %> <br />
+              MultiImage: <%= Submissions[0].MultiImage %> <br />
+              Restrictions: <%= Submissions[0].Restrictions %>
             </dd>
             <dt>
-              Submission Date<br/>
-
+              Submission Info<br/>
             </dt>
             <dd>
-              <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
+              Date: <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %> <br />
+              <% if(Submissions[0].Source == 1) { %>
+                Source: <i class="fa-light fa-square-question"></i> Unknown
+              <% } %>
+              <% if(Submissions[0].Source == 2) { %>
+                Source: <i class="fa-brands fa-apple"></i> iPhone App
+              <% } %>
+              <% if(Submissions[0].Source == 3) { %>
+                Source: <i class="fa-brands fa-android"></i> Android App
+              <% } %>
+              <% if(Submissions[0].Source == 4) { %>
+                Source: <i class="fa-solid fa-browser"></i> Web Portal
+              <% } %>
+              <% if(Submissions[0].Source == 5) { %>
+                Source: <i class="fa-light fa-envelope"></i> Email
+              <% } %>
+              <% if(Submissions[0].Source == 6) { %>
+                Source: <i class="fa-brands fa-usps "></i> Snail Mail
+              <% } %>
             </dd>
             <% if(Submissions[0].RiderNotes) { %> 
               <dt>

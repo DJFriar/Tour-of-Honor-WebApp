@@ -389,6 +389,7 @@ module.exports = function (app) {
         OptionalImage: req.body.images[1],
         RiderNotes: req.body.RiderNotes,
         OtherRiders: RiderArray.toString(),
+        Source: req.body.Source,
         Status: 0 // 0 = Pending Approval
       })
       res.redirect("/memorials");
