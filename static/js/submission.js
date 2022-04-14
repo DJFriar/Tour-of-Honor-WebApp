@@ -55,7 +55,6 @@ $(document).ready(function () {
     }).then(
       goToNextPendingSubmission(selectedFilter)
     );
-    
   })
 
   // Handle Reject Button
@@ -74,7 +73,19 @@ $(document).ready(function () {
     }).then(
       goToNextPendingSubmission(selectedFilter)
     );
-    
+  });
+
+  // Handle POTM Button
+  $(".potmButton").on("click", function() {
+    var subID = $(this).data("submissionid");
+    var potmInfo = {
+      SubmissionID: subID
+    };
+
+    $.ajax("/handle-potmSubmission", {
+      type: "PUT",
+      data: potmInfo
+    })
   });
 
   function goToNextPendingSubmission(category) {

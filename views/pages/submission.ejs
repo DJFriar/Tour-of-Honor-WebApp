@@ -76,6 +76,14 @@
               </button>
             <% } %>
           </div>
+          <div class="uk-text-center toh-mb-18" id="otherButtons">
+            <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
+              <button class="uk-button uk-button-primary potmButton" data-submissionid="<%= Submissions[0].id %>">
+                <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
+              </button>
+            </span>
+            
+          </div>
           
           <dl class="uk-description-list uk-description-list-divider">
             <dt>
