@@ -3,6 +3,7 @@ $(document).ready(function () {
   selectedFilter = localStorage.getItem("categoryFilter");
   $("#selectFilterValue").text(selectedFilter);
 
+  // Validate Scorer Notes before allowing Rejection
   $("#scorerNotes").on("input", function () { 
     var scorerNotes = $("#scorerNotes").val().trim()
     if (scorerNotes.length >= 5) {

@@ -55,12 +55,13 @@
                   <label for="input-optional" id="inputOptionalLabel">
                     <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
                   </label>
-                  <input type="file" name="input-optional" id="input-optional" class="form-control-file border hide-me" />
+                  <input required type="file" name="input-optional" id="input-optional" class="form-control-file border hide-me" />
                 </div>
               </div>
               <input type="hidden" id="MemorialID" name="MemorialID" value="<%= MemorialData[0].id %>">
               <input type="hidden" id="MemorialCode" name="MemorialCode" value="<%= MemorialData[0].Code %>">
               <input type="hidden" id="Source" name="Source" value="4">
+              <input type="hidden" id="MultiImage" name="MultiImage" value="<%= MemorialData[0].MultiImage %>">
               <div class="uk-margin hide-me" id="GroupRiderInfoDiv">
                 <label for="GroupRiderInfo" id="GroupRiderInfoLabel">Group Rider Flag Numbers&nbsp;<span uk-tooltip="Enter flag numbers only, seperated by a comma, ie '123,999,555'."><i class="fal fa-info-circle"></i></span></label>
                 <input class="uk-input uk-width-1-1" type="text" name="GroupRiderInfo" id="GroupRiderInfo" placeholder="">
@@ -71,7 +72,7 @@
               </div>
               <div class="uk-text-center toh-mt-18">
                 <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
-                <span id="buttonSpan" uk-tooltip="Primary Image Required"><button disabled class="uk-button uk-button-primary bonusField" id="saveSubmission" >Submit</button></span>
+                <span id="buttonSpan" uk-tooltip="Missing a Required Image"><button disabled class="uk-button uk-button-primary bonusField" id="saveSubmission" >Submit</button></span>
               </div>
             </form>
           </div>
@@ -90,6 +91,12 @@
       <!-- BEGIN: Right hand column -->
       <div>
         <div id="memorialInfo">
+          <% if(MemorialData[0].MultiImage == 1) { %>
+            <span class="toh-mr-12"><i class="fa-solid fa-images fa-2xl"></i></span>
+          <% } %>
+          <% if(MemorialData[0].Restrictions > 1) { %>
+            <i class="fa-solid fa-octagon-exclamation fa-2xl" color="red"></i>
+          <% } %>
           <p class="toh-miniHeader">Address</p>
           <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
           <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
