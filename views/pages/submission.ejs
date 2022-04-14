@@ -58,7 +58,7 @@
           <div class="uk-text-center toh-mb-18" id="approvalButtons">
             <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
               <button class="uk-button uk-button-danger rejectButton" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-down"></i>&nbsp; Reject
+                <i class="fas fa-thumbs-down"></i>&nbsp; Reject
               </button>
             </span>
             <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
@@ -68,13 +68,21 @@
             </span>
             <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
               <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } else { %>
               <button class="uk-button uk-button-disabled" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="far fa-thumbs-up"></i>&nbsp; Approve
+                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } %>
+          </div>
+          <div class="uk-text-center toh-mb-18" id="otherButtons">
+            <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
+              <button class="uk-button uk-button-primary potmButton" data-submissionid="<%= Submissions[0].id %>">
+                <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
+              </button>
+            </span>
+            
           </div>
           
           <dl class="uk-description-list uk-description-list-divider">
@@ -90,16 +98,33 @@
                 <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
                 <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
               </div>
-              MultiImage: <%= Submissions[0].MultiImage %> <br />
               Access: <%= Submissions[0].Access %> <br />
-              Restrictions: <%= Submissions[0].Restrictions %> <br />
+              MultiImage: <%= Submissions[0].MultiImage %> <br />
+              Restrictions: <%= Submissions[0].Restrictions %>
             </dd>
             <dt>
-              Submission Date<br/>
-
+              Submission Info<br/>
             </dt>
             <dd>
-              <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
+              Date: <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %> <br />
+              <% if(Submissions[0].Source == 1) { %>
+                Source: <i class="fa-light fa-square-question"></i> Unknown
+              <% } %>
+              <% if(Submissions[0].Source == 2) { %>
+                Source: <i class="fa-brands fa-apple"></i> iPhone App
+              <% } %>
+              <% if(Submissions[0].Source == 3) { %>
+                Source: <i class="fa-brands fa-android"></i> Android App
+              <% } %>
+              <% if(Submissions[0].Source == 4) { %>
+                Source: <i class="fa-solid fa-browser"></i> Web Portal
+              <% } %>
+              <% if(Submissions[0].Source == 5) { %>
+                Source: <i class="fa-light fa-envelope"></i> Email
+              <% } %>
+              <% if(Submissions[0].Source == 6) { %>
+                Source: <i class="fa-brands fa-usps "></i> Snail Mail
+              <% } %>
             </dd>
             <% if(Submissions[0].RiderNotes) { %> 
               <dt>
