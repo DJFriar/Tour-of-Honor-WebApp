@@ -206,8 +206,16 @@ a.hidden-link:visited {
   margin-bottom: 12px;
 }
 
+.toh-mr-12 {
+  margin-right: 12px;
+}
+
 .toh-mb-18 {
   margin-bottom: 18px;
+}
+
+.toh-mr-18 {
+  margin-right: 18px;
 }
 
 .toh-mt-18 {

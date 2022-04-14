@@ -31,6 +31,11 @@ module.exports = function(sequelize, DataTypes) {
     OtherRiders : {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    Source: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     }
   });
 

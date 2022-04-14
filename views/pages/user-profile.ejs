@@ -122,7 +122,7 @@
                   <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
                 <% } %>
                 <% if(riderSubmission.ScorerNotes) { %>
-                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="far fa-comment-alt-lines"></i></span>
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="fal fa-comment-alt-lines"></i></span>
                 <% } %>
               </td>
               <td>
@@ -130,7 +130,7 @@
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 0) { %> 
-                  <span class="deleteSubmissionButton" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="far fa-trash-alt"></i></span>&nbsp;
+                  <span class="deleteSubmissionButton" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fal fa-trash-can"></i></span>&nbsp;
                 <% } %>
               </td>
             </tr>

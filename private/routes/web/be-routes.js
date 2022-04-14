@@ -389,6 +389,7 @@ module.exports = function (app) {
         OptionalImage: req.body.images[1],
         RiderNotes: req.body.RiderNotes,
         OtherRiders: RiderArray.toString(),
+        Source: req.body.Source,
         Status: 0 // 0 = Pending Approval
       })
       res.redirect("/memorials");
@@ -446,6 +447,17 @@ module.exports = function (app) {
       }
     }
     res.send("success");
+  })
+
+  // POTM Submission
+  app.put("/handle-potmSubmission", async (req, res) => {
+    const SubID = req.body.SubmissionID
+
+    // Send an email for POTM suggestion.
+    const SubmissionLink = `${process.env.BASE_URL}/submission/${SubID}/`;
+    let emailBody = await ejs.renderFile("./views/emails/emailPOTMSuggestion.ejs", { URL: SubmissionLink })
+    await sendEmail("potm@tourofhonor.com", "Tour of Honor Scoring Team - POTM Suggestion", emailBody);
+    res.send("POTM Suggestion has been sent.");
   })
 
   // Delete a Submission
