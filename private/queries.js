@@ -152,7 +152,7 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
   }
 }
 
-module.exports.querySubmissions = async function querySubmissions(id = false) {
+module.exports.queryAllSubmissions = async function queryAllSubmissions(id = false) {
   try {
     if (id) {
       var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
@@ -162,6 +162,46 @@ module.exports.querySubmissions = async function querySubmissions(id = false) {
       })
     } else {
       var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN \"Pending\" WHEN s.Status = 1 THEN \"Approved\" WHEN s.Status = 2 THEN \"Rejected\" WHEN s.Status = 3 THEN \"Held\" END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id",
+      {
+        type: QueryTypes.SELECT
+      })
+    }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryPendingSubmissions = async function queryPendingSubmissions(id = false) {
+  try {
+    if (id) {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT
+      })
+    } else {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
+      {
+        type: QueryTypes.SELECT
+      })
+    }
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id = false) {
+  try {
+    if (id) {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT
+      })
+    } else {
+      var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (1,2)",
       {
         type: QueryTypes.SELECT
       })
@@ -205,41 +245,6 @@ module.exports.queryMemorialText = async function queryMemorialText(memCode) {
       replacements: [memCode],
       type: QueryTypes.SELECT
     })
-    return result;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryAllBonusesWithStatus = async function queryAllBonusesWithStatus(rider) {
-  try {
-    var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0 AND bl.user_id = ?",
-      {
-        replacements: [rider],
-        type: QueryTypes.SELECT
-      });
-    return result;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryRiderWithStats = async function queryRiderWithStats(rider = false) {
-  try {
-    if (rider) {
-      var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0 AND bl.user_id = ?",
-      {
-        replacements: [rider],
-        type: QueryTypes.SELECT
-      });
-    } else {
-      var result = await sequelize.query("SELECT * FROM bonusItems bi INNER JOIN bonusLogs bl ON bi.id = bl.bonus_id WHERE iStatus != 0",
-      {
-        replacements: [rider],
-        type: QueryTypes.SELECT
-      });
-    }
-    
     return result;
   } catch (err) {
     throw err;
@@ -320,32 +325,6 @@ module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
         raw: true
       })
     }
-    return result;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryPendingSubmissionCount = async function queryPendingSubmissionCount() {
-  try {
-    var pendingBonuses = await db.bonusLog.count({
-      where: {
-        iStatus: 0
-      }
-    })
-    return pendingBonuses;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryPendingSubmissions = async function queryPendingSubmissions() {
-  try {
-    var result = await db.bonusLog.findAll({
-      where: {
-        iStatus: 0
-      }
-    })
     return result;
   } catch (err) {
     throw err;
@@ -433,33 +412,6 @@ module.exports.queryPendingBikeInfo = async function queryPendingBikeInfo(rider)
   }
 }
 
-module.exports.queryHandledSubmissions = async function queryHandledSubmissions(limit) {
-  try {   
-    var result = await sequelize.query("SELECT bl.*, bi.BonusCode, bi.BonusName, bi.Value, u.FirstName, u.LastName, u.UserName, u.FlagNumber, u.isActive, u.isAdmin FROM bonusLogs bl LEFT JOIN bonusItems bi ON bi.id = bl.bonus_id INNER JOIN users u ON u.id = bl.user_id WHERE bl.iStatus != 0 ORDER BY bl.updatedAt DESC LIMIT ?",
-    {
-      replacements: [limit],
-      type: QueryTypes.SELECT
-    });
-    return result;
-  } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryCompletedIDsByRider = async function queryCompletedIDsByRider(rider) {
-  try {
-    var result = await sequelize.query("SELECT bonus_id FROM bonusLogs WHERE bonus_id IS NOT NULL AND iStatus = 1 AND user_id = ?",
-    {
-      replacements: [rider],
-      type: QueryTypes.SELECT
-    });
-    var ids = JSON.stringify(result);
-    return ids;
-  } catch (err) {
-    throw err;
-  }
-}
-
 module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemorialsByAllRiders() {
   try {
     var result = await sequelize.query("SELECT emx.FlagNum, CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx INNER JOIN Flags f ON emx.FlagNum = f.FlagNum LEFT JOIN Users u ON f.UserID = u.id INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNum, u.FirstName, u.LastName",
@@ -518,52 +470,6 @@ module.exports.querySubmissionsByRider = async function querySubmissionsByRider(
     });
     return result;
   } catch (err) {
-    throw err;
-  }
-}
-
-module.exports.queryMileageRiddenByRider = async function queryMileageRiddenByRider(rider) {
-  try {
-    var getStartingMileage = await sequelize.query("SELECT odoValue FROM bonusLogs WHERE odoValue IS NOT NULL AND iStatus = 1 AND user_id = ? ORDER BY createdAt ASC LIMIT 1",
-    {
-      raw: true,
-      replacements: [rider],
-      type: QueryTypes.SELECT
-    });
-
-    var getMostRecentMileage = await sequelize.query("SELECT odoValue FROM bonusLogs WHERE odoValue IS NOT NULL AND iStatus = 1 AND user_id = ? ORDER BY createdAt DESC LIMIT 1",
-    {
-      replacements: [rider],
-      type: QueryTypes.SELECT
-    });
-    var mileageRidden = 0;
-    if (getMostRecentMileage[0].odoValue - getStartingMileage[0].odoValue > 0) {
-      mileageRidden = getMostRecentMileage[0].odoValue - getStartingMileage[0].odoValue;
-      return mileageRidden;
-    } else {
-      return mileageRidden;
-    }
-  } catch (err) {
-    return mileageRidden;
-    // throw err;
-  }
-}
-
-module.exports.queryPointsEarnedByRider = async function queryMileageRiddenByRider(rider) {
-  try {
-    var getStartingMileage = await sequelize.query("SELECT bl.*, bi.`Value` FROM bonusLogs bl INNER JOIN bonusItems bi ON bi.id = bl.bonus_id WHERE bl.bonus_id IS NOT NULL AND bl.iStatus = 1 AND bl.user_id = ?",
-    {
-      raw: true,
-      replacements: [rider],
-      type: QueryTypes.SELECT
-    });
-    var pointsEarned = 0;
-    for (i = 0; i < getStartingMileage.length; i++){
-      pointsEarned += getStartingMileage[i].Value;
-    }
-    return pointsEarned;
-  } catch (err) {
-    return
     throw err;
   }
 }

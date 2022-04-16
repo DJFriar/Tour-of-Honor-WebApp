@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  // Create the Pending Table
-  var pendingTable = $('#PendingTable').DataTable({
-    "order": [[ 0, "asc" ]],
+  // Create the Scored Table
+  var scoredTable = $('#ScoredTable').DataTable({
+    "order": [[ 1, "desc" ]],
     "pageLength": 50,
     "columnDefs": [
       {
@@ -17,38 +17,9 @@ $(document).ready(function () {
     ]
   });
 
-  // Prefilter out just the pending items
-  pendingTable.column(1)
-  .search(0)
-  .draw()
-  var pendingTableData = pendingTable.rows({order:'current', search:'applied'}).data();
-
-  // Create the Held for Review Table
-  var heldTable = $('#HeldTable').DataTable({
-    "order": [[ 0, "asc" ]],
-    "pageLength": 20,
-    "columnDefs": [
-      {
-        "targets": [0],
-        "visible": false,
-        "Searchable": false
-      },
-      {
-        "targets": [1],
-        "visible": false,
-        "Searchable": false
-      }
-    ]
-  });
-  // Prefilter out just the held items
-  heldTable.column(1)
-  .search(3)
-  .draw()
-  var heldTableData = heldTable.rows({order:'current', search:'applied'}).data();
+  var scoredTableData  = scoredTable.rows().data();
 
   // Force tables to be full width
-  $('table#PendingTable').css('width', '100%');
-  $('table#HeldTable').css('width', '100%');
   $('table#ScoredTable').css('width', '100%');
   
   // Handle Filter Buttons on Pending Table
@@ -119,15 +90,15 @@ $(document).ready(function () {
   function setSubmissionFilter(category) {
     localStorage.setItem("categoryFilter",category);
     if (category == "All") {
-      pendingTable.column(5)
+      scoredTable.column(5)
       .search("")
       .draw()
-      pendingTableData = pendingTable.rows({order:'current', search:'applied'}).data();
+      scoredTableData = scoredTable.rows({order:'current', search:'applied'}).data();
     } else {
-      pendingTable.column(5)
+      scoredTable.column(5)
       .search(category)
       .draw()
-      pendingTableData = pendingTable.rows({order:'current', search:'applied'}).data();
+      scoredTableData = scoredTable.rows({order:'current', search:'applied'}).data();
     }
   }
 })

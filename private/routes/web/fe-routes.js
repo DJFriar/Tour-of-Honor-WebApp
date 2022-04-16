@@ -40,11 +40,30 @@ module.exports = function (app) {
     var activeUser = false
     if (req.user) { activeUser = true };
     try {
-      var Submissions = await q.querySubmissions();
+      var PendingSubmissions = await q.queryPendingSubmissions();
     } catch {
-      console.log("Error encountered: querySubmissions");
+      console.log("Error encountered: queryPendingSubmissions");
     }
+    console.log("==== PendingSubmissions ====");
+    console.log(PendingSubmissions);
     res.render("pages/scoring", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      PendingSubmissions,
+      dt: DateTime
+    });
+  });
+
+  app.get("/scored/", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    try {
+      var Submissions = await q.queryScoredSubmissions();
+    } catch {
+      console.log("Error encountered: queryScoredSubmissions");
+    }
+    res.render("pages/scored", {
       activeUser,
       User: req.user,
       NotificationText: "",
@@ -63,7 +82,7 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     const id = req.params.id;
     try {
-      var Submissions = await q.querySubmissions(id);
+      var Submissions = await q.queryAllSubmissions(id);
       if (Submissions.length == 0) {
         res.redirect("/error");
       } else {
@@ -81,7 +100,7 @@ module.exports = function (app) {
         });
       }
     } catch {
-      console.log("querySubmissions failed for id " + id);
+      console.log("queryAllSubmissions failed for id " + id);
     }
   });
 
