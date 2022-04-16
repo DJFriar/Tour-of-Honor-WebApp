@@ -10,11 +10,11 @@
   <% } %>
   <h4>Scoring Dashboard</h4>
   <main>
+    <p>This page shows all submissions that have not been scored yet. To review submissions that have already been scored, go to the <a href="/scored">Scored Submissions</a> page.</p>
     <div class="admin-container" id='tabs'>
       <ul uk-tab>
         <li><a href="#pending">Pending Submissions</a></li>
         <li><a href="#held">Held for Review</a></li>
-        <li><a href="#scored">Scored Submissions</a></li>
       </ul>
 
       <ul class="uk-switcher uk-margin">
@@ -48,7 +48,7 @@
               </tr>
             </thead>
             <tbody>
-              <% Submissions.forEach(function(submission) { %>
+              <% PendingSubmissions.forEach(function(submission) { %>
                 <tr>
                   <td>
                     <%= submission.id %>
@@ -95,7 +95,7 @@
               </tr>
             </thead>
             <tbody>
-              <% Submissions.forEach(function(submission) { %>
+              <% PendingSubmissions.forEach(function(submission) { %>
                 <tr>
                   <td>
                     <%= submission.id %>
@@ -122,65 +122,6 @@
                     <%= dt.fromJSDate(submission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
                   </td>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-        <!-- Scored Submissions -->
-        <li id="scored">
-          <table class="uk-table uk-table-striped uk-table-small" id="ScoredTable">
-            <thead>
-              <tr>
-                <th>HiddenID</th>
-                <th>Updated MS</th>
-                <th>SubID</th>
-                <th>Rider</th>
-                <th>Memorial</th>
-                <th>Category</th>
-                <th>Location</th>
-                <th>Date Received</th>
-                <th>Status</th>
-                <th>Date Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% Submissions.forEach(function(submission) { %>
-                <% if(submission.Status > 0 && submission.Status < 3) { %> 
-                  <tr>
-                    <td>
-                      <%= submission.id %>
-                    </td>
-                    <td>
-                      <%= dt.fromJSDate(submission.updatedAt).toMillis(); %>
-                    </td>
-                    <td>
-                      <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
-                    </td>
-                    <td>
-                      <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fal fa-user-friends"></i></span> <% } %> 
-                    </td>
-                    <td>
-                      <%= submission.Code %>
-                    </td>
-                    <td>
-                      <%= submission.CatName %>
-                    </td>
-                    <td>
-                      <%= submission.City %>, <%= submission.State %>
-                    </td>
-                    <td>
-                      <%= dt.fromJSDate(submission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
-                    </td>
-                    <td>
-                      <% if(submission.Status == 1) { %> <span><i class="fas fa-shield-check" color="green"></i></span> <% } %> 
-                      <% if(submission.Status == 2) { %> <span><i class="fas fa-shield-exclamation" color="red"></i></span> <% } %> 
-                      &nbsp;<%= submission.StatusText %>
-                    </td>
-                    <td>
-                      <%= dt.fromJSDate(submission.updatedAt).toFormat('LLL d, yyyy @ HH:mm'); %>
-                    </td>
-                  </tr>
-                <% } %>
               <% }) %>
             </tbody>
           </table>
