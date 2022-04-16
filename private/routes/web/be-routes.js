@@ -55,7 +55,31 @@ module.exports = function (app) {
     });
   });
 
-  // Fetch a Memorial
+  // Create a Memorial - Alternate Version
+  app.post("/api/v1/memorial2", (req, res) => {
+    db.Memorial.create({
+      Code: req.body.MemorialCode.toUpperCase(),
+      Name: req.body.MemorialName,
+      Category: req.body.MemorialCategory,
+      Region: req.body.MemorialRegion,
+      Latitude: req.body.MemorialLatitude,
+      Longitude: req.body.MemorialLongitude,
+      Address1: req.body.MemorialAddress1,
+      Address2: req.body.MemorialAddress2,
+      City: req.body.MemorialCity,
+      State: req.body.MemorialState.toUpperCase(),
+      URL: req.body.MemorialURL.toLowerCase(),
+      Access: req.body.MemorialAccess,
+      MultiImage: req.body.MultiImage,
+      SampleImage: req.body.SampleImage,
+      Restrictions: req.body.MemorialRestrictions,
+      RallyYear: 2022,
+    }).then(() => {
+      res.redirect("/admin/memorial-editor2");
+    });
+  });
+
+  // Fetch a Memorial by ID
   app.get("/api/v1/memorial/:id", (req, res) => {
     const id = req.params.id;
     db.Memorial.findOne({
@@ -66,6 +90,18 @@ module.exports = function (app) {
       res.json(dbPost);
     });
   })
+
+    // Fetch a Memorial by Code
+    app.get("/api/v1/memorial/c/:code", (req, res) => {
+      const code = req.params.code;
+      db.Memorial.findOne({
+        where: {
+          Code: code
+        }
+      }).then(function (dbPost) {
+        res.json(dbPost);
+      });
+    })
 
   // Update a Memorial
   app.put("/api/v1/memorial", function (req, res) {

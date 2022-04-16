@@ -12,16 +12,6 @@ module.exports = function (app) {
   //#region READ (GET)
   // ===============================================================================
 
-  // app.get("/", isAuthenticated, async (req,res) => {
-  //   var activeUser = false
-  //   if (req.user) { activeUser = true };
-  //   res.render("pages/index", {
-  //     activeUser,
-  //     User: req.user,
-  //     NotificationText: "There is no content here, yet."
-  //   });
-  // });
-
   app.get("/", async (req,res) => {
     res.redirect('/login');
   });
@@ -158,6 +148,34 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/admin/memorial-editor2", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    try {
+      var categoryData = await q.queryAllCategories();
+    } catch {
+      console.log("Error encountered: queryAllCategories");
+    }
+    try {
+      var MemorialData = await q.queryAllMemorials();
+    } catch {
+      console.log("Error encountered: queryAllMemorials");
+    }
+    try {
+      var restrictionData = await q.queryAllRestrictions();
+    } catch {
+      console.log("Error encountered: queryAllRestrictions");
+    }
+    res.render("pages/admin/memorial-editor2", {
+      activeUser,
+      User: req.user,
+      categoryData,
+      MemorialData,
+      restrictionData,
+      NotificationText: ""
+    });
+  });
+
   app.get("/admin/memorial-text/:memCode", isAuthenticated, async (req, res) => {
     const memCode = req.params.memCode;
     var activeUser = false
@@ -181,66 +199,66 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/admin/memorial-metadata", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    var categoryData = [
-      { "ID":"0", "Name":"Testing", "ShortCode":"TEST" },
-      { "ID":"1", "Name":"Tour of Honor", "ShortCode": "TOH" },
-      { "ID":"2", "Name":"Doughboy", "ShortCode": "DB" },
-      { "ID":"3", "Name":"Huey", "ShortCode": "Huey" },
-      { "ID":"4", "Name":"Gold Star Family", "ShortCode": "GSF" },
-      { "ID":"5", "Name":"War Dogs", "ShortCode": "K9" },
-      { "ID":"6", "Name":"Madonna of the Trail", "ShortCode": "MotT" },
-      { "ID":"7", "Name":"9/11", "ShortCode": "9/11" }
-    ]
-    var memorialData = [
-      { "ID":"1", "Memorial_ID":"2", "Heading":"About", "Text":"The 7,000-square-foot memorial aims to honor all fallen law enforcement officers, firefighters and medics in the region. Two walls hold the names of fallen first responders and another wall holds insignias of different agencies as well as their explanations. In the middle of the memorial is a statue featuring a law enforcement officer and a paramedic comforting a firefighter who has lost someone. This wonderful memorial is part of the sprawling Leroy Elmore Park with a lake, a perfect spot to remember First Responder heroes." },
-    ]
-    var restrictionData = [
-      { "ID":"0", "Name":"None" },
-      { "ID":"1", "Name":"Military Base" },
-      { "ID":"2", "Name":"Private Property" },
-      { "ID":"3", "Name":"Unavailable" },
-      { "ID":"4", "Name":"Construction" }
-    ]
-    res.render("pages/admin/memorial-metadata", {
-      activeUser,
-      User: req.user,
-      categoryData,
-      memorialData,
-      restrictionData,
-      NotificationText: "",
-    });
-  });
+  // app.get("/admin/memorial-metadata", isAuthenticated, async (req, res) => {
+  //   var activeUser = false
+  //   if (req.user) { activeUser = true };
+  //   var categoryData = [
+  //     { "ID":"0", "Name":"Testing", "ShortCode":"TEST" },
+  //     { "ID":"1", "Name":"Tour of Honor", "ShortCode": "TOH" },
+  //     { "ID":"2", "Name":"Doughboy", "ShortCode": "DB" },
+  //     { "ID":"3", "Name":"Huey", "ShortCode": "Huey" },
+  //     { "ID":"4", "Name":"Gold Star Family", "ShortCode": "GSF" },
+  //     { "ID":"5", "Name":"War Dogs", "ShortCode": "K9" },
+  //     { "ID":"6", "Name":"Madonna of the Trail", "ShortCode": "MotT" },
+  //     { "ID":"7", "Name":"9/11", "ShortCode": "9/11" }
+  //   ]
+  //   var memorialData = [
+  //     { "ID":"1", "Memorial_ID":"2", "Heading":"About", "Text":"The 7,000-square-foot memorial aims to honor all fallen law enforcement officers, firefighters and medics in the region. Two walls hold the names of fallen first responders and another wall holds insignias of different agencies as well as their explanations. In the middle of the memorial is a statue featuring a law enforcement officer and a paramedic comforting a firefighter who has lost someone. This wonderful memorial is part of the sprawling Leroy Elmore Park with a lake, a perfect spot to remember First Responder heroes." },
+  //   ]
+  //   var restrictionData = [
+  //     { "ID":"0", "Name":"None" },
+  //     { "ID":"1", "Name":"Military Base" },
+  //     { "ID":"2", "Name":"Private Property" },
+  //     { "ID":"3", "Name":"Unavailable" },
+  //     { "ID":"4", "Name":"Construction" }
+  //   ]
+  //   res.render("pages/admin/memorial-metadata", {
+  //     activeUser,
+  //     User: req.user,
+  //     categoryData,
+  //     memorialData,
+  //     restrictionData,
+  //     NotificationText: "",
+  //   });
+  // });
 
-  app.get("/admin/state-memorial-editor", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    var pendingMemorialData = [
-      { "ID":1, "Name":"WW2 Memorial", "City":"Telluride", "State":"CO", "Access":"24/7" },
-      { "ID":2, "Name":"Springfield Veterans Memorial", "City":"Springfield", "State":"MO", "Access":"Dusk to Dawn" }
-    ]
-    var restrictionData = [
-      { "ID":"0", "Name":"None" },
-      { "ID":"1", "Name":"Military Base" },
-      { "ID":"2", "Name":"Private Property" },
-      { "ID":"3", "Name":"Unavailable" },
-      { "ID":"4", "Name":"Construction" }
-    ]
-    var stateMemorialData = [
-      { "ID":1, "Code":"TX3", "Name":"Central Texas Veterans Memorial", "City":"Brownwood", "State":"TX", "Access":"24/7" },
-      { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
-    ]
-    res.render("pages/admin/state-memorial-editor", {
-      activeUser,
-      User: req.user,
-      pendingMemorialData,
-      restrictionData,
-      stateMemorialData,
-      NotificationText: "",
-    });
-  });
+  // app.get("/admin/state-memorial-editor", isAuthenticated, async (req, res) => {
+  //   var activeUser = false
+  //   if (req.user) { activeUser = true };
+  //   var pendingMemorialData = [
+  //     { "ID":1, "Name":"WW2 Memorial", "City":"Telluride", "State":"CO", "Access":"24/7" },
+  //     { "ID":2, "Name":"Springfield Veterans Memorial", "City":"Springfield", "State":"MO", "Access":"Dusk to Dawn" }
+  //   ]
+  //   var restrictionData = [
+  //     { "ID":"0", "Name":"None" },
+  //     { "ID":"1", "Name":"Military Base" },
+  //     { "ID":"2", "Name":"Private Property" },
+  //     { "ID":"3", "Name":"Unavailable" },
+  //     { "ID":"4", "Name":"Construction" }
+  //   ]
+  //   var stateMemorialData = [
+  //     { "ID":1, "Code":"TX3", "Name":"Central Texas Veterans Memorial", "City":"Brownwood", "State":"TX", "Access":"24/7" },
+  //     { "ID":2, "Code":"KS6", "Name":"Veterans Memorial", "City":"Stockton", "State":"KS", "Access":"24/7" }
+  //   ]
+  //   res.render("pages/admin/state-memorial-editor", {
+  //     activeUser,
+  //     User: req.user,
+  //     pendingMemorialData,
+  //     restrictionData,
+  //     stateMemorialData,
+  //     NotificationText: "",
+  //   });
+  // });
 
   app.get("/admin/trophy-editor", isAuthenticated, async (req, res) => {
     var activeUser = false
@@ -351,12 +369,6 @@ module.exports = function (app) {
     res.redirect("/");
   });
 
-  app.get("/secretdoor", async (req, res) => {
-    res.render("pages/secretdoor", {
-      NotificationText: ""
-    });
-  });
-
   app.get("/memorials", async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
@@ -422,6 +434,12 @@ module.exports = function (app) {
       MemorialStatus,
       MemorialText,
       SubmissionStatus
+    });
+  });
+
+  app.get("/secretdoor", async (req, res) => {
+    res.render("pages/secretdoor", {
+      NotificationText: ""
     });
   });
 
