@@ -373,9 +373,9 @@ module.exports = function (app) {
     var activeUser = false
     if (req.user) { activeUser = true };
     try {
-      var Memorials = await q.queryAllMemorials();
+      var Memorials = await q.queryAllAvailableMemorials();
     } catch {
-      console.log("Error encountered: queryAllMemorials");
+      console.log("Error encountered: queryAllAvailableMemorials");
     }
     res.render("pages/memorials", {
       activeUser,
