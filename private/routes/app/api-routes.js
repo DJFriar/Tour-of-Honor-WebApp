@@ -6,9 +6,9 @@ module.exports = function (app) {
   // Fetch Memorial list
   app.get("/api/v1/memorial-list/", async (req, res) => {
     try {
-      var MemorialList = await q.queryAllMemorials();
+      var MemorialList = await q.queryAllAvailableMemorials();
     } catch {
-      console.log("Error encountered: queryAllMemorials");
+      console.log("Error encountered: queryAllAvailableMemorials");
     }
     res.json(MemorialList);
   })

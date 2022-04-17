@@ -152,6 +152,18 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
   }
 }
 
+module.exports.queryAllAvailableMemorials = async function queryAllAvailableMemorials() {
+  try {
+    var result = await sequelize.query("SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.Restrictions != 12 ORDER BY m.State, m.City, m.Category",
+    {
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryAllSubmissions = async function queryAllSubmissions(id = false) {
   try {
     if (id) {
