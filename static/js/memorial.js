@@ -9,6 +9,7 @@ $(document).ready(function() {
         $(this).closest("form").find(":submit").attr("disabled", "disabled");      
       }
     });
+    $("#input-optional").prop("required", false);
   }
   
   if ($("#MultiImage").val() == "1") {
