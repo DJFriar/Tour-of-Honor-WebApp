@@ -1,10 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
-  const IBARide = sequelize.define("IBARide", {
+  const Award = sequelize.define("Award", {
     Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    UserID: {
+    FlagNum: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -17,5 +17,5 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
     }
   });
-  return IBARide;
+  return Award;
 };

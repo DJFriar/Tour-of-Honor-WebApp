@@ -562,7 +562,6 @@ module.exports = function (app) {
     });
   })
 
-
   // Handle Trophy Awards
   app.put("/api/v1/award-trophy", async (req, res) => {
     db.Trophy.update({
@@ -574,5 +573,28 @@ module.exports = function (app) {
       }
     })
     res.send("success");
-  })
+  });
+
+  // Handle Granting Awards
+  app.put("/api/v1/award-iba", async (req, res) => {
+    db.Award.create({
+      FlagNum: req.body.FlagNumber,
+      Name: req.body.AwardName,
+      RideDate: req.body.AwardDate,
+      RallyYear: 2022
+    })
+    res.send("success");
+  });
+
+  // Delete an Award
+  app.delete("/api/v1/award-iba/:id", (req, res) => {
+    const id = req.params.id;
+    db.Award.destroy({
+      where: {
+        id: id
+      }
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
 }

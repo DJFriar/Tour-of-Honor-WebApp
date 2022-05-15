@@ -509,3 +509,15 @@ module.exports.queryTrophiesList = async function queryTrophiesList() {
     throw err;
   }
 }
+
+module.exports.queryAwardList = async function queryAwardList() {
+  try {
+    var result = await sequelize.query("SELECT a.id, a.Name, a.RideDate, a.FlagNum, u.FirstName, u.LastName FROM Awards a LEFT JOIN Users u ON a.FlagNum = u.FlagNumber",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
