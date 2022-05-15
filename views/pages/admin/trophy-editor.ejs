@@ -17,7 +17,7 @@
     <div class="trophy-container" id='tabs'>
       <ul uk-tab>
         <li><a href="#trophies">Trophies</a></li>
-        <!-- <li><a href="#awards">Awards</a></li> -->
+        <li><a href="#awards">Awards</a></li>
       </ul>
 
       <ul class="uk-switcher uk-margin">
@@ -73,6 +73,8 @@
         </li>
         <!-- Awards -->
         <li id="awards">
+          <h6>Grant an Award</h6>
+          <p>Enter the required info to grant an award.</p>
           <form class="signup uk-grid-small uk-form-stacked" uk-grid>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="AwardName">Award Name</label>
@@ -97,7 +99,38 @@
               <button type="button" id="grantAward" class="uk-button uk-button-primary">Grant Award</button>
             </div>
           </form>
-          <p>Awards List Goes Here</p>
+          <br />
+          <h6>Earned Awards</h6>
+          <!-- #region Awards Table -->
+          <table class="uk-table uk-table-striped uk-table-small" id="awardTable">
+            <thead>
+              <tr>
+                <th>UserID</th>
+                <th>Award</th>
+                <th>Date Earned</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% Awards.forEach(function(award) { %>
+                <tr>
+                  <td>
+                    <%= award.FirstName %> <%= award.LastName %> (<%= award.FlagNum %>)
+                  </td>
+                  <td>
+                    <%= award.Name %>
+                  </td>
+                  <td>
+                    <%= award.RideDate %>
+                  </td>
+                  <td>
+                    <div class="deleteAwardButton" data-uid="<%- award.id %>"><i class="fal fa-trash-can fa-lg"></i></div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+          <!-- #endregion -->
         </li>
       </ul>
     </div>
