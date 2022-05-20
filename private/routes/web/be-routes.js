@@ -285,6 +285,8 @@ module.exports = function (app) {
     db.User.update({
       UserName: req.body.UserName,
       ZipCode: req.body.ZipCode,
+      City: req.body.City,
+      State: req.body.State,
       Password: encryptedPassword
     }, {
       where: { id: req.body.UserID }
