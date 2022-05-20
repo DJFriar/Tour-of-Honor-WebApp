@@ -521,6 +521,8 @@ module.exports = function (app) {
       FlagNumber: req.body.FlagNumber,
       PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
+      City: req.body.City,
+      State: req.body.State,
       ZipCode: req.body.ZipCode,
       isAdmin: req.body.isAdmin
     }, {

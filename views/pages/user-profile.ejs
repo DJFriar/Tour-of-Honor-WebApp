@@ -27,27 +27,36 @@
         <label class="uk-form-label" for="UserName">Username</label>
         <input class="uk-input" id="UserName" type="text" placeholder="Username" value="<%= User.UserName %>">
       </div>
-      <div class="uk-width-1-2@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
-        <label class="uk-form-label" for="FlagNumber">Flag Number</label>
-        <input disabled class="uk-input" id="FlagNumber" type="text" placeholder="Flag Number" value="<%= User.FlagNumber %>" >
-      </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="Email">Email</label>
         <input class="uk-input" id="Email" type="email" placeholder="someone@domain.com" value="<%= User.Email %>">
       </div>
-      <div class="uk-width-1-2@s">
+      <div class="uk-width-1-3@s">
+        <label class="uk-form-label" for="City">City</label>
+        <input class="uk-input" id="City" type="text" placeholder="City" value="<%= User.City %>">
+      </div>
+      <div class="uk-width-1-3@s">
+        <label class="uk-form-label" for="State">State</label>
+        <input class="uk-input" id="State" maxlength="2" type="text" placeholder="ST" value="<%= User.State %>">
+      </div>
+      <div class="uk-width-1-3@s">
         <label class="uk-form-label" for="ZipCode">Zip Code</label>
         <input class="uk-input" id="ZipCode" maxlength="5" type="zipcode" placeholder="zip" value="<%= User.ZipCode %>">
       </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
-        <% if(User.PillionFlagNumber && User.PillionFlagNumber != 0) { %>
-          <input class="uk-input" id="PillionFlagNumber" type="text" value="<%= User.PillionFlagNumber %>">
-        <% } else { %>
-          <input class="uk-input" id="PillionFlagNumber" type="text" placeholder="N/A" value="N/A">
-        <% } %>
-
       
+      <div class="uk-width-1-2@s" uk-grid>
+        <div class="uk-width-1-2@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
+          <label class="uk-form-label" for="FlagNumber">Flag Number</label>
+          <input disabled class="uk-input" id="FlagNumber" type="text" placeholder="Flag Number" value="<%= User.FlagNumber %>" >
+        </div>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
+          <% if(User.PillionFlagNumber && User.PillionFlagNumber != 0) { %>
+            <input class="uk-input" id="PillionFlagNumber" type="text" value="<%= User.PillionFlagNumber %>">
+          <% } else { %>
+            <input class="uk-input" id="PillionFlagNumber" type="text" placeholder="N/A" value="N/A">
+          <% } %>
+        </div>
       </div>
       <div class="uk-width-1-2@s uk-text-center">
         <label class="uk-form-label" for="saveProfileEdits">&nbsp;</label>

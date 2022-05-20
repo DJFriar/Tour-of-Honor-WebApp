@@ -28,6 +28,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    City: {
+      type:DataTypes.STRING,
+    },
+    State: {
+      type:DataTypes.STRING,
+    },
     ZipCode: {
       type:DataTypes.STRING,
     },
