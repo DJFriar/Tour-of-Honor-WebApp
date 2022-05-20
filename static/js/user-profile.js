@@ -16,7 +16,6 @@ $(document).ready(() => {
     if (!PillionFlagNumberInput || PillionFlagNumberInput == "N/A") {
       PillionFlagNumberInput = 0;
     }
-    console.log(PillionFlagNumberInput);
 
     var updateUserProfile = {
       UserID,
@@ -26,6 +25,8 @@ $(document).ready(() => {
       FlagNumber: $("#FlagNumber").val().trim(),
       PillionFlagNumber: PillionFlagNumberInput,
       Email: $("#Email").val().trim(),
+      City: $("#City").val().trim(),
+      State: $("#State").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
     }
 

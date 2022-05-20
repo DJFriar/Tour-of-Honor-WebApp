@@ -285,6 +285,8 @@ module.exports = function (app) {
     db.User.update({
       UserName: req.body.UserName,
       ZipCode: req.body.ZipCode,
+      City: req.body.City,
+      State: req.body.State,
       Password: encryptedPassword
     }, {
       where: { id: req.body.UserID }
@@ -521,6 +523,8 @@ module.exports = function (app) {
       FlagNumber: req.body.FlagNumber,
       PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
+      City: req.body.City,
+      State: req.body.State,
       ZipCode: req.body.ZipCode,
       isAdmin: req.body.isAdmin
     }, {
