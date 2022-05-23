@@ -213,6 +213,11 @@ module.exports = function (app) {
       console.log("Error encountered: queryTrophiesList");
     }
     try {
+      var AwardNames = await q.queryAwardNamesList();
+    } catch {
+      console.log("Error encountered: queryAwardNamesList");
+    }
+    try {
       var Awards = await q.queryAwardList();
     } catch {
       console.log("Error encountered: queryAwardList");
@@ -223,6 +228,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Awards,
+      AwardNames,
       Regions,
       TrophyList
     });
