@@ -364,7 +364,11 @@ module.exports = function (app) {
       UserData = req.user
       try {
         var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
-        MemorialStatus = MemorialStatusResponse[0].id;
+        if (MemorialStatusResponse.length > 0) {
+          MemorialStatus = MemorialStatusResponse[0].id;
+        } else {
+          MemorialStatus = 0;
+        }
       } catch {
         console.log("Error encountered: queryMemorialStatusByRider");
       }
@@ -529,6 +533,30 @@ module.exports = function (app) {
       NotificationText: "",
       RiderSubmissionHistory,
       RiderBikeInfo,
+      dt: DateTime
+    });
+  });
+
+  app.get("/public-profile", async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+
+    res.render("pages/public-profile", {
+      activeUser,
+      NotificationText: "",
+      dt: DateTime
+    });
+  });
+
+  app.get("/registration", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    console.log(req.user);
+
+    res.render("pages/registration", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       dt: DateTime
     });
   });
