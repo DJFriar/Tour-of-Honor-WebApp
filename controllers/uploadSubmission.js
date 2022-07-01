@@ -1,6 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const { DateTime } = require("luxon");
+const { uploadFile } = require('../controllers/s3');
 
 const multerStorage = multer.memoryStorage();
 
@@ -22,8 +23,7 @@ const uploadMultiple = upload.fields([{ name: 'input-primary', maxCount: 1 }, { 
 const uploadImages = (req, res, next) => {
   uploadMultiple(req, res, err => {
     if (err) {
-      console.log("uploadMultiple errored");
-      console.log(err);
+      console.log("uploadMultiple errored:" + err);
       return res.send(err);
     }
     next();
@@ -32,21 +32,19 @@ const uploadImages = (req, res, next) => {
 
 const resizeImages = async (req, res, next) => {
   if (!req.files) return;
-  console.log("==== resizeImages ====");
-  console.log(req.files);
+
   const riderFlagNumber = req.user.FlagNumber;
   const MemorialID = req.body.MemorialCode;
   const currentTimestamp = DateTime.now().toMillis(); // Appends the unix timestamp to the file to avoid overwriting.
   const primaryFilename = `${riderFlagNumber}-${MemorialID}-${currentTimestamp}-1.jpg`;
   const optionalFilename = `${riderFlagNumber}-${MemorialID}-${currentTimestamp}-2.jpg`;
-  const primaryImageFile = req.files['input-primary'][0].buffer;
-  const optionalImageFile = req.files['input-optional'][0].buffer;
 
   req.body.images = [];
 
-  // Shrink and save the images
+  // Shrink and save the primary image
   try {
-    shrinkImage(primaryFilename, primaryImageFile);
+    const primaryImageFileData = req.files['input-primary'][0].buffer;
+    shrinkImage(primaryFilename, primaryImageFileData);
     req.body.images.unshift(primaryFilename);
   } catch (err) {
     console.log("Error shrinking primary image: " + err);
@@ -54,6 +52,7 @@ const resizeImages = async (req, res, next) => {
   // Handle optional image if present
   if(req.files['input-optional']) {
     try {
+      const optionalImageFile = req.files['input-optional'][0].buffer;
       shrinkImage(optionalFilename, optionalImageFile);
       req.body.images.push(optionalFilename);
     } catch (err) {
@@ -76,9 +75,19 @@ async function shrinkImage(fileName, file) {
     await sharp(file)
       .toFormat("jpeg")
       .jpeg({ quality: 50 })
-      .toFile(`static/uploads/${fileName}`);
+      .toBuffer()
+      .then(resizedImage => uploadToS3(fileName, resizedImage))
   } catch (err) {
     console.log("shrinkImage failed. " + err)
+  }
+}
+
+async function uploadToS3(fileName, file) {
+  try {
+    const s3result = await uploadFile(fileName, file);
+    console.log(s3result);
+  } catch (err){
+    console.log("S3 Upload Failed: " + err)
   }
 }
 
