@@ -74,28 +74,28 @@ $(document).ready(function() {
     }
   });
 
-  let handlePrimaryPhoto = function (input) {
-    if (input.files) {
+  let handlePrimaryPhoto = function (primaryInput) {
+    if (primaryInput.files) {
       let reader = new FileReader();
       reader.onload = function (event) {
         $(".primaryImagePlaceholder")
           .attr("src", event.target.result)
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(primaryInput.files[0]);
     }
   };
   $("#input-primary").on("change", function () {
     handlePrimaryPhoto(this, "label#inputPrimaryLabel");
   });
 
-  let handleOptionalPhoto = function (input) {
-    if (input.files) {
+  let handleOptionalPhoto = function (optionalInput) {
+    if (optionalInput.files) {
       let reader = new FileReader();
       reader.onload = function (event) {
         $(".optionalImagePlaceholder")
           .attr("src", event.target.result)
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(optionalInput.files[0]);
     }
   };
   $("#input-optional").on("change", function () {
