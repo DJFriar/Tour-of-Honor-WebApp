@@ -6,13 +6,22 @@ const uploadSubmission = require("../../../controllers/uploadSubmission");
 const passport = require("../../../config/passport");
 const multer = require('multer');
 const isAuthenticated = require("../../../config/isAuthenticated");
-const upload = multer({ dest: '../static/uploads' });
 const sendEmail = require("../../sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-
+const { register } = require("prom-client");
 
 module.exports = function (app) { 
+
+  //Handle Metric Reporting
+  app.get('/metrics', async (req, res) => {
+    try {
+      res.set('Content-Type', register.contentType);
+      res.end(await register.metrics());
+    } catch (err) {
+      res.status(500).end(err);
+    }
+  })
 
   // Check Flag Number Validity
   app.get("/api/v1/flag/:id", (req,res) => {
@@ -408,7 +417,7 @@ module.exports = function (app) {
     uploadSubmission.uploadImages,
     uploadSubmission.resizeImages,
     uploadSubmission.getResult,
-    function (req, res) {
+    async function (req, res) {
       RiderArray = [];
       PillionFlagNumber = 0;
       if (req.body.hasPillion) {

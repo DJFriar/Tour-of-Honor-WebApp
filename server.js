@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const session = require("express-session");
+const { collectDefaultMetrics, register } = require("prom-client");
 
 const auth = require("./private/routes/app/auth");
 const passport = require("./config/passport");
@@ -13,12 +14,16 @@ const submission = require("./private/routes/app/submission");
 // ==============================================================================
 // CONFIGURATION
 // ==============================================================================
+collectDefaultMetrics();
+
 const app = express();
 const PORT = process.env.PORT || 3700;
 const db = require("./models");
 app.locals.envName = process.env.NODE_ENV;
 app.locals.envNameShort = process.env.NODE_ENV_SHORT;
 app.locals.envIsProd = false;
+app.locals.baseImageUrl = process.env.BASE_IMAGE_URL;
+app.locals.baseSampleImageUrl = process.env.BASE_SAMPLE_IMAGE_URL;
 
 if (process.env.IS_PROD === "true") { app.locals.envIsProd = true; };
 
