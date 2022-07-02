@@ -8,6 +8,8 @@ const isAdmin = require("../../../config/isAdmin");
 
 module.exports = function (app) {
 
+  const baseSampleImageUrl = app.locals.baseSampleImageUrl;
+
   // ===============================================================================
   //#region READ (GET)
   // ===============================================================================
@@ -84,6 +86,7 @@ module.exports = function (app) {
           activeUser,
           User: req.user,
           NotificationText: "",
+          baseSampleImageUrl,
           Submissions,
           OtherRidersArray,
           dt: DateTime
@@ -385,6 +388,7 @@ module.exports = function (app) {
       activeUser,
       User: UserData,
       NotificationText: "",
+      baseSampleImageUrl,
       MemorialData,
       MemorialStatus,
       MemorialText,
