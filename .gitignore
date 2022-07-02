@@ -4,3 +4,4 @@ node_modules
 .nova
 static/uploads
 __pycache__
+logs

@@ -2,6 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { DateTime } = require("luxon");
 const { uploadFile } = require('../controllers/s3');
+const { logger } = require('../controllers/logger');
 
 const multerStorage = multer.memoryStorage();
 
@@ -47,6 +48,7 @@ const resizeImages = async (req, res, next) => {
     shrinkImage(primaryFilename, primaryImageFileData);
     req.body.images.unshift(primaryFilename);
   } catch (err) {
+    logger.error("Error shrinking primary image: " + err);
     console.log("Error shrinking primary image: " + err);
   }
   // Handle optional image if present
