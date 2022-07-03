@@ -13,7 +13,7 @@ const { register } = require("prom-client");
 
 module.exports = function (app) { 
 
-  //Handle Metric Reporting
+  // Handle Metric Reporting
   app.get('/metrics', async (req, res) => {
     try {
       res.set('Content-Type', register.contentType);
@@ -22,6 +22,14 @@ module.exports = function (app) {
       res.status(500).end(err);
     }
   })
+
+  // Handle Sample Image Updates
+  app.post("/update-sample-image",
+    uploadSubmission.uploadImages,
+    uploadSubmission.handleSampleImage, 
+    (req, res) => {
+      res.redirect("/admin/memorial-editor2");
+    })
 
   // Check Flag Number Validity
   app.get("/api/v1/flag/:id", (req,res) => {

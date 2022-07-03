@@ -9,6 +9,7 @@ const isAdmin = require("../../../config/isAdmin");
 module.exports = function (app) {
 
   const baseSampleImageUrl = app.locals.baseSampleImageUrl;
+  const baseImageUrl = app.locals.baseImageUrl;
 
   // ===============================================================================
   //#region READ (GET)
@@ -86,6 +87,7 @@ module.exports = function (app) {
           activeUser,
           User: req.user,
           NotificationText: "",
+          baseImageUrl,
           baseSampleImageUrl,
           Submissions,
           OtherRidersArray,
@@ -144,6 +146,8 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-editor", {
       activeUser,
       User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
       categoryData,
       MemorialData,
       restrictionData,
@@ -172,6 +176,8 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-editor2", {
       activeUser,
       User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
       categoryData,
       MemorialData,
       restrictionData,
@@ -388,6 +394,7 @@ module.exports = function (app) {
       activeUser,
       User: UserData,
       NotificationText: "",
+      baseImageUrl,
       baseSampleImageUrl,
       MemorialData,
       MemorialStatus,

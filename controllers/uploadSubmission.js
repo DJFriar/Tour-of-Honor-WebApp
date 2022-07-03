@@ -1,7 +1,7 @@
 const multer = require("multer");
 const sharp = require("sharp");
 const { DateTime } = require("luxon");
-const { uploadFile } = require('../controllers/s3');
+const { uploadRiderSubmittedImage, uploadSampleImage } = require('../controllers/s3');
 const { logger } = require('../controllers/logger');
 
 const multerStorage = multer.memoryStorage();
@@ -19,7 +19,11 @@ const upload = multer({
   fileFilter: multerFilter
 });
 
-const uploadMultiple = upload.fields([{ name: 'input-primary', maxCount: 1 }, { name: 'input-optional', maxCount: 1 }]);
+const uploadMultiple = upload.fields([
+  { name: 'input-primary', maxCount: 1 }, 
+  { name: 'input-optional', maxCount: 1 }, 
+  { name: 'sampleImageFile', maxCount: 1 }
+]);
 
 const uploadImages = (req, res, next) => {
   uploadMultiple(req, res, err => {
@@ -72,6 +76,23 @@ const getResult = async (req, res, next) => {
   next();
 };
 
+const handleSampleImage = async (req, res, next) => {
+  if (!req.files) return;
+  
+  const sampleImageFileName = req.body.EditSampleImageName
+
+  try {
+    const sampleImageFileData = req.files['sampleImageFile'][0].buffer;
+    shrinkSampleImage(sampleImageFileName, sampleImageFileData);
+  } catch (err) {
+    logger.error("Error shrinking sample image: " + err);
+    console.log("Error shrinking sample image: " + err);
+  }
+
+  // Move on to the next task
+  next();
+}
+
 async function shrinkImage(fileName, file) {
   try {
     await sharp(file)
@@ -80,21 +101,45 @@ async function shrinkImage(fileName, file) {
       .toBuffer()
       .then(resizedImage => uploadToS3(fileName, resizedImage))
   } catch (err) {
-    console.log("shrinkImage failed. " + err)
+    console.log("shrinkImage failed. " + err);
   }
 }
 
 async function uploadToS3(fileName, file) {
   try {
-    const s3result = await uploadFile(fileName, file);
+    const s3result = await uploadRiderSubmittedImage(fileName, file);
     console.log(s3result);
   } catch (err){
-    console.log("S3 Upload Failed: " + err)
+    console.log("S3 Rider Image Upload Failed: " + err);
+  }
+}
+
+async function shrinkSampleImage(fileName, file) {
+  try {
+    await sharp(file)
+      .toFormat("jpeg")
+      .jpeg({ quality: 50 })
+      .toBuffer()
+      .then(resizedImage => uploadSampleImageToS3(fileName, resizedImage))
+  } catch (err) {
+    console.log("shrinkImage failed. " + err);
+  }
+}
+
+async function uploadSampleImageToS3(fileName, file) {
+  try {
+    const s3result = await uploadSampleImage(fileName, file);
+    logger.info("Sample Image Uploaded: " + s3result);
+    console.log(s3result);
+  } catch (err){
+    logger.error("S3 Sample Image Upload Failed: " + err);
+    console.log("S3 Sample Image Upload Failed: " + err);
   }
 }
 
 module.exports = {
   uploadImages: uploadImages,
   resizeImages: resizeImages,
-  getResult: getResult
+  getResult: getResult,
+  handleSampleImage: handleSampleImage
 };

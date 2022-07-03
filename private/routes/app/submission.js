@@ -5,8 +5,7 @@ const { DateTime } = require("luxon");
 const sharp = require("sharp");
 const fileUpload = require("express-fileupload");
 const q = require("../../queries");
-const { uploadFile } = require('../../../controllers/s3');
-
+const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
 
 // Fetch submissions for given user ID
 router.get('/byUser/:id', async (req,res) => {
@@ -99,7 +98,7 @@ router.post('/',
     
     async function uploadToS3(fileName, file) {
       try {
-        const s3result = await uploadFile(fileName, file);
+        const s3result = await uploadRiderSubmittedImage(fileName, file);
         console.log(s3result);
       } catch (err){
         console.log("S3 Upload Failed: " + err)

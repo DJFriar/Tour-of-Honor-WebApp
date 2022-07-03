@@ -198,28 +198,32 @@ a.hidden-link:visited {
   height: 80px
 }
 
-.toh-mb-8 {
-  margin-bottom: 8px;
+.toh-mt-8 {
+  margin-top: 8px;
 }
 
-.toh-mb-12 {
-  margin-bottom: 12px;
+.toh-mb-8 {
+  margin-bottom: 8px;
 }
 
 .toh-mr-12 {
   margin-right: 12px;
 }
 
-.toh-mb-18 {
-  margin-bottom: 18px;
+.toh-mb-12 {
+  margin-bottom: 12px;
+}
+
+.toh-mt-18 {
+  margin-top: 18px;
 }
 
 .toh-mr-18 {
   margin-right: 18px;
 }
 
-.toh-mt-18 {
-  margin-top: 18px;
+.toh-mb-18 {
+  margin-bottom: 18px;
 }
 
 .toh-mt-24 {
@@ -291,5 +295,17 @@ a.hidden-link:visited {
   font-size: .9em;
   font-weight: bold;
   margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+.toh-input {
+  border-radius: 8px;
+}
+
+.button-rounded {
+  border-radius: 8px;
+}
+
+.force-uppercase {
   text-transform: uppercase;
 }
