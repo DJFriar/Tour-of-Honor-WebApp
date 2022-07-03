@@ -8,11 +8,11 @@
   <% } else { %>
     <%- include('../partials/topnav'); %>
   <% } %>
-  <h4>Trophy Status</h4>
   <% if(NotificationText) { %>
     <%- include('../partials/notice'); %>
-  <% } %>
-  <main>
+    <% } %>
+    <main>
+    <h4>Trophy Status</h4>
     <p>Below you will find the statuses for each of the trophies available, sorted by region.</p>
     <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
       <% Regions.forEach(function(region) { %>
