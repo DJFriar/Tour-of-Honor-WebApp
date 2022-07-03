@@ -29,8 +29,8 @@ router.post('/',
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
     const primaryFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-1.jpg`;
-    const optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
-
+    const optionalFilename = "OptionalImageNotProvided.png";
+    
     if (req.body.OtherRiders != "undefined" && req.body.OtherRiders != "") {
       GroupRiders = req.body.OtherRiders;
       GroupRiderArray = GroupRiders.split(',');
@@ -59,6 +59,7 @@ router.post('/',
 
     // Handle the optional image
     if (images.length > 1) {
+      optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
       try {
         const optionalImageFileData = images[1].data;
         shrinkImage(optionalFilename, optionalImageFileData);
