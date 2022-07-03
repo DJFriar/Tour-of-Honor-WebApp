@@ -50,6 +50,14 @@ $(document).ready(function() {
     )
   })
 
+  // Handle submitMemorialTextEdit button
+  $("#submitMemorialTextEdit").on("click", function(e) {
+    e.preventDefault();
+    var MemCode = $("#MemorialCodeLookup").val().trim();
+    MemCode = MemCode.toUpperCase();
+    $(location).attr("href", "/admin/memorial-text/" + MemCode);
+  })
+
   // Handle add new memorial toggle
   $(".addMemorialButton").on("click", function(e) {
     e.preventDefault();
