@@ -6,6 +6,7 @@ const sharp = require("sharp");
 const fileUpload = require("express-fileupload");
 const q = require("../../queries");
 const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
+const { logger } = require('../../../controllers/logger');
 
 // Fetch submissions for given user ID
 router.get('/byUser/:id', async (req,res) => {
@@ -29,7 +30,7 @@ router.post('/',
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
     const primaryFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-1.jpg`;
-    const optionalFilename = "OptionalImageNotProvided.png";
+    let optionalFilename = "OptionalImageNotProvided.png";
     
     if (req.body.OtherRiders != "undefined" && req.body.OtherRiders != "") {
       GroupRiders = req.body.OtherRiders;
@@ -38,7 +39,7 @@ router.post('/',
     }
 
     if (!req.files) {
-      console.log("No files were uploaded");
+      logger.info("No files were uploaded");
       return res.status(400).send("No files were uploaded.");
     }
 
@@ -53,7 +54,7 @@ router.post('/',
       const primaryImageFileData = primaryFile.data;
       shrinkImage(primaryFilename, primaryImageFileData);
     } catch (err) {
-      console.log("Error shrinking primary image: " + err)
+      logger.error("Error shrinking primary image: " + err)
       return res.status(500).send(err);
     }
 
@@ -64,7 +65,7 @@ router.post('/',
         const optionalImageFileData = images[1].data;
         shrinkImage(optionalFilename, optionalImageFileData);
       } catch (err) {
-        console.log("Error shrinking optional image: " + err)
+        logger.error("Error shrinking optional image: " + err)
         return res.status(500).send(err);
       }
     }
@@ -93,16 +94,16 @@ router.post('/',
           .toBuffer()
           .then(resizedImage => uploadToS3(fileName, resizedImage))
       } catch (err) {
-        console.log("shrinkImage failed. " + err)
+        logger.error("shrinkImage failed. " + err)
       }
     }
     
     async function uploadToS3(fileName, file) {
       try {
         const s3result = await uploadRiderSubmittedImage(fileName, file);
-        console.log(s3result);
+        logger.info(s3result);
       } catch (err){
-        console.log("S3 Upload Failed: " + err)
+        logger.error("S3 Upload Failed: " + err)
       }
     }
   }
