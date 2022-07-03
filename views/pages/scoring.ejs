@@ -57,6 +57,7 @@
                     <%= submission.Status %>
                   </td>
                   <td>
+                    <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
                     <% if(submission.Source == 1) { %>
                       <i class="fa-light fa-square-question"></i>
                     <% } %>
@@ -75,7 +76,6 @@
                     <% if(submission.Source == 6) { %>
                       <i class="fa-brands fa-usps "></i>
                     <% } %>
-                    <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
                   </td>
                   <td>
                     <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fal fa-user-friends"></i></span> <% } %> 
@@ -122,6 +122,7 @@
                     <%= submission.Status %>
                   </td>
                   <td>
+                    <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
                     <% if(submission.Source == 1) { %>
                       <i class="fa-light fa-square-question"></i>
                     <% } %>
@@ -140,7 +141,6 @@
                     <% if(submission.Source == 6) { %>
                       <i class="fa-brands fa-usps "></i>
                     <% } %>
-                    <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
                   </td>
                   <td>
                     <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fal fa-user-friends"></i></span> <% } %> 

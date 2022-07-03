@@ -28,7 +28,27 @@ module.exports = function (app) {
     uploadSubmission.uploadImages,
     uploadSubmission.handleSampleImage, 
     (req, res) => {
-      res.redirect("/admin/memorial-editor2");
+      db.Memorial.update({ 
+        Code: req.body.EditMemorialCode.toUpperCase(),
+        Name: req.body.EditMemorialName,
+        Category: req.body.EditMemorialCategory,
+        Region: req.body.EditMemorialRegion,
+        Latitude: req.body.EditMemorialLatitude,
+        Longitude: req.body.EditMemorialLongitude,
+        Address1: req.body.EditMemorialAddress1,
+        Address2: req.body.EditMemorialAddress2,
+        City: req.body.EditMemorialCity,
+        State: req.body.EditMemorialState.toUpperCase(),
+        URL: req.body.EditMemorialURL,
+        Access: req.body.EditMemorialAccess,
+        MultiImage: req.body.EditMultiImage,
+        SampleImage: req.body.EditSampleImageName,
+        Restrictions: req.body.EditMemorialRestrictions
+      }, {
+        where: { id: req.body.EditMemorialID }
+      }).then(() => {
+        res.redirect("/admin/memorial-editor2");
+      });
     })
 
   // Check Flag Number Validity
