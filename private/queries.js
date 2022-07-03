@@ -521,3 +521,12 @@ module.exports.queryAwardList = async function queryAwardList() {
     throw err;
   }
 }
+
+module.exports.queryAwardNamesList = async function queryAwardNamesList() {
+  try {
+    var result = await db.AwardName.findAll({ })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}

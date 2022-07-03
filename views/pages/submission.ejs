@@ -21,21 +21,21 @@
       <div class="" uk-grid>
         <div class="uk-width-2-3">
           <div style="text-align: center; margin-bottom: 12px;">
-            <a href="http://images.tourofhonor.com/SampleImages/<%= Submissions[0].SampleImage %>" target="_blank">
-              <img class="toh-scoring-sampleImage" data-src="http://images.tourofhonor.com/SampleImages/<%= Submissions[0].SampleImage %>" width="434" height="370" uk-img>
+            <a href="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" target="_blank">
+              <img class="toh-scoring-sampleImage" data-src="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" width="434" height="370" uk-img>
             </a>
           </div>
           <div class="uk-grid-small uk-child-width-expand" uk-grid>
             <div>
-              <a href="/uploads/<%= Submissions[0].PrimaryImage %>" target="_blank">
-                <img class="toh-scoring-primaryImage uk-align-center" data-src="/uploads/<%= Submissions[0].PrimaryImage %>" width="434"
+              <a href="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" target="_blank">
+                <img class="toh-scoring-primaryImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" width="434"
               height="370" uk-img>
               </a>
             </div>
             <div>
               <% if(Submissions[0].OptionalImage) { %>
-                <a href="/uploads/<%= Submissions[0].OptionalImage %>" target="_blank">
-                  <img class="toh-scoring-optionalImage uk-align-center" data-src="/uploads/<%= Submissions[0].OptionalImage %>" width="434"
+                <a href="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" target="_blank">
+                  <img class="toh-scoring-optionalImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" width="434"
                 height="370" uk-img>
                 </a>
               <% } else { %>
@@ -48,7 +48,7 @@
         <div class="uk-width-1-3">
           <div class="uk-text-center toh-mb-18" id="otherButtons">
             <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
-              <button class="uk-button uk-button-primary potmButton" data-submissionid="<%= Submissions[0].id %>">
+              <button class="uk-button uk-button-primary potmButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
                 <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
               </button>
             </span>
@@ -56,29 +56,29 @@
           <div class="scorerNotesSection toh-mb-18">
             <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
             <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
-              <textarea class="uk-textarea" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+              <textarea class="uk-textarea toh-input" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
             <% } else { %>
-              <textarea class="uk-textarea" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+              <textarea class="uk-textarea toh-input" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
             <% } %>
             
           </div>
           <div class="uk-text-center toh-mb-18" id="approvalButtons">
             <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
-              <button class="uk-button uk-button-danger rejectButton" disabled data-submissionid="<%= Submissions[0].id %>">
+              <button class="uk-button uk-button-danger rejectButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
                 <i class="fas fa-thumbs-down"></i>&nbsp; Reject
               </button>
             </span>
             <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
-              <button class="uk-button uk-button-primary skipButton" data-submissionid="<%= Submissions[0].id %>">
+              <button class="uk-button uk-button-primary skipButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
                 <i class="fas fa-forward"></i>&nbsp; Skip
               </button>
             </span>
             <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
-              <button class="uk-button toh-button-green approveButton" data-submissionid="<%= Submissions[0].id %>">
+              <button class="uk-button toh-button-green approveButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
                 <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } else { %>
-              <button class="uk-button uk-button-disabled" disabled data-submissionid="<%= Submissions[0].id %>">
+              <button class="uk-button uk-button-disabled button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
                 <i class="fas fa-thumbs-up"></i>&nbsp; Approve
               </button>
             <% } %>

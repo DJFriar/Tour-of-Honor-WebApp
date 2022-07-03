@@ -1,90 +1,104 @@
 <div class="modal-content">
   <span class="close">&times;</span>
   <h4>Edit Memorial</h4>
-  <form class="uk-grid-small uk-form-stacked" uk-grid>
+  <form id="UpdateMemorialDataForm" class="uk-grid-small uk-form-stacked" action="/update-sample-image" method="POST" enctype="multipart/form-data" uk-grid>
     <input class="uk-input" id="EditMemorialID" type="hidden" placeholder="">
+    <!-- Left Side of Modal -->
+    <div class="uk-width-1-2@s" uk-grid>
+      <div class="uk-width-1-2 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialCategory">Memorial Category*</label>
+        <select class="uk-select toh-input" required name="EditMemorialCategory" id="EditMemorialCategory">
+          <% categoryData.forEach(function(category) { %>
+            <option value="<%= category.id %>">
+              <%= category.Name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="uk-width-1-2 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialRegion">Memorial Region <span uk-tooltip="Only used for Tour Of Honor category"><i class="fa-light fa-circle-info"></i></span></label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditMemorialRegion" id="EditMemorialRegion" placeholder="memorialRegion">
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialCode">Memorial Code*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialCode" id="EditMemorialCode" placeholder="memorialCode">
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialName">Memorial Name*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialName" id="EditMemorialName" placeholder="memorialName">
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialAddress1">Address1</label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditMemorialAddress1" id="EditMemorialAddress1" placeholder="memorialAddress1">
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialAddress2">Address2</label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditMemorialAddress2" id="EditMemorialAddress2" placeholder="memorialAddress2">
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialURL">URL</label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditMemorialURL" id="EditMemorialURL" placeholder="memorialURL">
+      </div>
+      <div class="uk-width-4-5 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialCity">City*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialCity" id="EditMemorialCity" placeholder="memorialCity">
+      </div>
+      <div class="uk-width-1-5 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialState">State*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialState" id="EditMemorialState" placeholder="memorialState">
+      </div>
+      <div class="uk-width-1-2 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialLatitude">Latitude*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialLatitude" id="EditMemorialLatitude" placeholder="memorialLatitude">
+      </div>
+      <div class="uk-width-1-2 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialLongitude">Longitude*</label>
+        <input class="uk-input toh-input uk-width-1-1" required type="text" name="EditMemorialLongitude" id="EditMemorialLongitude" placeholder="memorialLongitude">
+      </div>
+      <div class="uk-width-1-3 toh-mt-8">
+        <label class="uk-form-label" for="EditMultiImage">Require 2 Images</label>
+        <select class="uk-select toh-input" name="EditMultiImage" id="EditMultiImage">
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+      </div>
+      <div class="uk-width-1-3 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialAccess">Access</label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditMemorialAccess" id="EditMemorialAccess" placeholder="24/7">
+      </div>
+      <div class="uk-width-1-3 toh-mt-8">
+        <label class="uk-form-label" for="EditMemorialRestrictions">Restrictions</label>
+        <select class="uk-select toh-input" name="EditMemorialRestrictions" id="EditMemorialRestrictions">
+          <% restrictionData.forEach(function(restriction) { %>
+            <option value="<%= restriction.id %>">
+              <%= restriction.Name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+    </div>
+    <!-- Right Side of Modal -->
     <div class="uk-width-1-2@s">
-      <label class="uk-form-label" for="EditMemorialCategory">Memorial Category*</label>
-      <select class="uk-select" required name="EditMemorialCategory" id="EditMemorialCategory">
-        <% categoryData.forEach(function(category) { %>
-          <option value="<%= category.id %>">
-            <%= category.Name %>
-          </option>
-        <% }) %>
-      </select>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label for="sampleImageFile" id="inputSampleImageLabel">
+          <img class="sampleImagePlaceholder" data-src="" alt="Click here to upload" uk-img>
+        </label>
+        <input type="file" name="sampleImageFile" id="sampleImageFile" class="form-control-file border hide-me" />
+      </div>
+      <div class="uk-width-1-1 toh-mt-8">
+        <label class="uk-form-label" for="SampleImage">Sample Image File Name <span uk-tooltip="ie, 2021PA3.jpg"><i class="fa-light fa-circle-info"></i></span>
+          <span class="uk-align-right toh-mb-8">
+            <input class="uk-checkbox" type="checkbox" name="EditImageNeeded" id="EditImageNeeded"> Request Image?
+          </span>
+        </label>
+        <input class="uk-input toh-input uk-width-1-1" type="text" name="EditSampleImageName" id="EditSampleImageName" placeholder="sampleImage">
+      </div>
     </div>
-    <div class="uk-width-1-2@s">
-      <label class="uk-form-label" for="EditMemorialRegion">Memorial Region</label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditMemorialRegion" id="EditMemorialRegion" placeholder="memorialRegion">
-    </div>
-    <div class="uk-width-1-5@s">
-      <label class="uk-form-label" for="EditMemorialCode">Memorial Code*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialCode" id="EditMemorialCode" placeholder="memorialCode">
-    </div>
-    <div class="uk-width-4-5@s">
-      <label class="uk-form-label" for="EditMemorialName">Memorial Name*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialName" id="EditMemorialName" placeholder="memorialName">
-    </div>
-    <div class="uk-width-1-1@s">
-      <label class="uk-form-label" for="EditMemorialAddress1">Address1</label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditMemorialAddress1" id="EditMemorialAddress1" placeholder="memorialAddress1">
-    </div>
-    <div class="uk-width-1-1@s">
-      <label class="uk-form-label" for="EditMemorialAddress2">Address2</label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditMemorialAddress2" id="EditMemorialAddress2" placeholder="memorialAddress2">
-    </div>
-    <div class="uk-width-1-1@s">
-      <label class="uk-form-label" for="EditMemorialURL">URL</label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditMemorialURL" id="EditMemorialURL" placeholder="memorialURL">
-    </div>
-    <div class="uk-width-1-3@s">
-      <label class="uk-form-label" for="EditMemorialCity">City*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialCity" id="EditMemorialCity" placeholder="memorialCity">
-    </div>
-    <div class="uk-width-1-6@s">
-      <label class="uk-form-label" for="EditMemorialState">State*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialState" id="EditMemorialState" placeholder="memorialState">
-    </div>
-    <div class="uk-width-1-4@s">
-      <label class="uk-form-label" for="EditMemorialLatitude">Latitude*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialLatitude" id="EditMemorialLatitude" placeholder="memorialLatitude">
-    </div>
-    <div class="uk-width-1-4@s">
-      <label class="uk-form-label" for="EditMemorialLongitude">Longitude*</label>
-      <input class="uk-input uk-width-1-1" required type="text" name="EditMemorialLongitude" id="EditMemorialLongitude" placeholder="memorialLongitude">
-    </div>
-    <div class="uk-width-1-6@s">
-      <label class="uk-form-label" for="EditMultiImage">Require Two Images</label>
-      <select class="uk-select" name="EditMultiImage" id="EditMultiImage">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-      </select>
-    </div>
-    <div class="uk-width-1-3@s">
-      <label class="uk-form-label" for="SampleImage">Sample Image (2021PA3.jpg)
-        <input style="margin-left: 85;" class="uk-checkbox" type="checkbox" name="EditImageNeeded" id="EditImageNeeded"> Request Image?
-      </label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditSampleImage" id="EditSampleImage" placeholder="sampleImage">
-    </div>
-    <div class="uk-width-1-6@s">
-      <label class="uk-form-label" for="EditMemorialAccess">Access</label>
-      <input class="uk-input uk-width-1-1" type="text" name="EditMemorialAccess" id="EditMemorialAccess" placeholder="24/7">
-    </div>
-    <div class="uk-width-1-6@s">
-      <label class="uk-form-label" for="EditMemorialRestrictions">Restrictions</label>
-      <select class="uk-select" name="EditMemorialRestrictions" id="EditMemorialRestrictions">
-        <% restrictionData.forEach(function(restriction) { %>
-          <option value="<%= restriction.id %>">
-            <%= restriction.Name %>
-          </option>
-        <% }) %>
-      </select>
-    </div>
-        
-    <div style="margin-top: 16px;">
+    <!-- Bottom row of modal (full width) -->
+    <div style="margin-top: 16px;" class="uk-align-center">
       <label class="uk-form-label">&nbsp;</label>
-      <button class="uk-button uk-button-default uk-button-small" id="cancelButton">Cancel</button>
-      <button class="uk-button uk-button-primary uk-button-small" id="saveMemorialChangesButton">Save</button>
+      <button class="uk-button uk-button-secondary uk-button-small button-rounded" id="cancelButton">Cancel</button>
+      <button class="uk-button uk-button-primary uk-button-small button-rounded" id="saveMemorialChangesButton">Save</button>
     </div>
   </form>
 </div>

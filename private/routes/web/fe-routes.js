@@ -8,6 +8,9 @@ const isAdmin = require("../../../config/isAdmin");
 
 module.exports = function (app) {
 
+  const baseSampleImageUrl = app.locals.baseSampleImageUrl;
+  const baseImageUrl = app.locals.baseImageUrl;
+
   // ===============================================================================
   //#region READ (GET)
   // ===============================================================================
@@ -84,6 +87,8 @@ module.exports = function (app) {
           activeUser,
           User: req.user,
           NotificationText: "",
+          baseImageUrl,
+          baseSampleImageUrl,
           Submissions,
           OtherRidersArray,
           dt: DateTime
@@ -141,6 +146,8 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-editor", {
       activeUser,
       User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
       categoryData,
       MemorialData,
       restrictionData,
@@ -169,6 +176,8 @@ module.exports = function (app) {
     res.render("pages/admin/memorial-editor2", {
       activeUser,
       User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
       categoryData,
       MemorialData,
       restrictionData,
@@ -213,6 +222,11 @@ module.exports = function (app) {
       console.log("Error encountered: queryTrophiesList");
     }
     try {
+      var AwardNames = await q.queryAwardNamesList();
+    } catch {
+      console.log("Error encountered: queryAwardNamesList");
+    }
+    try {
       var Awards = await q.queryAwardList();
     } catch {
       console.log("Error encountered: queryAwardList");
@@ -223,6 +237,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Awards,
+      AwardNames,
       Regions,
       TrophyList
     });
@@ -358,7 +373,11 @@ module.exports = function (app) {
       UserData = req.user
       try {
         var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
-        MemorialStatus = MemorialStatusResponse[0].id;
+        if (MemorialStatusResponse.length > 0) {
+          MemorialStatus = MemorialStatusResponse[0].id;
+        } else {
+          MemorialStatus = 0;
+        }
       } catch {
         console.log("Error encountered: queryMemorialStatusByRider");
       }
@@ -375,6 +394,8 @@ module.exports = function (app) {
       activeUser,
       User: UserData,
       NotificationText: "",
+      baseImageUrl,
+      baseSampleImageUrl,
       MemorialData,
       MemorialStatus,
       MemorialText,
@@ -523,6 +544,30 @@ module.exports = function (app) {
       NotificationText: "",
       RiderSubmissionHistory,
       RiderBikeInfo,
+      dt: DateTime
+    });
+  });
+
+  app.get("/public-profile", async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+
+    res.render("pages/public-profile", {
+      activeUser,
+      NotificationText: "",
+      dt: DateTime
+    });
+  });
+
+  app.get("/registration", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    console.log(req.user);
+
+    res.render("pages/registration", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
       dt: DateTime
     });
   });

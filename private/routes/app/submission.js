@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../models");
 const { DateTime } = require("luxon");
+const sharp = require("sharp");
 const fileUpload = require("express-fileupload");
 const q = require("../../queries");
+const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
 
 // Fetch submissions for given user ID
 router.get('/byUser/:id', async (req,res) => {
@@ -46,23 +48,27 @@ router.post('/',
     } else {
       primaryFile = images;
     }
-    const primaryPath = "static/uploads/" + primaryFilename;
-    primaryFile.mv(primaryPath, (err) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-    })
-    // Handle the optional image
-    if (images.length > 1) {
-      const secondaryFile = images[1];
-      const secondaryPath = "static/uploads/" + optionalFilename;
-      secondaryFile.mv(secondaryPath, (err) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-      })
+
+    try {
+      const primaryImageFileData = primaryFile.data;
+      shrinkImage(primaryFilename, primaryImageFileData);
+    } catch (err) {
+      console.log("Error shrinking primary image: " + err)
+      return res.status(500).send(err);
     }
 
+    // Handle the optional image
+    if (images.length > 1) {
+      try {
+        const optionalImageFileData = images[1].data;
+        shrinkImage(optionalFilename, optionalImageFileData);
+      } catch (err) {
+        console.log("Error shrinking optional image: " + err)
+        return res.status(500).send(err);
+      }
+    }
+
+    // Save entry to the DB
     db.Submission.create({
       UserID: req.body.UserID,
       MemorialID: req.body.MemorialID,
@@ -73,7 +79,31 @@ router.post('/',
       Source: req.body.Source,
       Status: 0 // 0 = Pending Approval
     });
+
+    // Respond back to device that all is well
     res.send({result:"success"});
+
+    // FUNCTIONS
+    async function shrinkImage(fileName, file) {
+      try {
+        await sharp(file)
+          .toFormat("jpeg")
+          .jpeg({ quality: 40 })
+          .toBuffer()
+          .then(resizedImage => uploadToS3(fileName, resizedImage))
+      } catch (err) {
+        console.log("shrinkImage failed. " + err)
+      }
+    }
+    
+    async function uploadToS3(fileName, file) {
+      try {
+        const s3result = await uploadRiderSubmittedImage(fileName, file);
+        console.log(s3result);
+      } catch (err){
+        console.log("S3 Upload Failed: " + err)
+      }
+    }
   }
 );
 
