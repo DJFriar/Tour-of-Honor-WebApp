@@ -29,7 +29,7 @@
           <form class="signup uk-grid-small uk-form-stacked" uk-grid>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="TrophyRegion">Trophy Region</label>
-              <select required class="uk-select" name="TrophyRegion" id="TrophyRegion">
+              <select required class="uk-select toh-input" name="TrophyRegion" id="TrophyRegion">
                 <% Regions.forEach(function(region) { %>
                   <option value="<%= region.id %>">
                     <%= region.Region %>
@@ -39,7 +39,7 @@
             </div>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="TrophyPlace">Trophy Place</label>
-              <select required class="uk-select" name="TrophyPlace" id="TrophyPlace">
+              <select required class="uk-select toh-input" name="TrophyPlace" id="TrophyPlace">
                 <option value="1st">1st</option>
                 <option value="2nd">2nd</option>
                 <option value="3rd">3rd</option>
@@ -47,11 +47,11 @@
             </div>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="FlagNums">Flag Numbers</label>
-              <input required class="uk-input" id="FlagNums" type="text" placeholder="###,###">
+              <input required class="uk-input toh-input" id="FlagNums" type="text" placeholder="###,###">
             </div>
             <div class="uk-width-1-4@s ">
               <label class="uk-form-label" for="awardTrophy">&nbsp;</label>
-              <button type="button" id="awardTrophy" class="uk-button uk-button-primary">Award Trophy</button>
+              <button type="button" id="awardTrophy" class="uk-button uk-button-primary button-rounded">Award Trophy</button>
             </div>
           </form>
           <br />
@@ -78,7 +78,7 @@
           <form class="signup uk-grid-small uk-form-stacked" uk-grid>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="AwardName">Award Name</label>
-              <select required class="uk-select" name="AwardName" id="AwardName">
+              <select required class="uk-select toh-input" name="AwardName" id="AwardName">
                 <% AwardNames.forEach(function(awardName) { %> 
                   <option value="<%= awardName.ShortName %>">
                     <%= awardName.FullName %>
@@ -88,15 +88,15 @@
             </div>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input required class="uk-input" id="FlagNum" type="number" placeholder="###">
+              <input required class="uk-input toh-input" id="FlagNum" type="number" placeholder="###">
             </div>
             <div class="uk-width-1-4@s">
               <label class="uk-form-label" for="Date">Date</label>
-              <input required class="uk-input" id="Date" type="date" placeholder="###">
+              <input required class="uk-input toh-input" id="Date" type="date" placeholder="###">
             </div>
             <div class="uk-width-1-4@s ">
               <label class="uk-form-label" for="grantAward">&nbsp;</label>
-              <button type="button" id="grantAward" class="uk-button uk-button-primary">Grant Award</button>
+              <button type="button" id="grantAward" class="uk-button uk-button-primary button-rounded">Grant Award</button>
             </div>
           </form>
           <br />

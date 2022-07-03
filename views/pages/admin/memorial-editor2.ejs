@@ -10,6 +10,7 @@
   <% } %>
   <h4>Memorial Editor 2</h4>
   <main>
+    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
     <div class="admin-container" id='tabs'>
       <ul uk-tab>
         <li><a href="#editor">Edit Existing Memorial</a></li>
@@ -39,7 +40,7 @@
           <form class="uk-grid-small uk-form-stacked" action="/api/v1/memorial2" method="POST" uk-grid>
             <div class="uk-width-1-2@s">
               <label class="uk-form-label" for="MemorialCategory">Memorial Category*</label>
-              <select class="uk-select" required name="MemorialCategory" id="MemorialCategory">
+              <select class="uk-select toh-input" required name="MemorialCategory" id="MemorialCategory">
                 <% categoryData.forEach(function(category) { %>
                   <option value="<%= category.id %>">
                     <%= category.Name %>
@@ -89,7 +90,7 @@
             </div>
             <div class="uk-width-1-6@s">
               <label class="uk-form-label" for="MultiImage">Require Two Images</label>
-              <select class="uk-select" name="MultiImage" id="MultiImage">
+              <select class="uk-select toh-input" name="MultiImage" id="MultiImage">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
               </select>
@@ -108,7 +109,7 @@
             </div>
             <div class="uk-width-1-6@s">
               <label class="uk-form-label" for="MemorialRestrictions">Restrictions</label>
-              <select class="uk-select" name="MemorialRestrictions" id="MemorialRestrictions">
+              <select class="uk-select toh-input" name="MemorialRestrictions" id="MemorialRestrictions">
                 <% restrictionData.forEach(function(restriction) { %>
                   <option value="<%= restriction.id %>">
                     <%= restriction.Name %>
