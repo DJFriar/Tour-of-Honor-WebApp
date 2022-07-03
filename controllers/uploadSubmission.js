@@ -53,7 +53,6 @@ const resizeImages = async (req, res, next) => {
     req.body.images.unshift(primaryFilename);
   } catch (err) {
     logger.error("Error shrinking primary image: " + err);
-    console.log("Error shrinking primary image: " + err);
   }
   // Handle optional image if present
   if(req.files['input-optional']) {
@@ -81,14 +80,14 @@ const handleSampleImage = async (req, res, next) => {
   
   const sampleImageFileName = req.body.EditSampleImageName
 
-  try {
-    const sampleImageFileData = req.files['sampleImageFile'][0].buffer;
-    shrinkSampleImage(sampleImageFileName, sampleImageFileData);
-  } catch (err) {
-    logger.error("Error shrinking sample image: " + err);
-    console.log("Error shrinking sample image: " + err);
+  if(req.files['sampleImageFile']) {
+    try {
+      const sampleImageFileData = req.files['sampleImageFile'][0].buffer;
+      shrinkSampleImage(sampleImageFileName, sampleImageFileData);
+    } catch (err) {
+      logger.error("Error shrinking sample image: " + err);
+    }
   }
-
   // Move on to the next task
   next();
 }
@@ -133,7 +132,6 @@ async function uploadSampleImageToS3(fileName, file) {
     console.log(s3result);
   } catch (err){
     logger.error("S3 Sample Image Upload Failed: " + err);
-    console.log("S3 Sample Image Upload Failed: " + err);
   }
 }
 
