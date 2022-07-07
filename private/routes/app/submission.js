@@ -90,7 +90,7 @@ router.post('/',
       try {
         await sharp(file)
           .toFormat("jpeg")
-          .jpeg({ quality: 40 })
+          .jpeg()
           .toBuffer()
           .then(resizedImage => uploadToS3(fileName, resizedImage))
       } catch (err) {
