@@ -95,8 +95,13 @@ const handleSampleImage = async (req, res, next) => {
 async function shrinkImage(fileName, file) {
   try {
     await sharp(file)
+      .resize(1440, 1440, {
+        fit: sharp.fit.inside,
+        withoutEnlargement: true
+      })
+      .withMetadata()
       .toFormat("jpeg")
-      .jpeg({ quality: 50 })
+      .jpeg()
       .toBuffer()
       .then(resizedImage => uploadToS3(fileName, resizedImage))
   } catch (err) {
@@ -107,7 +112,6 @@ async function shrinkImage(fileName, file) {
 async function uploadToS3(fileName, file) {
   try {
     const s3result = await uploadRiderSubmittedImage(fileName, file);
-    console.log(s3result);
   } catch (err){
     console.log("S3 Rider Image Upload Failed: " + err);
   }

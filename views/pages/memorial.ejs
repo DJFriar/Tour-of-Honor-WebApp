@@ -31,7 +31,7 @@
             <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
           </div>
         </div>
-        <% if(User.FlagNumber && SubmissionStatus[0].Status >= 2 && MemorialStatus == 0) { %>
+        <% if(isAvailableToSubmit) { %>
           <div>
             <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
               <div class="uk-text-center toh-mb-18">
@@ -77,7 +77,7 @@
             </form>
           </div>
         <% } %>
-        <% if(User.FlagNumber && SubmissionStatus[0].Status == 0) { %>
+        <% if(User.FlagNumber && (SubmissionStatus[0].Status == 0 || SubmissionStatus[0].Status == 3)) { %>
           <div class="uk-align-center" style="width:80%">
             <p style="text-align: center">This memorial has a pending submission. If you need to correct it, please delete this submission from your <a href="/user-profile">User Profile</a> and resubmit.</p>
           </div>
