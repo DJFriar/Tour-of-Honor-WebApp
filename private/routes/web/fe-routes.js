@@ -5,6 +5,7 @@ const { DateTime } = require("luxon");
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../../../config/isAuthenticated");
 const isAdmin = require("../../../config/isAdmin");
+const { logger } = require('../../../controllers/logger');
 
 module.exports = function (app) {
 
@@ -34,11 +35,9 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     try {
       var PendingSubmissions = await q.queryPendingSubmissions();
-    } catch {
-      console.log("Error encountered: queryPendingSubmissions");
+    } catch (err) {
+      logger.error("Error encountered: queryPendingSubmissions:" + err);
     }
-    console.log("==== PendingSubmissions ====");
-    console.log(PendingSubmissions);
     res.render("pages/scoring", {
       activeUser,
       User: req.user,
@@ -53,8 +52,8 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     try {
       var Submissions = await q.queryScoredSubmissions();
-    } catch {
-      console.log("Error encountered: queryScoredSubmissions");
+    } catch (err) {
+      logger.error("Error encountered: queryScoredSubmissions:" + err);
     }
     res.render("pages/scored", {
       activeUser,
@@ -81,8 +80,6 @@ module.exports = function (app) {
       } else {
         OtherFlags = Submissions[0].OtherRiders;
         OtherRidersArray = OtherFlags.split(',');
-        console.log("==== Submission Detail Data ====");
-        console.log(Submissions);
         res.render("pages/submission", {
           activeUser,
           User: req.user,
@@ -112,11 +109,6 @@ module.exports = function (app) {
   app.get("/admin/alt-entry", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    // try {
-    //   var Users = await q.queryAllUsers();
-    // } catch {
-    //   console.log("Error encountered: queryAllUsers");
-    // }
 
     res.render("pages/admin/alt-entry", {
       activeUser,
@@ -349,6 +341,9 @@ module.exports = function (app) {
     var activeUser = false;
     const memCode = req.params.memCode;
     var memID = 0;
+    var isMemorialInSubmissions = false;
+    var isMemorialInXref = false;
+    var isAvailableToSubmit = false;
     try {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
@@ -375,6 +370,7 @@ module.exports = function (app) {
         var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
         if (MemorialStatusResponse.length > 0) {
           MemorialStatus = MemorialStatusResponse[0].id;
+          isMemorialInXref = true;
         } else {
           MemorialStatus = 0;
         }
@@ -383,19 +379,26 @@ module.exports = function (app) {
       }
       try {
         SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
+        if (SubmissionStatus.length > 0 && SubmissionStatus[0].Status != 2) { 
+          isMemorialInSubmissions = true;
+        }
       } catch {
         console.log("Error encountered: querySubmissionStatusByRider");
       }
+      if (!isMemorialInXref && !isMemorialInSubmissions) { isAvailableToSubmit = true}
     };
+
     if(SubmissionStatus.length == 0) {
-      SubmissionStatus.unshift({Status: 3});
+      SubmissionStatus.unshift({Status: 4});
     }
+
     res.render("pages/memorial", {
       activeUser,
       User: UserData,
       NotificationText: "",
       baseImageUrl,
       baseSampleImageUrl,
+      isAvailableToSubmit,
       MemorialData,
       MemorialStatus,
       MemorialText,
@@ -562,7 +565,6 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    console.log(req.user);
 
     res.render("pages/registration", {
       activeUser,
@@ -574,19 +576,5 @@ module.exports = function (app) {
 
   //#endregion
   // ===============================================================================
-
-  // ===============================================================================
-  //#region UPDATE (PUT)
-  // ===============================================================================
-
-  app.put('/pending-memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/state-memorial-editor");
-  });
-
-  //#endregion
-  // ===============================================================================  
 
 }

@@ -19,7 +19,7 @@ const s3 = new S3({
 // Uploads Rider Submitted Image to S3
 function uploadRiderSubmittedImage(fileName, file) {
   // Set the proper filename depending on env
-  if (isProd) {
+  if (isProd == "true") {
     s3FilePath = "RallyImages/2022/" + fileName
   } else {
     s3FilePath = "TestData/" + fileName
