@@ -89,6 +89,10 @@ router.post('/',
     async function shrinkImage(fileName, file) {
       try {
         await sharp(file)
+          .resize(1440, 1440, {
+            fit: sharp.fit.inside,
+            withoutEnlargement: true
+          })
           .withMetadata()
           .toFormat("jpeg")
           .jpeg()
