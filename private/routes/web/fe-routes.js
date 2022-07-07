@@ -5,6 +5,7 @@ const { DateTime } = require("luxon");
 // Requiring our custom middleware for checking if a user is logged in
 const isAuthenticated = require("../../../config/isAuthenticated");
 const isAdmin = require("../../../config/isAdmin");
+const { logger } = require('../../../controllers/logger');
 
 module.exports = function (app) {
 
@@ -34,11 +35,9 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     try {
       var PendingSubmissions = await q.queryPendingSubmissions();
-    } catch {
-      console.log("Error encountered: queryPendingSubmissions");
+    } catch (err) {
+      logger.error("Error encountered: queryPendingSubmissions:" + err);
     }
-    console.log("==== PendingSubmissions ====");
-    console.log(PendingSubmissions);
     res.render("pages/scoring", {
       activeUser,
       User: req.user,
@@ -53,8 +52,8 @@ module.exports = function (app) {
     if (req.user) { activeUser = true };
     try {
       var Submissions = await q.queryScoredSubmissions();
-    } catch {
-      console.log("Error encountered: queryScoredSubmissions");
+    } catch (err) {
+      logger.error("Error encountered: queryScoredSubmissions:" + err);
     }
     res.render("pages/scored", {
       activeUser,
@@ -81,8 +80,6 @@ module.exports = function (app) {
       } else {
         OtherFlags = Submissions[0].OtherRiders;
         OtherRidersArray = OtherFlags.split(',');
-        console.log("==== Submission Detail Data ====");
-        console.log(Submissions);
         res.render("pages/submission", {
           activeUser,
           User: req.user,
@@ -112,11 +109,6 @@ module.exports = function (app) {
   app.get("/admin/alt-entry", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-    // try {
-    //   var Users = await q.queryAllUsers();
-    // } catch {
-    //   console.log("Error encountered: queryAllUsers");
-    // }
 
     res.render("pages/admin/alt-entry", {
       activeUser,
@@ -573,7 +565,6 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    console.log(req.user);
 
     res.render("pages/registration", {
       activeUser,
@@ -585,19 +576,5 @@ module.exports = function (app) {
 
   //#endregion
   // ===============================================================================
-
-  // ===============================================================================
-  //#region UPDATE (PUT)
-  // ===============================================================================
-
-  app.put('/pending-memorial', function (req, res) {
-    console.log("====== req.body ======");
-    console.log(req.body);
-    // Call API here
-    res.redirect("/admin/state-memorial-editor");
-  });
-
-  //#endregion
-  // ===============================================================================  
 
 }

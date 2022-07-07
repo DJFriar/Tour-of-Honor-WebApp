@@ -9,6 +9,7 @@ const isAuthenticated = require("../../../config/isAuthenticated");
 const sendEmail = require("../../sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+const { logger } = require('../../../controllers/logger');
 const { register } = require("prom-client");
 
 module.exports = function (app) { 
@@ -255,8 +256,7 @@ module.exports = function (app) {
         })
       })
       .catch(err => {
-        console.log("Signup API Error Encountered");
-        console.log(err);
+        logger.error("Signup API Error Encountered" + err);
         res.status(401).json(err);
       });
   });
@@ -284,9 +284,9 @@ module.exports = function (app) {
       })
       await sendEmail(req.body.Email, "Welcome to the Tour of Honor [IMPORTANT, PLEASE READ]", emailBody);
       res.send("Welcome Email Sent");
-    } catch (error) {
+    } catch (err) {
+      logger.error("An error occured while sending the welcome email: " + err);
       res.send("An error occurred while sending welcome email.");
-      console.log(error);
     }
   })
 
@@ -332,7 +332,7 @@ module.exports = function (app) {
       res.status(202).send();
     })
     .catch(err => {
-      console.log("Rider Onboarding Error Encountered");
+      logger.error("Rider Onboarding Error Encountered: " + err);
       res.status(401).json(err);
     });
   })
@@ -374,9 +374,9 @@ module.exports = function (app) {
       let emailBody = await ejs.renderFile("./views/emails/emailPasswordReset.ejs", { URL: PWResetLink })
       await sendEmail(User.Email, "Tour of Honor Scoring Portal - Password Reset Request", emailBody);
       res.send("Password reset link sent to your email account");
-    } catch (error) {
+    } catch (err) {
       res.send("An error occurred while resetting user's password.");
-      console.log(error);
+      console.log(err);
     }
   });
 
@@ -478,7 +478,7 @@ module.exports = function (app) {
     try {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
-    } catch (error) {
+    } catch (err) {
       console.log("Error encountered when getting memorial ID.");
     }
     if(memID > 0) {
