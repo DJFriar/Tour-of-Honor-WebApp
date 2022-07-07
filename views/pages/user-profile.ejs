@@ -130,6 +130,9 @@
                 <% if(riderSubmission.StatusID == 2) { %> 
                   <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
                 <% } %>
+                <% if(riderSubmission.StatusID == 3) { %> 
+                  <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-pause" color="orange"></i>&nbsp;<%= riderSubmission.Status %></span>
+                <% } %>
                 <% if(riderSubmission.ScorerNotes) { %>
                   <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="fal fa-comment-alt-lines"></i></span>
                 <% } %>

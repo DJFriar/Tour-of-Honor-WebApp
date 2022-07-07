@@ -349,6 +349,9 @@ module.exports = function (app) {
     var activeUser = false;
     const memCode = req.params.memCode;
     var memID = 0;
+    var isMemorialInSubmissions = false;
+    var isMemorialInXref = false;
+    var isAvailableToSubmit = false;
     try {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
@@ -375,6 +378,7 @@ module.exports = function (app) {
         var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
         if (MemorialStatusResponse.length > 0) {
           MemorialStatus = MemorialStatusResponse[0].id;
+          isMemorialInXref = true;
         } else {
           MemorialStatus = 0;
         }
@@ -383,19 +387,26 @@ module.exports = function (app) {
       }
       try {
         SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
+        if (SubmissionStatus.length > 0 && SubmissionStatus[0].Status != 2) { 
+          isMemorialInSubmissions = true;
+        }
       } catch {
         console.log("Error encountered: querySubmissionStatusByRider");
       }
+      if (!isMemorialInXref && !isMemorialInSubmissions) { isAvailableToSubmit = true}
     };
+
     if(SubmissionStatus.length == 0) {
-      SubmissionStatus.unshift({Status: 3});
+      SubmissionStatus.unshift({Status: 4});
     }
+
     res.render("pages/memorial", {
       activeUser,
       User: UserData,
       NotificationText: "",
       baseImageUrl,
       baseSampleImageUrl,
+      isAvailableToSubmit,
       MemorialData,
       MemorialStatus,
       MemorialText,
