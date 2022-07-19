@@ -1,0 +1,46 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
+  <main>
+    <div class="uk-text-center">
+      <div class="uk-text-center">
+        <ul class="uk-subnav uk-subnav-pill" uk-switcher>
+          <li><a href="#">User Info</a></li>
+          <li><a href="#">Payment</a></li>
+          <li><a href="#">Waiver</a></li>
+          <li><a href="#">Flag Number</a></li>
+          <li><a href="#">Summary</a></li>
+        </ul>
+  
+        <ul class="uk-switcher uk-margin">
+          <li>
+            <%- include('../partials/regFlow/userInfo'); %>
+          </li>
+          <li>
+            <%- include('../partials/regFlow/payment'); %>
+          </li>
+          <li>
+            <%- include('../partials/regFlow/waiver'); %>
+          </li>
+          <li>
+            <%- include('../partials/regFlow/flagNumber'); %>
+          </li>
+          <li>
+            <%- include('../partials/regFlow/summary'); %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="js/registration.js"></script>
+</body>
