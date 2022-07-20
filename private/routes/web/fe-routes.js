@@ -565,6 +565,7 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    console.log(req.user);
 
     res.render("pages/registration", {
       activeUser,
