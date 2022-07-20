@@ -93,19 +93,6 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
   }
 }
 
-// module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
-//   try {
-//     var result = await sequelize.query("SELECT id FROM Users WHERE FlagNumber = ?",
-//     {
-//       replacements: [flag],
-//       type: QueryTypes.SELECT
-//     })
-//     return result;
-//   } catch (err) {
-//     throw err;
-//   }
-// }
-
 module.exports.queryAllMemorialsWithUserStatus = async function queryAllMemorialsWithUserStatus(id) {
   try {
     var result = await sequelize.query("SELECT s.Status AS 'RiderStatus',m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? ORDER BY m.State, m.City, m.Category",
