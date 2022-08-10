@@ -565,9 +565,37 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    console.log(req.user);
+    try {
+      var BaseRiderRateObject = await q.queryBaseRiderRate();
+      var BaseRiderRate = BaseRiderRateObject[0].Price;
+      var PassengerSurchargeObject = await q.queryPassengerSurcharge();
+      var PassengerSurcharge = PassengerSurchargeObject[0].iValue;
+      var ShirtSizeSurchargeObject = await q.queryShirtSizeSurcharge();
+      var ShirtSizeSurcharge = ShirtSizeSurchargeObject[0].iValue;
+      var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
+      var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
+    } catch {
+      console.log("Error encountered: querySubmissionsByRider");
+    }
 
     res.render("pages/registration", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      BaseRiderRate,
+      PassengerSurcharge,
+      ShirtSizeSurcharge,
+      ShirtStyleSurcharge,
+      dt: DateTime
+    });
+  });
+
+  app.get("/admin/orders", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    console.log(req.user);
+
+    res.render("pages/admin/orders", {
       activeUser,
       User: req.user,
       NotificationText: "",

@@ -10,37 +10,44 @@
   <% } %>
   <main>
     <div class="uk-text-center">
-      <div class="uk-text-center">
-        <ul class="uk-subnav uk-subnav-pill" uk-switcher>
-          <li><a href="#">User Info</a></li>
-          <li><a href="#">Payment</a></li>
-          <li><a href="#">Waiver</a></li>
-          <li><a href="#">Flag Number</a></li>
-          <li><a href="#">Summary</a></li>
-        </ul>
-  
-        <ul class="uk-switcher uk-margin">
-          <li>
-            <%- include('../partials/regFlow/userInfo'); %>
-          </li>
-          <li>
-            <%- include('../partials/regFlow/payment'); %>
-          </li>
-          <li>
-            <%- include('../partials/regFlow/waiver'); %>
-          </li>
-          <li>
-            <%- include('../partials/regFlow/flagNumber'); %>
-          </li>
-          <li>
-            <%- include('../partials/regFlow/summary'); %>
-          </li>
-        </ul>
-      </div>
+      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher>
+        <li><a href="#">Rider Info</a></li>
+        <li><a href="#">Passenger Info</a></li>
+        <li><a href="#">T-Shirts</a></li>
+        <li><a href="#">Payment</a></li>
+        <li><a href="#">Waiver</a></li>
+        <li><a href="#">Flag Number</a></li>
+        <li><a href="#">Summary</a></li>
+      </ul>
+
+      <ul class="uk-switcher uk-margin">
+        <li>
+          <%- include('../partials/regFlow/riderInfo'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/passengerInfo'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/t-shirt'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/payment'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/waiver'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/flagNumber'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/summary'); %>
+        </li>
+      </ul>
     </div>
   </main>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
   <script type="text/javascript" src="js/registration.js"></script>
+  <!-- <script type="text/javascript" src="js/shopify.js"></script> -->
 </body>

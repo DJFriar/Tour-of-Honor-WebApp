@@ -1,5 +1,5 @@
 <div>
-  <h4 class="toh-mb-18">User Info</h4>
+  <h4 class="toh-mb-18">Rider Info</h4>
   <div style="padding-left: 60px; padding-right: 60px;">
     <div class="toh-mb-18">
       <%= User.FirstName %>&nbsp;<%= User.LastName %><br />
@@ -12,12 +12,15 @@
     </div>
     <div class="toh-mb-18">
       <% if(!User.Address1) { %>
+        It appears we do not have your full mailing address. Please click the button below to update your address. <br />
         <button type="button" id="setAddressButton" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Set Address</button>
       <% } else { %>
-        <button type="button" id="updateUserInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Edit Address</button>
+        Please confirm that the address above is your correct mailing address. All materials will be sent to this address. <br />
+        <button type="button" id="addressIsCorrectNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, Needs Updating</button>
+        <button type="button" id="addressIsCorrectYes" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Yes, Looks Good</button>
       <% } %>
-      
     </div>
+<!--     
     <form class="signup uk-grid-small uk-form-stacked" uk-grid>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="FirstName">First Name</label>
@@ -67,7 +70,7 @@
         <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Update User Profile</button>
         <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary button-rounded">Reset Login Password</button>
       </div>
-    </form>
+    </form> -->
     <div id="setAddressModal" class="modal">
       <%- include('../../partials/setAddressModal'); %>
     </div>

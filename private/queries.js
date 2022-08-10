@@ -517,3 +517,51 @@ module.exports.queryAwardNamesList = async function queryAwardNamesList() {
     throw err;
   }
 }
+
+module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
+  try {
+    var result = await sequelize.query("SELECT Price FROM PriceTiers WHERE Tier = 1",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Passenger Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Size Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Style Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}

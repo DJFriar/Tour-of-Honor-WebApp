@@ -12,6 +12,9 @@ const bcrypt = require("bcryptjs");
 const { logger } = require('../../../controllers/logger');
 const { register } = require("prom-client");
 
+const CurrentRallyYear = process.env.CurrentRallyYear;
+const OrderingRallyYear = process.env.OrderingRallyYear;
+
 module.exports = function (app) { 
 
   // Handle Metric Reporting
@@ -329,7 +332,7 @@ module.exports = function (app) {
       where: { id: req.body.UserID }
     }).then(() => {
       console.log("User Onboarded Successfully");
-      res.status(202).send();
+      res.status(200).send();
     })
     .catch(err => {
       logger.error("Rider Onboarding Error Encountered: " + err);
@@ -570,6 +573,16 @@ module.exports = function (app) {
     res.send("success");
   })
 
+  // Handle Address Update
+  app.put("/api/v1/saveAddress", function (req, res) {
+    db.User.update({
+      Address1: req.body.Address1
+    }, {
+      where: { id: req.body.UserID }
+    });
+    res.send("success");
+  })
+
   // Delete a User
   app.delete("/api/v1/user/:id", (req, res) => {
     const id = req.params.id;
@@ -588,6 +601,18 @@ module.exports = function (app) {
     db.User.findOne({
       where: {
         id: id
+      }
+    }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
+
+  // Find rider by flag number
+  app.get("/api/v1/lookupRiderByFlag/:flag", (req, res) => {
+    const flag = req.params.flag;
+    db.User.findOne({
+      where: {
+        FlagNumber: flag
       }
     }).then(function (dbPost) {
       res.json(dbPost);
@@ -629,7 +654,7 @@ module.exports = function (app) {
 
   // Delete an Award
   app.delete("/api/v1/award-iba/:id", (req, res) => {
-    const id = req.params.id;
+    var id = req.params.id;
     db.Award.destroy({
       where: {
         id: id
@@ -637,5 +662,137 @@ module.exports = function (app) {
     }).then(() => {
       res.status(202).send();
     });
-  });
+  })
+
+  // Lookup Orders by RiderID
+  app.get("/api/v1/lookupOrderByUserID/:id", (req, res) => {
+    var id = req.params.id;
+    db.Orders.findOne({
+      where: {
+        id: id
+      }
+    }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
+
+  // Handle Registration Flow
+  app.post("/api/v1/regFlow", async (req, res) => {
+    var RegStep = req.body.RegStep;
+
+    if (RegStep == "Rider") {
+      console.log(RegStep + " step entered.");
+      console.log("UserID = " + req.body.UserID);
+      db.Order.create({
+        UserID: req.body.UserID
+      }).then((o) => {
+        logger.info("Order " + o.id + " created.");
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error creating order: " + err);
+        res.status(401).json(err);
+      });
+    }
+    if (RegStep == "Passenger") {
+      console.log(RegStep + " step entered.");
+      db.Order.update({
+        PassUserID: req.body.PassUserID
+      },{
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error updating order with passenger info: " + err);
+        res.status(401).json(err);
+      })
+    }
+    if (RegStep == "Shirts") {
+      console.log(RegStep + " step entered.");
+      console.log(req.body);
+      var BaseRiderRateObject = await q.queryBaseRiderRate();
+      var BaseRiderRate = parseInt(BaseRiderRateObject[0].Price);
+      var PassengerSurchargeObject = await q.queryPassengerSurcharge();
+      var PassengerSurcharge = parseInt(PassengerSurchargeObject[0].iValue);
+      var ShirtSizeSurchargeObject = await q.queryShirtSizeSurcharge();
+      var ShirtSizeSurcharge = parseInt(ShirtSizeSurchargeObject[0].iValue);
+      var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
+      var ShirtStyleSurcharge = parseInt(ShirtStyleSurchargeObject[0].iValue);
+      var totalPrice = BaseRiderRate;
+      var ShirtSize = req.body.ShirtSize;
+      var ShirtStyle = req.body.ShirtStyle;
+      var PassShirtSize = req.body.PassShirtSize;
+      var PassShirtStyle = req.body.PassShirtStyle;
+      var ShirtSizesToSurcharge = ["2X", "3X", "4X", "5X"];
+      var ShirtStylesToSurcharge = ["Long-Sleeved","Ladies Short-Sleeved"]
+
+      var ShirtDetails = {
+        ShirtSize,
+        ShirtStyle
+      }
+
+      console.log("Subtotal = $" + totalPrice);
+
+      if(ShirtStylesToSurcharge.includes(ShirtStyle)) {
+        console.log("Adding Rider Style Surcharge");
+        totalPrice += ShirtStyleSurcharge;
+        console.log("Subtotal = $" + totalPrice);
+      }
+
+      if(ShirtSizesToSurcharge.includes(ShirtSize)) {
+        console.log("Adding Rider Size Surcharge");
+        totalPrice += ShirtSizeSurcharge;
+        console.log("Subtotal = $" + totalPrice);
+      }
+
+      if (req.body.hasPass == "true") {
+        console.log("Order has Passenger");
+
+        totalPrice += PassengerSurcharge;
+        console.log("Subtotal = $" + totalPrice);
+        ShirtDetails.PassShirtSize = PassShirtSize;
+        ShirtDetails.PassShirtStyle = PassShirtStyle;
+        if(ShirtStylesToSurcharge.includes(PassShirtStyle)) {
+          console.log("Adding Passenger Style Surcharge");
+          totalPrice += ShirtStyleSurcharge;
+          console.log("Subtotal = $" + totalPrice);
+        }
+        if(ShirtSizesToSurcharge.includes(PassShirtSize)) {
+          console.log("Adding Passenger Size Surcharge");
+          totalPrice += ShirtSizeSurcharge;
+          console.log("Subtotal = $" + totalPrice);
+        }
+      }
+
+      console.log("==== Total Cost ====");
+      console.log("Total Cost = $" + totalPrice);
+
+      db.Order.update(ShirtDetails, {
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error updating order with t-shirt info: " + err);
+        res.status(401).json(err);
+      })
+    }
+    if (RegStep == "Payment") {
+      console.log(RegStep + " step entered.");
+      res.send("success");
+    }
+    if (RegStep == "Waiver") {
+      console.log(RegStep + " step entered.");
+      res.send("success");
+    }
+    if (RegStep == "Flags") {
+      console.log(RegStep + " step entered.");
+      res.send("success");
+    }
+  })
+
 }
