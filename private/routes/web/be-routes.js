@@ -769,6 +769,11 @@ module.exports = function (app) {
       console.log("==== Total Cost ====");
       console.log("Total Cost = $" + totalPrice);
 
+      var PriceTierObject = await q.queryTierByPrice(totalPrice);
+      var priceTier = parseInt(PriceTierObject[0].Tier);
+      var shopifyVariantID = PriceTierObject[0].ShopifyVariantID;
+      ShirtDetails.PriceTier = priceTier;
+
       db.Order.update(ShirtDetails, {
         where: {
           RallyYear: 2023,

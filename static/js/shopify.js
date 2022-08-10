@@ -1,0 +1,132 @@
+/*<![CDATA[*/
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) {
+    if (window.ShopifyBuy.UI) {
+      ShopifyBuyInit();
+    } else {
+      loadScript();
+    }
+  } else {
+    loadScript();
+  }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'tour-of-honor.myshopify.com',
+      storefrontAccessToken: 'fab96b1d4c4d406eae8eeeafe4d7fde7',
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '6686814470199',
+        node: document.getElementById('product-component-1658283197862'),
+        moneyFormat: '%24%7B%7Bamount%7D%7D',
+        options: {
+          "product": {
+            "styles": {
+              "product": {
+                "@media (min-width: 601px)": {
+                  "max-width": "calc(25% - 20px)",
+                  "margin-left": "20px",
+                  "margin-bottom": "50px"
+                }
+              },
+              "button": {
+                ":hover": {
+                  "background-color": "#0e6ece"
+                },
+                "background-color": "#0f7ae5",
+                ":focus": {
+                  "background-color": "#0e6ece"
+                },
+                "border-radius": "8px"
+              }
+            },
+            "buttonDestination": "checkout",
+            "text": {
+              "button": "BUY NOW"
+            }
+          },
+          "productSet": {
+            "styles": {
+              "products": {
+                "@media (min-width: 601px)": {
+                  "margin-left": "-20px"
+                }
+              }
+            }
+          },
+          "modalProduct": {
+            "contents": {
+              "img": false,
+              "imgWithCarousel": true,
+              "button": false,
+              "buttonWithQuantity": true
+            },
+            "styles": {
+              "product": {
+                "@media (min-width: 601px)": {
+                  "max-width": "100%",
+                  "margin-left": "0px",
+                  "margin-bottom": "0px"
+                }
+              },
+              "button": {
+                ":hover": {
+                  "background-color": "#0e6ece"
+                },
+                "background-color": "#0f7ae5",
+                ":focus": {
+                  "background-color": "#0e6ece"
+                },
+                "border-radius": "8px"
+              }
+            },
+            "text": {
+              "button": "Add to cart"
+            }
+          },
+          "option": {},
+          "cart": {
+            "styles": {
+              "button": {
+                ":hover": {
+                  "background-color": "#0e6ece"
+                },
+                "background-color": "#0f7ae5",
+                ":focus": {
+                  "background-color": "#0e6ece"
+                },
+                "border-radius": "8px"
+              }
+            },
+            "text": {
+              "total": "Subtotal",
+              "button": "Checkout"
+            }
+          },
+          "toggle": {
+            "styles": {
+              "toggle": {
+                "background-color": "#0f7ae5",
+                ":hover": {
+                  "background-color": "#0e6ece"
+                },
+                ":focus": {
+                  "background-color": "#0e6ece"
+                }
+              }
+            }
+          }
+        },
+      });
+    });
+  }
+})();
+/*]]>*/

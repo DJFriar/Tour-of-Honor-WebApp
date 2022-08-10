@@ -565,3 +565,16 @@ module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharg
     throw err;
   }
 }
+
+module.exports.queryTierByPrice = async function queryTierByPrice(price) {
+  try {
+    var result = await sequelize.query("SELECT Tier, ShopifyVariantID FROM PriceTiers WHERE Price = ? AND IsActive = 1",
+    {
+      replacements: [price],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}

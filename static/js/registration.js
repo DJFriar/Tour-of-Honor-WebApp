@@ -1,4 +1,6 @@
 $(document).ready(function() {
+  var ShopifyVariantID = "";
+
   // Handle Address Needs Updating button
   $("#addressIsCorrectNo").on("click", function() {
     $(".modal").css("display","block");
@@ -170,7 +172,7 @@ $(document).ready(function() {
       ShirtStyle: $("#RiderShirtStyle").val(),
       ShirtSize: $("#RiderShirtSize").val()
     }
-    if(showPass == "true") {
+    if(showPass) {
       ShirtOrderInfo.hasPass = true;
       ShirtOrderInfo.PassShirtStyle = $("#PassengerShirtStyle").val();
       ShirtOrderInfo.PassShirtSize = $("#PassengerShirtSize").val();
@@ -179,8 +181,10 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: ShirtOrderInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(3); }
-    )
+    }).then((o) => { 
+      UIkit.switcher("#registrationSwitcher").show(3);
+      ShopifyVariantID = o.ShopifyVariantID;
+    })
   })
 
   // **********************
@@ -192,7 +196,8 @@ $(document).ready(function() {
     var UserID = $(this).data("userid");
     var PaymentInfo = {
       RegStep: "Payment",
-      UserID
+      UserID,
+      ShopifyVariantID,
     }
     console.log(PaymentInfo);
     $.ajax("/api/v1/regFlow", {
