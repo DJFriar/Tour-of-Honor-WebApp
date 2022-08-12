@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var ShopifyVariantID = "";
+  var CheckoutURL = "";
 
   // Handle Address Needs Updating button
   $("#addressIsCorrectNo").on("click", function() {
@@ -181,9 +182,11 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: ShirtOrderInfo
-    }).then((o) => { 
+    }).then(function(res) {
+      CheckoutURL = res.checkoutURL;
+      $("#goToPayment").attr("data-pricetier", res.PriceTier);
+      $("#totalCostAmount").text(res.totalPrice);
       UIkit.switcher("#registrationSwitcher").show(3);
-      ShopifyVariantID = o.ShopifyVariantID;
     })
   })
 
@@ -192,19 +195,14 @@ $(document).ready(function() {
   // **********************
 
   // Handle Rider Payment Button
-  $("#savePaymentInfo").on("click", function() {
-    var UserID = $(this).data("userid");
-    var PaymentInfo = {
-      RegStep: "Payment",
-      UserID,
-      ShopifyVariantID,
-    }
-    console.log(PaymentInfo);
-    $.ajax("/api/v1/regFlow", {
-      type: "POST",
-      data: PaymentInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(4); }
-    )
+  $("#goToPayment").on("click", function() {
+    window.open(CheckoutURL);
+    $("#shopifyPaymentContainer").addClass("hide-me");
+    $("#awaitingShopifyContent").removeClass("hide-me");
+  })
+
+  $("#goToWaiver").on("click", function() {
+    UIkit.switcher("#registrationSwitcher").show(4);
   })
 
   // *********************

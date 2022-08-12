@@ -4,16 +4,18 @@ const q = require("../../queries");
 const ejs = require("ejs");
 const uploadSubmission = require("../../../controllers/uploadSubmission");
 const passport = require("../../../config/passport");
-const multer = require('multer');
+const multer = require("multer");
 const isAuthenticated = require("../../../config/isAuthenticated");
 const sendEmail = require("../../sendEmail");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-const { logger } = require('../../../controllers/logger');
+const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
+const Shopify = require("shopify-api");
+const { getCheckoutURL } = require("../../../controllers/shopify");
 
-const CurrentRallyYear = process.env.CurrentRallyYear;
-const OrderingRallyYear = process.env.OrderingRallyYear;
+const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
 
 module.exports = function (app) { 
 
@@ -770,21 +772,27 @@ module.exports = function (app) {
       console.log("Total Cost = $" + totalPrice);
 
       var PriceTierObject = await q.queryTierByPrice(totalPrice);
-      var priceTier = parseInt(PriceTierObject[0].Tier);
-      var shopifyVariantID = PriceTierObject[0].ShopifyVariantID;
-      ShirtDetails.PriceTier = priceTier;
+      var PriceTier = parseInt(PriceTierObject[0].Tier);
+      var ShopifyVariantID = PriceTierObject[0].ShopifyVariantID;
+      ShirtDetails.PriceTier = PriceTier;
 
+      // Generate the Shopify URL
+      var checkoutURL = await getCheckoutURL(ShopifyVariantID);
+      ShirtDetails.CheckoutID = checkoutURL;
+
+      // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
         where: {
           RallyYear: 2023,
           UserID: req.body.UserID
         }
       }).then(() => {
-        res.status(200).send();
+        res.status(200).send({checkoutURL, PriceTier, ShopifyVariantID, totalPrice});
       }).catch(err => {
         logger.error("Error updating order with t-shirt info: " + err);
         res.status(401).json(err);
       })
+
     }
     if (RegStep == "Payment") {
       console.log(RegStep + " step entered.");

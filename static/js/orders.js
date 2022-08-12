@@ -1,3 +1,5 @@
 $(document).ready(function() {
-  console.log("orders.js loaded");
+  $('#ordersTable').DataTable({
+    pageLength: 100
+  });
 })

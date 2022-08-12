@@ -578,3 +578,15 @@ module.exports.queryTierByPrice = async function queryTierByPrice(price) {
     throw err;
   }
 }
+
+module.exports.queryAllOrders = async function queryAllOrders(price) {
+  try {
+    var result = await sequelize.query("SELECT * FROM Orders WHERE CheckOutID IS NOT NULL",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}

@@ -13,7 +13,43 @@
     <% if(NotificationText) { %>
       <%- include('../../partials/notice'); %>
     <% } %>
-    <p>Received Orders go here.</p>
+    <table class="uk-table uk-table-striped uk-table-small" id="ordersTable">
+      <thead>
+        <tr>
+          <th>Rider Shirt Size</th>
+          <th>Rider Shirt Style</th>
+          <th>Pass Shirt Style</th>
+          <th>Pass Shirt Style</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% Orders.forEach(function(order) { %>
+          <tr>
+            <td>
+              <%= order.ShirtSize %>
+            </td>
+            <td>
+              <%= order.ShirtStyle %>
+            </td>
+            <td>
+              <%= order.PassShirtSize %>
+            </td>
+            <td>
+              <%= order.PassShirtStyle %>
+            </td>
+            <td>
+              <div class="uk-inline">
+                <button class="uk-button uk-button-default" type="button">Actions</button>
+                <div uk-dropdown="mode: click">
+                  <div>Cool Stuff Here</div>
+                </div>
+            </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
   </main>
   <footer>
     <%- include('../../partials/footer'); %>

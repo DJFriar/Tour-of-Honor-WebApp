@@ -593,12 +593,18 @@ module.exports = function (app) {
   app.get("/admin/orders", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    try {
+      var Orders = await q.queryAllOrders();
+    } catch {
+      console.log("Error encountered: queryAllOrders");
+    }
     console.log(req.user);
 
     res.render("pages/admin/orders", {
       activeUser,
       User: req.user,
       NotificationText: "",
+      Orders,
       dt: DateTime
     });
   });
