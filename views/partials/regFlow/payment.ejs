@@ -1,0 +1,19 @@
+<div>
+  <h4 class="toh-mb-18">Payment</h4>
+  <div class="uk-align-center uk-text-center">
+    <div id="shopifyPaymentContainer">
+      <div class="uk-width-1-1@s uk-text-center">
+        Your total will be $<span id="totalCostAmount"></span>. Please click the button below to pay via the Tour of Honor Store.
+      </div>
+      <div id="shopifyPaymentButtonContainer" class="uk-width-1-1@s uk-text-center">
+        <label class="uk-form-label" for="goToPayment">&nbsp;</label>
+        <button type="button" id="goToPayment" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
+      </div>
+    </div>
+    <div id="awaitingShopifyContent" class="uk-width-1-1@s uk-text-center hide-me">
+      Shopify checkout will open in another window/tab. <br/>Once you have completed payment, please come back here and click the button below to contine. <br />
+      <label class="uk-form-label" for="goToWaiver">&nbsp;</label>
+      <button type="button" id="goToWaiver" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Waiver</button>
+    </div>
+  </div>
+</div>

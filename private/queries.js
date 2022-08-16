@@ -93,19 +93,6 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
   }
 }
 
-// module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(flag) {
-//   try {
-//     var result = await sequelize.query("SELECT id FROM Users WHERE FlagNumber = ?",
-//     {
-//       replacements: [flag],
-//       type: QueryTypes.SELECT
-//     })
-//     return result;
-//   } catch (err) {
-//     throw err;
-//   }
-// }
-
 module.exports.queryAllMemorialsWithUserStatus = async function queryAllMemorialsWithUserStatus(id) {
   try {
     var result = await sequelize.query("SELECT s.Status AS 'RiderStatus',m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? ORDER BY m.State, m.City, m.Category",
@@ -525,6 +512,79 @@ module.exports.queryAwardList = async function queryAwardList() {
 module.exports.queryAwardNamesList = async function queryAwardNamesList() {
   try {
     var result = await db.AwardName.findAll({ })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
+  try {
+    var result = await sequelize.query("SELECT Price FROM PriceTiers WHERE Tier = 1",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Passenger Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Size Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharge() {
+  try {
+    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Style Surcharge'",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryTierByPrice = async function queryTierByPrice(price) {
+  try {
+    var result = await sequelize.query("SELECT Tier, ShopifyVariantID FROM PriceTiers WHERE Price = ? AND IsActive = 1",
+    {
+      replacements: [price],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryAllOrders = async function queryAllOrders(price) {
+  try {
+    var result = await sequelize.query("SELECT * FROM Orders WHERE CheckOutID IS NOT NULL",
+    {
+      type: QueryTypes.SELECT
+    });
     return result;
   } catch (err) {
     throw err;

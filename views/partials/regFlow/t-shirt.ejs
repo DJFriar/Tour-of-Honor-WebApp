@@ -1,0 +1,66 @@
+<div>
+  <h4 class="toh-mb-18">T-Shirts</h4>
+  <form class="uk-grid-small uk-form-stacked" uk-grid>
+    <div id="riderShirtSection" class="uk-width-1-1@s toh-mb-18" style="margin: 0 20%">
+      Please choose a T-Shirt for the Rider. <br />
+      <strong>Additional Shirts will be available for order at the end of this registration process.</strong> <br />
+      <div uk-grid>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="RiderShirtStyle">Rider Shirt Style</label>
+          <select required class="uk-select toh-input" name="RiderShirtStyle" id="RiderShirtStyle">
+            <option value="Donation">No Shirt (Donate these proceeds to charity)</option>
+            <option selected value="Short-Sleeved">Short-Sleeved</option>
+            <option value="Long-Sleeved">Long-Sleeved (+$7)</option>
+            <option value="Ladies Short-Sleeved">Women's Short-Sleeved V-Neck (+$7)</option>
+          </select>
+        </div>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="RiderShirtSize">Rider Shirt Size</label>
+          <select required class="uk-select toh-input" name="RiderShirtSize" id="RiderShirtSize">
+            <option value="SM">SM</option>
+            <option value="MD">MD</option>
+            <option value="LG">LG</option>
+            <option selected value="XL">XL</option>
+            <option value="2X">2X (+$3)</option>
+            <option value="3X">3X (+$3)</option>
+            <option value="4X">4X (+$3)</option>
+            <option value="5X">5X (+$3)</option>
+          </select>
+          <label class="uk-form-label" for="RiderShirtSize">V-Neck is not available in 4x or 5x.</label>
+        </div>
+      </div>
+    </div>
+    <div id="passengerShirtSection" class="uk-width-1-1@s toh-mb-18 hide-me" style="margin: 32px 20% 8px">
+      Please choose a T-Shirt for the Passenger. <br />
+      <div uk-grid>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="PassengerShirtStyle">Passenger Shirt Style</label>
+          <select required class="uk-select toh-input" name="PassengerShirtStyle" id="PassengerShirtStyle">
+            <option value="Donation">No Shirt (Donate these proceeds to charity)</option>
+            <option value="Short-Sleeved">Short-Sleeved</option>
+            <option value="Long-Sleeved">Long-Sleeved (+$7)</option>
+            <option selected value="Ladies Short-Sleeved">Women's Short-Sleeved V-Neck (+$7)</option>
+          </select>
+        </div>
+        <div class="uk-width-1-2@s">
+          <label class="uk-form-label" for="PassengerShirtSize">Passenger Shirt Size</label>
+          <select required class="uk-select toh-input" name="PassengerShirtSize" id="PassengerShirtSize">
+            <option value="SM">SM</option>
+            <option value="MD">MD</option>
+            <option selected value="LG">LG</option>
+            <option value="XL">XL</option>
+            <option value="2X">2X (+$3)</option>
+            <option value="3X">3X (+$3)</option>
+            <option value="4X">4X (+$3)</option>
+            <option value="5X">5X (+$3)</option>
+          </select>
+          <label class="uk-form-label" for="PassengerShirtSize">V-Neck is not available in 4x or 5x.</label>
+        </div>
+      </div>
+    </div>
+    <div class="uk-width-1-1@s uk-text-center">
+      <label class="uk-form-label" for="saveTshirtInfo">&nbsp;</label>
+      <button type="button" id="saveTshirtInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Save and Continue</button>
+    </div>
+  </form>
+</div>
