@@ -5,8 +5,10 @@ $(document).ready(() => {
   });
 
   $('#riderBikeInfo').DataTable({
-    "order": [[ 3, "desc" ]],
-    "pageLength": 5
+    "lengthChange": false,
+    "order": [[ 0, "asc" ]],
+    "paging": false,
+    "searching": false
   });
 
   // Save changes to user profile
@@ -85,53 +87,56 @@ $(document).ready(() => {
   })
 
   // Handle Edit Bike Info Button
-  $("#editBikeInfoBtn").on("click", function(e) {
+  $(".editBikeInfoBtn").on("click", function(e) {
     e.preventDefault();
     console.log("editBikeInfoBtn clicked");
-    var Code = $("#MemorialCodeLookup").val().trim();
-    Code = Code.toUpperCase();
-    SampleImage = "";
-    updatedSampleImage = false;
+    var BikeID = $(this).data("bikeid");
 
-    $.ajax("/api/v1/memorial/c/"+ Code, {
+    $.ajax("/api/v1/bike/"+ BikeID, {
       type: "GET",
     }).then(
       function(res) {
+        console.log("==== Bike Info: ====")
         console.log(res);
-        if (res == undefined || res == null) {
-          $("#memorialNotFoundErrorText").toggleClass("hide-me");
-        } else if (res.Code == Code) {
-          $("#memorialInfoEditModal").css("display","block");
-          $(".uk-dropdown").removeClass("uk-open");
-
-          SampleImage = res.SampleImage;
-
-          var MultiImageBool = 0
-          if (res.MultiImage) {
-            MultiImageBool = 1;
-          }
-          $("#EditMemorialID").val(res.id);
-          $("#EditMemorialCode").val(res.Code);
-          $("#EditMemorialCategory").val(res.Category);
-          $("#EditMemorialRegion").val(res.Region);
-          $("#EditMemorialName").val(res.Name);
-          $("#EditMemorialAddress1").val(res.Address1);
-          $("#EditMemorialAddress2").val(res.Address2);
-          $("#EditMemorialURL").val(res.URL);
-          $("#EditMemorialCity").val(res.City);
-          $("#EditMemorialState").val(res.State);
-          $("#EditMemorialLatitude").val(res.Latitude);
-          $("#EditMemorialLongitude").val(res.Longitude);
-          $("#EditMemorialRestrictions").val(res.Restrictions);
-          $("#EditMultiImage").val(MultiImageBool);
-          $("#EditSampleImageName").val(res.SampleImage);
-          $(".sampleImagePlaceholder").attr("src", baseSampleImageUrl + res.SampleImage);
-          $("#EditSampleImageFile").attr("src", baseSampleImageUrl + res.SampleImage);
-          $("#EditMemorialAccess").val(res.Access);
-        } 
-        
+        $("#bikeInfoEditModal").css("display","block");
+        $("#EditBikeID").val(res.id);
+        $("#EditBikeName").val(res.BikeName);
+        $("#EditBikeYear").val(res.Year);
+        $("#EditBikeMake").val(res.Make);
+        $("#EditBikeModel").val(res.Model);
       }
     )
+  })
+
+  // Handle Save Edited Bike Info button
+  $("#saveEditedBikeInfoBtn").on("click", function() {
+    var editedBikeInfo = {
+      BikeID: $("#EditBikeID").val().trim(),
+      BikeName: $("#EditBikeName").val().trim(),
+      BikeYear: $("#EditBikeYear").val().trim(),
+      BikeMake: $("#EditBikeMake").val().trim(),
+      BikeModel: $("#EditBikeModel").val().trim(),
+    }
+
+    $.ajax("/api/v1/bike", {
+      type: "PUT",
+      data: editedBikeInfo
+    }).then(
+      function() { location.replace("/user-profile"); }
+    )
+  })
+
+  // Handle Bike Deletion
+  $(".deleteBikeBtn").on("click", function() {
+    var BikeID = $(this).data("bikeid");
+
+    $.ajax("/api/v1/bike/" + BikeID, {
+      type: "DELETE"
+    }).then(
+      function() {
+        location.reload();
+      }
+    );
   })
 
   // Handle Reset Password Button
@@ -144,4 +149,9 @@ $(document).ready(() => {
     $("#alert .msg").text(err.responseJSON);
     $("#alert").fadeIn(500);
   }
+
+  // Handle Dialog Close Button
+  $(".close").on("click", function() {
+    $(".modal").css("display","none");
+  })
 });

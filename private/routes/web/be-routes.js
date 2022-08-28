@@ -450,8 +450,28 @@ module.exports = function (app) {
 
   // Get all bikes
   app.get("/api/v1/bikes", function (req, res) {
-    db.Bike.findAll({}).then(function (dbPost) {
-      res.json(dbPost);
+    db.Bike.findAll({}).then(function (bikeArray) {
+      res.json(bikeArray);
+    });
+  });
+
+  // Get a specific bike
+  app.get("/api/v1/bike/:id", function(req, res) {
+    const id = req.params.id;
+    db.Bike.findOne({
+      where: { id: id }
+    }).then(function(bikeInfo) {
+      res.json(bikeInfo);
+    });
+  });
+
+  // Delete a bike
+  app.delete("/api/v1/bike/:id", function(req, res) {
+    const id = req.params.id;
+    db.Bike.destroy({
+      where: { id: id }
+    }).then(() => {
+      res.status(202).send();
     });
   });
 
