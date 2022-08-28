@@ -1,0 +1,28 @@
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h4>Edit Bike Info</h4>
+    <form class="uk-grid-small uk-form-stacked" uk-grid>
+    <input class="uk-input" id="EditBikeID" type="hidden" placeholder="" value="<%= RiderBikeInfo[0].id %>">
+    <div class="uk-width-1-1@s">
+      <label class="uk-form-label" for="BikeName">Bike Nickname</label>
+      <input class="uk-input toh-input" id="BikeName" type="text" placeholder="">
+    </div>
+    <div class="uk-width-1-3@s">
+      <label class="uk-form-label" for="BikeYear">Bike Year</label>
+      <input class="uk-input toh-input" id="BikeYear" type="text" placeholder="">
+    </div>
+    <div class="uk-width-1-3@s">
+      <label class="uk-form-label" for="BikeMake">Bike Make</label>
+      <input class="uk-input toh-input" id="BikeMake" type="text" placeholder="">
+    </div>
+    <div class="uk-width-1-3@s">
+      <label class="uk-form-label" for="BikeModel">Bike Model</label>
+      <input class="uk-input toh-input" id="BikeModel" type="text" placeholder="">
+    </div>
+    <div>
+      <label class="uk-form-label">&nbsp;</label>
+      <button class="uk-button uk-button-default uk-button-small" id="cancelButton">Cancel</button>
+      <button class="uk-button uk-button-primary uk-button-small" id="saveEditedBikeInfoBtn">Save</button>
+    </div>
+  </form>
+</div>

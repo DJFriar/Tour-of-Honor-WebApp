@@ -330,6 +330,20 @@ module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
   }
 }
 
+module.exports.queryBikesByRider = async function queryBikesByRider(rider) { 
+  try {
+    var result = await db.Bike.findAll({
+      raw: true,
+      where: {
+        user_id: rider
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryNextPendingSubmissions = async function queryNextPendingSubmissions(category) {
   try {
     if (category == "all") {

@@ -64,41 +64,50 @@
         <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary button-rounded">Reset Login Password</button>
       </div>
     </form>
-    <!-- <div class="toh-mt-18">
+    <div class="toh-mt-18">
       <h5>Bike Info</h5>
-      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
-        <thead>
-          <tr>
-            <th>NickName</th>
-            <th>Year</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% RiderBikeInfo.forEach(function(Bike) { %>
+      <% if(RiderBikeInfo.length == 0) { %> 
+        <div class="uk-width-1-1@s uk-text-center">
+          <p>You don't appear to have any bikes. Click the button below to add one.</p>
+          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary button-rounded">Add New Bike</button>
+        </div>
+      <% } %>
+      <% if(RiderBikeInfo.length > 0) { %> 
+        <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+          <thead>
             <tr>
-              <td>
-                <%= Bike.Name %>
-              </td>
-              <td>
-                <%= Bike.Year %>
-              </td>
-              <td>
-                <%= Bike.Make %>
-              </td>
-              <td>
-                <%= Bike.Model %>
-              </td>
-              <td>
-                &nbsp;
-              </td>
+              <th>NickName</th>
+              <th>Year</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Actions</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div> -->
+          </thead>
+          <tbody>
+            <% RiderBikeInfo.forEach(function(Bike) { %>
+              <tr>
+                <td>
+                  <%= Bike.BikeName %>
+                </td>
+                <td>
+                  <%= Bike.Year %>
+                </td>
+                <td>
+                  <%= Bike.Make %>
+                </td>
+                <td>
+                  <%= Bike.Model %>
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+      
+    </div>
     <div class="toh-mt-24">
       <h5>Submission History</h5>
       <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
@@ -150,6 +159,11 @@
         </tbody>
       </table>
     </div>
+    <!-- This is the Add New Bike Info modal -->
+    <div id="bikeInfoAddModal" class="modal">
+      <%- include('../partials/bikeInfoAddModal'); %>
+    </div>
+
   </main>
   <footer>
     <%- include('../partials/footer'); %>

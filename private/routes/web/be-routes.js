@@ -434,6 +434,20 @@ module.exports = function (app) {
     });
   });
 
+  // Update a Bike
+  app.put("/api/v1/bike", (req, res) => {
+    db.Bike.update({
+      BikeName: req.body.BikeName,
+      Year: req.body.BikeYear,
+      Make: req.body.BikeMake,
+      Model: req.body.BikeModel,
+    }, {
+      where: { id: req.body.BikeID }
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
+
   // Get all bikes
   app.get("/api/v1/bikes", function (req, res) {
     db.Bike.findAll({}).then(function (dbPost) {
@@ -695,6 +709,9 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
     }
+    if (RegStep == "Bike") {
+      console.log(RegStep + " step entered.");
+    }
     if (RegStep == "Passenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
@@ -793,6 +810,10 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
 
+    }
+    if (RegStep == "Charity") {
+      console.log(RegStep + " step entered.");
+      res.send("success");
     }
     if (RegStep == "Payment") {
       console.log(RegStep + " step entered.");

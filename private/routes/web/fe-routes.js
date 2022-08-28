@@ -540,6 +540,7 @@ module.exports = function (app) {
       console.log("Error encountered: queryAllBikes");
     }
     console.log(req.user);
+    console.log(RiderBikeInfo);
 
     res.render("pages/user-profile", {
       activeUser,
@@ -565,6 +566,7 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    console.log(req.user);
     try {
       var BaseRiderRateObject = await q.queryBaseRiderRate();
       var BaseRiderRate = BaseRiderRateObject[0].Price;
@@ -575,7 +577,12 @@ module.exports = function (app) {
       var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
     } catch {
-      console.log("Error encountered: querySubmissionsByRider");
+      console.log("Error encountered while gathering pricing info.");
+    }
+    try {
+      var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: queryBikesByRider");
     }
 
     res.render("pages/registration", {
@@ -583,6 +590,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       BaseRiderRate,
+      RiderBikeInfo,
       PassengerSurcharge,
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
