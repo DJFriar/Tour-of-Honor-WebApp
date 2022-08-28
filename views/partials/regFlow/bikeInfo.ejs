@@ -1,0 +1,38 @@
+<div>
+  <h4 class="toh-mb-18">Bike Info</h4>
+  <div style="padding-left: 60px; padding-right: 60px;">
+    <div class="toh-mt-18">
+      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+        <thead>
+          <tr>
+            <th>NickName</th>
+            <th>Year</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% RiderBikeInfo.forEach(function(Bike) { %>
+            <tr>
+              <td>
+                <%= Bike.Name %>
+              </td>
+              <td>
+                <%= Bike.Year %>
+              </td>
+              <td>
+                <%= Bike.Make %>
+              </td>
+              <td>
+                <%= Bike.Model %>
+              </td>
+              <td>
+                &nbsp;
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+</div>

@@ -57,6 +57,11 @@ $(document).ready(function() {
   })
 
   // ************************
+  // ** Bike Info Tab **
+  // ************************
+
+
+  // ************************
   // ** Passenger Info Tab **
   // ************************
 
@@ -80,7 +85,7 @@ $(document).ready(function() {
       type: "POST",
       data: PassOrderInfo
     }).then(() => { 
-      UIkit.switcher("#registrationSwitcher").show(2);
+      UIkit.switcher("#registrationSwitcher").show(3);
       $("#saveTshirtInfo").attr("data-showpassoptions", "false");
     })
   })
@@ -146,7 +151,7 @@ $(document).ready(function() {
       type: "POST",
       data: PassOrderInfo
     }).then(() => { 
-      UIkit.switcher("#registrationSwitcher").show(2);
+      UIkit.switcher("#registrationSwitcher").show(3);
       $("#passengerShirtSection").removeClass("hide-me");
       $("#saveTshirtInfo").attr("data-showpassoptions", "true");
     })
@@ -154,7 +159,7 @@ $(document).ready(function() {
 
   // Handle Save Passenger Info Button
   $("#savePassengerInfo").on("click", function() {
-    UIkit.switcher("#registrationSwitcher").show(2);
+    UIkit.switcher("#registrationSwitcher").show(3);
   })
 
   // ************************
@@ -202,7 +207,7 @@ $(document).ready(function() {
   })
 
   $("#goToWaiver").on("click", function() {
-    UIkit.switcher("#registrationSwitcher").show(4);
+    UIkit.switcher("#registrationSwitcher").show(6);
   })
 
   // *********************
@@ -220,7 +225,7 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: WaiverInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(5); }
+    }).then(() => { UIkit.switcher("#registrationSwitcher").show(7); }
     )
   })
 
@@ -239,7 +244,7 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: FlagNumberInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(6); }
+    }).then(() => { UIkit.switcher("#registrationSwitcher").show(8); }
     )
   })
 });
