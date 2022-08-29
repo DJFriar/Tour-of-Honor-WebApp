@@ -4,10 +4,10 @@
  *
  * To rebuild or modify this file with the latest versions of the included
  * software please visit:
- *   https://datatables.net/download/#dt/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/fh-3.2.4/r-2.3.0/sc-2.0.7
+ *   https://datatables.net/download/#dt/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/fh-3.2.4/r-2.3.0/sc-2.0.7
  *
  * Included libraries:
- *   JSZip 2.5.0, DataTables 1.12.1, Buttons 2.2.3, HTML5 export 2.2.3, FixedHeader 3.2.4, Responsive 2.3.0, Scroller 2.0.7
+ *   jQuery 3 3.6.0, JSZip 2.5.0, DataTables 1.12.1, Buttons 2.2.3, HTML5 export 2.2.3, FixedHeader 3.2.4, Responsive 2.3.0, Scroller 2.0.7
  */
 
 @charset "UTF-8";
