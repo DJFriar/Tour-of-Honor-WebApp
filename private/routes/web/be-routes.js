@@ -918,6 +918,19 @@ module.exports = function (app) {
     });
   });
 
+  // Get all orders
+  app.get("/api/v1/orders", async (req, res) => {
+    console.log("Orders API Endpoint hit!");
+    try {
+      var OrderDetails = await q.queryAllOrdersWithDetail();
+      console.log("==== OrderDetails ====");
+      console.log(OrderDetails);
+    } catch (err) {
+      console.log("Error encountered: queryAllOrdersWithDetail." + err);
+    }
+    res.json(OrderDetails);
+  });
+
   // Save New Charity
   app.post("/api/v1/charity", (req, res) => {
     db.Charity.create({

@@ -605,6 +605,18 @@ module.exports.queryAllOrders = async function queryAllOrders(price) {
   }
 }
 
+module.exports.queryAllOrdersWithDetail = async function queryAllOrdersWithDetail() { 
+  try {
+    var result = await sequelize.query("SELECT  o.id, o.RallyYear, CASE WHEN ISNULL(o.OrderNumber) THEN 'UNPAID' ELSE o.OrderNumber END AS OrderNumber, CONCAT(o.ShirtSize, ' ', o.ShirtStyle) AS RiderShirt, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(o.PassShirtSize, ' ', o.PassShirtStyle) END AS PassengerShirt, u1.FirstName AS RiderFirstName, u1.LastName AS RiderLastName, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName, pt.Price AS PriceCharged, CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName FROM Orders o LEFT JOIN Users u1 ON o.UserID = u1.id LEFT JOIN Users u2 ON o.PassUserID = u2.id LEFT JOIN PriceTiers pt ON o.PriceTier = pt.id LEFT JOIN Charities c ON o.CharityChosen = c.id",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
   try {
     var result = await db.Order.findOne({

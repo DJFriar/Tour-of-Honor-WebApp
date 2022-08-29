@@ -575,6 +575,10 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryOrderInfoByRider");
     }
+    if (!OrderInfo) {
+      OrderInfo = [];
+      OrderInfo.push({NextStepNum: 0})
+    }
 
     try {
       var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
