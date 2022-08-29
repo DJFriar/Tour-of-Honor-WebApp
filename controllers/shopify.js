@@ -81,9 +81,9 @@ async function postQuery(query, query_vars){
 async function generateShopifyCheckout(variantid) {
   query = buildGraphQLQuery();
   query_vars = getQueryVars(variantid);
-  response = await postQuery(query, query_vars)
-  checkoutURL = response.data.checkoutCreate.checkout.webUrl;
-  checkoutID = response.data.checkoutCreate.checkout.id;
+  createCheckoutResponse = await postQuery(query, query_vars)
+  checkoutURL = createCheckoutResponse.data.checkoutCreate.checkout.webUrl;
+  checkoutID = createCheckoutResponse.data.checkoutCreate.checkout.id;
   var checkoutDetails = {
     CheckoutURL: checkoutURL,
     CheckoutID: checkoutID
