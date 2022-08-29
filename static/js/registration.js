@@ -277,8 +277,24 @@ $(document).ready(function() {
 
   // Handle Save Passenger Info Button
   $("#savePassengerInfo").on("click", function() {
-    $("#RegStep3").removeClass("disabled");
-    UIkit.switcher("#registrationSwitcher").show(3);
+    const UserID = $(this).data("userid");
+
+    var PassengerInfo = {
+      FirstName: $("#PassengerFirstNameForm").val().trim(),
+      LastName: $("#PassengerLastNameForm").val().trim(),
+      UserName: $("#PassengerUserNameForm").val().trim(),
+      Email: $("#PassengerEmailForm").val().trim(),
+      Password: randomString(14),
+      FlagNumber: 0
+    }
+
+    $.ajax("/api/v1/user", {
+      type: "POST",
+      data: PassengerInfo
+    }).then(() => {
+      $("#RegStep3").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(3);
+    })
   })
 
   // ****************************
@@ -431,4 +447,9 @@ $(document).ready(function() {
   $(".close").on("click", function() {
     $(".modal").css("display","none");
   })
+
+  // Generate random passsword for new users
+  const randomString = (length = 14) => {
+    return Math.random().toString(16).substr(2, length);
+  };
 });

@@ -607,7 +607,8 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryTotalOrderCostByRider");
     }
-    if (TotalOrderCost.length == 0) {
+    if (!TotalOrderCost) {
+      TotalOrderCost = [];
       TotalOrderCost.push({"Price": 0})
     }
 
