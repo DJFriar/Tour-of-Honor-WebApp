@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h4>Add New Charity</h4>
+  <div class="toh-mt-24">
+    <form class="uk-grid-small uk-form-stacked" uk-grid>
+      <div class="uk-width-1-2@s toh-mb-18">
+        <label class="uk-form-label" for="CharityName">Charity Name</label>
+        <input class="uk-input toh-input" id="CharityName" type="text" placeholder="">
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="CharityURL">Charity URL</label>
+        <input class="uk-input toh-input" id="CharityURL" type="text" placeholder="">
+      </div>
+      <div class="uk-width-1-1@s toh-mt-18">
+        <div class="uk-align-right">
+          <label class="uk-form-label">&nbsp;</label>
+          <button class="uk-button uk-button-default button-rounded" id="cancelButton">Cancel</button>
+          <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveNewCharityBtn" data-userid="<%= User.id %>">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

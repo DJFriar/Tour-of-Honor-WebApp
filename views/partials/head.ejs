@@ -2,13 +2,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <% if(!envIsProd) { %>
-    <title><%= envNameShort %> - TOH Scoring Portal</title>
+    <title><%= envNameShort %> - <%= title %></title>
   <% } else { %>
-    <title>Tour of Honor Scoring Portal</title>
+    <title><%= title %></title>
   <% } %>
 
   <!-- jQuery -->
-  <script src="/js/jquery-3.6.0.min.js"></script>
+  <script src="/js/jquery-3.6.1.min.js"></script>
   <!-- UIKit -->
   <link rel="stylesheet" href="/css/uikit.min.css" />
   <script src="/js/uikit.min.js"></script>

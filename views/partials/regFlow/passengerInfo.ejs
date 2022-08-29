@@ -1,0 +1,57 @@
+<div>
+  <h4 class="toh-mb-18">Passenger Info</h4>
+  <div class="toh-mb-18">
+    <p>Do you want to register a passenger at this time and receive the discounted rate?</p>
+    <button type="button" id="registerPassengerNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, thank you</button>
+    <button type="button" id="registerPassengerYes" class="uk-button uk-button-primary button-rounded toh-ml-8">Yes, please</button>
+  </div>
+  <div id="passengerInfoSection" class="toh-mb-18 hide-me">
+    <p>Did your passenger have their own flag number in the 2022 rally?</p>
+    <button type="button" id="passengerAlreadyHasFlagNo" class="uk-button uk-button-primary button-rounded">No</button>
+    <button type="button" id="passengerAlreadyHasFlagYes" class="uk-button uk-button-primary button-rounded toh-ml-8">Yes</button>
+  </div>
+  <div id="passengerFlagLookup" class="toh-mb-18 hide-me">
+    <p>Use the below form to look up your passenger by their flag number.</p>
+    <div>
+      <label class="uk-form-label" for="PassengerFlagNumber">&nbsp;</label>
+      <input class="uk-input toh-input uk-width-1-6" id="PassengerFlagNumber" type="text" placeholder="Flag Number" >
+      <button type="button" id="lookupPassengerFlag" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Find Passenger</button>
+    </div>
+    <div id="passengerFlagLookupResultsError" class="hide-me">
+      <span id="errorMessage" style="color: red;"></span>
+    </div>
+    <div id="passengerFlagLookupResults" class="hide-me">
+      <p class="toh-mb-0">&nbsp;</p>
+      <span id="PassengerFirstName"></span>&nbsp;<span id="PassengerLastName"></span>
+      <div id="acceptPassengerButton" >
+        <label class="uk-form-label" for="acceptPassengerFlagMatch">&nbsp;</label>
+        <button type="button" id="acceptPassengerFlagMatch" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>" data-passuserid="<%=  %>">This is my Passenger</button>
+      </div>
+    </div>
+  </div>
+  <div id="passengerInfoForm" class="toh-mb-18 hide-me" style="margin: 0px 60px">
+    <form class="uk-grid-small uk-form-stacked" uk-grid>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="FirstName">First Name</label>
+        <input class="uk-input toh-input" id="FirstName" type="text" placeholder="Firstname">
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="LastName">Last Name</label>
+        <input class="uk-input toh-input" id="LastName" type="text" placeholder="Lastname">
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="UserName">Username</label>
+        <input class="uk-input toh-input" id="UserName" type="text" placeholder="Username">
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="Email">Email</label>
+        <input class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com">
+      </div>
+            
+      <div class="uk-width-1-1@s uk-text-center">
+        <label class="uk-form-label" for="savePassengerInfo">&nbsp;</label>
+        <button type="button" id="savePassengerInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Save Passenger Info</button>
+      </div>
+    </form>
+  </div>
+</div>

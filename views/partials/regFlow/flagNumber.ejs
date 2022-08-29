@@ -1,0 +1,21 @@
+<div>
+  <h4 class="toh-mb-18">Flag Number</h4>
+  <div style="padding-left: 60px; padding-right: 60px;">
+    <div class="toh-mb-18">
+      <% if(User.FlagNumber <= 10) { %>
+        You currently have Flag Number: <%= User.FlagNumber %>. This flag number is reserved.<br />
+      <% } else { %>
+        You currently have Flag Number: <%= User.FlagNumber %> <br />
+      <% } %>
+    </div>
+    <div>
+      <button type="button" id="keepExistingFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Keep existing flag number</button>
+      <button type="button" id="requestRandomFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Accept a random flag number</button>
+      <button type="button" id="requestSpecificFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Request a new specific flag number</button>
+    </div>
+    <div class="uk-width-1-1@s uk-text-center">
+      <label class="uk-form-label" for="saveFlagNumberInfo">&nbsp;</label>
+      <button type="button" id="saveFlagNumberInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Skip to Summary</button>
+    </div>
+  </div>
+</div>

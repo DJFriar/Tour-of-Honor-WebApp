@@ -2,9 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
 const jwt = require("jsonwebtoken");
-const db = require("../../../models");
 const q = require("../../queries");
 
 router.post("/", async (req, res) => {

@@ -1,0 +1,35 @@
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+<body>
+  <% if(activeUser) { %>
+    <%- include('../../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../../partials/topnav'); %>
+  <% } %>
+  <main>
+    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+    <h4>Registration Orders</h4>
+    <% if(NotificationText) { %>
+      <%- include('../../partials/notice'); %>
+    <% } %>
+    <div>&nbsp;</div>
+    <table class="uk-table uk-table-striped uk-table-small" id="ordersTable">
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Rider T-Shirt</th>
+          <th>Passenger Name</th>
+          <th>Passenger Shirt</th>
+          <th>Charity Name</th>
+        </tr>
+      </thead>
+    </table>
+  </main>
+  <footer>
+    <%- include('../../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="/js/orders.js"></script>
+</body>
