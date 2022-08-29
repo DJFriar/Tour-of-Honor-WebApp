@@ -23,6 +23,7 @@ module.exports = function (app) {
   app.get("/admin", isAuthenticated, async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
+    res.locals.title = "TOH Admin Home"
     res.render("pages/admin", {
       activeUser,
       User: req.user,
@@ -38,6 +39,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered: queryPendingSubmissions:" + err);
     }
+    res.locals.title = "TOH Scoring Dashboard"
     res.render("pages/scoring", {
       activeUser,
       User: req.user,
@@ -55,6 +57,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered: queryScoredSubmissions:" + err);
     }
+    res.locals.title = "TOH Scored"
     res.render("pages/scored", {
       activeUser,
       User: req.user,
@@ -80,6 +83,7 @@ module.exports = function (app) {
       } else {
         OtherFlags = Submissions[0].OtherRiders;
         OtherRidersArray = OtherFlags.split(',');
+        res.locals.title = "TOH Submission " + id
         res.render("pages/submission", {
           activeUser,
           User: req.user,
@@ -99,6 +103,7 @@ module.exports = function (app) {
   app.get("/error", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
+    res.locals.title = "TOH Error"
     res.render("pages/error", {
       activeUser,
       User: req.user,
@@ -109,7 +114,7 @@ module.exports = function (app) {
   app.get("/admin/alt-entry", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
-
+    res.locals.title = "TOH Alt Entry"
     res.render("pages/admin/alt-entry", {
       activeUser,
       User: req.user,
@@ -135,6 +140,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryAllRestrictions");
     }
+    res.locals.title = "TOH Memorial Editor OLD"
     res.render("pages/admin/memorial-editor", {
       activeUser,
       User: req.user,
@@ -165,6 +171,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryAllRestrictions");
     }
+    res.locals.title = "TOH Memorial Editor"
     res.render("pages/admin/memorial-editor2", {
       activeUser,
       User: req.user,
@@ -191,6 +198,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryMemorialText");
     }
+    res.locals.title = "TOH Memorial Text"
     res.render("pages/admin/memorial-text", {
       activeUser,
       User: req.user,
@@ -223,7 +231,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryAwardList");
     }
-
+    res.locals.title = "TOH Trophy Editor"
     res.render("pages/admin/trophy-editor", {
       activeUser,
       User: req.user,
@@ -247,6 +255,7 @@ module.exports = function (app) {
       { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
       { "ID":"2", "FirstName":"Billy", "LastName":"Gibbons", "States":"TX" }
     ]
+    res.locals.title = "TOH User Manager"
     res.render("pages/admin/user-management", {
       activeUser,
       User: req.user,
@@ -259,6 +268,7 @@ module.exports = function (app) {
   app.get("/changelog", async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
+    res.locals.title = "TOH Changelog"
     res.render("pages/changelog", {
       activeUser,
       User: req.user,
@@ -267,12 +277,14 @@ module.exports = function (app) {
   });
 
   app.get("/disabled", async (req, res) => {
+    res.locals.title = "TOH Site Disabled"
     res.render("pages/disabled", {
       NotificationText: ""
     });
   });
 
   app.get("/forgotpassword", async (req,res) => {
+    res.locals.title = "TOH Forgot Password"
     res.render("pages/forgot-password", {
       NotificationText: "",
       UserID: 0,
@@ -288,6 +300,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryTokenValidity");
     }
+    res.locals.title = "TOH Forgot Password"
     res.render("pages/forgot-password", {
       NotificationText: "",
       UserID,
@@ -298,6 +311,7 @@ module.exports = function (app) {
   app.get("/livefeed", async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
+    res.locals.title = "TOH Live Feed"
     res.render("pages/livefeed", {
       activeUser,
       User: req.user,
@@ -311,6 +325,7 @@ module.exports = function (app) {
   // });
 
   app.get("/login", async (req, res) => {
+    res.locals.title = "TOH Login"
     res.render("pages/login", {
       NotificationText: ""
     });
@@ -329,6 +344,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryAllAvailableMemorials");
     }
+    res.locals.title = "TOH Memorial List"
     res.render("pages/memorials", {
       activeUser,
       User: req.user,
@@ -391,7 +407,7 @@ module.exports = function (app) {
     if(SubmissionStatus.length == 0) {
       SubmissionStatus.unshift({Status: 4});
     }
-
+    res.locals.title = "TOH Memorial - " + memCode;
     res.render("pages/memorial", {
       activeUser,
       User: UserData,
@@ -407,12 +423,14 @@ module.exports = function (app) {
   });
 
   app.get("/secretdoor", async (req, res) => {
+    res.locals.title = "TOH Secret Door"
     res.render("pages/secretdoor", {
       NotificationText: ""
     });
   });
 
   app.get("/signup", async (req, res) => {
+    res.locals.title = "TOH Signup"
     res.render("pages/signup", {
       NotificationText: ""
     });
@@ -431,6 +449,7 @@ module.exports = function (app) {
       { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
       { "Memorial_ID":"3", "Category":"Huey", "Code":"H802", "Name":"159220 - AH-1J SeaCobra", "City":"Addison", "State":"TX", "SampleImage":"H802.jpg" },
     ]
+    res.locals.title = "TOH Submit"
     res.render("pages/submit", {
       activeUser,
       User: req.user,
@@ -441,6 +460,7 @@ module.exports = function (app) {
   });
 
   app.get("/welcome", async (req, res) => {
+    res.locals.title = "TOH Rider Onboarding"
     res.render("pages/welcome-rider", {
       NotificationText: "",
       ValidateNewRider: [{ "id":0 }]
@@ -457,6 +477,7 @@ module.exports = function (app) {
     if(!ValidateNewRider[0]) {
       res.redirect("/welcome");
     } else {
+      res.locals.title = "TOH Rider Onboarding"
       res.render("pages/welcome-rider", {
         NotificationText: "",
         ValidateNewRider
@@ -477,6 +498,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryEarnedMemorialsByAllRiders");
     }
+    res.locals.title = "TOH Rider List"
     res.render("pages/rider-list", {
       activeUser,
       User: req.user,
@@ -494,7 +516,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryEarnedMemorialsByAllRiders");
     }
-
+    res.locals.title = "TOH Stats"
     res.render("pages/stats", {
       activeUser,
       User: req.user,
@@ -516,7 +538,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryTrophiesList");
     }
-
+    res.locals.title = "TOH Trophy List"
     res.render("pages/trophies", {
       activeUser,
       User: req.user,
@@ -541,7 +563,7 @@ module.exports = function (app) {
     }
     console.log(req.user);
     console.log(RiderBikeInfo);
-
+    res.locals.title = "TOH User Profile"
     res.render("pages/user-profile", {
       activeUser,
       User: req.user,
@@ -613,7 +635,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryBikesByRider");
     }
-
+    res.locals.title = "TOH Registration"
     res.render("pages/registration", {
       activeUser,
       User: req.user,
@@ -639,7 +661,7 @@ module.exports = function (app) {
       console.log("Error encountered: queryAllOrders");
     }
     console.log(req.user);
-
+    res.locals.title = "TOH Orders"
     res.render("pages/admin/orders", {
       activeUser,
       User: req.user,
@@ -658,7 +680,7 @@ module.exports = function (app) {
       console.log("Error encountered: queryAllCharities");
     }
     console.log(req.user);
-
+    res.locals.title = "TOH Charity Manager"
     res.render("pages/admin/charity-manager", {
       activeUser,
       User: req.user,
