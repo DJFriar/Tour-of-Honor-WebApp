@@ -658,12 +658,14 @@ module.exports = function (app) {
   })
 
   // Fetch Next Submission ID
-  app.get("/api/v1/submission/:category", (req, res) => {
+  app.get("/api/v1/submission/:category", async (req, res) => {
     const category = req.params.category.toLowerCase();
-    q.queryNextPendingSubmissions(category)
-      .then(function (dbPost) {
-      res.json(dbPost);
-    });
+    try {
+      var NextPendingSubmission = await q.queryNextPendingSubmissions(category);
+    } catch (err) {
+      console.log("Error encountered: queryNextPendingSubmissions." + err);
+    }
+    res.json(NextPendingSubmission);
   })
 
   // Handle Trophy Awards
