@@ -567,6 +567,36 @@ module.exports = function (app) {
     var activeUser = false;
     if (req.user) { activeUser = true };
     console.log(req.user);
+
+    try {
+      var NextOrderStepNumber = await q.queryNextOrderStepByID(req.user.id);
+    } catch {
+      console.log("Error encountered: queryNextOrderStepByID");
+    }
+    if (NextOrderStepNumber.length == 0) {
+      NextOrderStepNumber.push({"NextStepNum": 0})
+    }
+
+    try {
+      var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: queryTotalOrderCostByRider");
+    }
+    if (TotalOrderCost.length == 0) {
+      TotalOrderCost.push({"Price": 0})
+    }
+
+    try {
+      var CheckoutUrl = await q.queryCheckoutURLByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: queryCheckoutURLByRider");
+    }
+    if (CheckoutUrl.length == 0) {
+      CheckoutUrl.push({"CheckoutURL": ""})
+    }
+    console.log("==== queryCheckoutURLByRider ====");
+    console.log(CheckoutUrl);
+
     try {
       var BaseRiderRateObject = await q.queryBaseRiderRate();
       var BaseRiderRate = BaseRiderRateObject[0].Price;
@@ -579,6 +609,13 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered while gathering pricing info.");
     }
+
+    try {
+      var Charities = await q.queryAllCharities();
+    } catch {
+      console.log("Error encountered: queryAllCharities");
+    }
+
     try {
       var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
     } catch {
@@ -590,10 +627,14 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       BaseRiderRate,
-      RiderBikeInfo,
+      Charities,
+      CheckoutUrl,
+      NextOrderStepNumber,
       PassengerSurcharge,
+      RiderBikeInfo,
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
+      TotalOrderCost,
       dt: DateTime
     });
   });
@@ -613,6 +654,25 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Orders,
+      dt: DateTime
+    });
+  });
+
+  app.get("/admin/charity-manager", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    try {
+      var Charities = await q.queryAllCharities();
+    } catch {
+      console.log("Error encountered: queryAllCharities");
+    }
+    console.log(req.user);
+
+    res.render("pages/admin/charity-manager", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      Charities,
       dt: DateTime
     });
   });

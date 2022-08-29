@@ -9,17 +9,18 @@
     <%- include('../partials/topnav'); %>
   <% } %>
   <main>
-    <div class="uk-text-center">
-      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher>
-        <li><a href="#">Rider Info</a></li>
-        <li><a href="#">Bike Info</a></li>
-        <li><a href="#">Passenger Info</a></li>
-        <li><a href="#">T-Shirts</a></li>
-        <li><a href="#">Charity Choice</a></li>
-        <li><a href="#">Payment</a></li>
-        <li><a href="#">Waiver</a></li>
-        <li><a href="#">Flag Number</a></li>
-        <li><a href="#">Summary</a></li>
+    <h4>Rally Registration</h4>
+    <div class="uk-text-center toh-mt-24">
+      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= NextOrderStepNumber[0].NextStepNum %>">
+        <li><a href="#" id="RegStep0">Rider Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep1">Bike Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep2">Passenger Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep3">Charity Choice</a></li>
+        <li><a class="disabled" href="#" id="RegStep4">T-Shirts</a></li>
+        <li><a class="disabled" href="#" id="RegStep5">Payment</a></li>
+        <li><a class="disabled" href="#" id="RegStep6">Waiver</a></li>
+        <li><a class="disabled" href="#" id="RegStep7">Flag Number</a></li>
+        <li><a class="disabled" href="#" id="RegStep8">Summary</a></li>
       </ul>
 
       <ul class="uk-switcher uk-margin">
@@ -33,10 +34,10 @@
           <%- include('../partials/regFlow/passengerInfo'); %>
         </li>
         <li>
-          <%- include('../partials/regFlow/t-shirt'); %>
+          <%- include('../partials/regFlow/charityChoice'); %>
         </li>
         <li>
-          <%- include('../partials/regFlow/charityChoice'); %>
+          <%- include('../partials/regFlow/t-shirt'); %>
         </li>
         <li>
           <%- include('../partials/regFlow/payment'); %>
@@ -52,10 +53,12 @@
         </li>
       </ul>
     </div>
+    <div class="hiddenData">
+      <span id="checkoutUrl" data-checkouturl="<%= CheckoutUrl[0].CheckoutURL %>"></span>
+    </div>
   </main>
   <footer>
     <%- include('../partials/footer'); %>
   </footer>
   <script type="text/javascript" src="js/registration.js"></script>
-  <!-- <script type="text/javascript" src="js/shopify.js"></script> -->
 </body>

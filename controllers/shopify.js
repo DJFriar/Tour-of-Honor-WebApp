@@ -60,10 +60,15 @@ async function getCheckoutURL(id) {
   query_vars = getQueryVars(id);
   response = await postQuery(query, query_vars)
   checkoutURL = response.data.checkoutCreate.checkout.webUrl;
+  checkoutID = response.data.checkoutCreate.checkout.id;
+  var checkoutDetails = {
+    CheckoutURL: checkoutURL,
+    CheckoutID: checkoutID
+  }
   console.log("==== getCheckoutURL() ====");
-  console.log(checkoutURL);
+  console.log(checkoutDetails);
 
-  return checkoutURL;
+  return checkoutDetails;
 }
 
 async function main(){

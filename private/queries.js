@@ -604,3 +604,64 @@ module.exports.queryAllOrders = async function queryAllOrders(price) {
     throw err;
   }
 }
+
+module.exports.queryNextOrderStepByID = async function queryNextOrderStepByID(UserID) {
+  try {
+    var result = await sequelize.query("SELECT NextStepNum FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryCheckoutURLByRider = async function queryCheckoutURLByRider(UserID) {
+  try {
+    var result = await sequelize.query("SELECT CheckoutURL FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryOrderNumberByRider = async function queryOrderNumberByRider(UserID) {
+  try {
+    var result = await sequelize.query("SELECT OrderNumber FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryAllCharities = async function queryAllCharities(price) {
+  try {
+    var result = await db.Charity.findAll({ })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostByRider(UserID) { 
+  try {
+    var result = await sequelize.query("SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ?)",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}

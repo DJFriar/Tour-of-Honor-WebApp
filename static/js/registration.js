@@ -1,6 +1,16 @@
 $(document).ready(function() {
-  var ShopifyVariantID = "";
-  var CheckoutURL = "";
+  // var ShopifyVariantID = "";
+  var CheckoutURL = $("#checkoutUrl").data("checkouturl");
+  var activeTab = $("#registrationSwitcher").attr("active");
+  for (let i = 0; i < activeTab; i++) {
+    $("#RegStep" + i).removeClass("disabled");
+  }
+  console.log("==== CheckoutURL (.js) ====");
+  console.log(CheckoutURL);
+  
+  // ************************
+  // ** Rider Info Tab (0) **
+  // ************************
 
   // Handle Address Needs Updating button
   $("#addressIsCorrectNo").on("click", function() {
@@ -14,12 +24,15 @@ $(document).ready(function() {
       RegStep: "Rider",
       RallyYear: 2023,
       UserID,
+      NextStepNum: 1
     }
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: orderInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(1); }
-    )
+    }).then(() => { 
+      $("#RegStep1").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(1); 
+    })
   })
 
   // Handle setAddress button
@@ -56,14 +69,28 @@ $(document).ready(function() {
     $(".modal").css("display","none");
   })
 
-  // ************************
-  // ** Bike Info Tab **
-  // ************************
+  // ***********************
+  // ** Bike Info Tab (1) **
+  // ***********************
+  $("#acceptBikeInfoBtn").on("click", function(e) {
+    var UserID = $(this).data("userid");
+    var BikeInfo = {
+      RegStep: "Bike",
+      UserID,
+      NextStepNum: 2
+    }
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: BikeInfo
+    }).then(() => { 
+      $("#RegStep2").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(2); 
+    })
+  })
 
-
-  // ************************
-  // ** Passenger Info Tab **
-  // ************************
+  // ****************************
+  // ** Passenger Info Tab (2) **
+  // ****************************
 
   // Handle Has Passenger No button
   $("#registerPassengerNo").on("click", function() {
@@ -78,13 +105,15 @@ $(document).ready(function() {
     var PassOrderInfo = {
       RegStep: "Passenger",
       UserID,
-      PassUserID: 0
+      PassUserID: 0,
+      NextStepNum: 3
     }
     console.log(PassOrderInfo);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: PassOrderInfo
     }).then(() => { 
+      $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
       $("#saveTshirtInfo").attr("data-showpassoptions", "false");
     })
@@ -124,7 +153,13 @@ $(document).ready(function() {
       type: "GET",
     }).then(
       function(res) {
+        if(res === null) {
+          $("#passengerFlagLookupResults").addClass("hide-me");
+          $("#passengerFlagLookupResultsError").removeClass("hide-me");
+          $("#errorMessage").text("You have entered an invalid flag number. Please try again.");
+        } 
         if(res.id == UserID) {
+          $("#passengerFlagLookupResults").addClass("hide-me");
           $("#passengerFlagLookupResultsError").removeClass("hide-me");
           $("#errorMessage").text("You entered your own flag number. Please try again.");
         } else {
@@ -144,13 +179,15 @@ $(document).ready(function() {
     var PassOrderInfo = {
       RegStep: "Passenger",
       UserID,
-      PassUserID
+      PassUserID,
+      NextStepNum: 3
     }
     console.log(PassOrderInfo);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: PassOrderInfo
     }).then(() => { 
+      $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
       $("#passengerShirtSection").removeClass("hide-me");
       $("#saveTshirtInfo").attr("data-showpassoptions", "true");
@@ -159,22 +196,51 @@ $(document).ready(function() {
 
   // Handle Save Passenger Info Button
   $("#savePassengerInfo").on("click", function() {
+    $("#RegStep3").removeClass("disabled");
     UIkit.switcher("#registrationSwitcher").show(3);
   })
 
-  // ************************
-  // ** T-Shirt Choice Tab **
-  // ************************
+  // ****************************
+  // ** Charity Choice Tab (3) **
+  // ****************************
+
+  // Handle Charity Choice Button
+  $("#saveCharityChoiceBtn").on("click", function() {
+    const UserID = $(this).data("userid");
+    const charityChoice = $("#CharityChoice").val().trim();
+
+    var CharityChoices = {
+      RegStep: "Charity",
+      UserID,
+      CharityChoice: charityChoice,
+      NextStepNum: 4
+    }
+    console.log(CharityChoices);
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: CharityChoices
+    }).then(() => { 
+      $("#RegStep4").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(4);
+      $("#passengerShirtSection").removeClass("hide-me");
+      $("#saveTshirtInfo").attr("data-showpassoptions", "true");
+    })
+  })
+
+  // ****************************
+  // ** T-Shirt Choice Tab (4) **
+  // ****************************
 
   // Handle Save T-Shirt Choices Button
   $("#saveTshirtInfo").on("click", function() {
-    var UserID = $(this).data("userid");
-    var showPass = $(this).data("showpassoptions");
+    const UserID = $(this).data("userid");
+    const showPass = $(this).data("showpassoptions");
 
     var ShirtOrderInfo = {
       RegStep: "Shirts",
       UserID,
       hasPass: false,
+      NextStepNum: 5,
       ShirtStyle: $("#RiderShirtStyle").val(),
       ShirtSize: $("#RiderShirtSize").val()
     }
@@ -187,17 +253,21 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: ShirtOrderInfo
-    }).then(function(res) {
-      CheckoutURL = res.checkoutURL;
-      $("#goToPayment").attr("data-pricetier", res.PriceTier);
-      $("#totalCostAmount").text(res.totalPrice);
-      UIkit.switcher("#registrationSwitcher").show(3);
+    }).then(() => {
+      location.replace("/registration");
+      // CheckoutURL = res.checkoutURL;
+      // $("#goToPayment").attr("data-pricetier", res.PriceTier);
+      // $("#goToPayment2").attr("data-pricetier", res.PriceTier);
+      // $("#goToPayment3").attr("data-pricetier", res.PriceTier);
+      // $("#totalCostAmount").text(res.totalPrice);
+      // $("#RegStep5").removeClass("disabled");
+      // UIkit.switcher("#registrationSwitcher").show(5);
     })
   })
 
-  // **********************
-  // ** Payment Info Tab **
-  // **********************
+  // **************************
+  // ** Payment Info Tab (5) **
+  // **************************
 
   // Handle Rider Payment Button
   $("#goToPayment").on("click", function() {
@@ -206,45 +276,69 @@ $(document).ready(function() {
     $("#awaitingShopifyContent").removeClass("hide-me");
   })
 
-  $("#goToWaiver").on("click", function() {
-    UIkit.switcher("#registrationSwitcher").show(6);
+  $("#goToPayment2, #goToPayment3").on("click", function() {
+    window.open(CheckoutURL);
   })
 
-  // *********************
-  // ** Waiver Info Tab **
-  // *********************
+  $("#goToWaiver").on("click", function() {
+    var UserID = $(this).data("userid");
+
+    $.ajax("/api/v1/checkOrderStatus/" + UserID, {
+      type: "GET"
+    }).then((res) => {
+      console.log("==== checkOrderStatus response ====");
+      console.log(res);
+      if (res.OrderNumber) {
+        $("#RegStep7").removeClass("disabled");
+        UIkit.switcher("#registrationSwitcher").show(7); 
+      } else {
+        $("#awaitingShopifyContent").addClass("hide-me");
+        $("#orderNumberMissing").removeClass("hide-me");
+      }
+    })
+  })
+
+  // *************************
+  // ** Waiver Info Tab (6) **
+  // *************************
 
   // Handle Waiver Button
   $("#saveWaiverInfo").on("click", function() {
     var UserID = $(this).data("userid");
     var WaiverInfo = {
       RegStep: "Waiver",
-      UserID
+      UserID,
+      NextStepNum: 7
     }
     console.log(WaiverInfo);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: WaiverInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(7); }
-    )
+    }).then(() => { 
+      $("#RegStep7").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(7); 
+    })
   })
 
-  // **************************
-  // ** Flag Number Info Tab **
-  // **************************
+  // ******************************
+  // ** Flag Number Info Tab (7) **
+  // ******************************
 
   // Handle Waiver Button
   $("#saveFlagNumberInfo").on("click", function() {
     var UserID = $(this).data("userid");
     var FlagNumberInfo = {
       RegStep: "Waiver",
-      UserID
+      UserID,
+      NextStepNum: 8
     }
     console.log(FlagNumberInfo);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: FlagNumberInfo
-    }).then(() => { UIkit.switcher("#registrationSwitcher").show(8); }
-    )
+    }).then(() => { 
+      $("#RegStep8").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(8); 
+    })
   })
 });

@@ -204,8 +204,8 @@ module.exports = function (app) {
       where: {
         id: id
       }
-    }).then(function (dbPost) {
-      res.json(dbPost);
+    }).then(function (memorialMetaText) {
+      res.json(memorialMetaText);
     });
   })
 
@@ -651,6 +651,8 @@ module.exports = function (app) {
         FlagNumber: flag
       }
     }).then(function (dbPost) {
+      console.log("==== lookupRiderByFlag ====");
+      console.log(dbPost);
       res.json(dbPost);
     });
   })
@@ -720,7 +722,8 @@ module.exports = function (app) {
       console.log(RegStep + " step entered.");
       console.log("UserID = " + req.body.UserID);
       db.Order.create({
-        UserID: req.body.UserID
+        UserID: req.body.UserID,
+        NextStepNum: 1
       }).then((o) => {
         logger.info("Order " + o.id + " created.");
         res.status(200).send();
@@ -731,11 +734,25 @@ module.exports = function (app) {
     }
     if (RegStep == "Bike") {
       console.log(RegStep + " step entered.");
+      db.Order.update({
+        NextStepNum: 2
+      },{
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error updating order with bike info: " + err);
+        res.status(401).json(err);
+      })
     }
     if (RegStep == "Passenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
-        PassUserID: req.body.PassUserID
+        PassUserID: req.body.PassUserID,
+        NextStepNum: 3
       },{
         where: {
           RallyYear: 2023,
@@ -748,6 +765,25 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+
+    if (RegStep == "Charity") {
+      console.log(RegStep + " step entered.");
+      db.Order.update({
+        CharityChosen: req.body.CharityChoice,
+        NextStepNum: 4
+      },{
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error updating order with charity info: " + err);
+        res.status(401).json(err);
+      })
+    }
+
     if (RegStep == "Shirts") {
       console.log(RegStep + " step entered.");
       console.log(req.body);
@@ -769,7 +805,8 @@ module.exports = function (app) {
 
       var ShirtDetails = {
         ShirtSize,
-        ShirtStyle
+        ShirtStyle,
+        NextStepNum: 5,
       }
 
       console.log("Subtotal = $" + totalPrice);
@@ -813,9 +850,10 @@ module.exports = function (app) {
       var ShopifyVariantID = PriceTierObject[0].ShopifyVariantID;
       ShirtDetails.PriceTier = PriceTier;
 
-      // Generate the Shopify URL
-      var checkoutURL = await getCheckoutURL(ShopifyVariantID);
-      ShirtDetails.CheckoutID = checkoutURL;
+      // Generate the Shopify URL & ID
+      var checkoutDetails = await getCheckoutURL(ShopifyVariantID);
+      ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
+      ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
 
       // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
@@ -831,10 +869,7 @@ module.exports = function (app) {
       })
 
     }
-    if (RegStep == "Charity") {
-      console.log(RegStep + " step entered.");
-      res.send("success");
-    }
+
     if (RegStep == "Payment") {
       console.log(RegStep + " step entered.");
       res.send("success");
@@ -849,4 +884,43 @@ module.exports = function (app) {
     }
   })
 
+  // Check Order Status for a given Rider
+  app.get("/api/v1/checkOrderStatus/:id", async (req, res) => {
+    const id = req.params.id;
+    db.Order.findOne({
+      where: {
+        UserID: id
+      }
+    }).then(function (orderNumber) {
+      console.log("==== orderNumber (be.js) ====");
+      console.log(orderNumber);
+      res.json(orderNumber);
+    });
+  });
+
+  // Save New Charity
+  app.post("/api/v1/charity", (req, res) => {
+    db.Charity.create({
+      RallyYear: req.body.RallyYear,
+      Name: req.body.CharityName,
+      URL: req.body.CharityURL,
+    }).then((c) => {
+      logger.info("Charity " + c.id + " created.");
+      res.status(200).send();
+    }).catch(err => {
+      logger.error("Error creating charity: " + err);
+      res.status(401).json(err);
+    });
+  })
+
+  // Delete a Charity
+  app.post("/api/v1/charity/:id", (req, res) => {
+    const charityid = req.params.id;
+
+    db.Charity.destroy({
+      where: { id : charityid }
+    }).then(() => {
+      res.status(202).send();
+    });
+  })
 }

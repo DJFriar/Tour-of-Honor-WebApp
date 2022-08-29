@@ -2,37 +2,54 @@
   <h4 class="toh-mb-18">Bike Info</h4>
   <div style="padding-left: 60px; padding-right: 60px;">
     <div class="toh-mt-18">
-      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
-        <thead>
-          <tr>
-            <th>NickName</th>
-            <th>Year</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% RiderBikeInfo.forEach(function(Bike) { %>
+      <% if(RiderBikeInfo.length == 0) { %> 
+        <div class="uk-width-1-1@s uk-text-center">
+          <p>You don't appear to have any bikes. Click the button below to add one.</p>
+          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary button-rounded">Add New Bike</button>
+        </div>
+      <% } %>
+      <% if(RiderBikeInfo.length > 0) { %> 
+        <p>We have the following bike info listed for you. Please update as needed before continuing.</p>
+        <div class="uk-align-right toh-mb-0">
+          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Bike</button>
+        </div>
+        <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+          <thead>
             <tr>
-              <td>
-                <%= Bike.Name %>
-              </td>
-              <td>
-                <%= Bike.Year %>
-              </td>
-              <td>
-                <%= Bike.Make %>
-              </td>
-              <td>
-                <%= Bike.Model %>
-              </td>
-              <td>
-                &nbsp;
-              </td>
+              <th>NickName</th>
+              <th>Year</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Actions</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% RiderBikeInfo.forEach(function(Bike) { %>
+              <tr>
+                <td>
+                  <%= Bike.BikeName %>
+                </td>
+                <td>
+                  <%= Bike.Year %>
+                </td>
+                <td>
+                  <%= Bike.Make %>
+                </td>
+                <td>
+                  <%= Bike.Model %>
+                </td>
+                <td>
+                  <span class="editBikeInfoBtn clickable" uk-tooltip="Edit Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
+                  <span class="deleteBikeBtn clickable" uk-tooltip="Delete Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-trash-can"></i></span>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <div class="uk-align-center">
+          <button type="button" id="acceptBikeInfoBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">This Is Accurate</button>
+        </div>
+      <% } %>
     </div>
+  </div>
 </div>
