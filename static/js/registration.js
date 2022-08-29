@@ -1,5 +1,6 @@
 $(document).ready(function() {
   // var ShopifyVariantID = "";
+  var existingPassengerEmailFound = false;
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
   var activeTab = $("#registrationSwitcher").attr("active");
   for (let i = 0; i < activeTab; i++) {
@@ -280,6 +281,9 @@ $(document).ready(function() {
     const UserID = $(this).data("userid");
 
     var PassengerInfo = {
+      RegStep: "NewPassenger",
+      UserID,
+      NextStepNum: 3,
       FirstName: $("#PassengerFirstNameForm").val().trim(),
       LastName: $("#PassengerLastNameForm").val().trim(),
       UserName: $("#PassengerUserNameForm").val().trim(),
@@ -288,7 +292,61 @@ $(document).ready(function() {
       FlagNumber: 0
     }
 
-    $.ajax("/api/v1/user", {
+    // Check Passenger Email Uniqueness
+    $("#PassengerEmailForm").on("input paste", function() {
+      var email = $(this).val();
+      if (email) {
+        $.ajax("/api/v1/email/" + email, {
+          type: "GET"
+        }).then(
+          function(emailInfo) {
+            if (emailInfo) {
+              existingPassengerEmailFound = true;
+              $("#PassengerEmailForm").css("border","4px solid red")
+            } else {
+              existingPassengerEmailFound = false;
+              $("#PassengerEmailForm").css("border","none")
+            }
+          }
+        );
+      }
+    })
+
+    // Make sure that Passenger first name isn't blank.
+    if (!PassengerInfo.FirstName) {
+      $("#PassengerFirstNameForm").css("border","4px solid red");
+      alert("Passenger's First Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger last name isn't blank.
+    if (!PassengerInfo.LastName) {
+      $("#PassengerLastNameForm").css("border","4px solid red");
+      alert("Passenger's Last Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger username isn't blank.
+    if (!PassengerInfo.UserName) {
+      $("#PassengerUserNameForm").css("border","4px solid red");
+      alert("Passenger's User Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger email isn't blank.
+    if (!PassengerInfo.Email) {
+      $("#PassengerEmailForm").css("border","4px solid red");
+      alert("Passenger's Email address is required.");
+      return;
+    }
+
+    if (existingPassengerEmailFound) {
+      $("#PassengerEmailForm").css("border","4px solid red");
+      alert("Passenger's Email Address must be unique.");
+      return;
+    }
+
+    $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: PassengerInfo
     }).then(() => {

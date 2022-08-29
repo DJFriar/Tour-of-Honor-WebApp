@@ -70,6 +70,21 @@ module.exports = function (app) {
     });
   })
 
+  // Check Email Validity
+  app.get("/api/v1/email/:email", (req,res) => {
+    console.log("Email Endpoint hit");
+    const email = req.params.email;
+    db.User.findOne({
+      where: {
+        Email: email
+      }
+    }).then(function (dbPost) {
+      console.log("==== Email Check ====");
+      console.log(dbPost);
+      res.json(dbPost);
+    });
+  })
+
   // 
   // Memorial Info Related
   //
@@ -734,6 +749,7 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
     }
+
     if (RegStep == "Bike") {
       console.log(RegStep + " step entered.");
       db.Order.update({
@@ -750,6 +766,7 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+
     if (RegStep == "Passenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
@@ -766,6 +783,11 @@ module.exports = function (app) {
         logger.error("Error updating order with passenger info: " + err);
         res.status(401).json(err);
       })
+    }
+
+    if (RegStep == "NewPassenger") {
+      console.log(RegStep + " step entered.");
+
     }
 
     if (RegStep == "Charity") {
@@ -876,14 +898,17 @@ module.exports = function (app) {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
+
     if (RegStep == "Waiver") {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
+
     if (RegStep == "Flags") {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
+
   })
 
   // Check Order Status for a given Rider
