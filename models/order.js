@@ -11,6 +11,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: 'Orders_unique'
     },
+    NextStepNum: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     ShirtSize: {
       type: DataTypes.STRING,
       allowNull: true
@@ -35,7 +40,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true
     },
+    CharityChosen: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
     CheckoutID: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    CheckoutURL: {
       type: DataTypes.STRING,
       allowNull: true
     },

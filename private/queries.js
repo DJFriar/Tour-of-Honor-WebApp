@@ -330,6 +330,20 @@ module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
   }
 }
 
+module.exports.queryBikesByRider = async function queryBikesByRider(rider) { 
+  try {
+    var result = await db.Bike.findAll({
+      raw: true,
+      where: {
+        user_id: rider
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryNextPendingSubmissions = async function queryNextPendingSubmissions(category) {
   try {
     if (category == "all") {
@@ -583,6 +597,93 @@ module.exports.queryAllOrders = async function queryAllOrders(price) {
   try {
     var result = await sequelize.query("SELECT * FROM Orders WHERE CheckOutID IS NOT NULL",
     {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryAllOrdersWithDetail = async function queryAllOrdersWithDetail() { 
+  try {
+    var result = await sequelize.query("SELECT  o.id, o.RallyYear, CASE WHEN ISNULL(o.OrderNumber) THEN 'UNPAID' ELSE o.OrderNumber END AS OrderNumber, CONCAT(o.ShirtSize, ' ', o.ShirtStyle) AS RiderShirt, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(o.PassShirtSize, ' ', o.PassShirtStyle) END AS PassengerShirt, u1.FirstName AS RiderFirstName, u1.LastName AS RiderLastName, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName, pt.Price AS PriceCharged, CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName FROM Orders o LEFT JOIN Users u1 ON o.UserID = u1.id LEFT JOIN Users u2 ON o.PassUserID = u2.id LEFT JOIN PriceTiers pt ON o.PriceTier = pt.id LEFT JOIN Charities c ON o.CharityChosen = c.id",
+    {
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
+  try {
+    var result = await db.Order.findOne({
+      where: {
+        UserID: UserID,
+        RallyYear: Year
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryNextOrderStepByID = async function queryNextOrderStepByID(UserID) {
+  try {
+    var result = await sequelize.query("SELECT NextStepNum FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryCheckoutURLByRider = async function queryCheckoutURLByRider(UserID) {
+  try {
+    var result = await sequelize.query("SELECT CheckoutURL FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryOrderNumberByRider = async function queryOrderNumberByRider(UserID) {
+  try {
+    var result = await sequelize.query("SELECT OrderNumber FROM Orders WHERE UserID = ?",
+    {
+      replacements: [UserID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryAllCharities = async function queryAllCharities(price) {
+  try {
+    var result = await db.Charity.findAll({ })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostByRider(UserID) { 
+  try {
+    var result = await sequelize.query("SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ?)",
+    {
+      replacements: [UserID],
       type: QueryTypes.SELECT
     });
     return result;

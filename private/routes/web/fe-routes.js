@@ -540,6 +540,7 @@ module.exports = function (app) {
       console.log("Error encountered: queryAllBikes");
     }
     console.log(req.user);
+    console.log(RiderBikeInfo);
 
     res.render("pages/user-profile", {
       activeUser,
@@ -565,6 +566,29 @@ module.exports = function (app) {
   app.get("/registration", isAuthenticated, async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
+    console.log(req.user);
+
+    try {
+      var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
+      console.log("==== OrderInfo ====");
+      console.log(OrderInfo);
+    } catch {
+      console.log("Error encountered: queryOrderInfoByRider");
+    }
+    if (!OrderInfo) {
+      OrderInfo = [];
+      OrderInfo.push({NextStepNum: 0})
+    }
+
+    try {
+      var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: queryTotalOrderCostByRider");
+    }
+    if (TotalOrderCost.length == 0) {
+      TotalOrderCost.push({"Price": 0})
+    }
+
     try {
       var BaseRiderRateObject = await q.queryBaseRiderRate();
       var BaseRiderRate = BaseRiderRateObject[0].Price;
@@ -575,7 +599,19 @@ module.exports = function (app) {
       var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
     } catch {
-      console.log("Error encountered: querySubmissionsByRider");
+      console.log("Error encountered while gathering pricing info.");
+    }
+
+    try {
+      var Charities = await q.queryAllCharities();
+    } catch {
+      console.log("Error encountered: queryAllCharities");
+    }
+
+    try {
+      var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
+    } catch {
+      console.log("Error encountered: queryBikesByRider");
     }
 
     res.render("pages/registration", {
@@ -583,9 +619,13 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       BaseRiderRate,
+      Charities,
+      OrderInfo,
       PassengerSurcharge,
+      RiderBikeInfo,
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
+      TotalOrderCost,
       dt: DateTime
     });
   });
@@ -605,6 +645,25 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Orders,
+      dt: DateTime
+    });
+  });
+
+  app.get("/admin/charity-manager", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    try {
+      var Charities = await q.queryAllCharities();
+    } catch {
+      console.log("Error encountered: queryAllCharities");
+    }
+    console.log(req.user);
+
+    res.render("pages/admin/charity-manager", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      Charities,
       dt: DateTime
     });
   });

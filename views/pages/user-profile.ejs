@@ -64,42 +64,55 @@
         <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary button-rounded">Reset Login Password</button>
       </div>
     </form>
-    <!-- <div class="toh-mt-18">
-      <h5>Bike Info</h5>
-      <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
-        <thead>
-          <tr>
-            <th>NickName</th>
-            <th>Year</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% RiderBikeInfo.forEach(function(Bike) { %>
-            <tr>
-              <td>
-                <%= Bike.Name %>
-              </td>
-              <td>
-                <%= Bike.Year %>
-              </td>
-              <td>
-                <%= Bike.Make %>
-              </td>
-              <td>
-                <%= Bike.Model %>
-              </td>
-              <td>
-                &nbsp;
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div> -->
     <div class="toh-mt-24">
+      <hr>
+      <% if(RiderBikeInfo.length == 0) { %> 
+        <h5>Bike Info</h5>
+        <div class="uk-width-1-1@s uk-text-center">
+          <p>You don't appear to have any bikes. Click the button below to add one.</p>
+          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary button-rounded">Add New Bike</button>
+        </div>
+      <% } %>
+      <% if(RiderBikeInfo.length > 0) { %> 
+        <h5>Bike Info<span class="uk-align-right"><button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Bike</button></span></h5>
+        <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
+          <thead>
+            <tr>
+              <th>NickName</th>
+              <th>Year</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% RiderBikeInfo.forEach(function(Bike) { %>
+              <tr>
+                <td>
+                  <%= Bike.BikeName %>
+                </td>
+                <td>
+                  <%= Bike.Year %>
+                </td>
+                <td>
+                  <%= Bike.Make %>
+                </td>
+                <td>
+                  <%= Bike.Model %>
+                </td>
+                <td>
+                  <span class="editBikeInfoBtn clickable" uk-tooltip="Edit Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
+                  <span class="deleteBikeBtn clickable" uk-tooltip="Delete Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-trash-can"></i></span>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+      
+    </div>
+    <div class="toh-mt-24">
+      <hr>
       <h5>Submission History</h5>
       <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
         <thead>
@@ -142,13 +155,21 @@
               </td>
               <td>
                 <% if(riderSubmission.StatusID == 0) { %> 
-                  <span class="deleteSubmissionButton" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                  <span class="deleteSubmissionButton clickable" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fal fa-trash-can"></i></span>&nbsp;
                 <% } %>
               </td>
             </tr>
           <% }) %>
         </tbody>
       </table>
+    </div>
+    <!-- This is the Add New Bike Info modal -->
+    <div id="bikeInfoAddModal" class="modal">
+      <%- include('../partials/bikeInfoAddModal'); %>
+    </div>
+    <!-- This is the Edit Bike Info modal -->
+    <div id="bikeInfoEditModal" class="modal">
+      <%- include('../partials/bikeInfoEditModal'); %>
     </div>
   </main>
   <footer>
