@@ -288,7 +288,7 @@ $(document).ready(function() {
     }).then((res) => {
       console.log("==== checkOrderStatus response ====");
       console.log(res);
-      if (res.OrderNumber) {
+      if (res) {
         $("#RegStep7").removeClass("disabled");
         UIkit.switcher("#registrationSwitcher").show(7); 
       } else {

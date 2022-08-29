@@ -11,7 +11,7 @@
   <main>
     <h4>Rally Registration</h4>
     <div class="uk-text-center toh-mt-24">
-      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= NextOrderStepNumber[0].NextStepNum %>">
+      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
         <li><a href="#" id="RegStep0">Rider Info</a></li>
         <li><a class="disabled" href="#" id="RegStep1">Bike Info</a></li>
         <li><a class="disabled" href="#" id="RegStep2">Passenger Info</a></li>
@@ -54,7 +54,7 @@
       </ul>
     </div>
     <div class="hiddenData">
-      <span id="checkoutUrl" data-checkouturl="<%= CheckoutUrl[0].CheckoutURL %>"></span>
+      <span id="checkoutUrl" data-checkouturl="<%= OrderInfo.CheckoutURL %>"></span>
     </div>
   </main>
   <footer>

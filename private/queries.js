@@ -605,6 +605,20 @@ module.exports.queryAllOrders = async function queryAllOrders(price) {
   }
 }
 
+module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
+  try {
+    var result = await db.Order.findOne({
+      where: {
+        UserID: UserID,
+        RallyYear: Year
+      }
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryNextOrderStepByID = async function queryNextOrderStepByID(UserID) {
   try {
     var result = await sequelize.query("SELECT NextStepNum FROM Orders WHERE UserID = ?",

@@ -569,12 +569,11 @@ module.exports = function (app) {
     console.log(req.user);
 
     try {
-      var NextOrderStepNumber = await q.queryNextOrderStepByID(req.user.id);
+      var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
+      console.log("==== OrderInfo ====");
+      console.log(OrderInfo);
     } catch {
-      console.log("Error encountered: queryNextOrderStepByID");
-    }
-    if (NextOrderStepNumber.length == 0) {
-      NextOrderStepNumber.push({"NextStepNum": 0})
+      console.log("Error encountered: queryOrderInfoByRider");
     }
 
     try {
@@ -585,17 +584,6 @@ module.exports = function (app) {
     if (TotalOrderCost.length == 0) {
       TotalOrderCost.push({"Price": 0})
     }
-
-    try {
-      var CheckoutUrl = await q.queryCheckoutURLByRider(req.user.id);
-    } catch {
-      console.log("Error encountered: queryCheckoutURLByRider");
-    }
-    if (CheckoutUrl.length == 0) {
-      CheckoutUrl.push({"CheckoutURL": ""})
-    }
-    console.log("==== queryCheckoutURLByRider ====");
-    console.log(CheckoutUrl);
 
     try {
       var BaseRiderRateObject = await q.queryBaseRiderRate();
@@ -628,8 +616,7 @@ module.exports = function (app) {
       NotificationText: "",
       BaseRiderRate,
       Charities,
-      CheckoutUrl,
-      NextOrderStepNumber,
+      OrderInfo,
       PassengerSurcharge,
       RiderBikeInfo,
       ShirtSizeSurcharge,

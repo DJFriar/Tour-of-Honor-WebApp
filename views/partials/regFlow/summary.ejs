@@ -1,4 +1,33 @@
 <div>
   <h4 class="toh-mb-18">Summary</h4>
-  Summary info goes here.
+  <div class="uk-align-center uk-text-center">
+    <p>
+      Thank you for your support! Below is a summary of your order. <br />
+      If for some reason you see an error or need to make a change, please send an email to <a href="mailto:orders@tourofhonor.com">orders@tourofhonor.com</a>
+    </p>
+    <div uk-flex>
+      <table class="uk-flex-center">
+        <tr>
+          <td>Rally Year:</td> 
+          <td><%= OrderInfo.RallyYear %></td>
+        </tr>
+        <tr>
+          <td>Order Number:</td> 
+          <td><%= OrderInfo.OrderNumber %></td>
+        </tr>
+        <tr>
+          <td>Rider Shirt:</td> 
+          <td><%= OrderInfo.ShirtSize %>&nbsp;<%= OrderInfo.ShirtStyle %></td>
+        </tr>
+        <tr>
+          <td>Passenger:</td> 
+          <td><%= OrderInfo.PassUserID %></td>
+        </tr>
+        <tr>
+          <td>Charity Chosen:</td> 
+          <td><%= OrderInfo.CharityChosen %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>

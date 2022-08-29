@@ -12,7 +12,7 @@ const bcrypt = require("bcryptjs");
 const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const Shopify = require("shopify-api");
-const { getCheckoutURL } = require("../../../controllers/shopify");
+const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -851,7 +851,7 @@ module.exports = function (app) {
       ShirtDetails.PriceTier = PriceTier;
 
       // Generate the Shopify URL & ID
-      var checkoutDetails = await getCheckoutURL(ShopifyVariantID);
+      var checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
       ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
 
@@ -891,10 +891,28 @@ module.exports = function (app) {
       where: {
         UserID: id
       }
-    }).then(function (orderNumber) {
-      console.log("==== orderNumber (be.js) ====");
-      console.log(orderNumber);
-      res.json(orderNumber);
+    }).then(async function (o) {
+      if (o.OrderNumber === null) {
+        console.log("OrderNumber not found locally, checking Shopify...");
+        // Check Shopify for an Order Number
+        var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
+        db.Order.update({
+          OrderNumber: orderNumber,
+          NextStepNum: 6
+        }, {
+          where: {
+            RallyYear: 2023,
+            UserID: id
+          }
+        }).then(() => {
+          console.info("OrderNumber updated for rider " + id);
+          res.json(orderNumber);
+        });
+      }
+      if (o.OrderNumber) {
+        console.log("OrderNumber Found: " + o.OrderNumber);
+        res.json(o.OrderNumber);
+      }
     });
   });
 
