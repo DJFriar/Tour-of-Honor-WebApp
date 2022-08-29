@@ -89,16 +89,22 @@ footer {
   margin-bottom: 12;
 }
 
-/* #memorial-editor h4 {
-  margin-top: 20px;
-} */
-
 #editMemorialInfo label {
   margin-top: 12px;
 }
 
 form {
   margin-bottom: 12px;
+}
+
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+  pointer-events: none !important;
+}
+
+a.disabled:hover {
+  text-decoration: none;
 }
 
 a.hidden-link:link,
@@ -196,6 +202,10 @@ a.hidden-link:visited {
 
 .toh-logo {
   height: 80px
+}
+
+.toh-mb-0 {
+  margin-bottom: 0px;
 }
 
 .toh-mt-8 {
@@ -316,4 +326,13 @@ a.hidden-link:visited {
 
 .clickable {
   cursor: pointer;
+}
+
+.hiddenData {
+  color: #C0DFFD;
+}
+
+#registrationSwitcher {
+  display: flex;
+  justify-content: center;
 }
