@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/DJFriar/Tour-of-Honor-WebApp#readme",
   "dependencies": {
+    "@logtail/node": "^0.1.12",
+    "@logtail/winston": "^0.1.13",
     "@shopify/shopify-api": "^5.0.1",
     "aws-sdk": "^2.1166.0",
     "bcryptjs": "^2.4.3",
@@ -42,7 +44,8 @@
     "shopify-api": "^0.2.3",
     "shopify-buy": "^2.15.1",
     "smartystreets-javascript-sdk": "^1.13.6",
-    "winston": "^3.8.1"
+    "winston": "^3.8.1",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

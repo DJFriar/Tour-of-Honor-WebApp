@@ -385,7 +385,7 @@ module.exports = function (app) {
           ResetToken = data;
         })
         .catch(err => {
-          console.log("Error creating token");
+          logger.error("Error creating token");
           res.status(401).json(err);
         })
       }
@@ -559,7 +559,7 @@ module.exports = function (app) {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      console.log("Error encountered when getting memorial ID.");
+      logger.error("Error encountered when getting memorial ID.");
     }
     if(memID > 0) {
       db.EarnedMemorialsXref.create({
@@ -706,7 +706,7 @@ module.exports = function (app) {
     try {
       var NextPendingSubmission = await q.queryNextPendingSubmissions(category);
     } catch (err) {
-      console.log("Error encountered: queryNextPendingSubmissions." + err);
+      logger.error("Error encountered: queryNextPendingSubmissions." + err);
     }
     res.json(NextPendingSubmission);
   })
@@ -979,7 +979,7 @@ module.exports = function (app) {
       console.log("==== OrderDetails ====");
       console.log(OrderDetails);
     } catch (err) {
-      console.log("Error encountered: queryAllOrdersWithDetail." + err);
+      logger.error("Error encountered: queryAllOrdersWithDetail." + err);
     }
     res.json(OrderDetails);
   });
