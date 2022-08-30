@@ -90,6 +90,7 @@ $(document).ready(function() {
       BikeYear: $("#BikeYear").val().trim(),
       BikeMake: $("#BikeMake").val().trim(),
       BikeModel: $("#BikeModel").val().trim(),
+      BikeColor: $("#BikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {
@@ -118,6 +119,7 @@ $(document).ready(function() {
         $("#EditBikeYear").val(res.Year);
         $("#EditBikeMake").val(res.Make);
         $("#EditBikeModel").val(res.Model);
+        $("#EditBikeColor").val(res.Color);
       }
     )
   })
@@ -130,6 +132,7 @@ $(document).ready(function() {
       BikeYear: $("#EditBikeYear").val().trim(),
       BikeMake: $("#EditBikeMake").val().trim(),
       BikeModel: $("#EditBikeModel").val().trim(),
+      BikeColor: $("#EditBikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {

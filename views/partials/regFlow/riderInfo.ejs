@@ -1,76 +1,30 @@
 <div>
   <h4 class="toh-mb-18">Rider Info</h4>
   <div style="padding-left: 60px; padding-right: 60px;">
-    <div class="toh-mb-18">
-      <%= User.FirstName %>&nbsp;<%= User.LastName %><br />
-      <% if(User.Address1) { %>
-        <%= User.Address1 %> <br />
-      <% } else { %>
-        <i>Address Needed</i> <br />
-      <% } %>
-      <%= User.City %>, <%= User.State %>&nbsp;<%= User.ZipCode %> <br />
-    </div>
-    <div class="toh-mb-18">
-      <% if(!User.Address1) { %>
-        It appears we do not have your full mailing address. Please click the button below to update your address. <br />
-        <button type="button" id="setAddressButton" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Set Address</button>
-      <% } else { %>
-        Please confirm that the address above is your correct mailing address. All materials will be sent to this address. <br />
-        <button type="button" id="addressIsCorrectNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, Needs Updating</button>
-        <button type="button" id="addressIsCorrectYes" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Yes, Looks Good</button>
-      <% } %>
-    </div>
-<!--     
-    <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="FirstName">First Name</label>
-        <input class="uk-input toh-input" id="FirstName" type="text" placeholder="Firstname" value="<%= User.FirstName %>">
+    <% if(activeUser) { %>
+      <div class="toh-mb-18">
+        <%= User.FirstName %>&nbsp;<%= User.LastName %><br />
+        <% if(User.Address1) { %>
+          <%= User.Address1 %> <br />
+        <% } else { %>
+          <i>Address Needed</i> <br />
+        <% } %>
+        <%= User.City %>, <%= User.State %>&nbsp;<%= User.ZipCode %> <br />
       </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="LastName">Last Name</label>
-        <input class="uk-input toh-input" id="LastName" type="text" placeholder="Lastname" value="<%= User.LastName %>">
+      <div class="toh-mb-18">
+        <% if(!User.Address1) { %>
+          It appears we do not have your full mailing address. Please click the button below to update your address. <br />
+          <button type="button" id="setAddressButton" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Set Address</button>
+        <% } else { %>
+          Please confirm that the address above is your correct mailing address. All materials will be sent to this address. <br />
+          <button type="button" id="addressIsCorrectNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, Needs Updating</button>
+          <button type="button" id="addressIsCorrectYes" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Yes, Looks Good</button>
+        <% } %>
       </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="UserName">Username</label>
-        <input class="uk-input toh-input" id="UserName" type="text" placeholder="Username" value="<%= User.UserName %>">
-      </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="Email">Email</label>
-        <input class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com" value="<%= User.Email %>">
-      </div>
-      <div class="uk-width-1-3@s">
-        <label class="uk-form-label" for="City">City</label>
-        <input class="uk-input toh-input" id="City" type="text" placeholder="City" value="<%= User.City %>">
-      </div>
-      <div class="uk-width-1-3@s">
-        <label class="uk-form-label" for="State">State</label>
-        <input class="uk-input toh-input" id="State" maxlength="2" type="text" placeholder="ST" value="<%= User.State %>">
-      </div>
-      <div class="uk-width-1-3@s">
-        <label class="uk-form-label" for="ZipCode">Zip Code</label>
-        <input class="uk-input toh-input" id="ZipCode" maxlength="5" type="zipcode" placeholder="zip" value="<%= User.ZipCode %>">
-      </div>
-      
-      <div class="uk-width-1-2@s" uk-grid>
-        <div class="uk-width-1-2@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
-          <label class="uk-form-label" for="FlagNumber">Flag Number</label>
-          <input disabled class="uk-input toh-input" id="FlagNumber" type="text" placeholder="Flag Number" value="<%= User.FlagNumber %>" >
-        </div>
-        <div class="uk-width-1-2@s">
-          <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
-          <% if(User.PillionFlagNumber && User.PillionFlagNumber != 0) { %>
-            <input class="uk-input toh-input" id="PillionFlagNumber" type="text" value="<%= User.PillionFlagNumber %>">
-          <% } else { %>
-            <input class="uk-input toh-input" id="PillionFlagNumber" type="text" placeholder="N/A" value="N/A">
-          <% } %>
-        </div>
-      </div>
-      <div class="uk-width-1-2@s uk-text-center">
-        <label class="uk-form-label" for="saveProfileEdits">&nbsp;</label>
-        <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Update User Profile</button>
-        <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary button-rounded">Reset Login Password</button>
-      </div>
-    </form> -->
+    <% } %>
+    <% if(!activeUser) { %>
+      <p>You are not logged in. If you particpated in the 2022 Rally, please <a href="/login">login</a> before proceeding.</p>
+    <% } %>
     <div id="setAddressModal" class="modal">
       <%- include('../../partials/setAddressModal'); %>
     </div>

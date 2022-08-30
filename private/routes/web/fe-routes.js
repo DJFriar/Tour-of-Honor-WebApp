@@ -585,10 +585,10 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/registration", isAuthenticated, async (req, res) => {
+  app.get("/registration", async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    console.log(req.user);
+    if (!req.user) { res.redirect('/signup'); }
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
@@ -597,7 +597,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryOrderInfoByRider");
     }
-    if (!OrderInfo) {
+    if (!OrderInfo || OrderInfo.length == 0) {
       OrderInfo = [];
       OrderInfo.push({NextStepNum: 0})
     }
@@ -607,7 +607,7 @@ module.exports = function (app) {
     } catch {
       console.log("Error encountered: queryTotalOrderCostByRider");
     }
-    if (!TotalOrderCost) {
+    if (!TotalOrderCost || TotalOrderCost.length == 0) {
       TotalOrderCost = [];
       TotalOrderCost.push({"Price": 0})
     }

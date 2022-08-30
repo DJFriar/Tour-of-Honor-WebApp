@@ -428,7 +428,33 @@ module.exports = function (app) {
     res.json({
       email: req.user.Email,
       id: req.user.id,
-      isAdmin: req.user.isAdmin
+      isAdmin: req.user.isAdmin,
+      isActive: req.user.isActive
+    });
+  });
+
+  // Handle New Signup
+  app.post("/api/v1/newuser", (req, res) => {
+    db.User.create({
+      FirstName: req.body.FirstName,
+      LastName: req.body.LastName,
+      UserName: req.body.UserName,
+      FlagNumber: 0, // REMOVE THIS AFTER 2022 RALLY
+      Email: req.body.Email.toLowerCase(),
+      Password: req.body.Password,
+      Address1: req.body.Address1,
+      Address2: req.body.Address2,
+      City: req.body.City,
+      State: req.body.State,
+      ZipCode: req.body.ZipCode,
+      isAdmin: 0,
+      isActive: 0
+    }).then((u) => {
+      logger.info("New User Created Successfully");
+      res.status(202).send();
+    }).catch(err => {
+      logger.error("Signup API Error Encountered" + err);
+      res.status(401).json(err);
     });
   });
 
@@ -614,6 +640,8 @@ module.exports = function (app) {
       FlagNumber: req.body.FlagNumber,
       PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
+      Address1: req.body.Address1,
+      Address2: req.body.Address2,
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,
