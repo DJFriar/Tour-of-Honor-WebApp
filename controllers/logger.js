@@ -3,10 +3,13 @@ const { LogtailTransport } = require("@logtail/winston");
 const { Logtail } = require("@logtail/node");
 require('winston-daily-rotate-file');
 
-const logtail = new Logtail("exLRQGDX5nxmtFxMmip9FRjV");
+// Logtail Setup
+const logtailSourceID = process.env.LOGTAIL_SOURCE_ID;
+const logtailSourceToken = process.env.LOGTAIL_SOURCE_TOKEN;
+const logtail = new Logtail(logtailSourceToken);
 
 const fileRotateTransport = new transports.DailyRotateFile({
-  filename: 'combined-%DATE%.log',
+  filename: 'logs/info-%DATE%.log',
   datePattern: 'YYYY-MM-DD',
   maxFiles: '14d',
 });
@@ -23,17 +26,28 @@ const logger = createLogger({
   ),
   defaultMeta: { service: 'TourOfHonor' },
   transports: [
-    new LogtailTransport(logtail),
+    // new LogtailTransport(logtail),
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
     new transports.File({ filename: 'logs/info.log' })
-  ]
+  ],
+  exceptionHandlers: [
+    new transports.File({ filename: 'logs/UncaughtExceptions.log' }),
+  ],
+  rejectionHandlers: [
+    new transports.File({ filename: 'logs/PromiseRejections.log' }),
+  ],
 });
 
-//
-// If we're not in production then **ALSO** log to the `console`
+// When in Production, send the logs to Logtail
+if (process.env.NODE_ENV == 'Production') {
+  logger.add(new LogtailTransport(logtail));
+}
+
+// If we're not in Production then **ALSO** log to the `console`
 // with the colorized simple format.
-//
 if (process.env.NODE_ENV !== 'Production') {
+  logger.add(new LogtailTransport(logtail)); // Temporary while testing
+
   logger.add(new transports.Console({
     // format: format.combine(
     //   format.colorize(),
@@ -42,10 +56,10 @@ if (process.env.NODE_ENV !== 'Production') {
     format: format.combine(
       format.colorize({ all: true }),
       format.timestamp({
-        format: 'YYYY-MM-DD hh:mm:ss.SSS A',
+        format: 'YYYY-MM-DD HH:mm:ss Z',
       }),
       format.align(),
-      format.printf((info) => `[${info.timestamp}] ${info.level}: ${info.message}`)
+      format.printf((info) => `${info.level} @ [${info.timestamp}] : ${info.message}`)
     ),
   }));
 }

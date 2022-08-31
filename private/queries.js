@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op, QueryTypes } = require("sequelize");
 const { sequelize, Sequelize } = require("../models");
+const { logger } = require('../controllers/logger');
 
 module.exports.queryAllCategories = async function queryAllCategories(id) {
   try {
@@ -340,6 +341,7 @@ module.exports.queryBikesByRider = async function queryBikesByRider(rider) {
     })
     return result;
   } catch (err) {
+    logger.error("queryBikesByRider:" + err);
     throw err;
   }
 }
@@ -627,6 +629,7 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
     })
     return result;
   } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
     throw err;
   }
 }
@@ -688,6 +691,7 @@ module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostBy
     });
     return result;
   } catch (err) {
+    logger.error("queryTotalOrderCostByRider:" + err);
     throw err;
   }
 }
