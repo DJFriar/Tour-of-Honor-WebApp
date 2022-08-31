@@ -3,23 +3,39 @@
   <div class="toh-mb-18">
     <div class="toh-flag-mockup uk-align-center">
       <div id="flagNumberText" class="toh-flag-number">
-        <%= User.FlagNumber %> 
+        <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+          <%= OrderInfo.RequestedRiderFlagNumber %> 
+        <% } else { %>
+          <%= User.FlagNumber %> 
+        <% } %>
       </div> 
     </div>
   </div>
-  <% if(User.FlagNumber > 10) { %>
+  <% if(User.FlagNumber > 10 && !OrderInfo.RequestedRiderFlagNumber) { %>
     <div id="keepExistingFlagNumSection">
       <p>Would you like to keep this flag number again for next year?</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum"d ata-whoami="rider" data-userid="<%= User.id %>">No</button>
-      <button type="button" id="keepExistingFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>" data-existingriderflagnum="<%= User.FlagNumber %>">Yes</button>
+      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= User.id %>">No</button>
+      <button type="button" id="keepExistingFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded keepExistingFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= User.id %>" data-existingflagnumber="<%= User.FlagNumber %>">Yes</button>
     </div>
   <% } else { %>
     <% if(User.FlagNumber <= 10) { %>
       <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
+      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.PassUserID %>">No</button>
     <% } %>
     <% if(User.FlagNumber == 0) { %>
       <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
+      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.PassUserID %>">No</button>
     <% } %>
-    <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.PassUserID %>">No</button>
+  <% } %>
+  <div class="toh-mt-18 hide-me" id="flagAssignedRider">
+    <span style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-10x"></i></span> 
+  </div>
+  <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+    <div>
+      <p>You have already chosen your flag number. If you need to make a change, please reach out to support.</p>
+    </div>
+    <div class="toh-mt-18" id="flagAssignedRider">
+      <span style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-10x"></i></span> 
+    </div>
   <% } %>
 </div>

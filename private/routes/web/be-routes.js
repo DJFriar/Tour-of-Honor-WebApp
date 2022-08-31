@@ -58,6 +58,19 @@ module.exports = function (app) {
       });
     })
 
+  // Assign Flag Number to Rider
+  app.post("/api/v1/flag", (req, res) => {
+    db.Flag.create({
+      FlagNum: req.body.FlagNumber,
+      UserID: req.body.UserID,
+      RallyYear: req.body.RallyYear
+    }).then(() => {
+      res.status(202).send();
+    }).catch(err => {
+      logger.error("Error when saving flag number assignments:" + err);
+    })
+  })
+
   // Check Flag Number Validity
   app.get("/api/v1/flag/:id", (req,res) => {
     const id = req.params.id;
@@ -961,9 +974,53 @@ module.exports = function (app) {
       res.send("success");
     }
 
-    if (RegStep == "Flags") {
+    if (RegStep == "FlagInProgess") {
       console.log(RegStep + " step entered.");
-      res.send("success");
+
+      var FlagInfo = { };
+
+      if (req.body.whoami === "rider") {
+        FlagInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
+      }
+      if (req.body.whoami === "passenger") {
+        FlagInfo.RequestedPassFlagNumber = req.body.RequestedFlagNumber;
+      }
+
+      // Update Order with Flag info
+      db.Order.update(FlagInfo, {
+        where: {
+          RallyYear: 2023,
+          id: req.body.OrderID
+        }
+      }).then(() => {
+        res.status(202).send();
+      }).catch(err => {
+        logger.error("Error updating order with FlagInProgress info: " + err);
+        res.status(401).json(err);
+      })
+
+    }
+
+    if (RegStep == "FlagComplete") {
+      console.log(RegStep + " step entered.");
+
+      var FlagInfoComplete = {
+        UserID,
+        NextStepNum: 8
+      }
+
+      db.Order.update(FlagInfoComplete, {
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(202).send();
+      }).catch(err => {
+        logger.error("Error updating order with FlagComplete info: " + err);
+        res.status(401).json(err);
+      })
+
     }
 
   })

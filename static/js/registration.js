@@ -1,5 +1,7 @@
 $(document).ready(function() {
-  // var existingPassengerEmailFound = false;
+  var riderReady = false;
+  var passReady = false;
+  var enableWhen = "";
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
   var activeTab = $("#registrationSwitcher").attr("active");
   var nextStepNum = $("#nextStepNum").data("nextstepnum");
@@ -458,24 +460,61 @@ $(document).ready(function() {
   // ******************************
 
   // Handle Keep Existing Flag Yes button
-  $("#keepExistingFlagNumRider").on("click", function() {
-    var UserID = $(this).data("userid");
-    var ExistingRiderFlagNum = $(this).data("existingriderflagnum");
+  $(".keepExistingFlagNum").on("click", function(e) {
+    // e.preventDefault();
+    const UserID = $(this).data("userid");
+    const OrderID = $(this).data("orderid");
+    const whoami = $(this).data("whoami");
+    const enableWhen = $(this).data("enablewhen");
+    const ExistingFlagNum = $(this).data("existingflagnumber");
 
     var FlagNumberInfo = {
-      RegStep: "Flags",
+      RallyYear: 2023,
       UserID,
-      RequestedRiderFlagNumber: ExistingRiderFlagNum,
-      NextStepNum: 8
+      FlagNumber: ExistingFlagNum,
     }
+
+    var OrderUpdateInfo = {
+      RegStep: "FlagInProgess",
+      whoami,
+      RallyYear: 2023,
+      UserID,
+      OrderID,
+      RequestedFlagNumber: ExistingFlagNum,
+    }
+
+    // Update the Flag table to assign the flag to the user.
     console.log(FlagNumberInfo);
-    $.ajax("/api/v1/regFlow", {
+    $.ajax("/api/v1/flag", {
       type: "POST",
-      data: FlagNumberInfo
-    }).then(() => { 
-      $("#RegStep8").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(8); 
-    })
+      data: FlagNumberInfo,
+    }).then(() => {
+      $.ajax("/api/v1/regFlow", {
+        type: "POST",
+        data: OrderUpdateInfo
+      }).then(() => {
+        if (whoami === "rider") {
+          riderReady = true;
+          $("#flagAssignedRider").removeClass("hide-me");
+        }
+        if (whoami === "passenger") {
+          passReady = true;
+          $("#flagAssignedPassenger").removeClass("hide-me");
+        }
+      }).catch(err => {
+        console.log("Error when updating Order Info: " + err);
+      })
+    }).catch(err => {
+      console.log("Error when saving existing Flag Assignment: " + err);
+    });
+
+    if (enableWhen === "rider" && riderReady) { 
+      $("#goToSummaryBtn").prop("disabled", false) 
+    }
+    if (enableWhen === "pass" && (riderReady && passReady)) {
+      $("#goToSummaryBtn").prop("disabled", false) 
+    }
+
   })
 
   // Handle Keep Existing Flag No button for Rider
@@ -484,16 +523,9 @@ $(document).ready(function() {
     var UserID = $(this).data("userid");
     var whoami = $(this).data("whoami");
     $("#chooseFlagNumberModal").css("display","block");
-    $("#saveNewFlagNumChoiceBtn").attr("data-userid", UserID).attr("data-whoami", whoami);
+    $("#saveNewFlagNumChoiceBtn").attr("data-userid", UserID);
+    $("#saveNewFlagNumChoiceBtn").attr("data-whoami", whoami);
   })
-
-  // Handle Keep Existing Flag No button for Rider for Passenger
-  // $(".chooseAnotherFlagNumPassenger").on("click", function(e) {
-  //   var PassUserID = $(this).data("userid");
-  //   e.preventDefault();
-  //   $("#chooseFlagNumberModal").css("display","block");
-  //   $("#saveNewFlagNumChoiceBtn").attr("data-userid", PassUserID);
-  // })
 
   // Handle generateRandomFlagNumber Button
   $("#generateRandomFlagNumber").on("click", function(e) {
@@ -527,42 +559,56 @@ $(document).ready(function() {
     );
   })
 
-  // Handle Save Flag Button
-  $("#saveNewFlagNumChoiceBtn").on("click", function() {
-    var UserID = $(this).data("userid");
-    var whoami = $(this).data("whoami");
+  // Handle Save New Flag Button
+  $("#saveNewFlagNumChoiceBtn").on("click", function(e) {
+    e.preventDefault();
+    const UserID = $(this).data("userid");
+    const whoami = $(this).data("whoami");
+    enableWhen = $(this).data("enablewhen");
+    const requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
 
     var FlagNumberInfo = {
-      RegStep: "Flags",
+      RallyYear: 2023,
       UserID,
-      NextStepNum: 8
+      FlagNumber: requestedFlagNumber,
     }
-    console.log(FlagNumberInfo);
-    $.ajax("/api/v1/regFlow", {
+
+    $.ajax("/api/v1/flag", {
       type: "POST",
       data: FlagNumberInfo
-    }).then(() => { 
-      $("#RegStep8").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(8); 
-    })
+    }).then(() => {
+      if (whoami === "rider") {
+        riderReady = true;
+        $("#flagAssignedRider").removeClass("hide-me");
+      }
+      if (whoami === "passenger") {
+        passReady = true;
+        $("#flagAssignedPassenger").removeClass("hide-me");
+      }
+    }).catch(err => {
+      console.log("Error when saving new Flag Assignment: " + err);
+    });
+
   })
 
-  // Handle Skip to Summary Button
-  $("#skipToSummaryBtn").on("click", function() {
+  // Handle Continue to Summary Button
+  $("#goToSummaryBtn").on("click", function() {
     var UserID = $(this).data("userid");
-    var FlagNumberInfo = {
-      RegStep: "Flags",
+
+    var FlagInfoCompleted = {
+      RegStep: "FlagComplete",
       UserID,
       NextStepNum: 8
     }
-    console.log(FlagNumberInfo);
+    console.log(FlagInfoCompleted);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
-      data: FlagNumberInfo
-    }).then(() => { 
+      data: FlagInfoCompleted
+    }).then(() => {
       $("#RegStep8").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(8); 
     })
+
   })
 
   // ************************
@@ -574,6 +620,14 @@ $(document).ready(function() {
     e.preventDefault();
     $(".modal").css("display","none");
   })
+
+  // Monitor for Continue to Summary Button to be enabled
+  if (enableWhen === "rider" && riderReady) { 
+    $("#goToSummaryBtn").prop("disabled", false) 
+  }
+  if (enableWhen === "pass" && (riderReady && passReady)) {
+    $("#goToSummaryBtn").prop("disabled", false) 
+  }
 
   // Generate random passsword for new users
   const randomString = (length = 14) => {

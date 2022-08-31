@@ -8,7 +8,7 @@
           <span>Flag Number Preference</span>
           <button class="uk-button uk-align-right uk-button-small uk-button-primary button-rounded toh-mb-8" id="generateRandomFlagNumber">Randomize</button>
         </label>
-        <input class="uk-input toh-input" id="RequestedFlagNumber" type="text" placeholder="">
+        <input class="uk-input toh-input" id="RequestedFlagNumber" type="text" placeholder="" required>
         <div class="toh-mt-8">
           <button class="uk-button uk-button-small uk-button-primary button-rounded" id="checkFlagNumberAvailability">Check Availability</button>
           <span class="toh-ml-8 hide-me" id="flagAvailabilityResponse">Results go here</span>
@@ -18,7 +18,7 @@
         <div class="uk-align-right">
           <label class="uk-form-label">&nbsp;</label>
           <button class="uk-button uk-button-secondary button-rounded" id="cancelButton">Cancel</button>
-          <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveNewFlagNumChoiceBtn" disabled data-userid="<%= User.id %>">Save</button>
+          <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveNewFlagNumChoiceBtn" type="submit" disabled>Save</button>
         </div>
       </div>
     </form>
