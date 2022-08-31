@@ -265,6 +265,23 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/admin/group-management", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    try {
+      var Groups = await q.queryAllGroups();
+    } catch {
+      logger.error("Error encountered: queryAllGroups");
+    }
+    res.locals.title = "TOH Group Manager"
+    res.render("pages/admin/group-management", {
+      activeUser,
+      User: req.user,
+      Groups,
+      NotificationText: "",
+    });
+  });
+
   app.get("/changelog", async (req,res) => {
     var activeUser = false
     if (req.user) { activeUser = true };

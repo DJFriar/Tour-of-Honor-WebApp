@@ -265,6 +265,13 @@ a.hidden-link:visited {
   width: 80%
 }
 
+.modal-content-mini {
+  background-color: #C0DFFD;
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%
+}
+
 .close {
   color:#aaa;
   float: right;
@@ -314,6 +321,10 @@ a.hidden-link:visited {
 
 .toh-input {
   border-radius: 8px;
+}
+
+.toh-inline-label {
+  display: inline !important;
 }
 
 .button-rounded {

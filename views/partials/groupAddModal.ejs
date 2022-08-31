@@ -1,0 +1,31 @@
+<div class="modal-content-mini">
+  <span class="close">&times;</span>
+  <h4>Add New User Group</h4>
+  <div class="toh-mt-24">
+    <form class="uk-grid-small uk-form-stacked" uk-grid>
+      <div class="uk-width-1-1@s toh-mb-18">
+        <label class="uk-form-label" for="GroupName">Group Name</label>
+        <input class="uk-input toh-input" id="GroupName" type="text" placeholder="">
+      </div>
+      <div class="uk-width-1-1@s toh-mb-18">
+        <label class="uk-form-label" for="GroupDescription" id="GroupDescriptionLabel">Group Description</label>
+        <textarea class="uk-textarea toh-input" rows="3" name="GroupDescription" id="GroupDescription" placeholder=""></textarea>
+      </div>
+      <div class="uk-width-1-2@s uk-text-center">
+        <input class="uk-checkbox" type="checkbox" name="isAdmin" id="isAdmin">
+        <label class="uk-form-label toh-inline-label" for="isAdmin" id="isAdminLabel">Grant Admin</label>
+      </div>
+      <div class="uk-width-1-2@s uk-text-center">
+        <input class="uk-checkbox" type="checkbox" name="isActive" id="isActive" checked>
+        <label class="uk-form-label toh-inline-label" for="isActive" id="isActiveLabel">Make Active</label>
+      </div>
+      <div class="uk-width-1-1@s">
+        <div class="uk-align-right">
+          <label class="uk-form-label">&nbsp;</label>
+          <button class="uk-button uk-button-default button-rounded" id="cancelButton">Cancel</button>
+          <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveNewGroupBtn">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

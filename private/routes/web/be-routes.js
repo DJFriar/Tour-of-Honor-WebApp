@@ -1022,4 +1022,43 @@ module.exports = function (app) {
       res.status(202).send();
     });
   })
+
+  // Add New User Group
+  app.post("/api/v1/group", (req, res) => {
+    db.UserGroup.create({
+      Name: req.body.GroupName,
+      Description :req.body.GroupDescription,
+      IsAdmin: req.body.GroupIsAdmin,
+      IsActive: req.body.GroupIsActive,
+      IsProtected: 0
+    }).then((g) => {
+      logger.info("Group " + g.id + " created.");
+      res.status(200).send();
+    }).catch(err => {
+      logger.error("Error creating Group: " + err);
+      res.status(401).json(err);
+    });
+  })
+
+  // Update a User Group
+  app.put("/api/v1/group/:id", (req, res) => {
+    const groupid = req.params.id;
+
+    db.UserGroup.update({
+      Name: req.body.GroupName,
+      Description :req.body.GroupDescription,
+      IsAdmin: req.body.GroupIsAdmin,
+      IsActive: req.body.GroupIsActive
+    }, {
+      where: {
+        id: groupid
+      }
+    }).then(() => {
+      logger.info("Group " + groupid + " updated.");
+      res.status(200).send();
+    }).catch(err => {
+      logger.error("Error creating Group: " + err);
+      res.status(401).json(err);
+    });
+  })
 }

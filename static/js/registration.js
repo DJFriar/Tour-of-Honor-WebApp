@@ -466,11 +466,11 @@ $(document).ready(function() {
   // ** Flag Number Info Tab (7) **
   // ******************************
 
-  // Handle Waiver Button
+  // Handle Save Flag Button
   $("#saveFlagNumberInfo").on("click", function() {
     var UserID = $(this).data("userid");
     var FlagNumberInfo = {
-      RegStep: "Waiver",
+      RegStep: "Flags",
       UserID,
       NextStepNum: 8
     }

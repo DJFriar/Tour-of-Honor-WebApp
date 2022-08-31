@@ -695,3 +695,13 @@ module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostBy
     throw err;
   }
 }
+
+module.exports.queryAllGroups = async function queryAllGroups() {
+  try {
+    var result = await db.UserGroup.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllGroups:" + err);
+    throw err;
+  }
+}
