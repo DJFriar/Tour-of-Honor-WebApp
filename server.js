@@ -64,11 +64,13 @@ app.use("/api/v1/submission", submission);
 db.sequelize.sync()
   .then(() => {
     app.listen(PORT, () => {
+      console.log("\n");
       console.log("==> 🌎  Server running in " + app.locals.envName + " mode. isProd is " + app.locals.envIsProd + ".");
       console.log(
         "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
         PORT,
         PORT
       );
+      console.log("\n");
     });
   })
