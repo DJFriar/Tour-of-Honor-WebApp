@@ -72,7 +72,6 @@ async function postQuery(query, query_vars){
             //throw res.statusText;
             return false;
         }
-
     } catch(err) { 
       throw err
     }

@@ -825,6 +825,24 @@ module.exports = function (app) {
       })
     }
 
+    if (RegStep == "NoPassenger") {
+      console.log(RegStep + " step entered.");
+      db.Order.update({
+        PassUserID: req.body.PassUserID,
+        NextStepNum: 3
+      },{
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(200).send();
+      }).catch(err => {
+        logger.error("Error updating order with no passenger info: " + err);
+        res.status(401).json(err);
+      })
+    }
+
     if (RegStep == "ExistingPassenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
@@ -1037,22 +1055,29 @@ module.exports = function (app) {
       if (o.OrderNumber === null) {
         logger.info("OrderNumber not found locally, checking Shopify...");
         // Check Shopify for an Order Number
-        var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
-        db.Order.update({
-          OrderNumber: orderNumber,
-          NextStepNum: 6
-        }, {
-          where: {
-            RallyYear: 2023,
-            UserID: id
-          }
-        }).then(() => {
-          console.info("OrderNumber updated for rider " + id);
-          res.json(orderNumber);
-        });
+        try {
+          var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
+        } catch (err) {
+          logger.warn("orderNumber not found for TOH Order " + o.id + ". Order is likely not paid for yet." + err);
+          res.json(0);
+        }
+        if (orderNumber) {
+          db.Order.update({
+            OrderNumber: orderNumber,
+            NextStepNum: 6
+          }, {
+            where: {
+              RallyYear: 2023,
+              UserID: id
+            }
+          }).then(() => {
+            console.info("Shopify Order Number updated for rider " + id);
+            res.json(orderNumber);
+          });
+        }
       }
       if (o.OrderNumber) {
-        logger.info("OrderNumber Found: " + o.OrderNumber);
+        logger.info("Shopify Order Number found locally: " + o.OrderNumber);
         res.json(o.OrderNumber);
       }
     });

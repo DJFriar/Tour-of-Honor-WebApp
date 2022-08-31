@@ -176,7 +176,7 @@ $(document).ready(function() {
     $("#passengerFlagLookupResults").addClass("hide-me");
 
     var PassOrderInfo = {
-      RegStep: "Passenger",
+      RegStep: "NoPassenger",
       UserID,
       PassUserID: 0,
       NextStepNum: 3
@@ -188,7 +188,7 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
-      $("#saveTshirtInfo").attr("data-showpassoptions", "false");
+      // $("#saveTshirtInfo").attr("data-showpassoptions", "false");
     })
   })
 
@@ -423,12 +423,28 @@ $(document).ready(function() {
     }).then((res) => {
       console.log("==== checkOrderStatus response ====");
       console.log(res);
-      if (res) {
+      if (res > 0) {
         $("#RegStep7").removeClass("disabled");
         UIkit.switcher("#registrationSwitcher").show(7); 
       } else {
         $("#awaitingShopifyContent").addClass("hide-me");
         $("#orderNumberMissing").removeClass("hide-me");
+      }
+    })
+  })
+
+  $("goToWaiver2").on("click", function() {
+    var UserID = $(this).data("userid");
+    $.ajax("/api/v1/checkOrderStatus/" + UserID, {
+      type: "GET"
+    }).then((res) => {
+      console.log("==== checkOrderStatus response ====");
+      console.log(res);
+      if (res > 0) {
+        $("#RegStep7").removeClass("disabled");
+        UIkit.switcher("#registrationSwitcher").show(7); 
+      } else {
+        console.log("Unable to confirm successful payment.");
       }
     })
   })
