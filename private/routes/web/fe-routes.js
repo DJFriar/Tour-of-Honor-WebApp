@@ -588,24 +588,27 @@ module.exports = function (app) {
   app.get("/registration", async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    if (!req.user) { res.redirect('/signup'); }
+    if (!req.user) { return res.redirect('/signup'); }
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
       console.log("==== OrderInfo ====");
-      console.log(OrderInfo);
-    } catch {
-      logger.error("Error encountered: queryOrderInfoByRider");
+      logger.info(OrderInfo.dataValues);
+    } catch (err) {
+      logger.error("Error encountered: queryOrderInfoByRider " + err);
     }
     if (!OrderInfo || OrderInfo.length == 0) {
       OrderInfo = [];
-      OrderInfo.push({NextStepNum: 0})
+      OrderInfo.push({ NextStepNum: 0 });
+      OrderInfo.push({ PassUserID: 0 });
+    } else {
+
     }
 
     try {
       var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
-    } catch {
-      logger.error("Error encountered: queryTotalOrderCostByRider");
+    } catch  (err) {
+      logger.error("Error encountered: queryTotalOrderCostByRider " + err);
     }
     if (!TotalOrderCost || TotalOrderCost.length == 0) {
       TotalOrderCost = [];
@@ -621,21 +624,22 @@ module.exports = function (app) {
       var ShirtSizeSurcharge = ShirtSizeSurchargeObject[0].iValue;
       var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
-    } catch {
-      logger.error("Error encountered while gathering pricing info.");
+    } catch (err) {
+      logger.error("Error encountered while gathering pricing info." + err);
     }
 
     try {
       var Charities = await q.queryAllCharities();
-    } catch {
-      logger.error("Error encountered: queryAllCharities");
+    } catch (err) {
+      logger.error("Error encountered: queryAllCharities" + err);
     }
 
     try {
       var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
-    } catch {
-      logger.error("Error encountered: queryBikesByRider");
+    } catch (err) {
+      logger.error("Error encountered: queryBikesByRider" + err);
     }
+
     res.locals.title = "TOH Registration"
     res.render("pages/registration", {
       activeUser,

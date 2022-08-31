@@ -1,13 +1,10 @@
 $(document).ready(function() {
-  // var ShopifyVariantID = "";
-  var existingPassengerEmailFound = false;
+  // var existingPassengerEmailFound = false;
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
   var activeTab = $("#registrationSwitcher").attr("active");
   for (let i = 0; i < activeTab; i++) {
     $("#RegStep" + i).removeClass("disabled");
   }
-  console.log("==== CheckoutURL (.js) ====");
-  console.log(CheckoutURL);
   
   // ************************
   // ** Rider Info Tab (0) **
@@ -111,8 +108,6 @@ $(document).ready(function() {
       type: "GET",
     }).then(
       function(res) {
-        console.log("==== Bike Info: ====")
-        console.log(res);
         $("#bikeInfoEditModal").css("display","block");
         $("#EditBikeID").val(res.id);
         $("#EditBikeName").val(res.BikeName);
@@ -262,7 +257,7 @@ $(document).ready(function() {
     var UserID = $(this).data("userid");
     var PassUserID = $(this).data("passuserid");
     var PassOrderInfo = {
-      RegStep: "Passenger",
+      RegStep: "ExistingPassenger",
       UserID,
       PassUserID,
       NextStepNum: 3
@@ -274,8 +269,6 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
-      $("#passengerShirtSection").removeClass("hide-me");
-      $("#saveTshirtInfo").attr("data-showpassoptions", "true");
     })
   })
 
@@ -295,25 +288,25 @@ $(document).ready(function() {
       FlagNumber: 0
     }
 
-    // Check Passenger Email Uniqueness
-    $("#PassengerEmailForm").on("input paste", function() {
-      var email = $(this).val();
-      if (email) {
-        $.ajax("/api/v1/email/" + email, {
-          type: "GET"
-        }).then(
-          function(emailInfo) {
-            if (emailInfo) {
-              existingPassengerEmailFound = true;
-              $("#PassengerEmailForm").css("border","4px solid red")
-            } else {
-              existingPassengerEmailFound = false;
-              $("#PassengerEmailForm").css("border","none")
-            }
-          }
-        );
-      }
-    })
+    // // Check Passenger Email Uniqueness
+    // $("#PassengerEmailForm").on("input paste", function() {
+    //   var email = $(this).val();
+    //   if (email) {
+    //     $.ajax("/api/v1/email/" + email, {
+    //       type: "GET"
+    //     }).then(
+    //       function(emailInfo) {
+    //         if (emailInfo) {
+    //           existingPassengerEmailFound = true;
+    //           $("#PassengerEmailForm").css("border","4px solid red")
+    //         } else {
+    //           existingPassengerEmailFound = false;
+    //           $("#PassengerEmailForm").css("border","none")
+    //         }
+    //       }
+    //     );
+    //   }
+    // })
 
     // Make sure that Passenger first name isn't blank.
     if (!PassengerInfo.FirstName) {
@@ -380,8 +373,6 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep4").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(4);
-      $("#passengerShirtSection").removeClass("hide-me");
-      $("#saveTshirtInfo").attr("data-showpassoptions", "true");
     })
   })
 
@@ -392,7 +383,7 @@ $(document).ready(function() {
   // Handle Save T-Shirt Choices Button
   $("#saveTshirtInfo").on("click", function() {
     const UserID = $(this).data("userid");
-    const showPass = $(this).data("showpassoptions");
+    const submittedPassID = $(this).data("passid");
 
     var ShirtOrderInfo = {
       RegStep: "Shirts",
@@ -402,7 +393,7 @@ $(document).ready(function() {
       ShirtStyle: $("#RiderShirtStyle").val(),
       ShirtSize: $("#RiderShirtSize").val()
     }
-    if(showPass) {
+    if(submittedPassID > 0) {
       ShirtOrderInfo.hasPass = true;
       ShirtOrderInfo.PassShirtStyle = $("#PassengerShirtStyle").val();
       ShirtOrderInfo.PassShirtSize = $("#PassengerShirtSize").val();
@@ -413,13 +404,6 @@ $(document).ready(function() {
       data: ShirtOrderInfo
     }).then(() => {
       location.replace("/registration");
-      // CheckoutURL = res.checkoutURL;
-      // $("#goToPayment").attr("data-pricetier", res.PriceTier);
-      // $("#goToPayment2").attr("data-pricetier", res.PriceTier);
-      // $("#goToPayment3").attr("data-pricetier", res.PriceTier);
-      // $("#totalCostAmount").text(res.totalPrice);
-      // $("#RegStep5").removeClass("disabled");
-      // UIkit.switcher("#registrationSwitcher").show(5);
     })
   })
 

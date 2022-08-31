@@ -795,7 +795,7 @@ module.exports = function (app) {
       })
     }
 
-    if (RegStep == "Passenger") {
+    if (RegStep == "ExistingPassenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         PassUserID: req.body.PassUserID,
@@ -806,6 +806,7 @@ module.exports = function (app) {
           UserID: req.body.UserID
         }
       }).then(() => {
+        hasPassenger = true;
         res.status(200).send();
       }).catch(err => {
         logger.error("Error updating order with passenger info: " + err);
@@ -829,7 +830,16 @@ module.exports = function (app) {
           UserID: req.body.UserID
         }
       }).then(() => {
-        res.status(200).send();
+        db.Order.findOne({
+          where: {
+            RallyYear: 2023,
+            UserID: req.body.UserID
+          }
+        }).then((dbOrder) => {
+          var hasPassenger = false;
+          if (dbOrder.PassUserID > 0) { hasPassenger = true; } 
+          res.status(202).send({ hasPassenger });
+        })
       }).catch(err => {
         logger.error("Error updating order with charity info: " + err);
         res.status(401).json(err);
@@ -838,7 +848,7 @@ module.exports = function (app) {
 
     if (RegStep == "Shirts") {
       console.log(RegStep + " step entered.");
-      console.log(req.body);
+      console.log("Shirt info provided:" + req.body);
       var BaseRiderRateObject = await q.queryBaseRiderRate();
       var BaseRiderRate = parseInt(BaseRiderRateObject[0].Price);
       var PassengerSurchargeObject = await q.queryPassengerSurcharge();
@@ -905,7 +915,9 @@ module.exports = function (app) {
       // Generate the Shopify URL & ID
       var checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
       ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
+      logger.info("Checkout URL Generated: ", ShirtDetails.CheckoutURL);
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
+      logger.info("Checkout ID Generated: ", ShirtDetails.CheckoutID);
 
       // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
@@ -914,7 +926,7 @@ module.exports = function (app) {
           UserID: req.body.UserID
         }
       }).then(() => {
-        res.status(200).send({checkoutURL, PriceTier, ShopifyVariantID, totalPrice});
+        res.status(202).send({ checkoutURL, PriceTier, ShopifyVariantID, totalPrice });
       }).catch(err => {
         logger.error("Error updating order with t-shirt info: " + err);
         res.status(401).json(err);
@@ -944,11 +956,12 @@ module.exports = function (app) {
     const id = req.params.id;
     db.Order.findOne({
       where: {
-        UserID: id
+        UserID: id,
+        RallyYear: 2023
       }
     }).then(async function (o) {
       if (o.OrderNumber === null) {
-        console.log("OrderNumber not found locally, checking Shopify...");
+        logger.info("OrderNumber not found locally, checking Shopify...");
         // Check Shopify for an Order Number
         var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
         db.Order.update({
@@ -965,7 +978,7 @@ module.exports = function (app) {
         });
       }
       if (o.OrderNumber) {
-        console.log("OrderNumber Found: " + o.OrderNumber);
+        logger.info("OrderNumber Found: " + o.OrderNumber);
         res.json(o.OrderNumber);
       }
     });
