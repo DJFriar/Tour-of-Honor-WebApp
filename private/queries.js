@@ -634,6 +634,21 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
   }
 }
 
+module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(PassUserID, Year) {
+  try {
+    var result = await db.Flag.findOne({
+      where: {
+        UserID: PassUserID,
+        RallyYear: Year
+      }
+    })
+    return result;
+  } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
+    throw err;
+  }
+}
+
 module.exports.queryNextOrderStepByID = async function queryNextOrderStepByID(UserID) {
   try {
     var result = await sequelize.query("SELECT NextStepNum FROM Orders WHERE UserID = ?",

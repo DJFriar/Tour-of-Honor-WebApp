@@ -73,13 +73,13 @@ module.exports = function (app) {
 
   // Find a Random Available Flag Number
   app.get("/api/v1/randomAvailableFlag", (req, res) => {
-    var allowedNumbers = _.range(11,1201,1);
     db.Flag.findAll({
       where: {
         RallyYear: 2022
       },
       raw: true
     }).then(function (flags) {
+      var allowedNumbers = _.range(11,1201,1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
       var goodNumbers = _.pull(allowedNumbers, badNumbers);
       const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];

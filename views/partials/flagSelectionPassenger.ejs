@@ -3,23 +3,23 @@
   <div class="toh-mb-18">
     <div class="toh-flag-mockup uk-align-center">
       <div id="flagNumberText" class="toh-flag-number">
-        <%= User.FlagNumber %> 
+        <%= OrderInfo.PassFlagNum %> 
       </div> 
     </div>
   </div>
-  <% if(User.FlagNumber > 10) { %>
+  <% if(OrderInfo.PassFlagNum > 10) { %>
     <div id="keepExistingFlagNumSection">
       <p>Would you like to keep this flag number again for next year?</p>
-      <button type="button" id="chooseAnotherFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">No</button>
-      <button type="button" id="keepExistingFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>" data-existingPassengerflagnum="<%= User.FlagNumber %>">Yes</button>
+      <button type="button" id="chooseAnotherFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="passenger" data-userid="<%= OrderInfo.PassUserID %>">No</button>
+      <button type="button" id="keepExistingFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= OrderInfo.PassUserID %>">Yes</button>
     </div>
+  <% } else { %>
+    <% if(OrderInfo.PassFlagNum <= 10) { %>
+      <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
+    <% } %>
+    <% if(OrderInfo.PassFlagNum == 0) { %>
+      <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
+    <% } %>
+    <button type="button" id="chooseAnotherFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="passenger" data-userid="<%= OrderInfo.PassUserID %>">No</button>
   <% } %>
-  <% if(User.FlagNumber <= 10) { %>
-    <p>You currently have a reserved Flag Number. Please choose a new flag number below.</p>
-  <% } %>
-  <div id="chooseNewFlagNumberSection" class="toh-mt-18 hide-me">
-    <p>Would you like to choose your own flag number, or accept a random flag number?</p>
-    <button type="button" id="requestRandomFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Accept a random flag number</button>
-    <button type="button" id="requestSpecificFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Request a new specific flag number</button>
-  </div>
 </div>

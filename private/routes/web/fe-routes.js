@@ -609,8 +609,15 @@ module.exports = function (app) {
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
-      console.log("==== OrderInfo ====");
-      logger.info(OrderInfo.dataValues);
+      if (OrderInfo.PassUserID > 0) {
+        try {
+          var passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
+          OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
+          OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+        } catch (err) {
+          logger.error("Error encountered: queryFlagNumFromUserID " + err);
+        }
+      }
     } catch (err) {
       logger.error("Error encountered: queryOrderInfoByRider " + err);
     }
@@ -618,9 +625,11 @@ module.exports = function (app) {
       OrderInfo = [];
       OrderInfo.push({ NextStepNum: 0 });
       OrderInfo.push({ PassUserID: 0 });
-    } else {
-
     }
+
+    console.log("==== OrderInfo ====");
+    logger.info(OrderInfo.dataValues);
+    
 
     try {
       var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
