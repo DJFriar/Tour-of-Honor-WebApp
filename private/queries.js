@@ -548,7 +548,7 @@ module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
 
 module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Passenger Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Passenger Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -560,7 +560,7 @@ module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge(
 
 module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Size Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Size Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -572,7 +572,7 @@ module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge(
 
 module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Style Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Style Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -717,6 +717,16 @@ module.exports.queryAllGroups = async function queryAllGroups() {
     return result;
   } catch (err) {
     logger.error("queryAllGroups:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllConfigs = async function queryAllConfigs() {
+  try {
+    var result = await db.Config.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllConfigs:" + err);
     throw err;
   }
 }

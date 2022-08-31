@@ -721,6 +721,25 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/admin/site-config", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    try {
+      var Configs = await q.queryAllConfigs();
+    } catch {
+      logger.error("Error encountered: queryAllConfigs");
+    }
+    console.log(req.user);
+    res.locals.title = "TOH Site Config"
+    res.render("pages/admin/site-config", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      Configs,
+      dt: DateTime
+    });
+  });
+
   //#endregion
   // ===============================================================================
 
