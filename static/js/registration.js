@@ -478,14 +478,22 @@ $(document).ready(function() {
     })
   })
 
-  // Handle Keep Existing Flag No button
-  $("#chooseAnotherFlagNumRider").on("click", function(e) {
+  // Handle Keep Existing Flag No button for Rider
+  $(".chooseAnotherFlagNum").on("click", function(e) {
     e.preventDefault();
-    $("#chooseAnotherFlagNumRider").addClass("uk-button-primary").removeClass("uk-button-default");
-    // $("#keepExistingFlagNumRider").addClass("uk-button-default").removeClass("uk-button-primary");
+    var UserID = $(this).data("userid");
+    var whoami = $(this).data("whoami");
     $("#chooseFlagNumberModal").css("display","block");
-
+    $("#saveNewFlagNumChoiceBtn").attr("data-userid", UserID).attr("data-whoami", whoami);
   })
+
+  // Handle Keep Existing Flag No button for Rider for Passenger
+  // $(".chooseAnotherFlagNumPassenger").on("click", function(e) {
+  //   var PassUserID = $(this).data("userid");
+  //   e.preventDefault();
+  //   $("#chooseFlagNumberModal").css("display","block");
+  //   $("#saveNewFlagNumChoiceBtn").attr("data-userid", PassUserID);
+  // })
 
   // Handle generateRandomFlagNumber Button
   $("#generateRandomFlagNumber").on("click", function(e) {
@@ -497,34 +505,6 @@ $(document).ready(function() {
       $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
       $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
     })
-  })
-
-  // Handle Accept Random Flag Number button
-  $("requestRandomFlagNumRider").on("click", function() {
-    var UserID = $(this).data("userid");
-
-    var FlagNumberInfo = {
-      RegStep: "Flags",
-      UserID,
-      RequestedRiderFlagNumber: 0,
-      NextStepNum: 8
-    }
-    console.log(FlagNumberInfo);
-    $.ajax("/api/v1/regFlow", {
-      type: "POST",
-      data: FlagNumberInfo
-    }).then(() => { 
-      $("#RegStep8").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(8); 
-    })
-  })
-
-  // Handle Request New Flag Number button
-  $("#requestSpecificFlagNum").on("click", function(e) {
-    e.preventDefault();
-    $("#requestSpecificFlagNum").addClass("uk-button-primary").removeClass("uk-button-default");
-    $("#requestRandomFlagNum").addClass("uk-button-default").removeClass("uk-button-primary");
-    $("#chooseFlagNumberModal").css("display","block");
   })
 
   // Handle Check Flag Availability button
@@ -545,11 +525,30 @@ $(document).ready(function() {
         }
       }
     );
-    // API Call and then do the below
   })
 
   // Handle Save Flag Button
-  $("#saveFlagNumberInfo").on("click", function() {
+  $("#saveNewFlagNumChoiceBtn").on("click", function() {
+    var UserID = $(this).data("userid");
+    var whoami = $(this).data("whoami");
+
+    var FlagNumberInfo = {
+      RegStep: "Flags",
+      UserID,
+      NextStepNum: 8
+    }
+    console.log(FlagNumberInfo);
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: FlagNumberInfo
+    }).then(() => { 
+      $("#RegStep8").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(8); 
+    })
+  })
+
+  // Handle Skip to Summary Button
+  $("#skipToSummaryBtn").on("click", function() {
     var UserID = $(this).data("userid");
     var FlagNumberInfo = {
       RegStep: "Flags",
