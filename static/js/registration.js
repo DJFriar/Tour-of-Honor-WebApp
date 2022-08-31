@@ -433,7 +433,7 @@ $(document).ready(function() {
     })
   })
 
-  $("goToWaiver2").on("click", function() {
+  $("#goToWaiver2").on("click", function() {
     var UserID = $(this).data("userid");
     $.ajax("/api/v1/checkOrderStatus/" + UserID, {
       type: "GET"
