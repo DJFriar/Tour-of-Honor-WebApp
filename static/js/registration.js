@@ -2,7 +2,8 @@ $(document).ready(function() {
   // var existingPassengerEmailFound = false;
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
   var activeTab = $("#registrationSwitcher").attr("active");
-  for (let i = 0; i < activeTab; i++) {
+  var nextStepNum = $("#nextStepNum").data("nextstepnum");
+  for (let i = 0; i <= nextStepNum; i++) {
     $("#RegStep" + i).removeClass("disabled");
   }
   
@@ -55,16 +56,6 @@ $(document).ready(function() {
     }).then(
       function() { location.replace("/logout"); }
     )
-  })
-
-  // Handle Set Address Dialog Close Button
-  $(".close").on("click", function() {
-    $(".modal").css("display","none");
-  })
-
-  // Handle Set Address Dialog Cancel Button
-  $("#cancelButton").on("click", function() {
-    $(".modal").css("display","none");
   })
 
   // ***********************
@@ -175,8 +166,8 @@ $(document).ready(function() {
   // Handle Has Passenger No button
   $("#registerPassengerNo").on("click", function() {
     var UserID = $(this).data("userid");
-    $("#registerPassengerNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#registerPassengerYes").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#registerPassengerNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#registerPassengerYes").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerInfoSection").addClass("hide-me");
     $("#passengerInfoForm").addClass("hide-me");
     $("#passengerFlagLookup").addClass("hide-me");
@@ -201,25 +192,25 @@ $(document).ready(function() {
 
   // Handle Has Passenger Yes button
   $("#registerPassengerYes").on("click", function() {
-    $("#registerPassengerYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#registerPassengerNo").addClass("uk-button-secondary").removeClass("uk-button-primary");
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
+    $("#registerPassengerYes").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#registerPassengerNo").addClass("uk-button-default").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-default");
     $("#passengerInfoSection").removeClass("hide-me");
   })
 
   // Handle Passenger Doesn't Have Flag Button
   $("#passengerAlreadyHasFlagNo").on("click", function() {
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerInfoForm").removeClass("hide-me");
     $("#passengerFlagLookup").addClass("hide-me");
   })
 
   // Handle Passenger Already Has Flag Button
   $("#passengerAlreadyHasFlagYes").on("click", function() {
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerFlagLookup").removeClass("hide-me");
     $("#passengerInfoForm").addClass("hide-me");
   })
@@ -466,6 +457,97 @@ $(document).ready(function() {
   // ** Flag Number Info Tab (7) **
   // ******************************
 
+  // Handle Keep Existing Flag Yes button
+  $("#keepExistingFlagNumRider").on("click", function() {
+    var UserID = $(this).data("userid");
+    var ExistingRiderFlagNum = $(this).data("existingriderflagnum");
+
+    var FlagNumberInfo = {
+      RegStep: "Flags",
+      UserID,
+      RequestedRiderFlagNumber: ExistingRiderFlagNum,
+      NextStepNum: 8
+    }
+    console.log(FlagNumberInfo);
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: FlagNumberInfo
+    }).then(() => { 
+      $("#RegStep8").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(8); 
+    })
+  })
+
+  // Handle Keep Existing Flag No button
+  $("#chooseAnotherFlagNumRider").on("click", function(e) {
+    e.preventDefault();
+    $("#chooseAnotherFlagNumRider").addClass("uk-button-primary").removeClass("uk-button-default");
+    // $("#keepExistingFlagNumRider").addClass("uk-button-default").removeClass("uk-button-primary");
+    $("#chooseFlagNumberModal").css("display","block");
+
+  })
+
+  // Handle generateRandomFlagNumber Button
+  $("#generateRandomFlagNumber").on("click", function(e) {
+    e.preventDefault();
+    $.ajax("/api/v1/randomAvailableFlag", {
+      type: "GET"
+    }).then((flagNumber) => {
+      $("#RequestedFlagNumber").val(flagNumber);
+      $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
+      $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
+    })
+  })
+
+  // Handle Accept Random Flag Number button
+  $("requestRandomFlagNumRider").on("click", function() {
+    var UserID = $(this).data("userid");
+
+    var FlagNumberInfo = {
+      RegStep: "Flags",
+      UserID,
+      RequestedRiderFlagNumber: 0,
+      NextStepNum: 8
+    }
+    console.log(FlagNumberInfo);
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: FlagNumberInfo
+    }).then(() => { 
+      $("#RegStep8").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(8); 
+    })
+  })
+
+  // Handle Request New Flag Number button
+  $("#requestSpecificFlagNum").on("click", function(e) {
+    e.preventDefault();
+    $("#requestSpecificFlagNum").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#requestRandomFlagNum").addClass("uk-button-default").removeClass("uk-button-primary");
+    $("#chooseFlagNumberModal").css("display","block");
+  })
+
+  // Handle Check Flag Availability button
+  $("#checkFlagNumberAvailability").on("click", function(e) {
+    e.preventDefault();
+    var requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
+
+    $.ajax("/api/v1/flag/" + requestedFlagNumber, {
+      type: "GET"
+    }).then(
+      function(flagInfo) {
+        if (flagInfo) {
+          $("#flagAvailabilityResponse").text("This flag number is not available.").css("color","red").removeClass("hide-me");
+          $("#saveNewFlagNumChoiceBtn").prop("disabled",true);
+        } else {
+          $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
+          $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
+        }
+      }
+    );
+    // API Call and then do the below
+  })
+
   // Handle Save Flag Button
   $("#saveFlagNumberInfo").on("click", function() {
     var UserID = $(this).data("userid");
@@ -488,8 +570,9 @@ $(document).ready(function() {
   // ** Misc Support Items **
   // ************************
 
-  // Handle Dialog Close Button
-  $(".close").on("click", function() {
+  // Handle Dialog Close & Cancel Buttons
+  $(".close, #cancelButton").on("click", function(e) {
+    e.preventDefault();
     $(".modal").css("display","none");
   })
 

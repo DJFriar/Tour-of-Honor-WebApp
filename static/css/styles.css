@@ -327,6 +327,20 @@ a.hidden-link:visited {
   display: inline !important;
 }
 
+.toh-flag-mockup {
+  width: 180px;
+  height: 120px;
+  padding: 4px 10px;
+  background-color: yellow;
+}
+
+.toh-flag-number {
+  color:#000;
+  font-weight: 600;
+  font-size: 4em;
+  margin-top: 14px;
+}
+
 .button-rounded {
   border-radius: 8px;
 }

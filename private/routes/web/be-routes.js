@@ -2,6 +2,7 @@
 const db = require("../../../models");
 const q = require("../../queries");
 const ejs = require("ejs");
+const _ = require('lodash');
 const uploadSubmission = require("../../../controllers/uploadSubmission");
 const passport = require("../../../config/passport");
 const multer = require("multer");
@@ -67,6 +68,22 @@ module.exports = function (app) {
       }
     }).then(function (dbPost) {
       res.json(dbPost);
+    });
+  })
+
+  // Find a Random Available Flag Number
+  app.get("/api/v1/randomAvailableFlag", (req, res) => {
+    var allowedNumbers = _.range(11,1201,1);
+    db.Flag.findAll({
+      where: {
+        RallyYear: 2022
+      },
+      raw: true
+    }).then(function (flags) {
+      var badNumbers = flags.map(inUse => inUse.FlagNum);
+      var goodNumbers = _.pull(allowedNumbers, badNumbers);
+      const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
+      res.json(randomFlag);
     });
   })
 
