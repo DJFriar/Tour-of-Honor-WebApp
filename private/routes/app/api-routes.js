@@ -36,8 +36,6 @@ module.exports = function (app) {
     res.json(MemorialData);
   })
 
-
-
   // Fetch all active Categories
   app.get("/api/v1/categories/", (req, res) => {
     db.Category.findAll({
@@ -68,4 +66,15 @@ module.exports = function (app) {
     });
   })
 
+  // Fetch all bikes for a given User
+  app.get("/api/v1/bikes/:id", (req, res) => {
+    const id = req.params.id;
+    db.Bike.findAll({ 
+      where: {
+        user_id: id
+      }
+    }).then(function (bikes) {
+      res.json(bikes);
+    });
+  })
 }

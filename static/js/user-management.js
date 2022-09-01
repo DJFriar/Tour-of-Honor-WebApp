@@ -150,25 +150,25 @@ $(document).ready(function() {
     }
   })
 
-    // Check Passenger Flag Number Uniqueness
-    $("#PassengerFlagNum").on("input paste", function() {
-      var id = $(this).val();
-      if (id) {
-        $.ajax("/api/v1/flag/" + id, {
-          type: "GET"
-        }).then(
-          function(flagInfo) {
-            if (flagInfo) {
-              existingPassengerFlagNumberFound = true;
-              $("#PassengerFlagNum").css("border","4px solid red")
-            } else {
-              existingPassengerFlagNumberFound = false;
-              $("#PassengerFlagNum").css("border","none")
-            }
+  // Check Passenger Flag Number Uniqueness
+  $("#PassengerFlagNum").on("input paste", function() {
+    var id = $(this).val();
+    if (id) {
+      $.ajax("/api/v1/flag/" + id, {
+        type: "GET"
+      }).then(
+        function(flagInfo) {
+          if (flagInfo) {
+            existingPassengerFlagNumberFound = true;
+            $("#PassengerFlagNum").css("border","4px solid red")
+          } else {
+            existingPassengerFlagNumberFound = false;
+            $("#PassengerFlagNum").css("border","none")
           }
-        );
-      }
-    })
+        }
+      );
+    }
+  })
 
   // Handle Rider Registration
   $("#createUserButton").on("click", function() {

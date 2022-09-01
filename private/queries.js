@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op, QueryTypes } = require("sequelize");
 const { sequelize, Sequelize } = require("../models");
+const { logger } = require('../controllers/logger');
 
 module.exports.queryAllCategories = async function queryAllCategories(id) {
   try {
@@ -340,6 +341,7 @@ module.exports.queryBikesByRider = async function queryBikesByRider(rider) {
     })
     return result;
   } catch (err) {
+    logger.error("queryBikesByRider:" + err);
     throw err;
   }
 }
@@ -546,7 +548,7 @@ module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
 
 module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Passenger Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Passenger Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -558,7 +560,7 @@ module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge(
 
 module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Size Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Size Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -570,7 +572,7 @@ module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge(
 
 module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Style Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Style Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -627,6 +629,22 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
     })
     return result;
   } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(PassUserID, Year) {
+  try {
+    var result = await db.Flag.findOne({
+      where: {
+        UserID: PassUserID,
+        RallyYear: Year
+      }
+    })
+    return result;
+  } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
     throw err;
   }
 }
@@ -688,6 +706,27 @@ module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostBy
     });
     return result;
   } catch (err) {
+    logger.error("queryTotalOrderCostByRider:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllGroups = async function queryAllGroups() {
+  try {
+    var result = await db.UserGroup.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllGroups:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllConfigs = async function queryAllConfigs() {
+  try {
+    var result = await db.Config.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllConfigs:" + err);
     throw err;
   }
 }

@@ -56,6 +56,14 @@ module.exports = function(sequelize, DataTypes) {
     OrderNumber: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    RequestedRiderFlagNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    RequestedPassFlagNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     uniqueKeys: {

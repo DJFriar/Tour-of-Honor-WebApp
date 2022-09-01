@@ -1,21 +1,35 @@
 <div>
-  <h4 class="toh-mb-18">Flag Number</h4>
-  <div style="padding-left: 60px; padding-right: 60px;">
-    <div class="toh-mb-18">
-      <% if(User.FlagNumber <= 10) { %>
-        You currently have Flag Number: <%= User.FlagNumber %>. This flag number is reserved.<br />
+  <% if (OrderInfo.PassUserID > 0) { %>
+    <div style="padding-left: 60px; padding-right: 60px;" uk-grid>
+      <div class="uk-width-1-2@s">
+        <%- include('../../partials/flagSelectionRider') %>
+      </div>
+      <div class="uk-width-1-2@s">
+        <%- include('../../partials/flagSelectionPassenger') %>
+      </div>
+    </div>
+    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+      <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
+      <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
       <% } else { %>
-        You currently have Flag Number: <%= User.FlagNumber %> <br />
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
       <% } %>
     </div>
-    <div>
-      <button type="button" id="keepExistingFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Keep existing flag number</button>
-      <button type="button" id="requestRandomFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Accept a random flag number</button>
-      <button type="button" id="requestSpecificFlagNum" class="uk-button uk-button-primary uk-buttom-small button-rounded" data-userid="<%= User.id %>">Request a new specific flag number</button>
+
+  <% } else { %>
+    <%- include('../../partials/flagSelectionRider') %>
+    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+      <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
+      <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } else { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } %>
     </div>
-    <div class="uk-width-1-1@s uk-text-center">
-      <label class="uk-form-label" for="saveFlagNumberInfo">&nbsp;</label>
-      <button type="button" id="saveFlagNumberInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Skip to Summary</button>
-    </div>
+  <% } %>
+  <!-- This is the Choose New Flag Number modal -->
+  <div id="chooseFlagNumberModal" class="modal">
+    <%- include('../../partials/chooseFlagNumberModal'); %>
   </div>
 </div>

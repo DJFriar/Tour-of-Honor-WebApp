@@ -1,12 +1,13 @@
 $(document).ready(function() {
-  // var ShopifyVariantID = "";
+  var riderReady = false;
+  var passReady = false;
+  var enableWhen = "";
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
   var activeTab = $("#registrationSwitcher").attr("active");
-  for (let i = 0; i < activeTab; i++) {
+  var nextStepNum = $("#nextStepNum").data("nextstepnum");
+  for (let i = 0; i <= nextStepNum; i++) {
     $("#RegStep" + i).removeClass("disabled");
   }
-  console.log("==== CheckoutURL (.js) ====");
-  console.log(CheckoutURL);
   
   // ************************
   // ** Rider Info Tab (0) **
@@ -59,16 +60,6 @@ $(document).ready(function() {
     )
   })
 
-  // Handle Set Address Dialog Close Button
-  $(".close").on("click", function() {
-    $(".modal").css("display","none");
-  })
-
-  // Handle Set Address Dialog Cancel Button
-  $("#cancelButton").on("click", function() {
-    $(".modal").css("display","none");
-  })
-
   // ***********************
   // ** Bike Info Tab (1) **
   // ***********************
@@ -89,6 +80,7 @@ $(document).ready(function() {
       BikeYear: $("#BikeYear").val().trim(),
       BikeMake: $("#BikeMake").val().trim(),
       BikeModel: $("#BikeModel").val().trim(),
+      BikeColor: $("#BikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {
@@ -109,14 +101,13 @@ $(document).ready(function() {
       type: "GET",
     }).then(
       function(res) {
-        console.log("==== Bike Info: ====")
-        console.log(res);
         $("#bikeInfoEditModal").css("display","block");
         $("#EditBikeID").val(res.id);
         $("#EditBikeName").val(res.BikeName);
         $("#EditBikeYear").val(res.Year);
         $("#EditBikeMake").val(res.Make);
         $("#EditBikeModel").val(res.Model);
+        $("#EditBikeColor").val(res.Color);
       }
     )
   })
@@ -129,6 +120,7 @@ $(document).ready(function() {
       BikeYear: $("#EditBikeYear").val().trim(),
       BikeMake: $("#EditBikeMake").val().trim(),
       BikeModel: $("#EditBikeModel").val().trim(),
+      BikeColor: $("#EditBikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {
@@ -176,15 +168,15 @@ $(document).ready(function() {
   // Handle Has Passenger No button
   $("#registerPassengerNo").on("click", function() {
     var UserID = $(this).data("userid");
-    $("#registerPassengerNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#registerPassengerYes").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#registerPassengerNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#registerPassengerYes").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerInfoSection").addClass("hide-me");
     $("#passengerInfoForm").addClass("hide-me");
     $("#passengerFlagLookup").addClass("hide-me");
     $("#passengerFlagLookupResults").addClass("hide-me");
 
     var PassOrderInfo = {
-      RegStep: "Passenger",
+      RegStep: "NoPassenger",
       UserID,
       PassUserID: 0,
       NextStepNum: 3
@@ -196,31 +188,31 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
-      $("#saveTshirtInfo").attr("data-showpassoptions", "false");
+      // $("#saveTshirtInfo").attr("data-showpassoptions", "false");
     })
   })
 
   // Handle Has Passenger Yes button
   $("#registerPassengerYes").on("click", function() {
-    $("#registerPassengerYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#registerPassengerNo").addClass("uk-button-secondary").removeClass("uk-button-primary");
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
+    $("#registerPassengerYes").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#registerPassengerNo").addClass("uk-button-default").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-default");
     $("#passengerInfoSection").removeClass("hide-me");
   })
 
   // Handle Passenger Doesn't Have Flag Button
   $("#passengerAlreadyHasFlagNo").on("click", function() {
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerInfoForm").removeClass("hide-me");
     $("#passengerFlagLookup").addClass("hide-me");
   })
 
   // Handle Passenger Already Has Flag Button
   $("#passengerAlreadyHasFlagYes").on("click", function() {
-    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-secondary");
-    $("#passengerAlreadyHasFlagNo").addClass("uk-button-secondary").removeClass("uk-button-primary");
+    $("#passengerAlreadyHasFlagYes").addClass("uk-button-primary").removeClass("uk-button-default");
+    $("#passengerAlreadyHasFlagNo").addClass("uk-button-default").removeClass("uk-button-primary");
     $("#passengerFlagLookup").removeClass("hide-me");
     $("#passengerInfoForm").addClass("hide-me");
   })
@@ -258,7 +250,7 @@ $(document).ready(function() {
     var UserID = $(this).data("userid");
     var PassUserID = $(this).data("passuserid");
     var PassOrderInfo = {
-      RegStep: "Passenger",
+      RegStep: "ExistingPassenger",
       UserID,
       PassUserID,
       NextStepNum: 3
@@ -270,15 +262,86 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
-      $("#passengerShirtSection").removeClass("hide-me");
-      $("#saveTshirtInfo").attr("data-showpassoptions", "true");
     })
   })
 
   // Handle Save Passenger Info Button
   $("#savePassengerInfo").on("click", function() {
-    $("#RegStep3").removeClass("disabled");
-    UIkit.switcher("#registrationSwitcher").show(3);
+    const UserID = $(this).data("userid");
+
+    var PassengerInfo = {
+      RegStep: "NewPassenger",
+      UserID,
+      NextStepNum: 3,
+      FirstName: $("#PassengerFirstNameForm").val().trim(),
+      LastName: $("#PassengerLastNameForm").val().trim(),
+      UserName: $("#PassengerUserNameForm").val().trim(),
+      Email: $("#PassengerEmailForm").val().trim(),
+      Password: randomString(14),
+      FlagNumber: 0
+    }
+
+    // // Check Passenger Email Uniqueness
+    // $("#PassengerEmailForm").on("input paste", function() {
+    //   var email = $(this).val();
+    //   if (email) {
+    //     $.ajax("/api/v1/email/" + email, {
+    //       type: "GET"
+    //     }).then(
+    //       function(emailInfo) {
+    //         if (emailInfo) {
+    //           existingPassengerEmailFound = true;
+    //           $("#PassengerEmailForm").css("border","4px solid red")
+    //         } else {
+    //           existingPassengerEmailFound = false;
+    //           $("#PassengerEmailForm").css("border","none")
+    //         }
+    //       }
+    //     );
+    //   }
+    // })
+
+    // Make sure that Passenger first name isn't blank.
+    if (!PassengerInfo.FirstName) {
+      $("#PassengerFirstNameForm").css("border","4px solid red");
+      alert("Passenger's First Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger last name isn't blank.
+    if (!PassengerInfo.LastName) {
+      $("#PassengerLastNameForm").css("border","4px solid red");
+      alert("Passenger's Last Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger username isn't blank.
+    if (!PassengerInfo.UserName) {
+      $("#PassengerUserNameForm").css("border","4px solid red");
+      alert("Passenger's User Name is required.");
+      return;
+    }
+
+    // Make sure that Passenger email isn't blank.
+    if (!PassengerInfo.Email) {
+      $("#PassengerEmailForm").css("border","4px solid red");
+      alert("Passenger's Email address is required.");
+      return;
+    }
+
+    if (existingPassengerEmailFound) {
+      $("#PassengerEmailForm").css("border","4px solid red");
+      alert("Passenger's Email Address must be unique.");
+      return;
+    }
+
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: PassengerInfo
+    }).then(() => {
+      $("#RegStep3").removeClass("disabled");
+      UIkit.switcher("#registrationSwitcher").show(3);
+    })
   })
 
   // ****************************
@@ -303,8 +366,6 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep4").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(4);
-      $("#passengerShirtSection").removeClass("hide-me");
-      $("#saveTshirtInfo").attr("data-showpassoptions", "true");
     })
   })
 
@@ -315,7 +376,7 @@ $(document).ready(function() {
   // Handle Save T-Shirt Choices Button
   $("#saveTshirtInfo").on("click", function() {
     const UserID = $(this).data("userid");
-    const showPass = $(this).data("showpassoptions");
+    const submittedPassID = $(this).data("passid");
 
     var ShirtOrderInfo = {
       RegStep: "Shirts",
@@ -325,7 +386,7 @@ $(document).ready(function() {
       ShirtStyle: $("#RiderShirtStyle").val(),
       ShirtSize: $("#RiderShirtSize").val()
     }
-    if(showPass) {
+    if(submittedPassID > 0) {
       ShirtOrderInfo.hasPass = true;
       ShirtOrderInfo.PassShirtStyle = $("#PassengerShirtStyle").val();
       ShirtOrderInfo.PassShirtSize = $("#PassengerShirtSize").val();
@@ -336,13 +397,6 @@ $(document).ready(function() {
       data: ShirtOrderInfo
     }).then(() => {
       location.replace("/registration");
-      // CheckoutURL = res.checkoutURL;
-      // $("#goToPayment").attr("data-pricetier", res.PriceTier);
-      // $("#goToPayment2").attr("data-pricetier", res.PriceTier);
-      // $("#goToPayment3").attr("data-pricetier", res.PriceTier);
-      // $("#totalCostAmount").text(res.totalPrice);
-      // $("#RegStep5").removeClass("disabled");
-      // UIkit.switcher("#registrationSwitcher").show(5);
     })
   })
 
@@ -369,12 +423,28 @@ $(document).ready(function() {
     }).then((res) => {
       console.log("==== checkOrderStatus response ====");
       console.log(res);
-      if (res) {
+      if (res > 0) {
         $("#RegStep7").removeClass("disabled");
         UIkit.switcher("#registrationSwitcher").show(7); 
       } else {
         $("#awaitingShopifyContent").addClass("hide-me");
         $("#orderNumberMissing").removeClass("hide-me");
+      }
+    })
+  })
+
+  $("#goToWaiver2").on("click", function() {
+    var UserID = $(this).data("userid");
+    $.ajax("/api/v1/checkOrderStatus/" + UserID, {
+      type: "GET"
+    }).then((res) => {
+      console.log("==== checkOrderStatus response ====");
+      console.log(res);
+      if (res > 0) {
+        $("#RegStep7").removeClass("disabled");
+        UIkit.switcher("#registrationSwitcher").show(7); 
+      } else {
+        console.log("Unable to confirm successful payment.");
       }
     })
   })
@@ -405,30 +475,178 @@ $(document).ready(function() {
   // ** Flag Number Info Tab (7) **
   // ******************************
 
-  // Handle Waiver Button
-  $("#saveFlagNumberInfo").on("click", function() {
-    var UserID = $(this).data("userid");
+  // Handle Keep Existing Flag Yes button
+  $(".keepExistingFlagNum").on("click", function(e) {
+    // e.preventDefault();
+    const UserID = $(this).data("userid");
+    const OrderID = $(this).data("orderid");
+    const whoami = $(this).data("whoami");
+    const enableWhen = $(this).data("enablewhen");
+    const ExistingFlagNum = $(this).data("existingflagnumber");
+
     var FlagNumberInfo = {
-      RegStep: "Waiver",
+      RallyYear: 2023,
+      UserID,
+      FlagNumber: ExistingFlagNum,
+    }
+
+    var OrderUpdateInfo = {
+      RegStep: "FlagInProgess",
+      whoami,
+      RallyYear: 2023,
+      UserID,
+      OrderID,
+      RequestedFlagNumber: ExistingFlagNum,
+    }
+
+    // Update the Flag table to assign the flag to the user.
+    console.log(FlagNumberInfo);
+    $.ajax("/api/v1/flag", {
+      type: "POST",
+      data: FlagNumberInfo,
+    }).then(() => {
+      $.ajax("/api/v1/regFlow", {
+        type: "POST",
+        data: OrderUpdateInfo
+      }).then(() => {
+        if (whoami === "rider") {
+          riderReady = true;
+          $("#flagAssignedRider").removeClass("hide-me");
+        }
+        if (whoami === "passenger") {
+          passReady = true;
+          $("#flagAssignedPassenger").removeClass("hide-me");
+        }
+      }).catch(err => {
+        console.log("Error when updating Order Info: " + err);
+      })
+    }).catch(err => {
+      console.log("Error when saving existing Flag Assignment: " + err);
+    });
+
+    if (enableWhen === "rider" && riderReady) { 
+      $("#goToSummaryBtn").prop("disabled", false) 
+    }
+    if (enableWhen === "pass" && (riderReady && passReady)) {
+      $("#goToSummaryBtn").prop("disabled", false) 
+    }
+
+  })
+
+  // Handle Keep Existing Flag No button for Rider
+  $(".chooseAnotherFlagNum").on("click", function(e) {
+    e.preventDefault();
+    var UserID = $(this).data("userid");
+    var whoami = $(this).data("whoami");
+    $("#chooseFlagNumberModal").css("display","block");
+    $("#saveNewFlagNumChoiceBtn").attr("data-userid", UserID);
+    $("#saveNewFlagNumChoiceBtn").attr("data-whoami", whoami);
+  })
+
+  // Handle generateRandomFlagNumber Button
+  $("#generateRandomFlagNumber").on("click", function(e) {
+    e.preventDefault();
+    $.ajax("/api/v1/randomAvailableFlag", {
+      type: "GET"
+    }).then((flagNumber) => {
+      $("#RequestedFlagNumber").val(flagNumber);
+      $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
+      $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
+    })
+  })
+
+  // Handle Check Flag Availability button
+  $("#checkFlagNumberAvailability").on("click", function(e) {
+    e.preventDefault();
+    var requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
+
+    $.ajax("/api/v1/flag/" + requestedFlagNumber, {
+      type: "GET"
+    }).then(
+      function(flagInfo) {
+        if (flagInfo) {
+          $("#flagAvailabilityResponse").text("This flag number is not available.").css("color","red").removeClass("hide-me");
+          $("#saveNewFlagNumChoiceBtn").prop("disabled",true);
+        } else {
+          $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
+          $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
+        }
+      }
+    );
+  })
+
+  // Handle Save New Flag Button
+  $("#saveNewFlagNumChoiceBtn").on("click", function(e) {
+    e.preventDefault();
+    const UserID = $(this).data("userid");
+    const whoami = $(this).data("whoami");
+    enableWhen = $(this).data("enablewhen");
+    const requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
+
+    var FlagNumberInfo = {
+      RallyYear: 2023,
+      UserID,
+      FlagNumber: requestedFlagNumber,
+    }
+
+    $.ajax("/api/v1/flag", {
+      type: "POST",
+      data: FlagNumberInfo
+    }).then(() => {
+      if (whoami === "rider") {
+        riderReady = true;
+        $("#flagAssignedRider").removeClass("hide-me");
+      }
+      if (whoami === "passenger") {
+        passReady = true;
+        $("#flagAssignedPassenger").removeClass("hide-me");
+      }
+    }).catch(err => {
+      console.log("Error when saving new Flag Assignment: " + err);
+    });
+
+  })
+
+  // Handle Continue to Summary Button
+  $("#goToSummaryBtn").on("click", function() {
+    var UserID = $(this).data("userid");
+
+    var FlagInfoCompleted = {
+      RegStep: "FlagComplete",
       UserID,
       NextStepNum: 8
     }
-    console.log(FlagNumberInfo);
+    console.log(FlagInfoCompleted);
     $.ajax("/api/v1/regFlow", {
       type: "POST",
-      data: FlagNumberInfo
-    }).then(() => { 
+      data: FlagInfoCompleted
+    }).then(() => {
       $("#RegStep8").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(8); 
     })
+
   })
 
   // ************************
   // ** Misc Support Items **
   // ************************
 
-  // Handle Dialog Close Button
-  $(".close").on("click", function() {
+  // Handle Dialog Close & Cancel Buttons
+  $(".close, #cancelButton").on("click", function(e) {
+    e.preventDefault();
     $(".modal").css("display","none");
   })
+
+  // Monitor for Continue to Summary Button to be enabled
+  if (enableWhen === "rider" && riderReady) { 
+    $("#goToSummaryBtn").prop("disabled", false) 
+  }
+  if (enableWhen === "pass" && (riderReady && passReady)) {
+    $("#goToSummaryBtn").prop("disabled", false) 
+  }
+
+  // Generate random passsword for new users
+  const randomString = (length = 14) => {
+    return Math.random().toString(16).substr(2, length);
+  };
 });

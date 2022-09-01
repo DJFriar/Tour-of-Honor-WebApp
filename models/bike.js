@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
     Model: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    Color: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 
