@@ -13,6 +13,18 @@ module.exports = function (app) {
     res.json(MemorialList);
   })
 
+  // Fetch Submission list
+  app.get("/api/v1/scoring-list/", async (req, res) => {
+    console.log("==== /scoring-list endpoint was hit ====");
+    try {
+      var SubmissionList = await q.queryPendingSubmissionsWithDetails();
+    } catch {
+      console.log("Error encountered: queryPendingSubmissionsWithDetails");
+    }
+    console.log(SubmissionList);
+    res.json(SubmissionList);
+  })
+
   // Fetch specific Memorial
   app.get("/api/v1/memorials/:id", (req, res) => {
     const id = req.params.id
@@ -35,8 +47,6 @@ module.exports = function (app) {
     }
     res.json(MemorialData);
   })
-
-
 
   // Fetch all active Categories
   app.get("/api/v1/categories/", (req, res) => {
@@ -65,6 +75,18 @@ module.exports = function (app) {
       }
     }).then(function (user) {
       res.json(user);
+    });
+  })
+
+  // Fetch all bikes for a given User
+  app.get("/api/v1/bikes/:id", (req, res) => {
+    const id = req.params.id;
+    db.Bike.findAll({ 
+      where: {
+        user_id: id
+      }
+    }).then(function (bikes) {
+      res.json(bikes);
     });
   })
 

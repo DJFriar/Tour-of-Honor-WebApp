@@ -15,6 +15,7 @@ const sendEmail = async (email, subject, text) => {
     await transporter.sendMail({
       from: { name: 'TOH Scoring Portal', address: process.env.EMAIL_USERNAME },
       to: email,
+      bcc: 'scoringportal@tourofhonor.com',
       subject: subject,
       html: text,
     });

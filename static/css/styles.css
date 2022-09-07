@@ -265,6 +265,13 @@ a.hidden-link:visited {
   width: 80%
 }
 
+.modal-content-mini {
+  background-color: #C0DFFD;
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%
+}
+
 .close {
   color:#aaa;
   float: right;
@@ -314,6 +321,24 @@ a.hidden-link:visited {
 
 .toh-input {
   border-radius: 8px;
+}
+
+.toh-inline-label {
+  display: inline !important;
+}
+
+.toh-flag-mockup {
+  width: 180px;
+  height: 120px;
+  padding: 4px 10px;
+  background-color: yellow;
+}
+
+.toh-flag-number {
+  color:#000;
+  font-weight: 600;
+  font-size: 4em;
+  margin-top: 14px;
 }
 
 .button-rounded {

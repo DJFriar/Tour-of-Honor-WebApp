@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op, QueryTypes } = require("sequelize");
 const { sequelize, Sequelize } = require("../models");
+const { logger } = require('../controllers/logger');
 
 module.exports.queryAllCategories = async function queryAllCategories(id) {
   try {
@@ -191,6 +192,18 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
   }
 }
 
+module.exports.queryPendingSubmissionsWithDetails = async function queryPendingSubmissionsWithDetails() {
+  try {
+    var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
+    {
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id = false) {
   try {
     if (id) {
@@ -340,6 +353,7 @@ module.exports.queryBikesByRider = async function queryBikesByRider(rider) {
     })
     return result;
   } catch (err) {
+    logger.error("queryBikesByRider:" + err);
     throw err;
   }
 }
@@ -474,6 +488,19 @@ module.exports.querySubmissionStatusByRider = async function querySubmissionStat
   }
 }
 
+module.exports.querySubmissionStatusBySubID = async function querySubmissionStatusBySubID(id) {
+  try {
+    var result = await sequelize.query("SELECT Status FROM Submissions WHERE id = ? ORDER BY updatedAt DESC LIMIT 1",
+    {
+      replacements: [id],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.querySubmissionsByRider = async function querySubmissionsByRider(rider) {
   try {
     var result = await sequelize.query("SELECT s.id, s.UserId, s.MemorialID, s.Status AS 'StatusID', CASE s.Status WHEN 1 THEN 'Approved' WHEN 2 THEN 'Rejected' WHEN 3 THEN 'In Review' ELSE 'Pending' END Status, s.ScorerNotes, s.RiderNotes, s.PrimaryImage, s.OptionalImage, s.createdAt, s.updatedAt, m.Code, m.Name, c.Name AS Category, u.FirstName, u.LastName, u.UserName, u.Email, u.FlagNumber, u.isActive, u.isAdmin FROM Submissions s LEFT JOIN Memorials m ON m.id = s.MemorialID LEFT JOIN Categories c ON c.id = m.Category INNER JOIN Users u ON u.id = s.UserID WHERE s.UserID = ? ORDER BY s.createdAt DESC",
@@ -546,7 +573,7 @@ module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
 
 module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Passenger Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Passenger Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -558,7 +585,7 @@ module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge(
 
 module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Size Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Size Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -570,7 +597,7 @@ module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge(
 
 module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharge() {
   try {
-    var result = await sequelize.query("SELECT iValue FROM Config WHERE KeyName = 'Shirt Style Surcharge'",
+    var result = await sequelize.query("SELECT iValue FROM Configs WHERE KeyName = 'Shirt Style Surcharge'",
     {
       type: QueryTypes.SELECT
     });
@@ -627,6 +654,22 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
     })
     return result;
   } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(PassUserID, Year) {
+  try {
+    var result = await db.Flag.findOne({
+      where: {
+        UserID: PassUserID,
+        RallyYear: Year
+      }
+    })
+    return result;
+  } catch (err) {
+    logger.error("queryOrderInfoByRider:" + err);
     throw err;
   }
 }
@@ -688,6 +731,27 @@ module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostBy
     });
     return result;
   } catch (err) {
+    logger.error("queryTotalOrderCostByRider:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllGroups = async function queryAllGroups() {
+  try {
+    var result = await db.UserGroup.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllGroups:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllConfigs = async function queryAllConfigs() {
+  try {
+    var result = await db.Config.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllConfigs:" + err);
     throw err;
   }
 }

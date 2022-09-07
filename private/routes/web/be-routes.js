@@ -2,6 +2,7 @@
 const db = require("../../../models");
 const q = require("../../queries");
 const ejs = require("ejs");
+const _ = require('lodash');
 const uploadSubmission = require("../../../controllers/uploadSubmission");
 const passport = require("../../../config/passport");
 const multer = require("multer");
@@ -57,6 +58,19 @@ module.exports = function (app) {
       });
     })
 
+  // Assign Flag Number to Rider
+  app.post("/api/v1/flag", (req, res) => {
+    db.Flag.create({
+      FlagNum: req.body.FlagNumber,
+      UserID: req.body.UserID,
+      RallyYear: req.body.RallyYear
+    }).then(() => {
+      res.status(202).send();
+    }).catch(err => {
+      logger.error("Error when saving flag number assignments:" + err);
+    })
+  })
+
   // Check Flag Number Validity
   app.get("/api/v1/flag/:id", (req,res) => {
     const id = req.params.id;
@@ -66,6 +80,37 @@ module.exports = function (app) {
         RallyYear: 2022
       }
     }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
+
+  // Find a Random Available Flag Number
+  app.get("/api/v1/randomAvailableFlag", (req, res) => {
+    db.Flag.findAll({
+      where: {
+        RallyYear: 2022
+      },
+      raw: true
+    }).then(function (flags) {
+      var allowedNumbers = _.range(11,1201,1);
+      var badNumbers = flags.map(inUse => inUse.FlagNum);
+      var goodNumbers = _.pull(allowedNumbers, badNumbers);
+      const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
+      res.json(randomFlag);
+    });
+  })
+
+  // Check Email Validity
+  app.get("/api/v1/email/:email", (req,res) => {
+    console.log("Email Endpoint hit");
+    const email = req.params.email;
+    db.User.findOne({
+      where: {
+        Email: email
+      }
+    }).then(function (dbPost) {
+      console.log("==== Email Check ====");
+      console.log(dbPost);
       res.json(dbPost);
     });
   })
@@ -370,7 +415,7 @@ module.exports = function (app) {
           ResetToken = data;
         })
         .catch(err => {
-          console.log("Error creating token");
+          logger.error("Error creating token");
           res.status(401).json(err);
         })
       }
@@ -413,7 +458,33 @@ module.exports = function (app) {
     res.json({
       email: req.user.Email,
       id: req.user.id,
-      isAdmin: req.user.isAdmin
+      isAdmin: req.user.isAdmin,
+      isActive: req.user.isActive
+    });
+  });
+
+  // Handle New Signup
+  app.post("/api/v1/newuser", (req, res) => {
+    db.User.create({
+      FirstName: req.body.FirstName,
+      LastName: req.body.LastName,
+      UserName: req.body.UserName,
+      FlagNumber: 0, // REMOVE THIS AFTER 2022 RALLY
+      Email: req.body.Email.toLowerCase(),
+      Password: req.body.Password,
+      Address1: req.body.Address1,
+      Address2: req.body.Address2,
+      City: req.body.City,
+      State: req.body.State,
+      ZipCode: req.body.ZipCode,
+      isAdmin: 0,
+      isActive: 0
+    }).then((u) => {
+      logger.info("New User Created Successfully");
+      res.status(202).send();
+    }).catch(err => {
+      logger.error("Signup API Error Encountered" + err);
+      res.status(401).json(err);
     });
   });
 
@@ -518,7 +589,7 @@ module.exports = function (app) {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      console.log("Error encountered when getting memorial ID.");
+      logger.error("Error encountered when getting memorial ID.");
     }
     if(memID > 0) {
       db.EarnedMemorialsXref.create({
@@ -535,8 +606,7 @@ module.exports = function (app) {
     // Update the submission record to mark it as scored
     db.Submission.update({
       Status: req.body.Status,
-      ScorerNotes:  req.body.ScorerNotes,
-      RiderNotes: req.body.RiderNotes
+      ScorerNotes:  req.body.ScorerNotes
     }, {
       where: { id: req.body.SubmissionID }
     });
@@ -599,6 +669,8 @@ module.exports = function (app) {
       FlagNumber: req.body.FlagNumber,
       PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
+      Address1: req.body.Address1,
+      Address2: req.body.Address2,
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,
@@ -663,7 +735,7 @@ module.exports = function (app) {
     try {
       var NextPendingSubmission = await q.queryNextPendingSubmissions(category);
     } catch (err) {
-      console.log("Error encountered: queryNextPendingSubmissions." + err);
+      logger.error("Error encountered: queryNextPendingSubmissions." + err);
     }
     res.json(NextPendingSubmission);
   })
@@ -734,6 +806,7 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
     }
+
     if (RegStep == "Bike") {
       console.log(RegStep + " step entered.");
       db.Order.update({
@@ -750,7 +823,8 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
-    if (RegStep == "Passenger") {
+
+    if (RegStep == "NoPassenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         PassUserID: req.body.PassUserID,
@@ -763,9 +837,33 @@ module.exports = function (app) {
       }).then(() => {
         res.status(200).send();
       }).catch(err => {
+        logger.error("Error updating order with no passenger info: " + err);
+        res.status(401).json(err);
+      })
+    }
+
+    if (RegStep == "ExistingPassenger") {
+      console.log(RegStep + " step entered.");
+      db.Order.update({
+        PassUserID: req.body.PassUserID,
+        NextStepNum: 3
+      },{
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        hasPassenger = true;
+        res.status(200).send();
+      }).catch(err => {
         logger.error("Error updating order with passenger info: " + err);
         res.status(401).json(err);
       })
+    }
+
+    if (RegStep == "NewPassenger") {
+      console.log(RegStep + " step entered.");
+
     }
 
     if (RegStep == "Charity") {
@@ -779,7 +877,16 @@ module.exports = function (app) {
           UserID: req.body.UserID
         }
       }).then(() => {
-        res.status(200).send();
+        db.Order.findOne({
+          where: {
+            RallyYear: 2023,
+            UserID: req.body.UserID
+          }
+        }).then((dbOrder) => {
+          var hasPassenger = false;
+          if (dbOrder.PassUserID > 0) { hasPassenger = true; } 
+          res.status(202).send({ hasPassenger });
+        })
       }).catch(err => {
         logger.error("Error updating order with charity info: " + err);
         res.status(401).json(err);
@@ -788,7 +895,7 @@ module.exports = function (app) {
 
     if (RegStep == "Shirts") {
       console.log(RegStep + " step entered.");
-      console.log(req.body);
+      console.log("Shirt info provided:" + req.body);
       var BaseRiderRateObject = await q.queryBaseRiderRate();
       var BaseRiderRate = parseInt(BaseRiderRateObject[0].Price);
       var PassengerSurchargeObject = await q.queryPassengerSurcharge();
@@ -855,7 +962,9 @@ module.exports = function (app) {
       // Generate the Shopify URL & ID
       var checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
       ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
+      logger.info("Checkout URL Generated: ", ShirtDetails.CheckoutURL);
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
+      logger.info("Checkout ID Generated: ", ShirtDetails.CheckoutID);
 
       // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
@@ -864,7 +973,7 @@ module.exports = function (app) {
           UserID: req.body.UserID
         }
       }).then(() => {
-        res.status(200).send({checkoutURL, PriceTier, ShopifyVariantID, totalPrice});
+        res.status(202).send({ checkoutURL, PriceTier, ShopifyVariantID, totalPrice });
       }).catch(err => {
         logger.error("Error updating order with t-shirt info: " + err);
         res.status(401).json(err);
@@ -876,14 +985,61 @@ module.exports = function (app) {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
+
     if (RegStep == "Waiver") {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
-    if (RegStep == "Flags") {
+
+    if (RegStep == "FlagInProgess") {
       console.log(RegStep + " step entered.");
-      res.send("success");
+
+      var FlagInfo = { };
+
+      if (req.body.whoami === "rider") {
+        FlagInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
+      }
+      if (req.body.whoami === "passenger") {
+        FlagInfo.RequestedPassFlagNumber = req.body.RequestedFlagNumber;
+      }
+
+      // Update Order with Flag info
+      db.Order.update(FlagInfo, {
+        where: {
+          RallyYear: 2023,
+          id: req.body.OrderID
+        }
+      }).then(() => {
+        res.status(202).send();
+      }).catch(err => {
+        logger.error("Error updating order with FlagInProgress info: " + err);
+        res.status(401).json(err);
+      })
+
     }
+
+    if (RegStep == "FlagComplete") {
+      console.log(RegStep + " step entered.");
+
+      var FlagInfoComplete = {
+        UserID,
+        NextStepNum: 8
+      }
+
+      db.Order.update(FlagInfoComplete, {
+        where: {
+          RallyYear: 2023,
+          UserID: req.body.UserID
+        }
+      }).then(() => {
+        res.status(202).send();
+      }).catch(err => {
+        logger.error("Error updating order with FlagComplete info: " + err);
+        res.status(401).json(err);
+      })
+
+    }
+
   })
 
   // Check Order Status for a given Rider
@@ -891,28 +1047,36 @@ module.exports = function (app) {
     const id = req.params.id;
     db.Order.findOne({
       where: {
-        UserID: id
+        UserID: id,
+        RallyYear: 2023
       }
     }).then(async function (o) {
       if (o.OrderNumber === null) {
-        console.log("OrderNumber not found locally, checking Shopify...");
+        logger.info("OrderNumber not found locally, checking Shopify...");
         // Check Shopify for an Order Number
-        var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
-        db.Order.update({
-          OrderNumber: orderNumber,
-          NextStepNum: 6
-        }, {
-          where: {
-            RallyYear: 2023,
-            UserID: id
-          }
-        }).then(() => {
-          console.info("OrderNumber updated for rider " + id);
-          res.json(orderNumber);
-        });
+        try {
+          var orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
+        } catch (err) {
+          logger.warn("orderNumber not found for TOH Order " + o.id + ". Order is likely not paid for yet." + err);
+          res.json(0);
+        }
+        if (orderNumber) {
+          db.Order.update({
+            OrderNumber: orderNumber,
+            NextStepNum: 6
+          }, {
+            where: {
+              RallyYear: 2023,
+              UserID: id
+            }
+          }).then(() => {
+            console.info("Shopify Order Number updated for rider " + id);
+            res.json(orderNumber);
+          });
+        }
       }
       if (o.OrderNumber) {
-        console.log("OrderNumber Found: " + o.OrderNumber);
+        logger.info("Shopify Order Number found locally: " + o.OrderNumber);
         res.json(o.OrderNumber);
       }
     });
@@ -926,7 +1090,7 @@ module.exports = function (app) {
       console.log("==== OrderDetails ====");
       console.log(OrderDetails);
     } catch (err) {
-      console.log("Error encountered: queryAllOrdersWithDetail." + err);
+      logger.error("Error encountered: queryAllOrdersWithDetail." + err);
     }
     res.json(OrderDetails);
   });
@@ -954,6 +1118,45 @@ module.exports = function (app) {
       where: { id : charityid }
     }).then(() => {
       res.status(202).send();
+    });
+  })
+
+  // Add New User Group
+  app.post("/api/v1/group", (req, res) => {
+    db.UserGroup.create({
+      Name: req.body.GroupName,
+      Description :req.body.GroupDescription,
+      IsAdmin: req.body.GroupIsAdmin,
+      IsActive: req.body.GroupIsActive,
+      IsProtected: 0
+    }).then((g) => {
+      logger.info("Group " + g.id + " created.");
+      res.status(200).send();
+    }).catch(err => {
+      logger.error("Error creating Group: " + err);
+      res.status(401).json(err);
+    });
+  })
+
+  // Update a User Group
+  app.put("/api/v1/group/:id", (req, res) => {
+    const groupid = req.params.id;
+
+    db.UserGroup.update({
+      Name: req.body.GroupName,
+      Description :req.body.GroupDescription,
+      IsAdmin: req.body.GroupIsAdmin,
+      IsActive: req.body.GroupIsActive
+    }, {
+      where: {
+        id: groupid
+      }
+    }).then(() => {
+      logger.info("Group " + groupid + " updated.");
+      res.status(200).send();
+    }).catch(err => {
+      logger.error("Error creating Group: " + err);
+      res.status(401).json(err);
     });
   })
 }

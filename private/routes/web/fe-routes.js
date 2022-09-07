@@ -128,17 +128,17 @@ module.exports = function (app) {
     try {
       var categoryData = await q.queryAllCategories();
     } catch {
-      console.log("Error encountered: queryAllCategories");
+      logger.error("Error encountered: queryAllCategories");
     }
     try {
       var MemorialData = await q.queryAllMemorials();
     } catch {
-      console.log("Error encountered: queryAllMemorials");
+      logger.error("Error encountered: queryAllMemorials");
     }
     try {
       var restrictionData = await q.queryAllRestrictions();
     } catch {
-      console.log("Error encountered: queryAllRestrictions");
+      logger.error("Error encountered: queryAllRestrictions");
     }
     res.locals.title = "TOH Memorial Editor OLD"
     res.render("pages/admin/memorial-editor", {
@@ -159,17 +159,17 @@ module.exports = function (app) {
     try {
       var categoryData = await q.queryAllCategories();
     } catch {
-      console.log("Error encountered: queryAllCategories");
+      logger.error("Error encountered: queryAllCategories");
     }
     try {
       var MemorialData = await q.queryAllMemorials();
     } catch {
-      console.log("Error encountered: queryAllMemorials");
+      logger.error("Error encountered: queryAllMemorials");
     }
     try {
       var restrictionData = await q.queryAllRestrictions();
     } catch {
-      console.log("Error encountered: queryAllRestrictions");
+      logger.error("Error encountered: queryAllRestrictions");
     }
     res.locals.title = "TOH Memorial Editor"
     res.render("pages/admin/memorial-editor2", {
@@ -191,12 +191,12 @@ module.exports = function (app) {
     try {
       var MemorialData = await q.queryMemorial(memCode);
     } catch {
-      console.log("Error encountered: queryMemorial");
+      logger.error("Error encountered: queryMemorial");
     }
     try {
       var MemorialText = await q.queryMemorialText(memCode);
     } catch {
-      console.log("Error encountered: queryMemorialText");
+      logger.error("Error encountered: queryMemorialText");
     }
     res.locals.title = "TOH Memorial Text"
     res.render("pages/admin/memorial-text", {
@@ -214,22 +214,22 @@ module.exports = function (app) {
     try {
       var Regions = await q.queryRegionList();
     } catch {
-      console.log("Error encountered: queryRegionList");
+      logger.error("Error encountered: queryRegionList");
     }
     try {
       var TrophyList = await q.queryTrophiesList();
     } catch {
-      console.log("Error encountered: queryTrophiesList");
+      logger.error("Error encountered: queryTrophiesList");
     }
     try {
       var AwardNames = await q.queryAwardNamesList();
     } catch {
-      console.log("Error encountered: queryAwardNamesList");
+      logger.error("Error encountered: queryAwardNamesList");
     }
     try {
       var Awards = await q.queryAwardList();
     } catch {
-      console.log("Error encountered: queryAwardList");
+      logger.error("Error encountered: queryAwardList");
     }
     res.locals.title = "TOH Trophy Editor"
     res.render("pages/admin/trophy-editor", {
@@ -249,7 +249,7 @@ module.exports = function (app) {
     try {
       var Users = await q.queryAllUsers();
     } catch {
-      console.log("Error encountered: queryAllUsers");
+      logger.error("Error encountered: queryAllUsers");
     }
     var sponsorData = [
       { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
@@ -261,6 +261,23 @@ module.exports = function (app) {
       User: req.user,
       sponsorData,
       Users,
+      NotificationText: "",
+    });
+  });
+
+  app.get("/admin/group-management", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    try {
+      var Groups = await q.queryAllGroups();
+    } catch {
+      logger.error("Error encountered: queryAllGroups");
+    }
+    res.locals.title = "TOH Group Manager"
+    res.render("pages/admin/group-management", {
+      activeUser,
+      User: req.user,
+      Groups,
       NotificationText: "",
     });
   });
@@ -298,7 +315,7 @@ module.exports = function (app) {
     try {
       var TokenValidity = await q.queryTokenValidity(UserID, Token);
     } catch {
-      console.log("Error encountered: queryTokenValidity");
+      logger.error("Error encountered: queryTokenValidity");
     }
     res.locals.title = "TOH Forgot Password"
     res.render("pages/forgot-password", {
@@ -342,7 +359,7 @@ module.exports = function (app) {
     try {
       var Memorials = await q.queryAllAvailableMemorials();
     } catch {
-      console.log("Error encountered: queryAllAvailableMemorials");
+      logger.error("Error encountered: queryAllAvailableMemorials");
     }
     res.locals.title = "TOH Memorial List"
     res.render("pages/memorials", {
@@ -364,17 +381,17 @@ module.exports = function (app) {
       var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (error) {
-      console.log("Error encountered when getting memorial ID.");
+      logger.error("Error encountered when getting memorial ID.");
     }
     try {
       var MemorialData = await q.queryMemorial(memCode);
     } catch {
-      console.log("Error encountered: queryMemorial");
+      logger.error("Error encountered: queryMemorial");
     }
     try {
       var MemorialText = await q.queryMemorialText(memCode);
     } catch {
-      console.log("Error encountered: queryMemorialText");
+      logger.error("Error encountered: queryMemorialText");
     }
     var MemorialStatus = 0;
     var SubmissionStatus = [];
@@ -391,7 +408,7 @@ module.exports = function (app) {
           MemorialStatus = 0;
         }
       } catch {
-        console.log("Error encountered: queryMemorialStatusByRider");
+        logger.error("Error encountered: queryMemorialStatusByRider");
       }
       try {
         SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
@@ -399,7 +416,7 @@ module.exports = function (app) {
           isMemorialInSubmissions = true;
         }
       } catch {
-        console.log("Error encountered: querySubmissionStatusByRider");
+        logger.error("Error encountered: querySubmissionStatusByRider");
       }
       if (!isMemorialInXref && !isMemorialInSubmissions) { isAvailableToSubmit = true}
     };
@@ -442,7 +459,7 @@ module.exports = function (app) {
     try {
       var Categories = await q.queryAllCategories();
     } catch {
-      console.log("Error encountered: queryAllCategories");
+      logger.error("Error encountered: queryAllCategories");
     }
 
     var targetMemorial = [
@@ -472,7 +489,7 @@ module.exports = function (app) {
     try {
       var ValidateNewRider = await q.queryNewRiderValidation(UserName);
     } catch {
-      console.log("Error encountered: queryNewRiderValidation");
+      logger.error("Error encountered: queryNewRiderValidation");
     }
     if(!ValidateNewRider[0]) {
       res.redirect("/welcome");
@@ -491,12 +508,12 @@ module.exports = function (app) {
     try {
       var riderList = await q.queryAllRiders();
     } catch {
-      console.log("Error encountered: queryAllRiders");
+      logger.error("Error encountered: queryAllRiders");
     }
     try {
       var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
     } catch {
-      console.log("Error encountered: queryEarnedMemorialsByAllRiders");
+      logger.error("Error encountered: queryEarnedMemorialsByAllRiders");
     }
     res.locals.title = "TOH Rider List"
     res.render("pages/rider-list", {
@@ -514,7 +531,7 @@ module.exports = function (app) {
     try {
       var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
     } catch {
-      console.log("Error encountered: queryEarnedMemorialsByAllRiders");
+      logger.error("Error encountered: queryEarnedMemorialsByAllRiders");
     }
     res.locals.title = "TOH Stats"
     res.render("pages/stats", {
@@ -531,12 +548,12 @@ module.exports = function (app) {
     try {
       var Regions = await q.queryRegionList();
     } catch {
-      console.log("Error encountered: queryRegionList");
+      logger.error("Error encountered: queryRegionList");
     }
     try {
       var TrophyList = await q.queryTrophiesList();
     } catch {
-      console.log("Error encountered: queryTrophiesList");
+      logger.error("Error encountered: queryTrophiesList");
     }
     res.locals.title = "TOH Trophy List"
     res.render("pages/trophies", {
@@ -554,12 +571,12 @@ module.exports = function (app) {
     try {
       var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
     } catch {
-      console.log("Error encountered: querySubmissionsByRider");
+      logger.error("Error encountered: querySubmissionsByRider");
     }
     try {
       var RiderBikeInfo = await q.queryAllBikes(req.user.id);
     } catch {
-      console.log("Error encountered: queryAllBikes");
+      logger.error("Error encountered: queryAllBikes");
     }
     console.log(req.user);
     console.log(RiderBikeInfo);
@@ -585,29 +602,42 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/registration", isAuthenticated, async (req, res) => {
+  app.get("/registration", async (req, res) => {
     var activeUser = false;
     if (req.user) { activeUser = true };
-    console.log(req.user);
+    if (!req.user) { return res.redirect('/signup'); }
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
-      console.log("==== OrderInfo ====");
-      console.log(OrderInfo);
-    } catch {
-      console.log("Error encountered: queryOrderInfoByRider");
+      if (OrderInfo.PassUserID > 0) {
+        try {
+          var passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
+          OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
+          OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+        } catch (err) {
+          logger.error("Error encountered: queryFlagNumFromUserID " + err);
+        }
+      }
+    } catch (err) {
+      logger.error("Error encountered: queryOrderInfoByRider " + err);
     }
-    if (!OrderInfo) {
+    if (!OrderInfo || OrderInfo.length == 0) {
       OrderInfo = [];
-      OrderInfo.push({NextStepNum: 0})
+      OrderInfo.push({ NextStepNum: 0 });
+      OrderInfo.push({ PassUserID: 0 });
     }
+
+    console.log("==== OrderInfo ====");
+    logger.info(OrderInfo.dataValues);
+    
 
     try {
       var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
-    } catch {
-      console.log("Error encountered: queryTotalOrderCostByRider");
+    } catch  (err) {
+      logger.error("Error encountered: queryTotalOrderCostByRider " + err);
     }
-    if (TotalOrderCost.length == 0) {
+    if (!TotalOrderCost || TotalOrderCost.length == 0) {
+      TotalOrderCost = [];
       TotalOrderCost.push({"Price": 0})
     }
 
@@ -620,21 +650,22 @@ module.exports = function (app) {
       var ShirtSizeSurcharge = ShirtSizeSurchargeObject[0].iValue;
       var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
-    } catch {
-      console.log("Error encountered while gathering pricing info.");
+    } catch (err) {
+      logger.error("Error encountered while gathering pricing info." + err);
     }
 
     try {
       var Charities = await q.queryAllCharities();
-    } catch {
-      console.log("Error encountered: queryAllCharities");
+    } catch (err) {
+      logger.error("Error encountered: queryAllCharities" + err);
     }
 
     try {
       var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
-    } catch {
-      console.log("Error encountered: queryBikesByRider");
+    } catch (err) {
+      logger.error("Error encountered: queryBikesByRider" + err);
     }
+
     res.locals.title = "TOH Registration"
     res.render("pages/registration", {
       activeUser,
@@ -658,7 +689,7 @@ module.exports = function (app) {
     try {
       var Orders = await q.queryAllOrders();
     } catch {
-      console.log("Error encountered: queryAllOrders");
+      logger.error("Error encountered: queryAllOrders");
     }
     console.log(req.user);
     res.locals.title = "TOH Orders"
@@ -677,7 +708,7 @@ module.exports = function (app) {
     try {
       var Charities = await q.queryAllCharities();
     } catch {
-      console.log("Error encountered: queryAllCharities");
+      logger.error("Error encountered: queryAllCharities");
     }
     console.log(req.user);
     res.locals.title = "TOH Charity Manager"
@@ -686,6 +717,25 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: "",
       Charities,
+      dt: DateTime
+    });
+  });
+
+  app.get("/admin/site-config", isAuthenticated, async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    try {
+      var Configs = await q.queryAllConfigs();
+    } catch {
+      logger.error("Error encountered: queryAllConfigs");
+    }
+    console.log(req.user);
+    res.locals.title = "TOH Site Config"
+    res.render("pages/admin/site-config", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      Configs,
       dt: DateTime
     });
   });
