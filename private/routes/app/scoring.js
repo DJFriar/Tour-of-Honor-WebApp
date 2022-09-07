@@ -42,19 +42,6 @@ router.get("/status/:id", async (req, res) => {
 router.post('/', (req, res) => {
   console.info("==== post /scoring endpoint reached ====");
   console.log(req.body);
-
-  // var scoringInfo = {
-  //   SubmissionID: req.body.id,
-  //   ScorerNotes: req.body.ScorerNotes,
-  //   Status: req.body.Status
-  // }
-
-  // if (req.body.Status == 1) {
-  //   scoringInfo.SubmittedMemorialID = req.body.MemorialID;
-  //   scoringInfo.SubmittedUserID = req.body.UserID;
-  //   scoringInfo.SubmittedFlagNumber = req.body.FlagNumber;
-  //   scoringInfo.SubmittedOtherRiders = req.body.OtherRiders
-  // }
   
   // Update the submission record to mark it as scored
   db.Submission.update({
@@ -68,24 +55,22 @@ router.post('/', (req, res) => {
   if(req.body.Status == 1) {
     // Grant credit to the submitter
     db.EarnedMemorialsXref.create({
-      FlagNum: req.body.SubmittedFlagNumber,
-      MemorialID: req.body.SubmittedMemorialID,
+      FlagNum: req.body.FlagNumber,
+      MemorialID: req.body.MemorialID,
       RallyYear: 2022
     });
-    // If there are additional participents on the submission then credit them, too.
-    if (req.body.SubmittedOtherRiders) {
-      var RiderFlagArray = req.body.SubmittedOtherRiders.split(",");
+    // If there are additional participants on the submission then credit them, too.
+    if (req.body.OtherRiders) {
+      var RiderFlagArray = req.body.OtherRiders.split(",");
       RiderFlagArray.forEach(rider => {
         db.EarnedMemorialsXref.create({
           FlagNum: rider,
-          MemorialID: req.body.SubmittedMemorialID,
+          MemorialID: req.body.MemorialID,
           RallyYear: 2022
         });
       });
     }
   }
-
-  
 
   res.send("success");
 })
