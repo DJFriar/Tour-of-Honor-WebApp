@@ -606,8 +606,7 @@ module.exports = function (app) {
     // Update the submission record to mark it as scored
     db.Submission.update({
       Status: req.body.Status,
-      ScorerNotes:  req.body.ScorerNotes,
-      RiderNotes: req.body.RiderNotes
+      ScorerNotes:  req.body.ScorerNotes
     }, {
       where: { id: req.body.SubmissionID }
     });

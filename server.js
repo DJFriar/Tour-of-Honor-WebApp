@@ -9,6 +9,7 @@ const passport = require("./config/passport");
 const memorial = require("./private/routes/app/memorial");
 const memorials = require("./private/routes/app/memorials");
 const restriction = require("./private/routes/app/restriction");
+const scoring = require("./private/routes/app/scoring");
 const submission = require("./private/routes/app/submission");
 
 // ==============================================================================
@@ -56,6 +57,7 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/memorial", memorial);
 app.use("/api/v1/memorials", memorials);
 app.use("/api/v1/restriction", restriction);
+app.use("/api/v1/scoring", scoring);
 app.use("/api/v1/submission", submission);
 
 // =============================================================================

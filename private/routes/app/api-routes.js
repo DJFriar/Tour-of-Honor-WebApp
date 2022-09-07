@@ -13,6 +13,18 @@ module.exports = function (app) {
     res.json(MemorialList);
   })
 
+  // Fetch Submission list
+  app.get("/api/v1/scoring-list/", async (req, res) => {
+    console.log("==== /scoring-list endpoint was hit ====");
+    try {
+      var SubmissionList = await q.queryPendingSubmissionsWithDetails();
+    } catch {
+      console.log("Error encountered: queryPendingSubmissionsWithDetails");
+    }
+    console.log(SubmissionList);
+    res.json(SubmissionList);
+  })
+
   // Fetch specific Memorial
   app.get("/api/v1/memorials/:id", (req, res) => {
     const id = req.params.id
@@ -77,4 +89,5 @@ module.exports = function (app) {
       res.json(bikes);
     });
   })
+
 }
