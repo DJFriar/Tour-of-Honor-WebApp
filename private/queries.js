@@ -192,6 +192,18 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
   }
 }
 
+module.exports.queryPendingSubmissionsWithDetails = async function queryPendingSubmissionsWithDetails() {
+  try {
+    var result = await sequelize.query("SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
+    {
+      type: QueryTypes.SELECT
+    })
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id = false) {
   try {
     if (id) {
@@ -468,6 +480,19 @@ module.exports.querySubmissionStatusByRider = async function querySubmissionStat
     var result = await sequelize.query("SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNum FROM Flags WHERE UserID = ?), OtherRiders)) ORDER BY s.updatedAt DESC LIMIT 1",
     {
       replacements: [memCode, rider, rider],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports.querySubmissionStatusBySubID = async function querySubmissionStatusBySubID(id) {
+  try {
+    var result = await sequelize.query("SELECT Status FROM Submissions WHERE id = ? ORDER BY updatedAt DESC LIMIT 1",
+    {
+      replacements: [id],
       type: QueryTypes.SELECT
     });
     return result;
