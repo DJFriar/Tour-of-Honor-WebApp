@@ -3,10 +3,21 @@ const q = require("../../queries");
 
 module.exports = function (app) { 
 
-  // Fetch Memorial list
+  // Fetch All Memorials
   app.get("/api/v1/memorial-list/", async (req, res) => {
     try {
       var MemorialList = await q.queryAllAvailableMemorials();
+    } catch {
+      console.log("Error encountered: queryAllAvailableMemorials");
+    }
+    res.json(MemorialList);
+  })
+
+  // Fetch Memorial list with User Status included
+  app.get("/api/v1/memorial-list/:id", async (req, res) => {
+    const id = req.params.id
+    try {
+      var MemorialList = await q.queryAllMemorialsWithUserStatus(id);
     } catch {
       console.log("Error encountered: queryAllAvailableMemorials");
     }
