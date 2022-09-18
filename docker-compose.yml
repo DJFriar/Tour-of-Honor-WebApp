@@ -1,39 +1,39 @@
 version: "3.8"
 
 services:
-  mysql:
-    image: mysql:8
-    secrets:
-      - mysql_root_password
-    ports:
-      - 3308:3306
-    volumes:
-      - toh-mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
-      MYSQL_DATABASE: tour_of_honor
+  # mysql:
+  #   image: mysql:8
+  #   secrets:
+  #     - mysql_root_password
+  #   ports:
+  #     - 3308:3306
+  #   volumes:
+  #     - toh-mysql-data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+  #     MYSQL_DATABASE: tour_of_honor
 
-  db-backup:
-    image: fradelg/mysql-cron-backup
-    secrets:
-      - mysql_user
-      - mysql_password
-    depends_on:
-      - mysql
-    volumes:
-      - toh-mysql-data:/backup
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER_FILE=/run/secrets/mysql_user
-      - MYSQL_PASS_FILE=/run/secrets/mysql_password
-      - MYSQL_DB=tour_of_honor
-      - MAX_BACKUPS=15
-      - INIT_BACKUP=0
-      # Every day at 3am Eastern (0700 in UTC)
-      - CRON_TIME=00 07 * * *
-      # Make it small
-      - GZIP_LEVEL=9
-    restart: unless-stopped
+  # db-backup:
+  #   image: fradelg/mysql-cron-backup
+  #   secrets:
+  #     - mysql_user
+  #     - mysql_password
+  #   depends_on:
+  #     - mysql
+  #   volumes:
+  #     - toh-mysql-data:/backup
+  #   environment:
+  #     - MYSQL_HOST=mysql
+  #     - MYSQL_USER_FILE=/run/secrets/mysql_user
+  #     - MYSQL_PASS_FILE=/run/secrets/mysql_password
+  #     - MYSQL_DB=tour_of_honor
+  #     - MAX_BACKUPS=15
+  #     - INIT_BACKUP=0
+  #     # Every day at 3am Eastern (0700 in UTC)
+  #     - CRON_TIME=00 07 * * *
+  #     # Make it small
+  #     - GZIP_LEVEL=9
+  #   restart: unless-stopped
 
   webapp:
     image: node:16.17
@@ -69,7 +69,7 @@ services:
       - "1pwdata:/home/opuser/.op/data"
 
 volumes:
-  toh-mysql-data:
+  # toh-mysql-data:
   1pwdata:
 
 secrets:
