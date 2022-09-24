@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { response } = require('express');
 const fetch = require("isomorphic-fetch");
 
 const storefrontToken = process.env.SHOPIFY_STOREFRONT_KEY;

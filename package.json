@@ -1,11 +1,12 @@
 {
-  "name": "tour-of-honor-webapp",
-  "version": "1.0.0",
+  "name": "tour-of-honor",
+  "version": "1.1.0",
   "description": "WebApp for Tour of Honor",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "open http://localhost:3700 && nodemon server.js",
+    "dev": "nodemon server.js",
+    "localdev": "open http://localhost:3700 && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,16 +35,15 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "luxon": "^2.0.2",
-    "multer": "^1.4.2",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^2.2.5",
     "nodemailer": "^6.7.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "prom-client": "^14.0.1",
     "sequelize": "^6.6.5",
-    "sharp": "^0.28.3",
+    "sharp": "^0.31.0",
     "shopify-api": "^0.2.3",
-    "shopify-buy": "^2.15.1",
     "smartystreets-javascript-sdk": "^1.13.6",
     "winston": "^3.8.1",
     "winston-daily-rotate-file": "^4.7.1"
