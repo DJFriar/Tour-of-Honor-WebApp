@@ -3,66 +3,67 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
-  <main>
-    <div class="uk-container-small uk-margin-auto">
-      <div class="">
-        <h4 class="uk-text-center">Rally Registration</h4>
-        <p>Thank you for your interest in the Tour of Honor, we are excited for you to particpate and see what we are all about. If you did not rider with us in 2022, then you are in the right place. Please fill out the form below to create your account, then login using your newly created email and password.</p>
-        <p>If you did particpate last year, then please <a href="/login">login</a> before continuing.</p>
-        Please note all fields are required.
-        <form class="signup uk-grid-small uk-form-stacked" id="signupForm" uk-grid>
-          <div class="uk-width-1-2@s">
-            <label class="uk-form-label" for="FirstName">First Name</label>
-            <input class="uk-input" required id="FirstName" type="text" placeholder="Firstname"></input>
-          </div>
-          <div class="uk-width-1-2@s">
-            <label class="uk-form-label" for="LastName">Last Name</label>
-            <input class="uk-input" required id="LastName" type="text" placeholder="Lastname"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="UserName">Username</label>
-            <input class="uk-input" required id="UserName" type="text" placeholder="Username"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="Email">Email</label>
-            <input class="uk-input" required id="Email" type="email" placeholder="someone@domain.com"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="Password">Password</label>
-            <input class="uk-input" required id="Password" type="password" placeholder="************"></input>
-          </div>
-          <div class="uk-width-1-2@s">
-            <label class="uk-form-label" for="Address1">Address1</label>
-            <input class="uk-input" required id="Address1" type="text" placeholder="Address1"></input>
-          </div>
-          <div class="uk-width-1-2@s">
-            <label class="uk-form-label" for="Address2">Address2</label>
-            <input class="uk-input" id="Address2" type="text" placeholder="Address2"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="City">City</label>
-            <input class="uk-input" required id="City" type="text" placeholder="City"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="State">State</label>
-            <input class="uk-input" required id="State" type="text" placeholder="State"></input>
-          </div>
-          <div class="uk-width-1-3@s">
-            <label class="uk-form-label" for="ZipCode">Zip Code</label>
-            <input class="uk-input" required id="ZipCode" type="text" placeholder="Zip Code"></input>
-          </div>
-          <div class="uk-width-1-2@s">If you already have an account, please <a href="/login">click here to login</a>.</div>
-          <div class="uk-width-1-2@s uk-text-right"><button type="submit" id="createUserButton" class="uk-button uk-button-primary">Create Account</button></div>
-        </form>
-        <p>Once you click create, you will be taken to the login page so that you can login with your new accuont.</p>
+  <div class="pageWrapper">
+    <%- include('../partials/topnav'); %>
+    <main>
+      <div class="uk-container-small uk-margin-auto">
+        <div class="">
+          <h4 class="uk-text-center">Rally Registration</h4>
+          <p>Thank you for your interest in the Tour of Honor, we are excited for you to particpate and see what we are all about. If you did not rider with us in 2022, then you are in the right place. Please fill out the form below to create your account, then login using your newly created email and password.</p>
+          <p>If you did particpate last year, then please <a href="/login">login</a> before continuing.</p>
+          Please note all fields are required.
+          <form class="signup uk-grid-small uk-form-stacked" id="signupForm" uk-grid>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="FirstName">First Name</label>
+              <input class="uk-input" required id="FirstName" type="text" placeholder="Firstname"></input>
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="LastName">Last Name</label>
+              <input class="uk-input" required id="LastName" type="text" placeholder="Lastname"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="UserName">Username</label>
+              <input class="uk-input" required id="UserName" type="text" placeholder="Username"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="Email">Email</label>
+              <input class="uk-input" required id="Email" type="email" placeholder="someone@domain.com"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="Password">Password</label>
+              <input class="uk-input" required id="Password" type="password" placeholder="************"></input>
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="Address1">Address1</label>
+              <input class="uk-input" required id="Address1" type="text" placeholder="Address1"></input>
+            </div>
+            <div class="uk-width-1-2@s">
+              <label class="uk-form-label" for="Address2">Address2</label>
+              <input class="uk-input" id="Address2" type="text" placeholder="Address2"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="City">City</label>
+              <input class="uk-input" required id="City" type="text" placeholder="City"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="State">State</label>
+              <input class="uk-input" required id="State" type="text" placeholder="State"></input>
+            </div>
+            <div class="uk-width-1-3@s">
+              <label class="uk-form-label" for="ZipCode">Zip Code</label>
+              <input class="uk-input" required id="ZipCode" type="text" placeholder="Zip Code"></input>
+            </div>
+            <div class="uk-width-1-2@s">If you already have an account, please <a href="/login">click here to login</a>.</div>
+            <div class="uk-width-1-2@s uk-text-right"><button type="submit" id="createUserButton" class="uk-button uk-button-primary">Create Account</button></div>
+          </form>
+          <p>Once you click create, you will be taken to the login page so that you can login with your new accuont.</p>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
-
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/signup.js"></script>
 </body>

@@ -2,69 +2,71 @@
   <%- include('../../partials/head'); %>
 </head>
 <body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>Group Manager<span class="uk-align-right"><button type="button" id="addNewGroupBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Group</button></span></h4>
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
     <% } %>
-    <table class="uk-table uk-table-striped uk-table-small" id="groupsTable">
-      <thead>
-        <tr>
-          <th>Group Name</th>
-          <th>Group Description</th>
-          <th>Admin Rights</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% Groups.forEach(function(Group) { %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h4>Group Manager<span class="uk-align-right"><button type="button" id="addNewGroupBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Group</button></span></h4>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <table class="uk-table uk-table-striped uk-table-small" id="groupsTable">
+        <thead>
           <tr>
-            <td>
-              <%= Group.Name %>
-            </td>
-            <td>
-              <%= Group.Description %>
-            </td>
-            <td>
-              <% if(Group.IsAdmin) { %>
-                Yes
-              <% } else { %>
-                No
-              <% } %>
-            </td>
-            <td>
-              <% if(Group.IsActive) { %>
-                Active
-              <% } else { %>
-                Disabled
-              <% } %>
-            </td>
-            <td>
-              <% if(Group.IsProtected) { %> 
-                <span uk-tooltip="Protected Group"><i class="fas fa-lock"></i></span> 
-              <% } else { %>
-                <span class="editGroupInfoBtn clickable" uk-tooltip="Edit Group" data-groupid="<%- Group.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
-                <span class="disableGroupBtn clickable" uk-tooltip="Disable Group" data-groupid="<%- Group.id %>"><i class="far fa-ban fa-lg"></i></span>
-              <% } %>
-            </td>
+            <th>Group Name</th>
+            <th>Group Description</th>
+            <th>Admin Rights</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <!-- This is the Add New Group modal -->
-    <div id="GroupInfoAddModal" class="modal">
-      <%- include('../../partials/groupAddModal'); %>
-    </div>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
+        </thead>
+        <tbody>
+          <% Groups.forEach(function(Group) { %>
+            <tr>
+              <td>
+                <%= Group.Name %>
+              </td>
+              <td>
+                <%= Group.Description %>
+              </td>
+              <td>
+                <% if(Group.IsAdmin) { %>
+                  Yes
+                <% } else { %>
+                  No
+                <% } %>
+              </td>
+              <td>
+                <% if(Group.IsActive) { %>
+                  Active
+                <% } else { %>
+                  Disabled
+                <% } %>
+              </td>
+              <td>
+                <% if(Group.IsProtected) { %> 
+                  <span uk-tooltip="Protected Group"><i class="fas fa-lock"></i></span> 
+                <% } else { %>
+                  <span class="editGroupInfoBtn clickable" uk-tooltip="Edit Group" data-groupid="<%- Group.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
+                  <span class="disableGroupBtn clickable" uk-tooltip="Disable Group" data-groupid="<%- Group.id %>"><i class="far fa-ban fa-lg"></i></span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <!-- This is the Add New Group modal -->
+      <div id="GroupInfoAddModal" class="modal">
+        <%- include('../../partials/groupAddModal'); %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/group-management.js"></script>
 </body>

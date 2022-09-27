@@ -72,11 +72,9 @@ $(document).ready(() => {
 
     var bikeInfo = {
       UserID,
-      BikeName: $("#BikeName").val().trim(),
       BikeYear: $("#BikeYear").val().trim(),
       BikeMake: $("#BikeMake").val().trim(),
       BikeModel: $("#BikeModel").val().trim(),
-      BikeColor: $("#BikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {
@@ -101,11 +99,9 @@ $(document).ready(() => {
         console.log(res);
         $("#bikeInfoEditModal").css("display","block");
         $("#EditBikeID").val(res.id);
-        $("#EditBikeName").val(res.BikeName);
         $("#EditBikeYear").val(res.Year);
         $("#EditBikeMake").val(res.Make);
         $("#EditBikeModel").val(res.Model);
-        $("#EditBikeColor").val(res.Color);
       }
     )
   })
@@ -114,11 +110,9 @@ $(document).ready(() => {
   $("#saveEditedBikeInfoBtn").on("click", function() {
     var editedBikeInfo = {
       BikeID: $("#EditBikeID").val().trim(),
-      BikeName: $("#EditBikeName").val().trim(),
       BikeYear: $("#EditBikeYear").val().trim(),
       BikeMake: $("#EditBikeMake").val().trim(),
       BikeModel: $("#EditBikeModel").val().trim(),
-      BikeColor: $("#EditBikeColor").val().trim(),
     }
 
     $.ajax("/api/v1/bike", {

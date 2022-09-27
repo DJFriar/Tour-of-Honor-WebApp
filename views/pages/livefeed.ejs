@@ -3,15 +3,17 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <main>
-    Put live feed stuff here
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <main>
+      Put live feed stuff here
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
 </body>

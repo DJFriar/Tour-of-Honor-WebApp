@@ -3,34 +3,36 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <% if(NotificationText) { %>
-    <%- include('../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
     <% } %>
-    <main>
-    <h4>Trophy Status</h4>
-    <p>Below you will find the statuses for each of the trophies available, sorted by region.</p>
-    <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
-      <% Regions.forEach(function(region) { %>
-        <div>
-          <div class="uk-card uk-card-default uk-card-body">
-            <h3 class="uk-card-title"><%= region.Region %></h3>
-            <% TrophyList.forEach(function(trophy) { %> 
-              <% if(trophy.Region == region.Region) { %>
-                <p><%= trophy.PlaceNum %> - <% if(trophy.FlagNumbers) { %> <%= trophy.FlagNumbers %> <% } else { %> Available  <% } %></p>
-              <% } %>
-            <% }) %>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+      <% } %>
+      <main>
+      <h4>Trophy Status</h4>
+      <p>Below you will find the statuses for each of the trophies available, sorted by region.</p>
+      <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
+        <% Regions.forEach(function(region) { %>
+          <div>
+            <div class="uk-card uk-card-default uk-card-body">
+              <h3 class="uk-card-title"><%= region.Region %></h3>
+              <% TrophyList.forEach(function(trophy) { %> 
+                <% if(trophy.Region == region.Region) { %>
+                  <p><%= trophy.PlaceNum %> - <% if(trophy.FlagNumbers) { %> <%= trophy.FlagNumbers %> <% } else { %> Available  <% } %></p>
+                <% } %>
+              <% }) %>
+            </div>
           </div>
-        </div>
-      <% }) %>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+        <% }) %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="js/trophies.js"></script>
 </body>

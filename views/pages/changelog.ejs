@@ -3,136 +3,137 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <main>
-    <h4>Change Log</h4>
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
     <% } %>
-    &nbsp;<br/>
-    <div class="changes-container" id='tabs'>
-      <ul uk-tab>
-        <li><a href="#web">Web Portal</a></li>
-        <li><a href="#mobile">Android & iPhone Apps</a></li>
-      </ul>
+    <main>
+      <h4>Change Log</h4>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      &nbsp;<br/>
+      <div class="changes-container" id='tabs'>
+        <ul uk-tab>
+          <li><a href="#web">Web Portal</a></li>
+          <li><a href="#mobile">Android & iPhone Apps</a></li>
+        </ul>
 
-      <ul class="uk-switcher uk-margin">
-        <!-- Web Portal -->
-        <li id="web">
-          <h6>22.8.29.304</h6>
-          <ul>
-            <li>Foundational work for the new and improved registration process.</li>
-            <li>You can now manage your bike info on the User Profile.</li>
-            <li>Added custom titles to all the pages.</li>
-            <li>Admins got some new toys.</li>
-            <li>Fixed a bug where auto advance for the scorers was very inconsistent.</li>
-            <li>Fixed a bug where URLs for memorials where being forced lowercase, breaking them.</li>
-            <li>Various security and stability enhancements.</li>
-            <li>Miscellaneous code cleanup.</li>
-          </ul>
-          <h6>22.7.7.288</h6>
-          <ul>
-            <li>Images submitted via the web portal are now automatically resized, allowing for much faster uploads.</li>
-            <li>User Profile now indicates when a submission is being Held In Review.</li>
-            <li>Submitted images now retain their metadata.</li>
-            <li>Mobile submissions also have their images resized but currently this only lowers storage requirements, not upload speeds.</li>
-            <li>Fixed a bug where mobile submissions had lower quality images than intended.</li>
-            <li>Fixed a bug that allowed for duplicate submissions when a submission was Held In Review.</li>
-            <li>Miscellaneous code cleanup.</li>
-          </ul>
-          <h6>22.7.3.285</h6>
-          <ul>
-            <li>Fixed a bug causing mobile submissions with two images to fail.</li>
-          </ul>
-          <h6>22.7.2.284</h6>
-          <ul>
-            <li>Bug fixes for the Memorial Editor that Admins use.</li>
-          </ul>
-          <h6>22.7.2.283</h6>
-          <ul>
-            <li>Fixed a bug that caused the 2nd image riders submitted to occasionally not show up in the scoring view.</li>
-            <li>All input boxes, dropdown, and buttons have been given a slightly rounded style to give a nicer look and better match the mobile apps.</li>
-            <li>A plethora of backend changes to improve server stability and maintainability.</li>
-          </ul>
-          <h6>22.5.14.281</h6>
-          <ul>
-            <li>Fixes a bug that prevented submissions with only one image.</li>
-            <li>Updated some spelling preferences.</li>
-            <li>POTM button was relocated (affects scorers only).</li>
-            <li>IBA Rides can now be awarded by the scoring team. (These will be viewable to everyone in the next update, but for now only scorers can see them).</li>
-          </ul>
-          <h6>22.4.17.276</h6>
-          <ul>
-            <li>Memorials that are not available are no longer shown in the memorial lists.</li>
-          </ul>
-          <h6>22.4.16.273</h6>
-          <ul>
-            <li>Added a new way for admins to view scored submissions that should run faster.</li>
-            <li>Added a new memorial editor for the admins that should run faster.</li>
-          </ul>
-          <h6>22.4.14.269</h6>
-          <ul>
-            <li>Fixed a bug that was preventing memorials from being edited.</li>
-          </ul>
-          <h6>22.4.13.266</h6>
-          <ul>
-            <li>The site now enforces when a memorial requires two images to claim and won't let you submit without two images being selected.</li>
-            <li>The Memorial Detail page now shows the same icons as the Mobile Apps for Restrictions and 2-images required.</li>
-            <li>Speed enhancements! The site should feel faster overall due to a reduction in reliance on 3rd party servers.</li>
-            <li>Scorers can now see if a submission came from website, an iPhone or an Android device.</li>
-            <li>Scorers have a method to more easily submit an image for Picture of the Month.</li>
-          </ul>
-          <h6>22.4.4.254</h6>
-          <ul>
-            <li>Removed the warning about when the state memorials would be available.</li>
-            <li>GPS coordinates can now be clicked on to open up that location in Google Maps.</li>
-            <li>In the Scoring Dashboard, on the Submission Details page, the sample image is much harder to accidentally click.</li>
-            <li>Also on the Submission Details page, Memorial data is now shown.</li>
-          </ul>
-          <h6>22.4.1.245</h6>
-          <ul>
-            <li>Added Trophy Status page. This page will show all the regions and what flag numbers, if any, have earned that trophy.</li>
-            <li>Added an admin page for awarding trophies.</li>
-            <li>Added this Changelog page.</li>
-          </ul>
-          <h6>22.3.31.236</h6>
-          <ul>
-            <li>Preparations for rally start.</li>
-            <li>Fixed some minor grammatical errors.</li>
-          </ul>
-        </li>
-        <!-- Mobile Apps -->
-        <li id="mobile">
-          <h6>3.3.2</h6>
-          <ul>
-            <li>Stats page shows submitted date, not last updated date.</li>
-            <li>Support for scoring portal to know if submission was from an Android device or an iPhone.</li>
-            <li>Changed the text on the login page to make it clear that you have to click on the Welcome Email link before using the app.</li>
-          </ul>
-          <h6>3.3.0</h6>
-          <ul>
-            <li>Submit screen now shows that items are being uploaded, and disables the submit button while they are being uploaded to reduce duplicates.</li>
-            <li>The keyboard doesn't block the text box anymore so you can actually see what you are typing.</li>
-            <li>Tapping on text boxes is easier now, you no longer have to aim for the placeholder text.</li>
-            <li>Reduced the size of the uploaded images to make uploading faster.</li>
-          </ul>
-          <h6>3.2.1</h6>
-          <ul>
-            <li>When a memorial is submitted and that window disappears, the detail view is now instantly updated with the “pending” status.</li>
-            <li>Passenger flag is now shown on the User Profile tab (or if not set, N/A is displayed).</li>
-            <li>If a Passenger flag has been set in a user's profile, then the app will detect this and display the “Include Passenger” toggle on the submission page.</li>
-            <li>Various other bug fixes and performance enhancements.</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
-  <!-- <script type="text/javascript" src="js/changelog.js"></script> -->
+        <ul class="uk-switcher uk-margin">
+          <!-- Web Portal -->
+          <li id="web">
+            <h6>22.8.29.304</h6>
+            <ul>
+              <li>Foundational work for the new and improved registration process.</li>
+              <li>You can now manage your bike info on the User Profile.</li>
+              <li>Added custom titles to all the pages.</li>
+              <li>Admins got some new toys.</li>
+              <li>Fixed a bug where auto advance for the scorers was very inconsistent.</li>
+              <li>Fixed a bug where URLs for memorials where being forced lowercase, breaking them.</li>
+              <li>Various security and stability enhancements.</li>
+              <li>Miscellaneous code cleanup.</li>
+            </ul>
+            <h6>22.7.7.288</h6>
+            <ul>
+              <li>Images submitted via the web portal are now automatically resized, allowing for much faster uploads.</li>
+              <li>User Profile now indicates when a submission is being Held In Review.</li>
+              <li>Submitted images now retain their metadata.</li>
+              <li>Mobile submissions also have their images resized but currently this only lowers storage requirements, not upload speeds.</li>
+              <li>Fixed a bug where mobile submissions had lower quality images than intended.</li>
+              <li>Fixed a bug that allowed for duplicate submissions when a submission was Held In Review.</li>
+              <li>Miscellaneous code cleanup.</li>
+            </ul>
+            <h6>22.7.3.285</h6>
+            <ul>
+              <li>Fixed a bug causing mobile submissions with two images to fail.</li>
+            </ul>
+            <h6>22.7.2.284</h6>
+            <ul>
+              <li>Bug fixes for the Memorial Editor that Admins use.</li>
+            </ul>
+            <h6>22.7.2.283</h6>
+            <ul>
+              <li>Fixed a bug that caused the 2nd image riders submitted to occasionally not show up in the scoring view.</li>
+              <li>All input boxes, dropdown, and buttons have been given a slightly rounded style to give a nicer look and better match the mobile apps.</li>
+              <li>A plethora of backend changes to improve server stability and maintainability.</li>
+            </ul>
+            <h6>22.5.14.281</h6>
+            <ul>
+              <li>Fixes a bug that prevented submissions with only one image.</li>
+              <li>Updated some spelling preferences.</li>
+              <li>POTM button was relocated (affects scorers only).</li>
+              <li>IBA Rides can now be awarded by the scoring team. (These will be viewable to everyone in the next update, but for now only scorers can see them).</li>
+            </ul>
+            <h6>22.4.17.276</h6>
+            <ul>
+              <li>Memorials that are not available are no longer shown in the memorial lists.</li>
+            </ul>
+            <h6>22.4.16.273</h6>
+            <ul>
+              <li>Added a new way for admins to view scored submissions that should run faster.</li>
+              <li>Added a new memorial editor for the admins that should run faster.</li>
+            </ul>
+            <h6>22.4.14.269</h6>
+            <ul>
+              <li>Fixed a bug that was preventing memorials from being edited.</li>
+            </ul>
+            <h6>22.4.13.266</h6>
+            <ul>
+              <li>The site now enforces when a memorial requires two images to claim and won't let you submit without two images being selected.</li>
+              <li>The Memorial Detail page now shows the same icons as the Mobile Apps for Restrictions and 2-images required.</li>
+              <li>Speed enhancements! The site should feel faster overall due to a reduction in reliance on 3rd party servers.</li>
+              <li>Scorers can now see if a submission came from website, an iPhone or an Android device.</li>
+              <li>Scorers have a method to more easily submit an image for Picture of the Month.</li>
+            </ul>
+            <h6>22.4.4.254</h6>
+            <ul>
+              <li>Removed the warning about when the state memorials would be available.</li>
+              <li>GPS coordinates can now be clicked on to open up that location in Google Maps.</li>
+              <li>In the Scoring Dashboard, on the Submission Details page, the sample image is much harder to accidentally click.</li>
+              <li>Also on the Submission Details page, Memorial data is now shown.</li>
+            </ul>
+            <h6>22.4.1.245</h6>
+            <ul>
+              <li>Added Trophy Status page. This page will show all the regions and what flag numbers, if any, have earned that trophy.</li>
+              <li>Added an admin page for awarding trophies.</li>
+              <li>Added this Changelog page.</li>
+            </ul>
+            <h6>22.3.31.236</h6>
+            <ul>
+              <li>Preparations for rally start.</li>
+              <li>Fixed some minor grammatical errors.</li>
+            </ul>
+          </li>
+          <!-- Mobile Apps -->
+          <li id="mobile">
+            <h6>3.3.2</h6>
+            <ul>
+              <li>Stats page shows submitted date, not last updated date.</li>
+              <li>Support for scoring portal to know if submission was from an Android device or an iPhone.</li>
+              <li>Changed the text on the login page to make it clear that you have to click on the Welcome Email link before using the app.</li>
+            </ul>
+            <h6>3.3.0</h6>
+            <ul>
+              <li>Submit screen now shows that items are being uploaded, and disables the submit button while they are being uploaded to reduce duplicates.</li>
+              <li>The keyboard doesn't block the text box anymore so you can actually see what you are typing.</li>
+              <li>Tapping on text boxes is easier now, you no longer have to aim for the placeholder text.</li>
+              <li>Reduced the size of the uploaded images to make uploading faster.</li>
+            </ul>
+            <h6>3.2.1</h6>
+            <ul>
+              <li>When a memorial is submitted and that window disappears, the detail view is now instantly updated with the “pending” status.</li>
+              <li>Passenger flag is now shown on the User Profile tab (or if not set, N/A is displayed).</li>
+              <li>If a Passenger flag has been set in a user's profile, then the app will detect this and display the “Include Passenger” toggle on the submission page.</li>
+              <li>Various other bug fixes and performance enhancements.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
 </body>

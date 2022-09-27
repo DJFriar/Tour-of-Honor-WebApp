@@ -3,211 +3,212 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>RIDER MANAGEMENT</h4>
-    <div class="admin-container" id='tabs'>
-      <ul uk-tab>
-        <li><a href="#registration">Rider Registration</a></li>
-        <li><a href="#riders">Riders</a></li>
-        <!-- <li><a href="#">Sponsors</a></li> -->
-      </ul>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h4>RIDER MANAGEMENT</h4>
+      <div class="admin-container" id='tabs'>
+        <ul uk-tab>
+          <li><a href="#registration">Rider Registration</a></li>
+          <li><a href="#riders">Riders</a></li>
+          <!-- <li><a href="#">Sponsors</a></li> -->
+        </ul>
 
-      <ul class="uk-switcher uk-margin">
-        <!-- Rider Registration -->
-        <li id="registration">
-          <h5>RIDER REGISTRATION</h5>
-          <p>Use the below form to add a rider to the system and send out the welcome email.</p>
-          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="FirstName">First Name</label>
-              <input required class="uk-input toh-input" id="FirstName" type="text" placeholder="First Name">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="LastName">Last Name</label>
-              <input required class="uk-input toh-input" id="LastName" type="text" placeholder="Last Name">
-            </div>
-            <div class="uk-width-1-1@s">
-              <label class="uk-form-label" for="Email">Email</label>
-              <input required class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com">
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input required class="uk-input toh-input" id="FlagNum" type="number" placeholder="###">
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="ShirtStyle">Shirt Style</label>
-              <select required class="uk-select toh-input" name="ShirtStyle" id="ShirtStyle">
-                <option value="Short-Sleeved">Short-Sleeved</option>
-                <option value="Long-Sleeved">Long-Sleeved</option>
-                <option value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
-                <option value="Donation">No Shirt</option>
-              </select>
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
-              <select required class="uk-select toh-input" name="ShirtSize" id="ShirtSize">
-                <option value="Small">SM</option>
-                <option value="Medium">MD</option>
-                <option value="Large">LG</option>
-                <option selected value="XL">XL</option>
-                <option value="2X">2X</option>
-                <option value="3X">3X</option>
-                <option value="4X">4X</option>
-                <option value="5X">5X</option>
-              </select>
-            </div>
-            <div class="uk-width-1-1@s">
-              <input class="uk-checkbox" type="checkbox" name="hasPassenger" id="hasPassenger">
-                <label for="hasPassenger" id="hasPassengerLabel">Include Passenger</label>
-            </div>
-              <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
-                <label class="uk-form-label" for="PassengerFirstName">Passenger First Name</label>
-                <input required class="uk-input toh-input" id="PassengerFirstName" type="text" placeholder="First Name">
+        <ul class="uk-switcher uk-margin">
+          <!-- Rider Registration -->
+          <li id="registration">
+            <h5>RIDER REGISTRATION</h5>
+            <p>Use the below form to add a rider to the system and send out the welcome email.</p>
+            <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="FirstName">First Name</label>
+                <input required class="uk-input toh-input" id="FirstName" type="text" placeholder="First Name">
               </div>
-              <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
-                <label class="uk-form-label" for="PassengerLastName">Passenger Last Name</label>
-                <input required class="uk-input toh-input" id="PassengerLastName" type="text" placeholder="Last Name">
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="LastName">Last Name</label>
+                <input required class="uk-input toh-input" id="LastName" type="text" placeholder="Last Name">
               </div>
-              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
-                <label class="uk-form-label" for="PassengerFlagNum">Passenger Flag Number</label>
-                <input required class="uk-input toh-input" id="PassengerFlagNum" type="number" placeholder="###">
+              <div class="uk-width-1-1@s">
+                <label class="uk-form-label" for="Email">Email</label>
+                <input required class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com">
               </div>
-              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
-                <label class="uk-form-label" for="PassengerShirtStyle">Passenger Shirt Style</label>
-                <select required class="uk-select toh-input" name="PassengerShirtStyle" id="PassengerShirtStyle">
-                  <option value="Men's Short-Sleeved">Short-Sleeved (Mens)</option>
-                  <option value="Men's Long-Sleeved">Long-Sleeved (Mens)</option>
-                  <option selected value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
-                  <!-- <option value="Ladies Long-Sleeved">Long-Sleeved (Ladies)</option> -->
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="FlagNum">Flag Number</label>
+                <input required class="uk-input toh-input" id="FlagNum" type="number" placeholder="###">
+              </div>
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="ShirtStyle">Shirt Style</label>
+                <select required class="uk-select toh-input" name="ShirtStyle" id="ShirtStyle">
+                  <option value="Short-Sleeved">Short-Sleeved</option>
+                  <option value="Long-Sleeved">Long-Sleeved</option>
+                  <option value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
                   <option value="Donation">No Shirt</option>
                 </select>
               </div>
-              <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
-                <label class="uk-form-label" for="PassengerShirtSize">Passenger Shirt Size</label>
-                <select required class="uk-select toh-input" name="PassengerShirtSize" id="PassengerShirtSize">
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="ShirtSize">Shirt Size</label>
+                <select required class="uk-select toh-input" name="ShirtSize" id="ShirtSize">
                   <option value="Small">SM</option>
                   <option value="Medium">MD</option>
                   <option value="Large">LG</option>
-                  <option value="XL">XL</option>
+                  <option selected value="XL">XL</option>
                   <option value="2X">2X</option>
                   <option value="3X">3X</option>
                   <option value="4X">4X</option>
                   <option value="5X">5X</option>
                 </select>
               </div>
-            <div class="uk-width-1-1@s">
-              <label class="uk-form-label" for="EmailNotes" id="EmailNotesLabel">Additional Email Text</label>
-              <textarea class="uk-textarea toh-input" rows="3" name="EmailNotes" id="EmailNotes" placeholder=""></textarea>
-            </div>
-            <div class="uk-width-1-1@s uk-text-center uk-align-center">
-              <button type="button" id="createUserButton" class="uk-button uk-button-primary button-rounded">Send Welcome Email</button>
-            </div>
-          </form>
-        </li>
-        <!-- Users Tab -->
-        <li id="riders">
-          <h5>USERS</h5>
-          <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
-            <thead>
-              <tr>
-                <th>Flag #</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% Users.forEach(function(user) { %>
+              <div class="uk-width-1-1@s">
+                <input class="uk-checkbox" type="checkbox" name="hasPassenger" id="hasPassenger">
+                  <label for="hasPassenger" id="hasPassengerLabel">Include Passenger</label>
+              </div>
+                <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
+                  <label class="uk-form-label" for="PassengerFirstName">Passenger First Name</label>
+                  <input required class="uk-input toh-input" id="PassengerFirstName" type="text" placeholder="First Name">
+                </div>
+                <div class="uk-width-1-2@s hide-me PassengerInfoDiv">
+                  <label class="uk-form-label" for="PassengerLastName">Passenger Last Name</label>
+                  <input required class="uk-input toh-input" id="PassengerLastName" type="text" placeholder="Last Name">
+                </div>
+                <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                  <label class="uk-form-label" for="PassengerFlagNum">Passenger Flag Number</label>
+                  <input required class="uk-input toh-input" id="PassengerFlagNum" type="number" placeholder="###">
+                </div>
+                <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                  <label class="uk-form-label" for="PassengerShirtStyle">Passenger Shirt Style</label>
+                  <select required class="uk-select toh-input" name="PassengerShirtStyle" id="PassengerShirtStyle">
+                    <option value="Men's Short-Sleeved">Short-Sleeved (Mens)</option>
+                    <option value="Men's Long-Sleeved">Long-Sleeved (Mens)</option>
+                    <option selected value="Ladies Short-Sleeved">Short-Sleeved (Ladies)</option>
+                    <!-- <option value="Ladies Long-Sleeved">Long-Sleeved (Ladies)</option> -->
+                    <option value="Donation">No Shirt</option>
+                  </select>
+                </div>
+                <div class="uk-width-1-3@s hide-me PassengerInfoDiv">
+                  <label class="uk-form-label" for="PassengerShirtSize">Passenger Shirt Size</label>
+                  <select required class="uk-select toh-input" name="PassengerShirtSize" id="PassengerShirtSize">
+                    <option value="Small">SM</option>
+                    <option value="Medium">MD</option>
+                    <option value="Large">LG</option>
+                    <option value="XL">XL</option>
+                    <option value="2X">2X</option>
+                    <option value="3X">3X</option>
+                    <option value="4X">4X</option>
+                    <option value="5X">5X</option>
+                  </select>
+                </div>
+              <div class="uk-width-1-1@s">
+                <label class="uk-form-label" for="EmailNotes" id="EmailNotesLabel">Additional Email Text</label>
+                <textarea class="uk-textarea toh-input" rows="3" name="EmailNotes" id="EmailNotes" placeholder=""></textarea>
+              </div>
+              <div class="uk-width-1-1@s uk-text-center uk-align-center">
+                <button type="button" id="createUserButton" class="uk-button uk-button-primary button-rounded">Send Welcome Email</button>
+              </div>
+            </form>
+          </li>
+          <!-- Users Tab -->
+          <li id="riders">
+            <h5>USERS</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
+              <thead>
                 <tr>
-                  <td>
-                    <% if(user.FlagNumber > 0) { %>
-                      <%= user.FlagNumber %>
-                    <% } %>
-                  </td>
-                  <td>
-                    <%= user.FirstName %>
-                  </td>
-                  <td>
-                    <%= user.LastName %>
-                  </td>
-                  <td>
-                    <%= user.Email %>
-                  </td>
-                  <td>
-                    <% if(user.isAdmin) { %>
-                      Admin
-                    <% } else { %>
-                      User
-                    <% } %>
-                  </td>
-                  <td>
-                    <div class="uk-inline">
-                      <button class="uk-button uk-button-default" type="button">Actions</button>
-                      <div uk-dropdown="mode: click">
-                        <div class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit User</div>
-                        <% if(!user.ZipCode) { %>
-                          <br />
-                          <div class="sendProfileEmailButton" data-uid="<%- user.id %>"><i class="fal fa-envelope fa-lg"></i> Send Welcome Email</div>
-                        <% } %>
-                      </div>
-                  </div>
-                  </td>
+                  <th>Flag #</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-        <!-- Sponsor Tab -->
-        <li>
-          <h5>SPONSORS</h5>
-          <table class="uk-table uk-table-striped uk-table-small" id="sponsorsTable">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>States</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% sponsorData.forEach(function(sponsor) { %>
+              </thead>
+              <tbody>
+                <% Users.forEach(function(user) { %>
+                  <tr>
+                    <td>
+                      <% if(user.FlagNumber > 0) { %>
+                        <%= user.FlagNumber %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <%= user.FirstName %>
+                    </td>
+                    <td>
+                      <%= user.LastName %>
+                    </td>
+                    <td>
+                      <%= user.Email %>
+                    </td>
+                    <td>
+                      <% if(user.isAdmin) { %>
+                        Admin
+                      <% } else { %>
+                        User
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="uk-inline">
+                        <button class="uk-button uk-button-default" type="button">Actions</button>
+                        <div uk-dropdown="mode: click">
+                          <div class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit User</div>
+                          <% if(!user.ZipCode) { %>
+                            <br />
+                            <div class="sendProfileEmailButton" data-uid="<%- user.id %>"><i class="fal fa-envelope fa-lg"></i> Send Welcome Email</div>
+                          <% } %>
+                        </div>
+                    </div>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
+          <!-- Sponsor Tab -->
+          <li>
+            <h5>SPONSORS</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="sponsorsTable">
+              <thead>
                 <tr>
-                  <td>
-                    <%= sponsor.FirstName %>
-                  </td>
-                  <td>
-                    <%= sponsor.LastName %>
-                  </td>
-                  <td>
-                    <%= sponsor.States %>
-                  </td>
-                  <td>
-                    <span class="deleteSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
-                    <span class="editSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
-                  </td>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>States</th>
+                  <th>Actions</th>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-      </ul>
-    </div>
-    <!-- This is the user edit modal -->
-    <div id="userDetailEditModal" class="modal">
-      <%- include('../../partials/userDetailEditor'); %>
-    </div>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
-
+              </thead>
+              <tbody>
+                <% sponsorData.forEach(function(sponsor) { %>
+                  <tr>
+                    <td>
+                      <%= sponsor.FirstName %>
+                    </td>
+                    <td>
+                      <%= sponsor.LastName %>
+                    </td>
+                    <td>
+                      <%= sponsor.States %>
+                    </td>
+                    <td>
+                      <span class="deleteSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                      <span class="editSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+      <!-- This is the user edit modal -->
+      <div id="userDetailEditModal" class="modal">
+        <%- include('../../partials/userDetailEditor'); %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/user-management.js"></script>
 </body>
