@@ -3,168 +3,170 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <div id="toh-scoring-page">
-    <p style="margin: 0;"><a class="hidden-link" href="/scoring"><i class="fas fa-filter"></i> <span id="selectFilterValue"></span></a> | Submission #<%= Submissions[0].id %></p>
-    <h4>Pending <%= Submissions[0].CatName %> Submission </h4>
-    <% if(NotificationText) { %>
-      <%- include('../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
     <% } %>
-    <% if(Submissions[0].Status != 0 && Submissions[0].Status != 3) { %>
-      <%- include('../partials/notice', { NotificationText: 'This submission has already been scored.' }); %>
-    <% } %>
-    <main>
-      <div class="" uk-grid>
-        <div class="uk-width-2-3">
-          <div style="text-align: center; margin-bottom: 12px;">
-            <a href="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" target="_blank">
-              <img class="toh-scoring-sampleImage" data-src="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" width="434" height="370" uk-img>
-            </a>
-          </div>
-          <div class="uk-grid-small uk-child-width-expand" uk-grid>
-            <div>
-              <a href="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" target="_blank">
-                <img class="toh-scoring-primaryImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" width="434"
-              height="370" uk-img>
+    <div id="toh-scoring-page">
+      <p style="margin: 0;"><a class="hidden-link" href="/scoring"><i class="fas fa-filter"></i> <span id="selectFilterValue"></span></a> | Submission #<%= Submissions[0].id %></p>
+      <h4>Pending <%= Submissions[0].CatName %> Submission </h4>
+      <% if(NotificationText) { %>
+        <%- include('../partials/notice'); %>
+      <% } %>
+      <% if(Submissions[0].Status != 0 && Submissions[0].Status != 3) { %>
+        <%- include('../partials/notice', { NotificationText: 'This submission has already been scored.' }); %>
+      <% } %>
+      <main>
+        <div class="" uk-grid>
+          <div class="uk-width-2-3">
+            <div style="text-align: center; margin-bottom: 12px;">
+              <a href="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" target="_blank">
+                <img class="toh-scoring-sampleImage" data-src="<%= baseSampleImageUrl %><%= Submissions[0].SampleImage %>" width="434" height="370" uk-img>
               </a>
             </div>
-            <div>
-              <% if(Submissions[0].OptionalImage) { %>
-                <a href="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" target="_blank">
-                  <img class="toh-scoring-optionalImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" width="434"
+            <div class="uk-grid-small uk-child-width-expand" uk-grid>
+              <div>
+                <a href="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" target="_blank">
+                  <img class="toh-scoring-primaryImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].PrimaryImage %>" width="434"
                 height="370" uk-img>
                 </a>
-              <% } else { %>
-                <img class="toh-scoring-optionalImage uk-align-center" data-src="/images/OptionalImageNotProvided.png" width="434"
-                height="370" uk-img>
-              <% } %>
+              </div>
+              <div>
+                <% if(Submissions[0].OptionalImage) { %>
+                  <a href="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" target="_blank">
+                    <img class="toh-scoring-optionalImage uk-align-center" data-src="<%= baseImageUrl %><%= Submissions[0].OptionalImage %>" width="434"
+                  height="370" uk-img>
+                  </a>
+                <% } else { %>
+                  <img class="toh-scoring-optionalImage uk-align-center" data-src="/images/OptionalImageNotProvided.png" width="434"
+                  height="370" uk-img>
+                <% } %>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="uk-width-1-3">
-          <div class="uk-text-center toh-mb-18" id="otherButtons">
-            <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
-              <button class="uk-button uk-button-primary potmButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
-                <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
-              </button>
-            </span>
-          </div>
-          <div class="scorerNotesSection toh-mb-18">
-            <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
-            <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
-              <textarea class="uk-textarea toh-input" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
-            <% } else { %>
-              <textarea class="uk-textarea toh-input" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
-            <% } %>
-            
-          </div>
-          <div class="uk-text-center toh-mb-18" id="approvalButtons">
-            <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
-              <button class="uk-button uk-button-danger rejectButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="fas fa-thumbs-down"></i>&nbsp; Reject
-              </button>
-            </span>
-            <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
-              <button class="uk-button uk-button-primary skipButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
-                <i class="fas fa-forward"></i>&nbsp; Skip
-              </button>
-            </span>
-            <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
-              <button class="uk-button toh-button-green approveButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
-                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
-              </button>
-            <% } else { %>
-              <button class="uk-button uk-button-disabled button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
-                <i class="fas fa-thumbs-up"></i>&nbsp; Approve
-              </button>
-            <% } %>
-          </div>
-          
-          <dl class="uk-description-list uk-description-list-divider">
-            <dt>
-              Memorial Info<br />
-              <span class="toh-label toh-id-flag">
-                <%= Submissions[0].Code %>
+          <div class="uk-width-1-3">
+            <div class="uk-text-center toh-mb-18" id="otherButtons">
+              <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
+                <button class="uk-button uk-button-primary potmButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
+                  <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
+                </button>
               </span>
-            </dt>
-            <dd>
-              <div style="margin-bottom: 8">
-                <%= Submissions[0].Name %> <br />
-                <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
-                <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
-              </div>
-              Access: <%= Submissions[0].Access %> <br />
-              MultiImage: <%= Submissions[0].MultiImage %> <br />
-              Restrictions: <%= Submissions[0].Restrictions %>
-            </dd>
-            <dt>
-              Submission Info<br/>
-            </dt>
-            <dd>
-              Date: <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %> <br />
-              <% if(Submissions[0].Source == 1) { %>
-                Source: <i class="fa-light fa-square-question"></i> Unknown
+            </div>
+            <div class="scorerNotesSection toh-mb-18">
+              <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
+              <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
+                <textarea class="uk-textarea toh-input" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
+              <% } else { %>
+                <textarea class="uk-textarea toh-input" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
               <% } %>
-              <% if(Submissions[0].Source == 2) { %>
-                Source: <i class="fa-brands fa-apple"></i> iPhone App
+              
+            </div>
+            <div class="uk-text-center toh-mb-18" id="approvalButtons">
+              <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
+                <button class="uk-button uk-button-danger rejectButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
+                  <i class="fas fa-thumbs-down"></i>&nbsp; Reject
+                </button>
+              </span>
+              <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
+                <button class="uk-button uk-button-primary skipButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
+                  <i class="fas fa-forward"></i>&nbsp; Skip
+                </button>
+              </span>
+              <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
+                <button class="uk-button toh-button-green approveButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
+                  <i class="fas fa-thumbs-up"></i>&nbsp; Approve
+                </button>
+              <% } else { %>
+                <button class="uk-button uk-button-disabled button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
+                  <i class="fas fa-thumbs-up"></i>&nbsp; Approve
+                </button>
               <% } %>
-              <% if(Submissions[0].Source == 3) { %>
-                Source: <i class="fa-brands fa-android"></i> Android App
-              <% } %>
-              <% if(Submissions[0].Source == 4) { %>
-                Source: <i class="fa-solid fa-browser"></i> Web Portal
-              <% } %>
-              <% if(Submissions[0].Source == 5) { %>
-                Source: <i class="fa-light fa-envelope"></i> Email
-              <% } %>
-              <% if(Submissions[0].Source == 6) { %>
-                Source: <i class="fa-brands fa-usps "></i> Snail Mail
-              <% } %>
-            </dd>
-            <% if(Submissions[0].RiderNotes) { %> 
+            </div>
+            
+            <dl class="uk-description-list uk-description-list-divider">
               <dt>
-                Rider Notes
+                Memorial Info<br />
+                <span class="toh-label toh-id-flag">
+                  <%= Submissions[0].Code %>
+                </span>
               </dt>
               <dd>
-                <%= Submissions[0].RiderNotes %>
+                <div style="margin-bottom: 8">
+                  <%= Submissions[0].Name %> <br />
+                  <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
+                  <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
+                </div>
+                Access: <%= Submissions[0].Access %> <br />
+                MultiImage: <%= Submissions[0].MultiImage %> <br />
+                Restrictions: <%= Submissions[0].Restrictions %>
               </dd>
-            <% } %>
-            <dt>
-              Rider Info<br/>
-              <span class="toh-label toh-rider-flag">
-                <%= Submissions[0].FlagNumber %>
-              </span>
-              <% if(Submissions[0].OtherRiders && Submissions[0].OtherRiders != 0) { %>
-                <% OtherRidersArray.forEach(function(otherRider) { %> 
-                  <span class="toh-label toh-rider-flag">
-                    <%= otherRider %>
-                  </span>
-                <% }) %>
+              <dt>
+                Submission Info<br/>
+              </dt>
+              <dd>
+                Date: <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %> <br />
+                <% if(Submissions[0].Source == 1) { %>
+                  Source: <i class="fa-light fa-square-question"></i> Unknown
+                <% } %>
+                <% if(Submissions[0].Source == 2) { %>
+                  Source: <i class="fa-brands fa-apple"></i> iPhone App
+                <% } %>
+                <% if(Submissions[0].Source == 3) { %>
+                  Source: <i class="fa-brands fa-android"></i> Android App
+                <% } %>
+                <% if(Submissions[0].Source == 4) { %>
+                  Source: <i class="fa-solid fa-browser"></i> Web Portal
+                <% } %>
+                <% if(Submissions[0].Source == 5) { %>
+                  Source: <i class="fa-light fa-envelope"></i> Email
+                <% } %>
+                <% if(Submissions[0].Source == 6) { %>
+                  Source: <i class="fa-brands fa-usps "></i> Snail Mail
+                <% } %>
+              </dd>
+              <% if(Submissions[0].RiderNotes) { %> 
+                <dt>
+                  Rider Notes
+                </dt>
+                <dd>
+                  <%= Submissions[0].RiderNotes %>
+                </dd>
               <% } %>
-            </dt>
-            <dd>
-              <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
-            </dd>
-            <dd>
-              <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
-            </dd>
-            <dd>
-              <input type="hidden" id="SubmissionMemorialID" name="SubmissionMemorialID" value="<%= Submissions[0].MemorialID %>">
-              <input type="hidden" id="SubmissionUserID" name="SubmissionUserID" value="<%= Submissions[0].UserID %>">
-              <input type="hidden" id="SubmissionFlagNum" name="SubmissionFlagNum" value="<%= Submissions[0].FlagNumber %>">
-              <input type="hidden" id="SubmissionOtherRiders" name="SubmissionOtherRiders" value="<%= Submissions[0].OtherRiders %>">
-            </dd>
-          </dl>
+              <dt>
+                Rider Info<br/>
+                <span class="toh-label toh-rider-flag">
+                  <%= Submissions[0].FlagNumber %>
+                </span>
+                <% if(Submissions[0].OtherRiders && Submissions[0].OtherRiders != 0) { %>
+                  <% OtherRidersArray.forEach(function(otherRider) { %> 
+                    <span class="toh-label toh-rider-flag">
+                      <%= otherRider %>
+                    </span>
+                  <% }) %>
+                <% } %>
+              </dt>
+              <dd>
+                <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
+              </dd>
+              <dd>
+                <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
+              </dd>
+              <dd>
+                <input type="hidden" id="SubmissionMemorialID" name="SubmissionMemorialID" value="<%= Submissions[0].MemorialID %>">
+                <input type="hidden" id="SubmissionUserID" name="SubmissionUserID" value="<%= Submissions[0].UserID %>">
+                <input type="hidden" id="SubmissionFlagNum" name="SubmissionFlagNum" value="<%= Submissions[0].FlagNumber %>">
+                <input type="hidden" id="SubmissionOtherRiders" name="SubmissionOtherRiders" value="<%= Submissions[0].OtherRiders %>">
+              </dd>
+            </dl>
+          </div>
         </div>
-      </div>
-    </main>
-    <footer>
-      <%- include('../partials/footer'); %>
-    </footer>
+      </main>
+      <footer>
+        <%- include('../partials/footer'); %>
+      </footer>
+    </div>
   </div>
   <script type="text/javascript" src="/js/submission.js"></script>
 </body>

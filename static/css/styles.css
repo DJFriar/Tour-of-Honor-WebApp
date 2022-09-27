@@ -1,23 +1,35 @@
+  /* following style will be applied to every element */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #C0DFFD;
 }
 
-.container {
-  padding: 12px;
-}
-
-.admin-container {
-  padding: 8px 48px;
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
-  padding: 10px;
+  flex-grow: 1;
+  padding: 0 10px;
+}
+
+footer {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.75em;
 }
 
 @media (min-width: 960px) {
   main {
-    padding: 20px;
+    flex-grow: 1;
+    padding: 0 20px;
   }
 }
 
@@ -45,13 +57,11 @@ h3 {
 @media (max-width: 959px) {
   h3 {
     font-size: 1.75em;
-    /* color: #fff; */
     margin: 0px;
   }
 }
 
 h4 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
   font-weight: 600;
   font-size: 2em;
   margin: 0px;
@@ -76,23 +86,6 @@ h6 {
   margin: 12px 0px;
 }
 
-footer {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.75em;
-}
-
-.memorialData h4 {
-  margin-bottom: 12px;
-}
-
-#memorialInfo {
-  margin-bottom: 12;
-}
-
-#editMemorialInfo label {
-  margin-top: 12px;
-}
-
 form {
   margin-bottom: 12px;
 }
@@ -110,6 +103,26 @@ a.disabled:hover {
 a.hidden-link:link,
 a.hidden-link:visited {
   color: #666;
+}
+
+.container {
+  padding: 12px;
+}
+
+.admin-container {
+  padding: 8px 48px;
+}
+
+.memorialData h4 {
+  margin-bottom: 12px;
+}
+
+#memorialInfo {
+  margin-bottom: 12;
+}
+
+#editMemorialInfo label {
+  margin-top: 12px;
 }
 
 .fa-clipboard-check {

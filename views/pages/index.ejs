@@ -3,18 +3,20 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <main>
-    <% if(NotificationText) { %>
-      <%- include('../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
     <% } %>
-    <p>Tour of Honor Homepage content goes here.</p>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+    <main>
+      <% if(NotificationText) { %>
+        <%- include('../partials/notice'); %>
+      <% } %>
+      <p>Tour of Honor Homepage content goes here.</p>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
 </body>

@@ -3,73 +3,74 @@
 </head>
 
 <body>
-  <%- include('../partials/topnav'); %>
-  <main>
-    <div class="uk-container-xsmall uk-margin-auto">
-      <div class="">
-        <% if(!ValidateNewRider[0].id) { %>
-        <h4 class="uk-text-center">Welcome to the TOH Scoring Portal</h4>
-          <p>To register for the Tour of Honor, please <a href="https://www.tourofhonor.com">click here</a>.</p>
-        <% } %>
-        <% if(ValidateNewRider[0].id) { %>
-        <h3 class="uk-text-center">TOH Scoring Portal</h3>
-          <p>Hello <%= ValidateNewRider[0].FirstName %>,</p>
-          <p>Thank you for choosing to join us for this year's Tour of Honor! Please provide the below information to complete your enrollment.</p>
-          <div uk-grid>
-            <div class="uk-width-1-2@s">
-              Full Name: <%= ValidateNewRider[0].FirstName %> <%= ValidateNewRider[0].LastName %><br/>
-              Email: <%= ValidateNewRider[0].Email %><br/>
-              Flag Number: <%= ValidateNewRider[0].FlagNumber %>
+  <div class="pageWrapper">
+    <%- include('../partials/topnav'); %>
+    <main>
+      <div class="uk-container-xsmall uk-margin-auto">
+        <div class="">
+          <% if(!ValidateNewRider[0].id) { %>
+          <h4 class="uk-text-center">Welcome to the TOH Scoring Portal</h4>
+            <p>To register for the Tour of Honor, please <a href="https://www.tourofhonor.com">click here</a>.</p>
+          <% } %>
+          <% if(ValidateNewRider[0].id) { %>
+          <h3 class="uk-text-center">TOH Scoring Portal</h3>
+            <p>Hello <%= ValidateNewRider[0].FirstName %>,</p>
+            <p>Thank you for choosing to join us for this year's Tour of Honor! Please provide the below information to complete your enrollment.</p>
+            <div uk-grid>
+              <div class="uk-width-1-2@s">
+                Full Name: <%= ValidateNewRider[0].FirstName %> <%= ValidateNewRider[0].LastName %><br/>
+                Email: <%= ValidateNewRider[0].Email %><br/>
+                Flag Number: <%= ValidateNewRider[0].FlagNumber %>
+              </div>
             </div>
-          </div>
-          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="UserName">Username</label>
-              <input class="uk-input toh-input" id="UserName" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="ZipCode">Zip Code</label>
-              <input class="uk-input toh-input" id="ZipCode" maxlength="5" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="City">City</label>
-              <input class="uk-input toh-input" id="City" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="State">State</label>
-              <input class="uk-input toh-input" id="State" maxlength="2" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="Password">Set a Password</label>
-              <input class="uk-input toh-input" id="Password" type="password" placeholder="******">
-            </div>
-            <div class="uk-width-1-2@s">
-              <label class="uk-form-label" for="PasswordConfirm">Confirm your Password</label>
-              <input class="uk-input toh-input" id="PasswordConfirm" type="password" placeholder="******">
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="BikeYear">Bike Year</label>
-              <input class="uk-input toh-input" id="BikeYear" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="BikeMake">Bike Make</label>
-              <input class="uk-input toh-input" id="BikeMake" type="text" placeholder="">
-            </div>
-            <div class="uk-width-1-3@s">
-              <label class="uk-form-label" for="BikeModel">Bike Model</label>
-              <input class="uk-input toh-input" id="BikeModel" type="text" placeholder="">
-            </div>
-            <input id="UserID" type="hidden" value="<%= ValidateNewRider[0].id %>">
-            <div class="uk-width-1-1@s uk-text-center"><button type="button" id="updateNewRiderButton" class="uk-button uk-button-primary button-rounded">Create Account</button></div>
-          </form>
-        <% } %>
+            <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="UserName">Username</label>
+                <input class="uk-input toh-input" id="UserName" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="ZipCode">Zip Code</label>
+                <input class="uk-input toh-input" id="ZipCode" maxlength="5" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="City">City</label>
+                <input class="uk-input toh-input" id="City" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="State">State</label>
+                <input class="uk-input toh-input" id="State" maxlength="2" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="Password">Set a Password</label>
+                <input class="uk-input toh-input" id="Password" type="password" placeholder="******">
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="PasswordConfirm">Confirm your Password</label>
+                <input class="uk-input toh-input" id="PasswordConfirm" type="password" placeholder="******">
+              </div>
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="BikeYear">Bike Year</label>
+                <input class="uk-input toh-input" id="BikeYear" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="BikeMake">Bike Make</label>
+                <input class="uk-input toh-input" id="BikeMake" type="text" placeholder="">
+              </div>
+              <div class="uk-width-1-3@s">
+                <label class="uk-form-label" for="BikeModel">Bike Model</label>
+                <input class="uk-input toh-input" id="BikeModel" type="text" placeholder="">
+              </div>
+              <input id="UserID" type="hidden" value="<%= ValidateNewRider[0].id %>">
+              <div class="uk-width-1-1@s uk-text-center"><button type="button" id="updateNewRiderButton" class="uk-button uk-button-primary button-rounded">Create Account</button></div>
+            </form>
+          <% } %>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
-
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/welcome-rider.js"></script>
 </body>

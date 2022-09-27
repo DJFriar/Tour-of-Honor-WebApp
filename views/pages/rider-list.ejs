@@ -3,65 +3,67 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <h4>Rider List</h4>
-  <% if(NotificationText) { %>
-    <%- include('../partials/notice'); %>
-  <% } %>
-  <main>
-    <div>
-      <p>Click on the column header below to sort the data. You can also search using the search box in the top right.</p>
-      <!-- <h5>Rider List</h5> -->
-      <table class="uk-table uk-table-striped uk-table-small" id="riderList">
-        <thead>
-          <tr>
-            <th>Rider #</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Sites Visited</th>
-            <th>States Completed</th>
-            <th>IBA Rides</th>
-            <th>9/11</th>
-            <th>Doughboys</th>
-            <th>Hueys</th>
-            <th>Dogs</th>
-            <th>Madonnas</th>
-            <th>Gold Star</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% riderList.forEach(function(rider) { %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <h4>Rider List</h4>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <div>
+        <p>Click on the column header below to sort the data. You can also search using the search box in the top right.</p>
+        <!-- <h5>Rider List</h5> -->
+        <table class="uk-table uk-table-striped uk-table-small" id="riderList">
+          <thead>
             <tr>
-              <td>
-                <%= rider.FlagNumber %>
-              </td>
-              <td>
-                <%= rider.FirstName %>
-              </td>
-              <td>
-                <%= rider.LastName %>
-              </td>
-              <td>0</td>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-              <td>8</td>
+              <th>Rider #</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Sites Visited</th>
+              <th>States Completed</th>
+              <th>IBA Rides</th>
+              <th>9/11</th>
+              <th>Doughboys</th>
+              <th>Hueys</th>
+              <th>Dogs</th>
+              <th>Madonnas</th>
+              <th>Gold Star</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+          </thead>
+          <tbody>
+            <% riderList.forEach(function(rider) { %>
+              <tr>
+                <td>
+                  <%= rider.FlagNumber %>
+                </td>
+                <td>
+                  <%= rider.FirstName %>
+                </td>
+                <td>
+                  <%= rider.LastName %>
+                </td>
+                <td>0</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="js/rider-list.js"></script>
 </body>
