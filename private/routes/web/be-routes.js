@@ -100,6 +100,22 @@ module.exports = function (app) {
     });
   })
 
+  // Find Next Available Flag Number
+  app.get("/api/v1/nextAvailableFlag", (req, res) => {
+    db.Flag.findAll({
+      where: {
+        RallyYear: 2022
+      },
+      raw: true
+    }).then(function (flags) {
+      var allowedNumbers = _.range(11,1201,1);
+      var badNumbers = flags.map(inUse => inUse.FlagNum);
+      var goodNumbers = _.pull(allowedNumbers, badNumbers);
+      const nextFlag = _.min(goodNumbers);
+      res.json(nextFlag);
+    });
+  })
+
   // Check Email Validity
   app.get("/api/v1/email/:email", (req,res) => {
     console.log("Email Endpoint hit");

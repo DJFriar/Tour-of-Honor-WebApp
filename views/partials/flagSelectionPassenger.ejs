@@ -6,7 +6,11 @@
         <% if (OrderInfo.RequestedPassFlagNumber) { %>
           <%= OrderInfo.RequestedPassFlagNumber %> 
         <% } else { %>
-          <%= OrderInfo.PassFlagNum %> 
+          <% if (OrderInfo.PassFlagNum === 0) { %>
+            ?
+          <% } else { %>
+            <%= OrderInfo.PassFlagNum %> 
+          <% } %>
         <% } %>
       </div> 
     </div>

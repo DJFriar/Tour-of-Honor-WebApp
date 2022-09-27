@@ -556,6 +556,18 @@ $(document).ready(function() {
     })
   })
 
+  // Handle getNextAvailableFlagNumber Button
+  $("#getNextAvailableFlagNumber").on("click", function(e) {
+    e.preventDefault();
+    $.ajax("/api/v1/nextAvailableFlag", {
+      type: "GET"
+    }).then((flagNumber) => {
+      $("#RequestedFlagNumber").val(flagNumber);
+      $("#flagAvailabilityResponse").text("This flag number is available.").css("color","green").removeClass("hide-me");
+      $("#saveNewFlagNumChoiceBtn").prop("disabled",false);
+    })
+  })
+
   // Handle Check Flag Availability button
   $("#checkFlagNumberAvailability").on("click", function(e) {
     e.preventDefault();
