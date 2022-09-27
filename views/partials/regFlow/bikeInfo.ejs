@@ -16,19 +16,15 @@
         <table class="uk-table uk-table-striped uk-table-small" id="riderBikeInfo">
           <thead>
             <tr>
-              <th>NickName</th>
-              <th>Year</th>
-              <th>Make</th>
-              <th>Model</th>
-              <th>Actions</th>
+              <th class="uk-text-center">Year</th>
+              <th class="uk-text-center">Make</th>
+              <th class="uk-text-center">Model</th>
+              <th class="uk-text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             <% RiderBikeInfo.forEach(function(Bike) { %>
               <tr>
-                <td>
-                  <%= Bike.BikeName %>
-                </td>
                 <td>
                   <%= Bike.Year %>
                 </td>

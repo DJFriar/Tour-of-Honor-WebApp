@@ -496,7 +496,6 @@ module.exports = function (app) {
   app.post("/api/v1/bike", (req, res) => {
     db.Bike.create({
       user_id: req.body.UserID,
-      BikeName: req.body.BikeName,
       Year: req.body.BikeYear,
       Make: req.body.BikeMake,
       Model: req.body.BikeModel,
@@ -508,7 +507,6 @@ module.exports = function (app) {
   // Update a Bike
   app.put("/api/v1/bike", (req, res) => {
     db.Bike.update({
-      BikeName: req.body.BikeName,
       Year: req.body.BikeYear,
       Make: req.body.BikeMake,
       Model: req.body.BikeModel,
