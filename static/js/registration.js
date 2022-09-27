@@ -71,12 +71,12 @@ $(document).ready(function() {
   })
 
   // Handle Save New Bike Button
-  $("#saveNewBikeInfoBtn").on("click", function() {
+  $("#saveNewBikeInfoBtn").on("click", function(e) {
+    e.preventDefault();
     var UserID = $(this).data("userid");
 
     var bikeInfo = {
       UserID,
-      BikeName: $("#BikeName").val().trim(),
       BikeYear: $("#BikeYear").val().trim(),
       BikeMake: $("#BikeMake").val().trim(),
       BikeModel: $("#BikeModel").val().trim(),
@@ -86,7 +86,7 @@ $(document).ready(function() {
       type: "POST",
       data: bikeInfo
     }).then(
-      function() { location.replace("/user-profile"); }
+      function() { location.reload(); }
     )
   })
 
@@ -102,7 +102,6 @@ $(document).ready(function() {
       function(res) {
         $("#bikeInfoEditModal").css("display","block");
         $("#EditBikeID").val(res.id);
-        $("#EditBikeName").val(res.BikeName);
         $("#EditBikeYear").val(res.Year);
         $("#EditBikeMake").val(res.Make);
         $("#EditBikeModel").val(res.Model);
@@ -111,10 +110,10 @@ $(document).ready(function() {
   })
 
   // Handle Save Edited Bike Info button
-  $("#saveEditedBikeInfoBtn").on("click", function() {
+  $("#saveEditedBikeInfoBtn").on("click", function(e) {
+    e.preventDefault();
     var editedBikeInfo = {
       BikeID: $("#EditBikeID").val().trim(),
-      BikeName: $("#EditBikeName").val().trim(),
       BikeYear: $("#EditBikeYear").val().trim(),
       BikeMake: $("#EditBikeMake").val().trim(),
       BikeModel: $("#EditBikeModel").val().trim(),
@@ -124,12 +123,13 @@ $(document).ready(function() {
       type: "PUT",
       data: editedBikeInfo
     }).then(
-      function() { location.replace("/user-profile"); }
+      function() { location.reload(); }
     )
   })
 
   // Handle Bike Deletion
-  $(".deleteBikeBtn").on("click", function() {
+  $(".deleteBikeBtn").on("click", function(e) {
+    e.preventDefault();
     var BikeID = $(this).data("bikeid");
 
     $.ajax("/api/v1/bike/" + BikeID, {
@@ -143,6 +143,7 @@ $(document).ready(function() {
 
   // Handle Bike Info Accurate Button
   $("#acceptBikeInfoBtn").on("click", function(e) {
+    e.preventDefault();
     var UserID = $(this).data("userid");
     var BikeInfo = {
       RegStep: "Bike",
@@ -346,7 +347,8 @@ $(document).ready(function() {
   // ****************************
 
   // Handle Charity Choice Button
-  $("#saveCharityChoiceBtn").on("click", function() {
+  $("#saveCharityChoiceBtn").on("click", function(e) {
+    e.preventDefault();
     const UserID = $(this).data("userid");
     const charityChoice = $("#CharityChoice").val().trim();
 
@@ -371,7 +373,8 @@ $(document).ready(function() {
   // ****************************
 
   // Handle Save T-Shirt Choices Button
-  $("#saveTshirtInfo").on("click", function() {
+  $("#saveTshirtInfo").on("click", function(e) {
+    e.preventDefault();
     const UserID = $(this).data("userid");
     const submittedPassID = $(this).data("passid");
 
@@ -451,7 +454,8 @@ $(document).ready(function() {
   // *************************
 
   // Handle Waiver Button
-  $("#saveWaiverInfo").on("click", function() {
+  $("#saveWaiverInfo").on("click", function(e) {
+    e.preventDefault();
     var UserID = $(this).data("userid");
     var WaiverInfo = {
       RegStep: "Waiver",
@@ -474,7 +478,7 @@ $(document).ready(function() {
 
   // Handle Keep Existing Flag Yes button
   $(".keepExistingFlagNum").on("click", function(e) {
-    // e.preventDefault();
+    e.preventDefault();
     const UserID = $(this).data("userid");
     const OrderID = $(this).data("orderid");
     const whoami = $(this).data("whoami");
@@ -605,7 +609,8 @@ $(document).ready(function() {
   })
 
   // Handle Continue to Summary Button
-  $("#goToSummaryBtn").on("click", function() {
+  $("#goToSummaryBtn").on("click", function(e) {
+    e.preventDefault();
     var UserID = $(this).data("userid");
 
     var FlagInfoCompleted = {
