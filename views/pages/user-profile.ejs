@@ -48,7 +48,11 @@
         <div class="uk-width-1-2@s" uk-grid>
           <div class="uk-width-1-2@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
             <label class="uk-form-label" for="FlagNumber">Flag Number</label>
+            <% if(User.FlagNumber && User.FlagNumber != 0) { %>
             <input disabled class="uk-input toh-input" id="FlagNumber" type="text" placeholder="Flag Number" value="<%= User.FlagNumber %>" >
+            <% } else { %>
+              <input class="uk-input toh-input" id="FlagNumber" type="text" placeholder="N/A" value="N/A">
+            <% } %>
           </div>
           <div class="uk-width-1-2@s">
             <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
