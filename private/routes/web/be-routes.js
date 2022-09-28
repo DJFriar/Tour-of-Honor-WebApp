@@ -111,6 +111,7 @@ module.exports = function (app) {
       var allowedNumbers = _.range(11,1201,1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
       var goodNumbers = _.pull(allowedNumbers, badNumbers);
+      console.log(goodNumbers);
       const nextFlag = _.min(goodNumbers);
       res.json(nextFlag);
     });
@@ -484,12 +485,10 @@ module.exports = function (app) {
     db.User.create({
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
-      UserName: req.body.UserName,
       FlagNumber: 0, // REMOVE THIS AFTER 2022 RALLY
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password,
       Address1: req.body.Address1,
-      Address2: req.body.Address2,
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,
@@ -679,12 +678,10 @@ module.exports = function (app) {
     db.User.update({
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
-      UserName: req.body.UserName,
       FlagNumber: req.body.FlagNumber,
       PillionFlagNumber: req.body.PillionFlagNumber,
       Email: req.body.Email,
       Address1: req.body.Address1,
-      Address2: req.body.Address2,
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,

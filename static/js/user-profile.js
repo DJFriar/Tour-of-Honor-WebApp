@@ -23,10 +23,10 @@ $(document).ready(() => {
       UserID,
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
-      UserName: $("#UserName").val().trim(),
       FlagNumber: $("#FlagNumber").val().trim(),
       PillionFlagNumber: PillionFlagNumberInput,
       Email: $("#Email").val().trim(),
+      Address1: $("#Address1").val().trim(),
       City: $("#City").val().trim(),
       State: $("#State").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
