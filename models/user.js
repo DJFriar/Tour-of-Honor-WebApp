@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     UserName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true
     },
     Email: {
@@ -33,6 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Address2: {
       type: DataTypes.STRING,
+      allowNull: true
     },
     City: {
       type:DataTypes.STRING,

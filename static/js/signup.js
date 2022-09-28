@@ -7,12 +7,10 @@ $(document).ready(() => {
     var newUser = {
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
-      UserName: $("#UserName").val().trim(),
       FlagNumber: 000,
       Email: $("#Email").val().trim(),
       Password: $("#Password").val().trim(),
       Address1: $("#Address1").val().trim(),
-      Address2: $("#Address2").val().trim(),
       City: $("#City").val().trim(),
       State: $("#State").val().trim(),
       ZipCode: $("#ZipCode").val().trim()
