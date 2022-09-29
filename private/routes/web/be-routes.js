@@ -14,7 +14,7 @@ const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const Shopify = require("shopify-api");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
-const fetch = require('isomorphic-fetch');
+const fetch = require('node-fetch');
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -1175,21 +1175,28 @@ module.exports = function (app) {
   app.post("/api/v1/waiver", (req, res) => {
     const waiverID = req.body.unique_id;
     const smartWaiverURL = "https://api.smartwaiver.com/v4/waivers/" + waiverID;
+    const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
 
     console.log("==== Waiver Webhook Response ====");
     console.log(req.body);
 
-    fetch(smartWaiverURL).then(function(response) {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      const UserID = response.body.waiver.autoTag;
-      db.Waiver.update({
-        UserID,
-        WaiverID: waiverID,
-        RallyYear: 2023
+    fetch(smartWaiverURL, {
+      method: 'get',
+      headers: { 'sw-api-key': smartWaiverAPIKey }
+    })
+      .then(function(response) {
+        if (response.status >= 400) {
+          logger.error("Failed to fetch waiver info from SmartWaiver. " + response);
+        }
+        console.log("==== Waiver Fetch Response ====");
+        console.log(response.body);
+        const UserID = response.body.waiver.autoTag;
+        db.Waiver.update({
+          UserID,
+          WaiverID: waiverID,
+          RallyYear: 2023
+        });
       });
-    });
 
     res.status(200).send();
   })
