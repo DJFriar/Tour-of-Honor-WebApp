@@ -14,6 +14,7 @@ const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const Shopify = require("shopify-api");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
+const fetch = require('isomorphic-fetch');
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -1172,10 +1173,24 @@ module.exports = function (app) {
   })
 
   app.post("/api/v1/waiver", (req, res) => {
-    // const userid = req.params.userid;
+    const waiverID = req.body.unique_id;
+    const smartWaiverURL = "https://api.smartwaiver.com/v4/waivers/" + waiverID;
 
     console.log("==== Waiver Webhook Response ====");
     console.log(req.body);
+
+    fetch(smartWaiverURL).then(function(response) {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      const UserID = response.body.waiver.autoTag;
+      db.Waiver.update({
+        UserID,
+        WaiverID: waiverID,
+        RallyYear: 2023
+      });
+    });
+
     res.status(200).send();
   })
 }
