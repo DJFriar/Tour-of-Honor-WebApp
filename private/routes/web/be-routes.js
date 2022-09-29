@@ -963,9 +963,6 @@ module.exports = function (app) {
         }
       }
 
-      console.log("==== Total Cost ====");
-      console.log("Total Cost = $" + totalPrice);
-
       var PriceTierObject = await q.queryTierByPrice(totalPrice);
       var PriceTier = parseInt(PriceTierObject[0].Tier);
       var ShopifyVariantID = PriceTierObject[0].ShopifyVariantID;
@@ -974,9 +971,9 @@ module.exports = function (app) {
       // Generate the Shopify URL & ID
       var checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
       ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
-      logger.info("Checkout URL Generated: ", ShirtDetails.CheckoutURL);
+      logger.info("Checkout URL Generated: " + ShirtDetails.CheckoutURL);
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
-      logger.info("Checkout ID Generated: ", ShirtDetails.CheckoutID);
+      logger.info("Checkout ID Generated: " + ShirtDetails.CheckoutID);
 
       // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
