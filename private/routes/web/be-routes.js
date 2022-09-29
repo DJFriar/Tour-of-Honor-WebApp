@@ -1185,17 +1185,22 @@ module.exports = function (app) {
       headers: { 'sw-api-key': smartWaiverAPIKey }
     })
       .then(function(response) {
+        console.log("==== Waiver Fetch Response ====");
+        console.log(response);
         if (response.status >= 400) {
           logger.error("Failed to fetch waiver info from SmartWaiver. " + response);
         }
-        console.log("==== Waiver Fetch Response ====");
-        console.log(response.body);
-        const UserID = response.body.waiver.autoTag;
-        db.Waiver.update({
-          UserID,
-          WaiverID: waiverID,
-          RallyYear: 2023
-        });
+        const UserID = response.body.waiver.autoTag || 0;
+        if (UserID > 0) {
+          db.Waiver.update({
+            UserID,
+            WaiverID: waiverID,
+            RallyYear: 2023
+          })
+        } else {
+          logger.error("UserID not found in SmartWaiver response!");
+        }
+
       });
 
     res.status(200).send();
