@@ -1184,7 +1184,7 @@ module.exports = function (app) {
       headers: { 'sw-api-key': smartWaiverAPIKey }
     })
       .then(res => res.json())
-      .then(json => logger.info("Response from Waiver Fetch" + json))
+      .then(json => console.log(json))
       // .then(function(response) {
       //   console.log("==== Waiver Fetch Response ====");
       //   console.log(response);
