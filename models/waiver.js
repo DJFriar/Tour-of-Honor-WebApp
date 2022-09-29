@@ -3,7 +3,7 @@ module.exports = function(sequelize, DataTypes) {
     UserID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: 'Flags_unique',
+      unique: 'Waiver_unique',
     },
     WaiverID: {
       type: DataTypes.STRING,
@@ -12,6 +12,13 @@ module.exports = function(sequelize, DataTypes) {
     RallyYear: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique: 'Waiver_unique',
+    }
+  }, {
+    uniqueKeys: {
+      Waiver_unique: {
+        fields: ['UserID', 'RallyYear']
+      }
     }
   });
   return Waiver;
