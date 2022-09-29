@@ -1187,7 +1187,7 @@ module.exports = function (app) {
       .then(json => {
         const UserID = json.waiver.autoTag || 0;
         if (UserID > 0) {
-          db.Waiver.update({
+          db.Waiver.create({
             UserID,
             WaiverID: waiverID,
             RallyYear: 2023
