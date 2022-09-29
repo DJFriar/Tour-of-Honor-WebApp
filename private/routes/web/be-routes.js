@@ -1178,30 +1178,31 @@ module.exports = function (app) {
     console.log(req.body);
     logger.info("Waiver Webhook Response", req.body);
     logger.info("smartWaiverURL: " + smartWaiverURL);
-    console.log("Using API KEY " + smartWaiverAPIKey);
 
     fetch(smartWaiverURL, {
       method: 'get',
       headers: { 'sw-api-key': smartWaiverAPIKey }
     })
-      .then(function(response) {
-        console.log("==== Waiver Fetch Response ====");
-        console.log(response);
-        if (response.status >= 400) {
-          logger.error("Failed to fetch waiver info from SmartWaiver. " + response);
-        }
-        const UserID = response.body.waiver.autoTag || 0;
-        if (UserID > 0) {
-          db.Waiver.update({
-            UserID,
-            WaiverID: waiverID,
-            RallyYear: 2023
-          })
-        } else {
-          logger.error("UserID not found in SmartWaiver response!");
-        }
+      .then(res => res.json())
+      .then(json => logger.info("Response from Waiver Fetch" + json))
+      // .then(function(response) {
+      //   console.log("==== Waiver Fetch Response ====");
+      //   console.log(response);
+      //   if (response.status >= 400) {
+      //     logger.error("Failed to fetch waiver info from SmartWaiver. " + response);
+      //   }
+      //   const UserID = response.body.waiver.autoTag || 0;
+      //   if (UserID > 0) {
+      //     db.Waiver.update({
+      //       UserID,
+      //       WaiverID: waiverID,
+      //       RallyYear: 2023
+      //     })
+      //   } else {
+      //     logger.error("UserID not found in SmartWaiver response!");
+      //   }
 
-      });
+      // });
 
     res.status(200).send();
   })
