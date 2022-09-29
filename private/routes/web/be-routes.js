@@ -1174,10 +1174,7 @@ module.exports = function (app) {
     const smartWaiverURL = "https://api.smartwaiver.com/v4/waivers/" + waiverID;
     const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
 
-    // console.log("==== Waiver Webhook Response ====");
-    // console.log(req.body);
     logger.info("Waiver Webhook Response", req.body);
-    // logger.info("smartWaiverURL: " + smartWaiverURL);
 
     fetch(smartWaiverURL, {
       method: 'get',
@@ -1198,5 +1195,17 @@ module.exports = function (app) {
       })
 
     res.status(200).send();
+  })
+
+  // Check Waiver Status
+  app.get("/api/v1/checkWaiverStatus/id", (req, res) => {
+    db.Waiver.findOne({
+      where: {
+        UserID: id,
+        RallyYear: 2023
+      }
+    }).then(function (waiverData) {
+      res.json(waiverData);
+    });
   })
 }
