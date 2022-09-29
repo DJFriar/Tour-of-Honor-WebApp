@@ -609,7 +609,7 @@ module.exports = function (app) {
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
-      if (OrderInfo.PassUserID > 0) {
+      if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
           var passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
           OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
@@ -626,10 +626,6 @@ module.exports = function (app) {
       OrderInfo.push({ NextStepNum: 0 });
       OrderInfo.push({ PassUserID: 0 });
     }
-
-    console.log("==== OrderInfo ====");
-    logger.info(OrderInfo.dataValues);
-    
 
     try {
       var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);

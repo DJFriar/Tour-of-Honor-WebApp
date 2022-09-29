@@ -1179,6 +1179,9 @@ module.exports = function (app) {
 
     console.log("==== Waiver Webhook Response ====");
     console.log(req.body);
+    logger.info("Waiver Webhook Response", req.body);
+    logger.info("smartWaiverURL: " + smartWaiverURL);
+    console.log("Using API KEY " + smartWaiverAPIKey);
 
     fetch(smartWaiverURL, {
       method: 'get',
