@@ -1,0 +1,26 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <h4>Waiver Signed</h4>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <div>
+        <p>Thank you for signing the waiver. This page will auto advance once we validate your waiver (generally within 10 seconds).</p>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="js/stats.js"></script>
+</body>

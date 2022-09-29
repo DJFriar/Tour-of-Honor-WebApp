@@ -457,19 +457,21 @@ $(document).ready(function() {
   $("#saveWaiverInfo").on("click", function(e) {
     e.preventDefault();
     var UserID = $(this).data("userid");
+    const waiverURL = "https://waiver.smartwaiver.com/v/tohDev/?auto_anyoneelseneedtosign=0&auto_tag=" + UserID;
     var WaiverInfo = {
       RegStep: "Waiver",
       UserID,
       NextStepNum: 7
     }
     console.log(WaiverInfo);
-    $.ajax("/api/v1/regFlow", {
-      type: "POST",
-      data: WaiverInfo
-    }).then(() => { 
-      $("#RegStep7").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(7); 
-    })
+    window.open(waiverURL);
+    // $.ajax("/api/v1/regFlow", {
+    //   type: "POST",
+    //   data: WaiverInfo
+    // }).then(() => { 
+    //   $("#RegStep7").removeClass("disabled");
+    //   UIkit.switcher("#registrationSwitcher").show(7); 
+    // })
   })
 
   // ******************************
