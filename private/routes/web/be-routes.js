@@ -1170,4 +1170,12 @@ module.exports = function (app) {
       res.status(401).json(err);
     });
   })
+
+  app.post("/api/v1/waiver", (req, res) => {
+    // const userid = req.params.userid;
+
+    console.log("==== Waiver Webhook Response ====");
+    console.log(req.body);
+    res.status(200).send();
+  })
 }

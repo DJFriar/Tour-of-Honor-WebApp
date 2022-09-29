@@ -1,5 +1,5 @@
-var path = require("path");
-const db = require("../../../models");
+// var path = require("path");
+// const db = require("../../../models");
 const q = require("../../queries");
 const { DateTime } = require("luxon");
 // Requiring our custom middleware for checking if a user is logged in
@@ -739,6 +739,20 @@ module.exports = function (app) {
       dt: DateTime
     });
   });
+
+  app.get("/waiver-response/:userid"), async (req, res) => {
+    const userid = req.params.userid;
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    res.locals.title = "TOH Waiver Signed"
+    res.render("pages/waiver-response", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      dt: DateTime
+    });
+
+  }
 
   //#endregion
   // ===============================================================================
