@@ -740,7 +740,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/waiver-response/:userid"), async (req, res) => {
+  app.get("/waiver-response/:userid", async (req, res) => {
     const userid = req.params.userid;
     var activeUser = false;
     if (req.user) { activeUser = true };
@@ -751,8 +751,7 @@ module.exports = function (app) {
       NotificationText: "",
       dt: DateTime
     });
-
-  }
+  });
 
   //#endregion
   // ===============================================================================
