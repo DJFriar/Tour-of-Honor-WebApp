@@ -736,16 +736,23 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/waiver-response/:userid", async (req, res) => {
+  app.get("/waiver-check/:userid", async (req, res) => {
     const userid = req.params.userid;
     var activeUser = false;
     if (req.user) { activeUser = true };
-    res.locals.title = "TOH Waiver Signed"
-    res.render("pages/waiver-response", {
+    try {
+      var WaiverID = await q.queryWaiverIDByUser(userid) || "";
+    } catch {
+      logger.error("Error encountered: queryWaiverIDByUser");
+    }
+    res.locals.title = "TOH Waiver Check"
+    res.render("pages/waiver-check", {
       activeUser,
       User: req.user,
       NotificationText: "",
-      dt: DateTime
+      dt: DateTime,
+      UserID: userid,
+      WaiverID
     });
   });
 

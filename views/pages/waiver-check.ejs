@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
   <%- include('../partials/head'); %>
 </head>
@@ -9,18 +10,20 @@
     <% } else { %>
       <%- include('../partials/topnav'); %>
     <% } %>
-    <h4>Waiver Signed</h4>
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>
     <main>
+      <h4>Waiver Check</h4>
       <div>
-        <p>Thank you for signing the waiver. This page will auto advance once we validate your waiver (generally within 10 seconds).</p>
+        <input id="UserID" type="hidden" value="<%= UserID %>">
+        <!-- <%= WaiverID.WaiverID %> -->
+        <p>Thank you for signing waiver. This page will auto advance once we validate your waiver (generally within 15 seconds).</p>
       </div>
     </main>
     <footer>
       <%- include('../partials/footer'); %>
     </footer>
   </div>
-  <script type="text/javascript" src="js/stats.js"></script>
+  <script type="text/javascript" src="/js/waiver-check.js"></script>
 </body>
