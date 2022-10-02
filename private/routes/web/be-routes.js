@@ -3,18 +3,22 @@ const db = require("../../../models");
 const q = require("../../queries");
 const ejs = require("ejs");
 const _ = require('lodash');
-const uploadSubmission = require("../../../controllers/uploadSubmission");
-const passport = require("../../../config/passport");
-const multer = require("multer");
-const isAuthenticated = require("../../../config/isAuthenticated");
-const sendEmail = require("../../sendEmail");
+const { DateTime } = require("luxon");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const fetch = require('node-fetch');
+const { getDefaultSettings } = require("http2");
+const Shopify = require("shopify-api");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const uploadSubmission = require("../../../controllers/uploadSubmission");
+const passport = require("../../../config/passport");
+const isAuthenticated = require("../../../config/isAuthenticated");
+const sendEmail = require("../../sendEmail");
 const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
-const Shopify = require("shopify-api");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
-const fetch = require('node-fetch');
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -95,7 +99,7 @@ module.exports = function (app) {
     }).then(function (flags) {
       var allowedNumbers = _.range(11,1201,1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
-      var goodNumbers = _.pull(allowedNumbers, badNumbers);
+      var goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
       res.json(randomFlag);
     });
@@ -103,16 +107,24 @@ module.exports = function (app) {
 
   // Find Next Available Flag Number
   app.get("/api/v1/nextAvailableFlag", (req, res) => {
+    let rallyYearArray = [process.env.ORDERING_RALLY_YEAR];
+    if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
+      rallyYearArray.unshift(process.env.CURRENT_RALLY_YEAR)
+    }
     db.Flag.findAll({
       where: {
-        RallyYear: 2022
+        RallyYear: {
+          [Op.in]: rallyYearArray
+        }
       },
+      order: [
+        ["FlagNum", "ASC"]
+      ],
       raw: true
     }).then(function (flags) {
       var allowedNumbers = _.range(11,1201,1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
-      var goodNumbers = _.pull(allowedNumbers, badNumbers);
-      console.log(goodNumbers);
+      var goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const nextFlag = _.min(goodNumbers);
       res.json(nextFlag);
     });
