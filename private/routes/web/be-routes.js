@@ -19,6 +19,7 @@ const sendEmail = require("../../sendEmail");
 const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
+const waiver = require("../../../models/waiver");
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -1210,13 +1211,15 @@ module.exports = function (app) {
   })
 
   // Check Waiver Status
-  app.get("/api/v1/checkWaiverStatus/id", (req, res) => {
+  app.get("/api/v1/checkWaiverStatus/:id", (req, res) => {
+    const waiverID = req.params.id;
     db.Waiver.findOne({
       where: {
-        UserID: id,
-        RallyYear: 2023
+        UserID: waiverID,
+        RallyYear: process.env.ORDERING_RALLY_YEAR
       }
     }).then(function (waiverData) {
+      console.log(waiverData);
       res.json(waiverData);
     });
   })
