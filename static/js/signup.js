@@ -1,14 +1,16 @@
 $(document).ready(() => {
 
+  // Validate the password as soon as the fields are filled out.
+  $("#PasswordConfirm").keyup(validatePassword);
+
   // When the signup button is clicked, we validate the email and password are not blank
   $("#signupForm").on("submit", function(e) {
     e.preventDefault();
-    console.info("Signup Form Submitted");
     var newUser = {
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
-      FlagNumber: 000,
-      Email: $("#Email").val().trim(),
+      FlagNumber: 0,
+      Email: $("#Email").val().trim().toLowerCase(),
       Password: $("#Password").val().trim(),
       Address1: $("#Address1").val().trim(),
       City: $("#City").val().trim(),
@@ -26,5 +28,19 @@ $(document).ready(() => {
       console.log("Something went wrong when creating the new user: " + err);
     })
   });
+
+  // Functions
+  function validatePassword() {
+    const Password = $("#Password").val().trim();
+    const PasswordConfirm = $("#PasswordConfirm").val().trim();
+
+    if (Password !== PasswordConfirm) {
+      $("#passwordValidationStatus").text("Passwords do not match. Please try again.").attr('style','color: red');
+      $("#createUserButton").prop("disabled", true);
+    } else {
+      $("#passwordValidationStatus").text("Passwords match.").attr('style','color: green');
+      $("#createUserButton").prop("disabled", false);
+    }
+  }
 
 });
