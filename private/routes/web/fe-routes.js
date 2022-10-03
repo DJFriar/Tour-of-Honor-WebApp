@@ -39,12 +39,18 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered: queryPendingSubmissions:" + err);
     }
+    try {
+      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch {
+      logger.error("Error encountered: queryTimeZoneData");
+    }
     res.locals.title = "TOH Scoring Dashboard"
     res.render("pages/scoring", {
       activeUser,
       User: req.user,
       NotificationText: "",
       PendingSubmissions,
+      TimeZone,
       dt: DateTime
     });
   });
@@ -57,12 +63,18 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered: queryScoredSubmissions:" + err);
     }
+    try {
+      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch {
+      logger.error("Error encountered: queryTimeZoneData");
+    }
     res.locals.title = "TOH Scored"
     res.render("pages/scored", {
       activeUser,
       User: req.user,
       NotificationText: "",
       Submissions,
+      TimeZone,
       dt: DateTime
     });
   });
@@ -76,6 +88,11 @@ module.exports = function (app) {
     var activeUser = false
     if (req.user) { activeUser = true };
     const id = req.params.id;
+    try {
+      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch {
+      logger.error("Error encountered: queryTimeZoneData");
+    }
     try {
       var Submissions = await q.queryAllSubmissions(id);
       if (Submissions.length == 0) {
@@ -92,6 +109,7 @@ module.exports = function (app) {
           baseSampleImageUrl,
           Submissions,
           OtherRidersArray,
+          TimeZone,
           dt: DateTime
         });
       }
@@ -578,6 +596,11 @@ module.exports = function (app) {
     } catch {
       logger.error("Error encountered: queryAllBikes");
     }
+    try {
+      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch {
+      logger.error("Error encountered: queryTimeZoneData");
+    }
     console.log(req.user);
     console.log(RiderBikeInfo);
     res.locals.title = "TOH User Profile"
@@ -587,6 +610,7 @@ module.exports = function (app) {
       NotificationText: "",
       RiderSubmissionHistory,
       RiderBikeInfo,
+      TimeZone,
       dt: DateTime
     });
   });

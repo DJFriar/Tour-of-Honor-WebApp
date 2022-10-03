@@ -44,6 +44,9 @@ module.exports = function(sequelize, DataTypes) {
     ZipCode: {
       type:DataTypes.STRING,
     },
+    TimeZone: {
+      type: DataTypes.STRING,
+    },
     ProfilePic: {
       type: DataTypes.STRING
     },

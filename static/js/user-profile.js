@@ -29,7 +29,8 @@ $(document).ready(() => {
       Address1: $("#Address1").val().trim(),
       City: $("#City").val().trim(),
       State: $("#State").val().trim(),
-      ZipCode: $("#ZipCode").val().trim()
+      ZipCode: $("#ZipCode").val().trim(),
+      TimeZone: $("#TimeZone").val().trim()
     }
 
     // Make sure that email field isn't blank.

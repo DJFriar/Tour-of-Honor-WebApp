@@ -755,3 +755,31 @@ module.exports.queryAllConfigs = async function queryAllConfigs() {
     throw err;
   }
 }
+
+module.exports.queryWaiverIDByUser = async function queryWaiverIDByUser(UserID) {
+  try {
+    var result = await db.Waiver.findOne({
+      where: {
+        UserID: UserID
+      }
+    })
+    return result;
+  } catch (err) {
+    logger.error("queryWaiverIDByUser:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone) {
+  try {
+    var result = await db.TimeZone.findOne({
+      where: {
+        ShortName: TimeZone
+      }
+    })
+    return result;
+  } catch (err) {
+    logger.error("queryTimeZoneData:" + err);
+    throw err;
+  }
+}

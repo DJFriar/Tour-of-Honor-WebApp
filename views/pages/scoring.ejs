@@ -91,7 +91,7 @@
                       <%= submission.City %>, <%= submission.State %>
                     </td>
                     <td>
-                      <%= dt.fromJSDate(submission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
+                      <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
                     </td>
                   </tr>
                 <% }) %>
@@ -156,7 +156,7 @@
                       <%= submission.City %>, <%= submission.State %>
                     </td>
                     <td>
-                      <%= dt.fromJSDate(submission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
+                      <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
                     </td>
                   </tr>
                 <% }) %>
