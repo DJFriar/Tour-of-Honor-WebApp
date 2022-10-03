@@ -31,10 +31,6 @@ module.exports = function(sequelize, DataTypes) {
     Address1: {
       type: DataTypes.STRING,
     },
-    Address2: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
     City: {
       type:DataTypes.STRING,
     },
