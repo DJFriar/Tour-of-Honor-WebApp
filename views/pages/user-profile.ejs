@@ -46,7 +46,16 @@
         </div>
         
         <div class="uk-width-1-2@s" uk-grid>
-          <div class="uk-width-1-2@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
+          <div class="uk-width-1-3@s" uk-tooltip="title: This will adjust the times you see on the site; pos: bottom" >
+            <label class="uk-form-label" for="TimeZone">Time Zone</label>
+            <select class="uk-select toh-input" name="TimeZone" id="TimeZone">
+              <option value="PDT">Pacific</option>
+              <option value="MDT">Mountain</option>
+              <option value="CDT">Central</option>
+              <option value="EDT">Eastern</option>
+            </select>
+          </div>
+          <div class="uk-width-1-3@s" uk-tooltip="title: To change your flag number, please contact TOH; pos: bottom" >
             <label class="uk-form-label" for="FlagNumber">Flag Number</label>
             <% if(User.FlagNumber && User.FlagNumber != 0) { %>
             <input disabled class="uk-input toh-input" id="FlagNumber" type="text" placeholder="Flag Number" value="<%= User.FlagNumber %>" >
@@ -54,7 +63,7 @@
               <input class="uk-input toh-input" id="FlagNumber" type="text" placeholder="N/A" value="N/A">
             <% } %>
           </div>
-          <div class="uk-width-1-2@s">
+          <div class="uk-width-1-3@s">
             <label class="uk-form-label" for="PillionFlagNumber">Passenger Flag Number</label>
             <% if(User.PillionFlagNumber && User.PillionFlagNumber != 0) { %>
               <input class="uk-input toh-input" id="PillionFlagNumber" type="text" value="<%= User.PillionFlagNumber %>">
@@ -152,7 +161,7 @@
                   <% } %>
                 </td>
                 <td>
-                  <%= dt.fromJSDate(riderSubmission.createdAt).toFormat('LLL d, yyyy @ HH:mm'); %>
+                  <%= dt.fromJSDate(riderSubmission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
                 </td>
                 <td>
                   <% if(riderSubmission.StatusID == 0) { %> 
@@ -177,5 +186,17 @@
       <%- include('../partials/footer'); %>
     </footer>
   </div>
+  <script>
+    $(document).ready(function() {
+      console.log("<%= User.TimeZone %>");
+      for (var option of document.getElementById("TimeZone").options) {
+        if (option.value === "<%= User.TimeZone %>")
+          {
+            option.selected = true;
+            return;
+          }
+      }
+    })
+  </script>
   <script type="text/javascript" src="/js/user-profile.js"></script>
 </body>

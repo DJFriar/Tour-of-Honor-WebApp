@@ -323,7 +323,7 @@ module.exports = function (app) {
       UserName: req.body.UserName,
       FlagNumber: req.body.FlagNumber,
       Email: req.body.Email.toLowerCase(),
-      Password: req.body.Password
+      Password: req.body.Password,
     })
       .then((x) => {
         db.Flag.create({
@@ -699,6 +699,7 @@ module.exports = function (app) {
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,
+      TimeZone: req.body.TimeZone,
       isAdmin: req.body.isAdmin
     }, {
       where: { id: req.body.UserID }

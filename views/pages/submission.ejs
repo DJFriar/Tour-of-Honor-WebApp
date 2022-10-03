@@ -106,7 +106,7 @@
                 Submission Info<br/>
               </dt>
               <dd>
-                Date: <%= dt.fromJSDate(Submissions[0].createdAt).toFormat('LLL d, yyyy @ HH:mm'); %> <br />
+                Date: <%= dt.fromJSDate(Submissions[0].createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %> <br />
                 <% if(Submissions[0].Source == 1) { %>
                   Source: <i class="fa-light fa-square-question"></i> Unknown
                 <% } %>
