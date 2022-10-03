@@ -186,7 +186,6 @@ $(document).ready(function() {
     }).then(() => { 
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
-      // $("#saveTshirtInfo").attr("data-showpassoptions", "false");
     })
   })
 
@@ -263,6 +262,33 @@ $(document).ready(function() {
     })
   })
 
+  // Validate Passenger's Password
+  $("#PassengerPasswordConfirmForm").keyup(validatePassword);
+
+  // Check Passenger Email Uniqueness
+  $("#PassengerEmailForm").focusout(function() {
+    var email = $(this).val();
+    if (email) {
+      $.ajax("/api/v1/email/" + email, {
+        type: "GET"
+      }).then(
+        function(emailInfo) {
+          if (emailInfo) {
+            existingPassengerEmailFound = true;
+            $("#PassengerEmailForm").css("border","4px solid red")
+            $("#emailValidationError").text("Email address must be unique. Please use a different email.");
+            $("#savePassengerInfo").prop("disabled", true);
+          } else {
+            existingPassengerEmailFound = false;
+            $("#PassengerEmailForm").css("border","none")
+            $("#emailValidationError").text("");
+            $("#savePassengerInfo").prop("disabled", false);
+          }
+        }
+      );
+    }
+  })
+
   // Handle Save Passenger Info Button
   $("#savePassengerInfo").on("click", function() {
     const UserID = $(this).data("userid");
@@ -273,31 +299,10 @@ $(document).ready(function() {
       NextStepNum: 3,
       FirstName: $("#PassengerFirstNameForm").val().trim(),
       LastName: $("#PassengerLastNameForm").val().trim(),
-      UserName: $("#PassengerUserNameForm").val().trim(),
-      Email: $("#PassengerEmailForm").val().trim(),
-      Password: randomString(14),
+      Email: $("#PassengerEmailForm").val().trim().toLowerCase(),
+      Password: $("#PassengerPasswordForm").val().trim(),
       FlagNumber: 0
     }
-
-    // // Check Passenger Email Uniqueness
-    // $("#PassengerEmailForm").on("input paste", function() {
-    //   var email = $(this).val();
-    //   if (email) {
-    //     $.ajax("/api/v1/email/" + email, {
-    //       type: "GET"
-    //     }).then(
-    //       function(emailInfo) {
-    //         if (emailInfo) {
-    //           existingPassengerEmailFound = true;
-    //           $("#PassengerEmailForm").css("border","4px solid red")
-    //         } else {
-    //           existingPassengerEmailFound = false;
-    //           $("#PassengerEmailForm").css("border","none")
-    //         }
-    //       }
-    //     );
-    //   }
-    // })
 
     // Make sure that Passenger first name isn't blank.
     if (!PassengerInfo.FirstName) {
@@ -313,13 +318,6 @@ $(document).ready(function() {
       return;
     }
 
-    // Make sure that Passenger username isn't blank.
-    if (!PassengerInfo.UserName) {
-      $("#PassengerUserNameForm").css("border","4px solid red");
-      alert("Passenger's User Name is required.");
-      return;
-    }
-
     // Make sure that Passenger email isn't blank.
     if (!PassengerInfo.Email) {
       $("#PassengerEmailForm").css("border","4px solid red");
@@ -327,15 +325,23 @@ $(document).ready(function() {
       return;
     }
 
-    if (existingPassengerEmailFound) {
-      $("#PassengerEmailForm").css("border","4px solid red");
-      alert("Passenger's Email Address must be unique.");
+    // Make sure that Passenger password isn't blank.
+    if (!PassengerInfo.Password) {
+      $("#PassengerUserNameForm").css("border","4px solid red");
+      alert("Passenger's Password is required.");
       return;
     }
 
     $.ajax("/api/v1/regFlow", {
       type: "POST",
-      data: PassengerInfo
+      data: PassengerInfo,
+      statusCode: {
+        409: function() {
+          $("#PassengerEmailForm").css("border","4px solid red");
+          alert("Passenger's Email Address must be unique.");
+          $("#savePassengerInfo").prop("disabled", true);
+        }
+      }
     }).then(() => {
       $("#RegStep3").removeClass("disabled");
       UIkit.switcher("#registrationSwitcher").show(3);
@@ -665,4 +671,39 @@ $(document).ready(function() {
   const randomString = (length = 14) => {
     return Math.random().toString(16).substr(2, length);
   };
+
+  // Check for Waiver by UserID
+  function checkForWaiver(id) {
+    $.ajax("/api/v1/checkWaiverStatus", {
+      type: "GET",
+      data: {
+        UserID: id,
+      }
+    }).then(() => {
+      if (whoami === "rider") {
+        riderReady = true;
+        $("#flagAssignedRider").removeClass("hide-me");
+      }
+      if (whoami === "passenger") {
+        passReady = true;
+        $("#flagAssignedPassenger").removeClass("hide-me");
+      }
+    }).catch(err => {
+      console.log("Error when saving new Flag Assignment: " + err);
+    });
+  }
+
+  // Password validation
+  function validatePassword() {
+    const Password = $("#PassengerPasswordForm").val().trim();
+    const PasswordConfirm = $("#PassengerPasswordConfirmForm").val().trim();
+
+    if (Password !== PasswordConfirm) {
+      $("#passwordValidationStatus").text("Passwords do not match. Please try again.").attr('style','color: red');
+      $("#savePassengerInfo").prop("disabled", true);
+    } else {
+      $("#passwordValidationStatus").text("Passwords match.").attr('style','color: green');
+      $("#savePassengerInfo").prop("disabled", false);
+    }
+  }
 });

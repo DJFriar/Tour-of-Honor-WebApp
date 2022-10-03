@@ -133,15 +133,12 @@ module.exports = function (app) {
 
   // Check Email Validity
   app.get("/api/v1/email/:email", (req,res) => {
-    console.log("Email Endpoint hit");
     const email = req.params.email;
     db.User.findOne({
       where: {
         Email: email
       }
     }).then(function (dbPost) {
-      console.log("==== Email Check ====");
-      console.log(dbPost);
       res.json(dbPost);
     });
   })
@@ -889,6 +886,41 @@ module.exports = function (app) {
 
     if (RegStep == "NewPassenger") {
       console.log(RegStep + " step entered.");
+
+      // Check to see if Email is unique
+      db.User.findOne({
+        where: {
+          Email: req.body.Email
+        }
+      }).then((emailCheck) => {
+        if (emailCheck) {
+          // Reject the submission
+          return res.status(409).send();
+        } else {
+          // Create New User and Update the Order
+          db.User.create({
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            FlagNumber: req.body.FlagNumber,
+            Email: req.body.Email.toLowerCase(),
+            Password: req.body.Password
+          }).then((newUser) => {
+            if (newUser) {
+              db.Order.update({
+                PassUserID: newUser.id,
+                NextStepNum: 3
+              },{
+                where: {
+                  RallyYear: 2023,
+                  UserID: req.body.UserID
+                }
+              }).then(() => {
+                res.status(200).send();
+              })
+            }
+          })
+        }
+      })
 
     }
 

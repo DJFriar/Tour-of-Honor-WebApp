@@ -1,4 +1,4 @@
-<div>
+<div class="uk-container-small uk-margin-auto">
   <h4 class="toh-mb-18">Passenger Info</h4>
   <div class="toh-mb-18">
     <p>Do you want to register a passenger at this time and receive the discounted rate?</p>
@@ -30,7 +30,8 @@
     </div>
   </div>
   <div id="passengerInfoForm" class="toh-mb-18 hide-me" style="margin: 0px 60px">
-    <form class="uk-grid-small uk-form-stacked" uk-grid>
+    <p>Please enter your passenger's information below. Note they need their own unique email.</p>
+    <form class="signup uk-grid-small uk-form-stacked" id="passengerSignup" uk-grid>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerFirstNameForm">First Name</label>
         <input class="uk-input toh-input" required id="PassengerFirstNameForm" type="text" placeholder="Firstname">
@@ -39,15 +40,21 @@
         <label class="uk-form-label" for="PassengerLastNameForm">Last Name</label>
         <input class="uk-input toh-input" required id="PassengerLastNameForm" type="text" placeholder="Lastname">
       </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="PassengerUserNameForm">Username</label>
-        <input class="uk-input toh-input" required id="PassengerUserNameForm" type="text" placeholder="Username">
-      </div>
-      <div class="uk-width-1-2@s">
+      <div class="uk-width-1-1@s">
         <label class="uk-form-label" for="PassengerEmailForm">Email</label>
         <input class="uk-input toh-input" required id="PassengerEmailForm" type="email" placeholder="someone@domain.com">
+        <span id="emailValidationError" style="color: red;"></span> 
       </div>
-            
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerPasswordForm">Password</label>
+        <input class="uk-input toh-input" required id="PassengerPasswordForm" type="password" placeholder="************">
+        <span>&nbsp;</span>
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerPasswordConfirmForm">Confirm Password</label>
+        <input class="uk-input toh-input" required id="PassengerPasswordConfirmForm" type="password" placeholder="************">
+        <span id="passwordValidationStatus"></span>        
+      </div>
       <div class="uk-width-1-1@s uk-text-center">
         <label class="uk-form-label" for="savePassengerInfo">&nbsp;</label>
         <button type="button" id="savePassengerInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Save Passenger Info</button>
