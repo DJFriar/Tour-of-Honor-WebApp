@@ -342,10 +342,9 @@ $(document).ready(function() {
           $("#savePassengerInfo").prop("disabled", true);
         }
       }
-    }).then(() => {
-      $("#RegStep3").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(3);
-    })
+    }).then(
+      function() { location.reload(); }
+    )
   })
 
   // ****************************
@@ -368,10 +367,9 @@ $(document).ready(function() {
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: CharityChoices
-    }).then(() => { 
-      $("#RegStep4").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(4);
-    })
+    }).then(
+      function() { location.reload(); }
+    )
   })
 
   // ****************************
