@@ -428,8 +428,8 @@ $(document).ready(function() {
       console.log("==== checkOrderStatus response ====");
       console.log(res);
       if (res > 0) {
-        $("#RegStep7").removeClass("disabled");
-        UIkit.switcher("#registrationSwitcher").show(7); 
+        $("#RegStep6").removeClass("disabled");
+        UIkit.switcher("#registrationSwitcher").show(6); 
       } else {
         $("#awaitingShopifyContent").addClass("hide-me");
         $("#orderNumberMissing").removeClass("hide-me");
@@ -445,8 +445,8 @@ $(document).ready(function() {
       console.log("==== checkOrderStatus response ====");
       console.log(res);
       if (res > 0) {
-        $("#RegStep7").removeClass("disabled");
-        UIkit.switcher("#registrationSwitcher").show(7); 
+        $("#RegStep6").removeClass("disabled");
+        UIkit.switcher("#registrationSwitcher").show(6); 
       } else {
         console.log("Unable to confirm successful payment.");
       }
