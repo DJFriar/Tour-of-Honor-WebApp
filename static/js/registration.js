@@ -419,14 +419,26 @@ $(document).ready(function() {
     window.open(CheckoutURL);
   })
 
-  $("#goToWaiver").on("click", function() {
+  $(".checkForOrderNumber").on("click", function() {
     var UserID = $(this).data("userid");
 
     $.ajax("/api/v1/checkOrderStatus/" + UserID, {
       type: "GET"
     }).then((res) => {
-      console.log("==== checkOrderStatus response ====");
-      console.log(res);
+      if (res > 0) {
+        location.reload();
+      } else {
+        $("#orderNumberMissing").removeClass("hide-me");
+      }
+    })
+  })
+
+  $(".goToWaiverButton").on("click", function() {
+    var UserID = $(this).data("userid");
+
+    $.ajax("/api/v1/checkOrderStatus/" + UserID, {
+      type: "GET"
+    }).then((res) => {
       if (res > 0) {
         $("#RegStep6").removeClass("disabled");
         UIkit.switcher("#registrationSwitcher").show(6); 
@@ -442,8 +454,6 @@ $(document).ready(function() {
     $.ajax("/api/v1/checkOrderStatus/" + UserID, {
       type: "GET"
     }).then((res) => {
-      console.log("==== checkOrderStatus response ====");
-      console.log(res);
       if (res > 0) {
         $("#RegStep6").removeClass("disabled");
         UIkit.switcher("#registrationSwitcher").show(6); 

@@ -374,3 +374,7 @@ a.hidden-link:visited {
   display: flex;
   justify-content: center;
 }
+
+.forceOrderUpdateText {
+  font-size: .9em;
+}

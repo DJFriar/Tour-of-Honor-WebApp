@@ -1,23 +1,42 @@
 <div>
   <h4 class="toh-mb-18">Payment</h4>
   <div class="uk-align-center uk-text-center">
-    <div id="shopifyPaymentContainer">
-      <div class="uk-width-1-1@s uk-text-center">
-        <p>Your total is $<%= TotalOrderCost[0].Price %>. Please click the button below to pay via the Tour of Honor Store.</p>
+
+    <% if (!OrderInfo.OrderNumber) { %>
+      <div id="shopifyPaymentContainer">
+        <div class="uk-width-1-1@s uk-text-center">
+          <p>
+            Your total is <strong>$<%= TotalOrderCost[0].Price %></strong>. Please click the button below to pay via the Tour of Honor Store.<br />
+            This will open a new tab or window. When complete, please come back to this page to continue.
+          </p>
+        </div>
+        <div id="shopifyPaymentButtonContainer" class="uk-width-1-1@s uk-text-center">
+          <label class="uk-form-label" for="goToPayment">&nbsp;</label>
+          <button type="button" id="goToPayment" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Checkout Now</button>
+        </div>
+        <p>&nbsp;</p>
+        <p class="forceOrderUpdateText">
+          If you are seeing this message after paying, you may <a class="checkForOrderNumber" href="#" data-userid="<%= User.id %>">click here</a> to have the system check for your order again.<br /> 
+          If that does not work, please <a href="#">contact us</a> and include your Order Number.
+        </p>
       </div>
-      <div id="shopifyPaymentButtonContainer" class="uk-width-1-1@s uk-text-center">
-        <label class="uk-form-label" for="goToPayment">&nbsp;</label>
-        <button type="button" id="goToPayment" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
-      </div>
-    </div>
+    <% } %>
+
+    <% if (OrderInfo.OrderNumber) { %>
+      <p>Thank you for your order. Please click the button below to continue registering.</p>
+      <label class="uk-form-label" for="goToWaiverBtn1">&nbsp;</label>
+      <button type="button" id="goToWaiverBtn1" class="uk-button uk-button-primary button-rounded goToWaiverButton" data-userid="<%= User.id %>">Continue to Waiver</button>
+    <% } %>
+
     <div id="awaitingShopifyContent" class="uk-width-1-1@s uk-text-center hide-me">
       <p>Shopify checkout has opened in another window/tab. <br/>Once you have completed payment, please come back here and click the button below to continue.</p>
-      <label class="uk-form-label" for="goToWaiver">&nbsp;</label>
-      <button type="button" id="goToWaiver" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Waiver</button>
+      <label class="uk-form-label" for="goToWaiverBtn2">&nbsp;</label>
+      <button type="button" id="goToWaiverBtn2" class="uk-button uk-button-primary button-rounded goToWaiverButton" data-userid="<%= User.id %>">Continue to Waiver</button>
       <p>If you do not see another tab or accidentally closed it out, you may click the button below to re-open it. <br />Note that if you have a pop-up blocker on, you may need to disable it for our site.</p>
       <label class="uk-form-label" for="goToPayment2">&nbsp;</label>
       <button type="button" id="goToPayment2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
     </div>
+
     <div id="orderNumberMissing" class="uk-width-1-1@s uk-text-center hide-me">
       <p>
         Our records do not show a successful payment yet. If you just paid, please wait 2-3 minutes and then click Continue to Waiver again.<br /> 
@@ -28,5 +47,6 @@
       <label class="uk-form-label" for="goToPayment3">&nbsp;</label>
       <button type="button" id="goToPayment3" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
     </div>
+    
   </div>
 </div>
