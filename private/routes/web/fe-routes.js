@@ -633,11 +633,17 @@ module.exports = function (app) {
 
     try {
       var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
+      // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
           var passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
-          OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
-          OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+          if (passFlagNum && passFlagNum > 0) {
+            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
+            OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+          } else {
+            OrderInfo.dataValues.PassFlagNum = 0;
+            OrderInfo.PassFlagNum = 0;
+          }
         } catch (err) {
           logger.error("Error encountered: queryFlagNumFromUserID " + err);
         }
@@ -645,6 +651,8 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered: queryOrderInfoByRider " + err);
     }
+
+
     if (!OrderInfo || OrderInfo.length == 0) {
       OrderInfo = [];
       OrderInfo.push({ NextStepNum: 0 });

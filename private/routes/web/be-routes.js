@@ -1,6 +1,3 @@
-// Requiring our models and passport as we've configured it
-const db = require("../../../models");
-const q = require("../../queries");
 const ejs = require("ejs");
 const _ = require('lodash');
 const { DateTime } = require("luxon");
@@ -12,6 +9,9 @@ const { getDefaultSettings } = require("http2");
 const Shopify = require("shopify-api");
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+const db = require("../../../models");
+const q = require("../../queries");
 const uploadSubmission = require("../../../controllers/uploadSubmission");
 const passport = require("../../../config/passport");
 const isAuthenticated = require("../../../config/isAuthenticated");
@@ -1115,6 +1115,7 @@ module.exports = function (app) {
           logger.warn("orderNumber not found for TOH Order " + o.id + ". Order is likely not paid for yet." + err);
           res.json(0);
         }
+        // If Shopify provides us with an Order number, then add it to the DB.
         if (orderNumber) {
           db.Order.update({
             OrderNumber: orderNumber,
