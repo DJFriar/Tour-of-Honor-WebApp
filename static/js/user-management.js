@@ -59,7 +59,7 @@ $(document).ready(function() {
   })
 
   // Handle Edit Dialog Cancel Button
-  $("#cancelButton").on("click", function() {
+  $(".cancelButton").on("click", function() {
     $(".modal").css("display","none");
   })
 
