@@ -395,7 +395,7 @@ $(document).ready(function() {
       ShirtOrderInfo.PassShirtStyle = $("#PassengerShirtStyle").val();
       ShirtOrderInfo.PassShirtSize = $("#PassengerShirtSize").val();
     }
-    console.log(ShirtOrderInfo);
+
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: ShirtOrderInfo
