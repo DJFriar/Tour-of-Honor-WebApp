@@ -431,7 +431,7 @@ $(document).ready(function() {
       if (res > 0) {
         location.reload();
       } else {
-        $("#orderNumberMissing").removeClass("hide-me");
+        $(".noOrderFoundText").removeClass("hide-me");
       }
     })
   })

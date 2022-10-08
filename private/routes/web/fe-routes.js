@@ -790,6 +790,10 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/waiver-check", async (req,res) => {
+    res.redirect('/registration');
+  });
+
   //#endregion
   // ===============================================================================
 

@@ -94,7 +94,7 @@ async function checkOrderStatusByCheckoutID(checkoutid) {
   query = buildGraphQLQueryToGetOrderNumber();
   query_vars = getQueryVars(checkoutid);
   orderStatusResponse = await postQuery(query, query_vars)
-  console.debug(orderStatusResponse)
+  // console.debug(orderStatusResponse)
   orderNumber = orderStatusResponse.data.node.order.name;
 
   return orderNumber.slice(1);

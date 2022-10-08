@@ -229,6 +229,10 @@ a.hidden-link:visited {
   padding: 2px 8px;
 }
 
+.noOrderFoundText {
+  font-weight: bold;
+}
+
 .toh-logo {
   height: 80px
 }
