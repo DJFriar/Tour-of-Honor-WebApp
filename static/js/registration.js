@@ -262,7 +262,10 @@ $(document).ready(function() {
     })
   })
 
-  // Validate Passenger's Password
+  // Validate the passenger's email as soon as the fields are filled out.
+  $("#PassengerEmailFormConfirm").keyup(validateEmail);
+
+  // Validate the passenger's password as soon as the fields are filled out.
   $("#PassengerPasswordConfirmForm").keyup(validatePassword);
 
   // Check Passenger Email Uniqueness
@@ -395,7 +398,7 @@ $(document).ready(function() {
       ShirtOrderInfo.PassShirtStyle = $("#PassengerShirtStyle").val();
       ShirtOrderInfo.PassShirtSize = $("#PassengerShirtSize").val();
     }
-    console.log(ShirtOrderInfo);
+
     $.ajax("/api/v1/regFlow", {
       type: "POST",
       data: ShirtOrderInfo
@@ -707,10 +710,38 @@ $(document).ready(function() {
     const PasswordConfirm = $("#PassengerPasswordConfirmForm").val().trim();
 
     if (Password !== PasswordConfirm) {
-      $("#passwordValidationStatus").text("Passwords do not match. Please try again.").attr('style','color: red');
+      $("#passwordValidationStatus").removeClass("hide-me");
+      $("#passwordValidationStatus")
+        .text("Passwords do not match, please try again.")
+        .removeClass("labelValidationStatusSuccess")
+        .addClass("labelValidationStatusFailed");
       $("#savePassengerInfo").prop("disabled", true);
     } else {
-      $("#passwordValidationStatus").text("Passwords match.").attr('style','color: green');
+      $("#passwordValidationStatus")
+        .text("Passwords match.")
+        .removeClass("labelValidationStatusFailed")
+        .addClass("labelValidationStatusSuccess");
+      $("#savePassengerInfo").prop("disabled", false);
+    }
+  }
+
+  // Email validation
+  function validateEmail() {
+    const Email = $("#PassengerEmailForm").val().trim();
+    const EmailConfirm = $("#PassengerEmailFormConfirm").val().trim();
+
+    if (Email !== EmailConfirm) {
+      $("#emailValidationStatus").removeClass("hide-me");
+      $("#emailValidationStatus")
+        .text("Emails do not match, please try again.")
+        .removeClass("labelValidationStatusSuccess")
+        .addClass("labelValidationStatusFailed");
+      $("#savePassengerInfo").prop("disabled", true);
+    } else {
+      $("#emailValidationStatus")
+        .text("Emails match.")
+        .removeClass("labelValidationStatusFailed")
+        .addClass("labelValidationStatusSuccess");
       $("#savePassengerInfo").prop("disabled", false);
     }
   }

@@ -35,25 +35,32 @@
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerFirstNameForm">First Name</label>
         <input class="uk-input toh-input" required id="PassengerFirstNameForm" type="text" placeholder="Firstname">
+        <span>&nbsp;</span>
       </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerLastNameForm">Last Name</label>
         <input class="uk-input toh-input" required id="PassengerLastNameForm" type="text" placeholder="Lastname">
+        <span>&nbsp;</span>
       </div>
-      <div class="uk-width-1-1@s">
+      <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerEmailForm">Email</label>
-        <input class="uk-input toh-input" required id="PassengerEmailForm" type="email" placeholder="someone@domain.com">
-        <span id="emailValidationError" style="color: red;"></span> 
+        <input class="uk-input toh-input" required id="PassengerEmailForm" type="email" placeholder="someone@domain.com" autocomplete="username">
+        <span>&nbsp;</span>
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerEmailFormConfirm">Confirm Email</label>
+        <input class="uk-input toh-input" required id="PassengerEmailFormConfirm" type="email" placeholder="someone@domain.com" autocomplete="username">
+        <span class="labelValidationStatusFailed hide-me" id="emailValidationStatus"></span>
       </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerPasswordForm">Password</label>
-        <input class="uk-input toh-input" required id="PassengerPasswordForm" type="password" placeholder="************">
+        <input class="uk-input toh-input" required id="PassengerPasswordForm" type="password" placeholder="************" autocomplete="new-password">
         <span>&nbsp;</span>
       </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerPasswordConfirmForm">Confirm Password</label>
-        <input class="uk-input toh-input" required id="PassengerPasswordConfirmForm" type="password" placeholder="************">
-        <span id="passwordValidationStatus"></span>        
+        <input class="uk-input toh-input" required id="PassengerPasswordConfirmForm" type="password" placeholder="************" autocomplete="new-password">
+        <span class="labelValidationStatusFailed hide-me" id="passwordValidationStatus"></span>
       </div>
       <div class="uk-width-1-1@s uk-text-center">
         <label class="uk-form-label" for="savePassengerInfo">&nbsp;</label>
