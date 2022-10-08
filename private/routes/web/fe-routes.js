@@ -648,6 +648,8 @@ module.exports = function (app) {
           logger.error("Error encountered: queryFlagNumFromUserID " + err);
         }
       }
+      console.log("==== OrderInfo ====");
+      console.log(OrderInfo);
     } catch (err) {
       logger.error("Error encountered: queryOrderInfoByRider " + err);
     }
