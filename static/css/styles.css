@@ -213,6 +213,22 @@ a.hidden-link:visited {
   margin-bottom: 18px;
 }
 
+.labelValidationStatusFailed {
+  background-color: #f0506e;
+  border-radius: 8px;
+  color: #fff;
+  float: right;
+  padding: 2px 8px;
+}
+
+.labelValidationStatusSuccess {
+  background-color: #32d296;
+  border-radius: 8px;
+  color: #fff;
+  float: right;
+  padding: 2px 8px;
+}
+
 .toh-logo {
   height: 80px
 }

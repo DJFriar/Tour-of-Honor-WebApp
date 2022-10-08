@@ -1,5 +1,8 @@
 $(document).ready(() => {
 
+  // Validate the Email as soon as the fields are filled out.
+  $("#EmailConfirm").keyup(validateEmail);
+  
   // Validate the password as soon as the fields are filled out.
   $("#PasswordConfirm").keyup(validatePassword);
 
@@ -35,10 +38,37 @@ $(document).ready(() => {
     const PasswordConfirm = $("#PasswordConfirm").val().trim();
 
     if (Password !== PasswordConfirm) {
-      $("#passwordValidationStatus").text("Passwords do not match. Please try again.").attr('style','color: red');
+      $("#passwordValidationStatus").removeClass("hide-me");
+      $("#passwordValidationStatus")
+        .text("Passwords do not match. Please try again.")
+        .removeClass("labelValidationStatusSuccess")
+        .addClass("labelValidationStatusFailed");
       $("#createUserButton").prop("disabled", true);
     } else {
-      $("#passwordValidationStatus").text("Passwords match.").attr('style','color: green');
+      $("#passwordValidationStatus")
+        .text("Passwords match.")
+        .removeClass("labelValidationStatusFailed")
+        .addClass("labelValidationStatusSuccess");
+      $("#createUserButton").prop("disabled", false);
+    }
+  }
+
+  function validateEmail() {
+    const Email = $("#Email").val().trim();
+    const EmailConfirm = $("#EmailConfirm").val().trim();
+
+    if (Email !== EmailConfirm) {
+      $("#emailValidationStatus").removeClass("hide-me");
+      $("#emailValidationStatus")
+        .text("Emails do not match. Please try again.")
+        .removeClass("labelValidationStatusSuccess")
+        .addClass("labelValidationStatusFailed");
+      $("#createUserButton").prop("disabled", true);
+    } else {
+      $("#emailValidationStatus")
+        .text("Emails match.")
+        .removeClass("labelValidationStatusFailed")
+        .addClass("labelValidationStatusSuccess");
       $("#createUserButton").prop("disabled", false);
     }
   }

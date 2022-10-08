@@ -24,15 +24,14 @@
                 <input class="uk-input toh-input" required id="LastName" type="text" placeholder="Lastname"></input>
               </div>
               <div class="uk-width-1-1@s">
+                &nbsp;
                 <label class="uk-form-label" for="Address1">Street Address</label>
                 <input class="uk-input toh-input" required id="Address1" type="text" placeholder="Address1"></input>
               </div>
-
               <div class="uk-width-1-2@s">
                 <label class="uk-form-label" for="City">City</label>
                 <input class="uk-input toh-input" required id="City" type="text" placeholder="City"></input>
               </div>
-
               <div class="uk-width-1-4@s">
                 <label class="uk-form-label" for="State">State</label>
                 <input class="uk-input toh-input" required id="State" type="text" placeholder="State"></input>
@@ -41,9 +40,15 @@
                 <label class="uk-form-label" for="ZipCode">Zip Code</label>
                 <input class="uk-input toh-input" required id="ZipCode" type="text" placeholder="Zip Code"></input>
               </div>
-              <div class="uk-width-1-1@s">
+              <div class="uk-width-1-2@s">
+                &nbsp;
                 <label class="uk-form-label" for="Email">Email</label>
                 <input class="uk-input toh-input" required id="Email" type="email" placeholder="someone@domain.com" autocomplete="username"></input>
+              </div>
+              <div class="uk-width-1-2@s">
+                &nbsp;
+                <label class="uk-form-label" for="EmailConfirm">Confirm Email <span class="labelValidationStatusFailed hide-me" id="emailValidationStatus">Emails do not match. Please try again.</span></label>
+                <input class="uk-input toh-input" required id="EmailConfirm" type="email" placeholder="someone@domain.com" autocomplete="username"></input>
               </div>
               <div class="uk-width-1-2@s">
                 <label class="uk-form-label" for="Password">Password</label>
@@ -51,9 +56,9 @@
                 <span>&nbsp;</span>
               </div>
               <div class="uk-width-1-2@s">
-                <label class="uk-form-label" for="PasswordConfirm">Confirm Password</label>
+                <label class="uk-form-label" for="PasswordConfirm">Confirm Password <span class="labelValidationStatusFailed hide-me" id="passwordValidationStatus"></span></label>
                 <input class="uk-input toh-input" required id="PasswordConfirm" type="password" placeholder="************" autocomplete="new-password"></input>
-                <span id="passwordValidationStatus"></span>
+                
               </div>
               <div class="uk-width-1-2@s">Note: If you already have an account, <a href="/login">click here to log in</a>.</div>
               <div class="uk-width-1-2@s uk-text-right"><button type="submit" id="createUserButton" class="uk-button uk-button-primary">Create Account</button></div>
