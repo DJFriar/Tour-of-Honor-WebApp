@@ -14,11 +14,14 @@
           <label class="uk-form-label" for="goToPayment">&nbsp;</label>
           <button type="button" id="goToPayment" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Checkout Now</button>
         </div>
-        <p>&nbsp;</p>
-        <p class="forceOrderUpdateText">
-          If you are seeing this message after paying, you may <a class="checkForOrderNumber" href="#" data-userid="<%= User.id %>">click here</a> to have the system check for your order again.<br /> 
-          If that does not work, please <a href="mailto:dave.brooks@tourofhonor.com">contact us</a> and include your Order Number.
-        </p>
+        <div class="forceOrderUpdateContainer">
+          <p class="toh-mt-18">&nbsp;<span class="noOrderFoundText hide-me">No order was found.</span></p>
+          <!-- <p class="noOrderFoundText hide-me">No order was found.</p> -->
+          <p class="forceOrderUpdateText">
+            If you are seeing this message after paying, you may <a class="checkForOrderNumber" href="#" data-userid="<%= User.id %>">click here</a> to have the system check for your order again.<br /> 
+            If that does not work, please <a href="mailto:dave.brooks@tourofhonor.com">contact us</a> and include your Order Number.
+          </p>
+        </div>
       </div>
     <% } %>
 
