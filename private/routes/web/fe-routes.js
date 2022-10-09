@@ -694,6 +694,31 @@ module.exports = function (app) {
       logger.error("Error encountered: queryBikesByRider" + err);
     }
 
+    // Check for Rider Waiver info
+    if (OrderInfo.UserID > 0) {
+      try {
+        var RiderWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.UserID)
+        OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
+      } catch (err) {
+        logger.error("Error encountered: Rider queryWaiverIDByUser" + err);
+      }
+    } else {
+      OrderInfo.RiderWaiverID = "";
+    }
+
+    // Check for Passenger Waiver info
+    if (OrderInfo.PassUserID > 0) {
+      try {
+        var PassWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.PassUserID)
+        OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
+      } catch (err) {
+        logger.error("Error encountered: Rider queryWaiverIDByUser" + err);
+      }
+    }
+
+    console.log("==== OrderInfo from fe-routes ====");
+    console.log(OrderInfo);
+
     res.locals.title = "TOH Registration"
     res.render("pages/registration", {
       activeUser,
