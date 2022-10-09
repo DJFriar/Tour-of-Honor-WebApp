@@ -1043,7 +1043,23 @@ module.exports = function (app) {
 
     if (RegStep == "Waiver") {
       console.log(RegStep + " step entered.");
-      res.send("success");
+
+      var WaiverInfo = {
+        NextStepNum: 7,
+      }
+
+      // Update Order with new step number
+      db.Order.update(WaiverInfo, {
+        where: {
+          RallyYear: 2023,
+          id: req.body.OrderID
+        }
+      }).then(() => {
+        res.status(202).send();
+      }).catch(err => {
+        logger.error("Error updating order with Waiver info: " + err);
+        res.status(401).json(err);
+      })
     }
 
     if (RegStep == "FlagInProgess") {

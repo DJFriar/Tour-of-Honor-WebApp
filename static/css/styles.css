@@ -378,6 +378,12 @@ a.hidden-link:visited {
   border-radius: 8px;
 }
 
+.toh-button-success {
+  background-color: #32d296;
+  border: 1px solid transparent;
+  color: #fff;
+}
+
 .force-uppercase {
   text-transform: uppercase;
 }
