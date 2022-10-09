@@ -5,9 +5,19 @@
     Once you have signed the waiver, you will be redirected back to this site to continue your registration.
   </p>
   <div class="uk-width-1-1@s">
-    <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
-    <button type="button" id="saveWaiverInfoRider" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= User.id %>">Sign Rider Waiver</button>
-    <label class="uk-form-label" for="saveWaiverInfoPassenger">&nbsp;</label>
-    <button type="button" id="saveWaiverInfoPassenger" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= OrderInfo.PassUserID %>">Sign Passenger Waiver</button>
+    <% if (OrderInfo.RiderWaiverID) { %>
+      Rider Waiver <%= OrderInfo.RiderWaiverID %>
+    <% } else { %>
+      <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
+      <button type="button" id="saveWaiverInfoRider" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= User.id %>">Sign Rider Waiver</button>
+    <% } %>
+    <% if (OrderInfo.PassUserID > 0) { %>
+      <% if (OrderInfo.PassengerWaiverID) { %>
+        Passenger Waiver <%= OrderInfo.PassengerWaiverID %>
+      <% } else { %>
+        <label class="uk-form-label" for="saveWaiverInfoPassenger">&nbsp;</label>
+        <button type="button" id="saveWaiverInfoPassenger" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= OrderInfo.PassUserID %>">Sign Passenger Waiver</button>
+      <% } %>
+    <% } %>
   </div>
 </div>

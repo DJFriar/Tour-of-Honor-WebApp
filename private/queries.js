@@ -770,6 +770,20 @@ module.exports.queryWaiverIDByUser = async function queryWaiverIDByUser(UserID) 
   }
 }
 
+module.exports.queryWaiversByOrderID = async function queryWaiversByOrderID(OrderID) {
+  try {
+    var result = await sequelize.query("SELECT w.* FROM Orders o LEFT JOIN Waivers w ON ((o.UserID = w.UserID) OR (o.PassUserID = w.UserID)) WHERE o.id = ?",
+    {
+      replacements: [OrderID],
+      type: QueryTypes.SELECT
+    });
+    return result;
+  } catch (err) {
+    logger.error("queryWaiversByOrderID:" + err);
+    throw err;
+  }
+}
+
 module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone) {
   try {
     var result = await db.TimeZone.findOne({
