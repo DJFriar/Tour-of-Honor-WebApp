@@ -6,19 +6,35 @@
   </p>
   <div class="uk-width-1-1@s">
     <% if (OrderInfo.RiderWaiverID) { %>
-      Rider Waiver <%= OrderInfo.RiderWaiverID %>
+      <!-- Rider Waiver <%= OrderInfo.RiderWaiverID %> -->
+      <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
+      <button type="button" id="riderWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Rider Waiver Signed</button>
     <% } else { %>
       <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
       <button type="button" id="saveWaiverInfoRider" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= User.id %>">Sign Rider Waiver</button>
     <% } %>
     <% if (OrderInfo.PassUserID > 0) { %>
       <% if (OrderInfo.PassengerWaiverID) { %>
-        Passenger Waiver <%= OrderInfo.PassengerWaiverID %>
+        <!-- Passenger Waiver <%= OrderInfo.PassengerWaiverID %> -->
+        <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
+        <button type="button" id="passengerWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Passenger Waiver Signed</button>
       <% } else { %>
         <label class="uk-form-label" for="saveWaiverInfoPassenger">&nbsp;</label>
         <button type="button" id="saveWaiverInfoPassenger" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= OrderInfo.PassUserID %>">Sign Passenger Waiver</button>
       <% } %>
     <% } %>
   </div>
-  <p>The button to advance beyond the waiver and choose your flag number is disabled at the moment, but should be back tomorrow (Sun, Oct 9th, 2022)</p>
+  <div class="uk-width-1-1@s toh-mt-18">
+    <!-- <p>The button to advance beyond the waiver and choose your flag number is disabled at the moment, but should be back tomorrow (Sun, Oct 9th, 2022)</p> -->
+    <% if (OrderInfo.PassUserID > 0) { %>
+      <% if (OrderInfo.PassengerWaiverID && OrderInfo.RiderWaiverID) { %>
+        <label class="uk-form-label" for="continueToFlagNumberBtn2">&nbsp;</label>
+        <button type="button" id="continueToFlagNumberBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumber" data-orderid="<%= OrderInfo.id %>">Continue to Flag Number Selection</button>
+      <% } %>
+    <% } %>
+    <% if ((!OrderInfo.PassUserID || OrderInfo.PassUserID == 0) && OrderInfo.RiderWaiverID) { %>
+      <label class="uk-form-label" for="continueToFlagNumberBtn1">&nbsp;</label>
+      <button type="button" id="continueToFlagNumberBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumber" data-orderid="<%= OrderInfo.id %>">Continue to Flag Number Selection</button>
+    <% } %>
+  </div>
 </div>

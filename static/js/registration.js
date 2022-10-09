@@ -482,13 +482,24 @@ $(document).ready(function() {
     }
     console.log(WaiverInfo);
     window.open(waiverURL);
-    // $.ajax("/api/v1/regFlow", {
-    //   type: "POST",
-    //   data: WaiverInfo
-    // }).then(() => { 
-    //   $("#RegStep7").removeClass("disabled");
-    //   UIkit.switcher("#registrationSwitcher").show(7); 
-    // })
+  })
+
+  // Handle Continue to Flag Number bUtton
+  $(".goToFlagNumber").on("click", function(e) {
+    e.preventDefault();
+    var OrderID = $(this).data("orderid");
+
+    var WaiverInfo = {
+      RegStep: "Waiver",
+      OrderID,
+      NextStepNum: 7
+    }
+    $.ajax("/api/v1/regFlow", {
+      type: "POST",
+      data: WaiverInfo
+    }).then(() => {
+      location.replace("/registration");
+    })
   })
 
   // ******************************
