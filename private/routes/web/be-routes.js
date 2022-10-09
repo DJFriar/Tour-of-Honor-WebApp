@@ -1253,7 +1253,6 @@ module.exports = function (app) {
         RallyYear: process.env.ORDERING_RALLY_YEAR
       }
     }).then(function (waiverData) {
-      console.log(waiverData);
       res.json(waiverData);
     });
   })
