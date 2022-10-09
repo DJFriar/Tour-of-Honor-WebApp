@@ -1,8 +1,6 @@
-// var path = require("path");
-// const db = require("../../../models");
 const q = require("../../queries");
 const { DateTime } = require("luxon");
-// Requiring our custom middleware for checking if a user is logged in
+
 const isAuthenticated = require("../../../config/isAuthenticated");
 const isAdmin = require("../../../config/isAdmin");
 const { logger } = require('../../../controllers/logger');
@@ -790,8 +788,39 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/waiver-check", async (req,res) => {
-    res.redirect('/registration');
+  app.get("/waiver-check", async (req, res) => {
+    const userid = req.query.id;
+    console.log("==== userid from Param ====");
+    console.log(userid);
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+    try {
+      var WaiverID = await q.queryWaiverIDByUser(userid) || "";
+    } catch {
+      logger.error("Error encountered: queryWaiverIDByUser");
+    }
+    try {
+      var OrderInfo = await q.queryOrderInfoByRider(userid, 2023);
+    } catch (err) {
+      logger.error("Error encountered: queryOrderInfoByRider " + err);
+    }
+
+    if (!OrderInfo || OrderInfo.length == 0) {
+      OrderInfo = [];
+      OrderInfo.push({ id: 0 });
+      OrderInfo.push({ OrderNumber: 0 });
+    }
+
+    res.locals.title = "TOH Waiver Check"
+    res.render("pages/waiver-check", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      dt: DateTime,
+      OrderInfo,
+      UserID: userid,
+      WaiverID
+    });
   });
 
   //#endregion
