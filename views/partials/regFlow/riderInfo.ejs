@@ -10,13 +10,14 @@
           <i>Address Needed</i> <br />
         <% } %>
         <%= User.City %>, <%= User.State %>&nbsp;<%= User.ZipCode %> <br />
+        <%= User.Email %> <br />
       </div>
       <div class="toh-mb-18">
         <% if(!User.Address1) { %>
           It appears we do not have your full mailing address. Please click the button below to update your address. <br />
           <button type="button" id="setAddressButton" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Set Address</button>
         <% } else { %>
-          Please confirm that the address above is your correct mailing address. All materials will be sent to this address. <br />
+          Please confirm that the information above is correct. All shipping and correspondance will be sent to these addresses. <br />
           <button type="button" id="addressIsCorrectNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, Needs Updating</button>
           <button type="button" id="addressIsCorrectYes" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Yes, Looks Good</button>
         <% } %>
