@@ -4,7 +4,6 @@ const { DateTime } = require("luxon");
 const isAuthenticated = require("../../../config/isAuthenticated");
 const isAdmin = require("../../../config/isAdmin");
 const { logger } = require('../../../controllers/logger');
-const { orderSteps } = require("'../../../config/orderSteps");
 
 module.exports = function (app) {
 
