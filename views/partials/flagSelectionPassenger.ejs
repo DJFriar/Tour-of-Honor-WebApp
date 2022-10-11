@@ -28,7 +28,7 @@
       <% } %>
     <% if(OrderInfo.PassFlagNum == 0) { %>
       <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseAnotherFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="passenger" data-userid="<%= OrderInfo.PassUserID %>">No</button>
+      <button type="button" id="chooseAnotherFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="passenger" data-userid="<%= OrderInfo.PassUserID %>">Choose Flag Number</button>      
     <% } %>
   <% } %>
   <div class="toh-mt-18 hide-me" id="flagAssignedPassenger">
@@ -38,7 +38,7 @@
     <div>
       <p>You have already chosen your flag number. If you need to make a change, please reach out to support.</p>
     </div>
-    <div class="toh-mt-18" id="flagAssignedRider">
+    <div class="toh-mt-18" id="flagAssignedPassenger">
       <span style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-10x"></i></span> 
     </div>
   <% } %>

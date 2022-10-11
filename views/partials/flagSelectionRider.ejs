@@ -24,11 +24,11 @@
   <% } else { %>
     <% if(User.FlagNumber >= 1 && User.FlagNumber <= 10) { %>
       <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.PassUserID %>">Choose Flag Number</button>
+      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
     <% if(User.FlagNumber == 0) { %>
       <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.PassUserID %>">Choose Flag Number</button>
+      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
   <% } %>
   <div class="toh-mt-18 hide-me" id="flagAssignedRider">
