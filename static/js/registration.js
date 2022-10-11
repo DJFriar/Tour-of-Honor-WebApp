@@ -3,7 +3,6 @@ $(document).ready(function() {
   var passReady = false;
   var enableWhen = "";
   var CheckoutURL = $("#checkoutUrl").data("checkouturl");
-  var activeTab = $("#registrationSwitcher").attr("active");
   var nextStepNum = $("#nextStepNum").data("nextstepnum");
   for (let i = 0; i <= nextStepNum; i++) {
     $("#RegStep" + i).removeClass("disabled");

@@ -16,45 +16,19 @@
           <h4>Registration <span style="font-size: 12pt; font-weight:400; color: #666;">&nbsp;&nbsp;&nbsp;All steps must be completed. After payment, log into your account again to complete the Waiver and Flag Number steps.</span></h4>
           <div class="uk-text-center toh-mt-24">
             <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
-              <li><a href="#" id="RegStep0"><span class="registrationStepText">Step 1</span><br/>Rider Info</a></li>
-              <li><a class="disabled" href="#" id="RegStep1"><span class="registrationStepText">Step 2</span><br/>Bike Info</a></li>
-              <li><a class="disabled" href="#" id="RegStep2"><span class="registrationStepText">Step 3</span><br/>Passenger Info</a></li>
-              <li><a class="disabled" href="#" id="RegStep3"><span class="registrationStepText">Step 4</span><br/>Charity Choice</a></li>
-              <li><a class="disabled" href="#" id="RegStep4"><span class="registrationStepText">Step 5</span><br/>T-Shirts</a></li>
-              <li><a class="disabled" href="#" id="RegStep5"><span class="registrationStepText">Step 6</span><br/>Payment</a></li>
-              <li><a class="disabled" href="#" id="RegStep6"><span class="registrationStepText">Step 7</span><br/>Waiver</a></li>
-              <li><a class="disabled" href="#" id="RegStep7"><span class="registrationStepText">Step 8</span><br/>Flag Number</a></li>
-              <li><a class="disabled" href="#" id="RegStep8"><span class="registrationStepText">Step 9</span><br/>Summary</a></li>
+              <% OrderSteps.forEach(function(orderStep) { %>
+                <li><a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>"><span class="registrationStepText">Step <%= orderStep.StepNumber %></span><br/><%= orderStep.Name %></a></li>
+              <% }) %>
             </ul>
     
             <ul class="uk-switcher uk-margin">
-              <li>
-                <%- include('../partials/regFlow/riderInfo'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/bikeInfo'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/passengerInfo'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/charityChoice'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/t-shirt'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/payment'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/waiver'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/flagNumber'); %>
-              </li>
-              <li>
-                <%- include('../partials/regFlow/summary'); %>
-              </li>
+              <% OrderSteps.forEach(function(orderStep) { %>
+                <% if (OrderInfo.NextStepNum == orderStep.StepIndex) { %>
+                  <li class="uk-active"><%- include('../partials/regFlow/' + orderStep.Partial); %></li>
+                <% } else { %>
+                  <li><%- include('../partials/regFlow/' + orderStep.Partial); %></li>
+                  <% } %>
+              <% }) %>
             </ul>
           </div>
           <div class="hiddenData">

@@ -4,11 +4,69 @@ const { DateTime } = require("luxon");
 const isAuthenticated = require("../../../config/isAuthenticated");
 const isAdmin = require("../../../config/isAdmin");
 const { logger } = require('../../../controllers/logger');
+const { orderSteps } = require("'../../../config/orderSteps");
 
 module.exports = function (app) {
 
-  const baseSampleImageUrl = app.locals.baseSampleImageUrl;
-  const baseImageUrl = app.locals.baseImageUrl;
+const baseSampleImageUrl = app.locals.baseSampleImageUrl;
+const baseImageUrl = app.locals.baseImageUrl;
+
+const orderSteps = [
+  {
+    "StepIndex": 0,
+    "Name": "Rider Info",
+    "StepNumber": 1,
+    "Partial": "riderInfo"
+  },
+  {
+    "StepIndex": 1,
+    "Name": "Bike Info",
+    "StepNumber": 2,
+    "Partial": "bikeInfo"
+  },
+  {
+    "StepIndex": 2,
+    "Name": "Passenger Info",
+    "StepNumber": 3,
+    "Partial": "passengerInfo"
+  },
+  {
+    "StepIndex": 3,
+    "Name": "Charity Choice",
+    "StepNumber": 4,
+    "Partial": "charityChoice"
+  },
+  {
+    "StepIndex": 4,
+    "Name": "T-Shirts",
+    "StepNumber": 5,
+    "Partial": "t-shirt"
+  },
+  {
+    "StepIndex": 5,
+    "Name": "Payment",
+    "StepNumber": 6,
+    "Partial": "payment"
+  },
+  {
+    "StepIndex": 6,
+    "Name": "Waiver",
+    "StepNumber": 7,
+    "Partial": "waiver"
+  },
+  {
+    "StepIndex": 7,
+    "Name": "Flag Number",
+    "StepNumber": 8,
+    "Partial": "flagNumber"
+  },
+  {
+    "StepIndex": 8,
+    "Name": "Summary",
+    "StepNumber": 9,
+    "Partial": "summary"
+  }
+]
 
   // ===============================================================================
   //#region READ (GET)
@@ -725,6 +783,7 @@ module.exports = function (app) {
       BaseRiderRate,
       Charities,
       OrderInfo,
+      OrderSteps: orderSteps,
       PassengerSurcharge,
       RiderBikeInfo,
       ShirtSizeSurcharge,
