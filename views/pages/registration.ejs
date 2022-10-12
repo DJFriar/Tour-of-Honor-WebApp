@@ -22,6 +22,7 @@
             </ul>
     
             <ul class="uk-switcher uk-margin">
+              <li><a href="#" id="RegStep0"><span class="registrationStepText">Step 1</span><br/>Rider Info</a></li>
               <% OrderSteps.forEach(function(orderStep) { %>
                 <% if (OrderInfo.NextStepNum == orderStep.StepIndex) { %>
                   <li class="uk-active"><%- include('../partials/regFlow/' + orderStep.Partial); %></li>

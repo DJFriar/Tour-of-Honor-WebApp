@@ -530,7 +530,6 @@ $(document).ready(function() {
     }
 
     // Update the Flag table to assign the flag to the user.
-    console.log(FlagNumberInfo);
     $.ajax("/api/v1/flag", {
       type: "POST",
       data: FlagNumberInfo,
@@ -568,9 +567,11 @@ $(document).ready(function() {
     e.preventDefault();
     var UserID = $(this).data("userid");
     var whoami = $(this).data("whoami");
+    var OrderID = $(this).data("orderid");
     $("#chooseFlagNumberModal").css("display","block");
     $("#saveNewFlagNumChoiceBtn").attr("data-userid", UserID);
     $("#saveNewFlagNumChoiceBtn").attr("data-whoami", whoami);
+    $("#saveNewFlagNumChoiceBtn").attr("data-orderid", OrderID);
   })
 
   // Handle generateRandomFlagNumber Button
@@ -622,6 +623,7 @@ $(document).ready(function() {
     e.preventDefault();
     const UserID = $(this).data("userid");
     const whoami = $(this).data("whoami");
+    const OrderID = $(this).data("orderid");
     enableWhen = $(this).data("enablewhen");
     const requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
 
@@ -631,18 +633,35 @@ $(document).ready(function() {
       FlagNumber: requestedFlagNumber,
     }
 
+    var OrderUpdateInfo = {
+      RegStep: "FlagInProgress",
+      whoami,
+      RallyYear: 2023,
+      UserID,
+      OrderID,
+      RequestedFlagNumber: requestedFlagNumber,
+    }
+
     $.ajax("/api/v1/flag", {
       type: "POST",
       data: FlagNumberInfo
     }).then(() => {
-      if (whoami === "rider") {
-        riderReady = true;
-        $("#flagAssignedRider").removeClass("hide-me");
-      }
-      if (whoami === "passenger") {
-        passReady = true;
-        $("#flagAssignedPassenger").removeClass("hide-me");
-      }
+      $.ajax("/api/v1/regFlow", {
+        type: "POST",
+        data: OrderUpdateInfo
+      }).then(() => {
+        $(".modal").css("display","none");
+        if (whoami === "rider") {
+          riderReady = true;
+          $("#flagAssignedRider").removeClass("hide-me");
+        }
+        if (whoami === "passenger") {
+          passReady = true;
+          $("#flagAssignedPassenger").removeClass("hide-me");
+        }
+      }).catch(err => {
+        console.log("Error when updating Order Info: " + err);
+      });
     }).catch(err => {
       console.log("Error when saving new Flag Assignment: " + err);
     });
