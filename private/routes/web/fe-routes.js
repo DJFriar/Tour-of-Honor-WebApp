@@ -11,12 +11,12 @@ const baseSampleImageUrl = app.locals.baseSampleImageUrl;
 const baseImageUrl = app.locals.baseImageUrl;
 
 const orderSteps = [
-  {
-    "StepIndex": 0,
-    "Name": "Rider Info",
-    "StepNumber": 1,
-    "Partial": "riderInfo"
-  },
+  // {
+  //   "StepIndex": 0,
+  //   "Name": "Rider Info",
+  //   "StepNumber": 1,
+  //   "Partial": "riderInfo"
+  // },
   {
     "StepIndex": 1,
     "Name": "Bike Info",
