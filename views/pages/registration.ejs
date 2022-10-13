@@ -17,7 +17,7 @@
           <div class="uk-text-center toh-mt-24">
             <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
               <% OrderSteps.forEach(function(orderStep) { %>
-                <li><a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>"><span class="registrationStepText">Step <%= orderStep.StepNumber %></span><br/><%= orderStep.Name %></a></li>
+                <li><a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>"><span class="registrationTitleText"><%= orderStep.Title %></span><br/><%= orderStep.Subtitle %></a></li>
               <% }) %>
             </ul>
     
