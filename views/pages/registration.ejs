@@ -16,7 +16,6 @@
           <h4>Registration <span style="font-size: 12pt; font-weight:400; color: #666;">&nbsp;&nbsp;&nbsp;All steps must be completed. After payment, log into your account again to complete the Waiver and Flag Number steps.</span></h4>
           <div class="uk-text-center toh-mt-24">
             <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
-              <li><a href="#" id="RegStep0"><span class="registrationStepText">Step 1</span><br/>Rider Info</a></li>
               <% OrderSteps.forEach(function(orderStep) { %>
                 <li><a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>"><span class="registrationStepText">Step <%= orderStep.StepNumber %></span><br/><%= orderStep.Name %></a></li>
               <% }) %>
