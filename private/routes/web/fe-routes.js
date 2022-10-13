@@ -11,12 +11,12 @@ const baseSampleImageUrl = app.locals.baseSampleImageUrl;
 const baseImageUrl = app.locals.baseImageUrl;
 
 const orderSteps = [
-  // {
-  //   "StepIndex": 0,
-  //   "Name": "Rider Info",
-  //   "StepNumber": 1,
-  //   "Partial": "riderInfo"
-  // },
+  {
+    "StepIndex": 0,
+    "Name": "Rider Info",
+    "StepNumber": 1,
+    "Partial": "riderInfo"
+  },
   {
     "StepIndex": 1,
     "Name": "Bike Info",
@@ -709,9 +709,9 @@ const orderSteps = [
 
 
     if (!OrderInfo || OrderInfo.length == 0) {
-      OrderInfo = [];
-      OrderInfo.push({ NextStepNum: 0 });
-      OrderInfo.push({ PassUserID: 0 });
+      OrderInfo = {};
+      OrderInfo.NextStepNum = 0;
+      OrderInfo.PassUserID = 0;
     }
 
     try {
