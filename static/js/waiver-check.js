@@ -4,8 +4,6 @@ $(document).ready(() => {
   const orderNumber = $("#OrderNumber").val().trim();
 
   checkAttempt = 1;
-  console.log("==== waiver-check.js ====");
-  console.log(userid + " / " + activeUser);
 
   if (orderNumber == "0") {
     setTimeout(() => {
