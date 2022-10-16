@@ -19,7 +19,7 @@ const sendEmail = require("../../sendEmail");
 const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
-const waiver = require("../../../models/waiver");
+const twilio = require("../../../controllers/twilio");
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -71,6 +71,7 @@ module.exports = function (app) {
       UserID: req.body.UserID,
       RallyYear: req.body.RallyYear
     }).then(() => {
+      logger.info("Flag number " + req.body.FlagNumber + " assigned to UserID " + req.body.UserID); 
       res.status(202).send();
     }).catch(err => {
       logger.error("Error when saving flag number assignments:" + err);
@@ -814,6 +815,7 @@ module.exports = function (app) {
   // Handle Registration Flow
   app.post("/api/v1/regFlow", async (req, res) => {
     var RegStep = req.body.RegStep;
+    console.log("regFlow called with step: " + RegStep);
 
     if (RegStep == "Rider") {
       console.log(RegStep + " step entered.");
@@ -1271,5 +1273,16 @@ module.exports = function (app) {
     }).then(function (waiverData) {
       res.json(waiverData);
     });
+  })
+
+  // Send SMS Message
+  app.get("/api/v1/sendSMS", (req, res) => {
+    console.log("==== api/sendSMS reached ====");
+    // const waiverID = req.params.id;
+    try {
+      twilio.sendSMSMessage();
+    } catch {
+      logger.error("Error in sendSMS API call.");
+    }
   })
 }
