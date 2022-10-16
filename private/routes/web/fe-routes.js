@@ -656,8 +656,7 @@ const orderSteps = [
     } catch {
       logger.error("Error encountered: queryTimeZoneData");
     }
-    console.log(req.user);
-    console.log(RiderBikeInfo);
+
     res.locals.title = "TOH User Profile"
     res.render("pages/user-profile", {
       activeUser,
@@ -800,7 +799,7 @@ const orderSteps = [
     } catch {
       logger.error("Error encountered: queryAllOrders");
     }
-    console.log(req.user);
+
     res.locals.title = "TOH Orders"
     res.render("pages/admin/orders", {
       activeUser,
@@ -819,7 +818,7 @@ const orderSteps = [
     } catch {
       logger.error("Error encountered: queryAllCharities");
     }
-    console.log(req.user);
+
     res.locals.title = "TOH Charity Manager"
     res.render("pages/admin/charity-manager", {
       activeUser,
@@ -838,7 +837,7 @@ const orderSteps = [
     } catch {
       logger.error("Error encountered: queryAllConfigs");
     }
-    console.log(req.user);
+
     res.locals.title = "TOH Site Config"
     res.render("pages/admin/site-config", {
       activeUser,
@@ -871,8 +870,6 @@ const orderSteps = [
 
   app.get("/waiver-check", async (req, res) => {
     const userid = req.query.id;
-    console.log("==== userid from Param ====");
-    console.log(userid);
     var activeUser = false;
     if (req.user) { activeUser = true };
     try {
