@@ -13,59 +13,69 @@ const baseImageUrl = app.locals.baseImageUrl;
 const orderSteps = [
   {
     "StepIndex": 0,
-    "Name": "Rider Info",
+    "Title": "Step 1",
+    "Subtitle": "Rider Info",
     "StepNumber": 1,
     "Partial": "riderInfo"
   },
   {
     "StepIndex": 1,
-    "Name": "Bike Info",
+    "Title": "Step 2",
+    "Subtitle": "Bike Info",
     "StepNumber": 2,
     "Partial": "bikeInfo"
   },
   {
     "StepIndex": 2,
-    "Name": "Passenger Info",
+    "Title": "Step 3",
+    "Subtitle": "Passenger Info",
     "StepNumber": 3,
     "Partial": "passengerInfo"
   },
   {
     "StepIndex": 3,
-    "Name": "Charity Choice",
+    "Title": "Step 4",
+    "Subtitle": "Charity Choice",
     "StepNumber": 4,
     "Partial": "charityChoice"
   },
   {
     "StepIndex": 4,
-    "Name": "T-Shirts",
+    "Title": "Step 5",
+    "Subtitle": "T-Shirts",
     "StepNumber": 5,
     "Partial": "t-shirt"
   },
   {
     "StepIndex": 5,
-    "Name": "Payment",
+    "Title": "Step 6",
+    "Subtitle": "Payment",
     "StepNumber": 6,
     "Partial": "payment"
   },
   {
     "StepIndex": 6,
-    "Name": "Waiver",
+    "Title": "Step 7",
+    "Subtitle": "Waiver",
     "StepNumber": 7,
     "Partial": "waiver"
   },
   {
     "StepIndex": 7,
-    "Name": "Flag Number",
+    "Title": "Step 8",
+    "Subtitle": "Flag Number",
     "StepNumber": 8,
     "Partial": "flagNumber"
   },
   {
     "StepIndex": 8,
-    "Name": "Summary",
+    "Title": "",
+    "Subtitle": "Summary",
     "StepNumber": 9,
     "Partial": "summary"
   }
 ]
+
 
   // ===============================================================================
   //#region READ (GET)
