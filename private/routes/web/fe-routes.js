@@ -901,6 +901,26 @@ const orderSteps = [
     });
   });
 
+  app.get("/faqs", async (req, res) => {
+    var activeUser = false;
+    if (req.user) { activeUser = true };
+
+    try {
+      var Faqs = await q.queryAllFAQs();
+    } catch {
+      logger.error("Error encountered: queryAllFAQs");
+    }
+
+    res.locals.title = "TOH FAQs"
+    res.render("pages/faqs", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
+      dt: DateTime,
+      Faqs
+    });
+  });
+
   //#endregion
   // ===============================================================================
 
