@@ -4,13 +4,7 @@ const express = require("express");
 const session = require("express-session");
 const { collectDefaultMetrics, register } = require("prom-client");
 
-const auth = require("./private/routes/app/auth");
 const passport = require("./config/passport");
-const memorial = require("./private/routes/app/memorial");
-const memorials = require("./private/routes/app/memorials");
-const restriction = require("./private/routes/app/restriction");
-const scoring = require("./private/routes/app/scoring");
-const submission = require("./private/routes/app/submission");
 
 // ==============================================================================
 // CONFIGURATION
@@ -50,6 +44,16 @@ app.use(passport.session());
 // ================================================================================
 // ROUTES
 // ================================================================================
+// require("./routes")(app);
+app.use(require("./routes"))
+
+const auth = require("./private/routes/app/auth");
+const memorial = require("./private/routes/app/memorial");
+const memorials = require("./private/routes/app/memorials");
+const restriction = require("./private/routes/app/restriction");
+const scoring = require("./private/routes/app/scoring");
+const submission = require("./private/routes/app/submission");
+
 require("./private/routes/app/api-routes")(app);
 require("./private/routes/web/be-routes")(app);
 require("./private/routes/web/fe-routes")(app);
