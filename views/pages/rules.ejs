@@ -14,7 +14,11 @@
     <% } %>
     <main>
       <h4>Tour of Honor Rules</h4>
-      
+      <div class="uk-container uk-align-center">
+        <% if(Rules && Rules.length > 0) { %>
+          <p>Found some rules!</p>
+        <% } %>
+      </div>
     </main>
     <footer>
       <%- include('../partials/footer'); %>

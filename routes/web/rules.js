@@ -10,8 +10,8 @@ WebRulesRouter.route("/")
 
     try {
       var Rules = await q.queryAllRules();
-    } catch {
-      logger.error("Error encountered: queryAllRules");
+    } catch (err) {
+      logger.error("Error encountered - queryAllRules: ", err);
     }
 
     res.locals.title = "TOH Rules"
