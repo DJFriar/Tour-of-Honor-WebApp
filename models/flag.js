@@ -3,7 +3,6 @@ module.exports = function(sequelize, DataTypes) {
     FlagNum: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: 'Flags_unique',
     },
     UserID: {
       type: DataTypes.INTEGER,
@@ -18,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     uniqueKeys: {
       Flags_unique: {
-        fields: ['FlagNum', 'UserID', 'RallyYear']
+        fields: ['UserID', 'RallyYear']
       }
     }
   });

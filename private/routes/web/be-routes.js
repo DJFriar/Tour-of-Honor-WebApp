@@ -19,7 +19,7 @@ const sendEmail = require("../../sendEmail");
 const { logger } = require("../../../controllers/logger");
 const { register } = require("prom-client");
 const { generateShopifyCheckout, checkOrderStatusByCheckoutID } = require("../../../controllers/shopify");
-const waiver = require("../../../models/waiver");
+const twilio = require("../../../controllers/twilio");
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -63,32 +63,6 @@ module.exports = function (app) {
         res.redirect("/admin/memorial-editor2");
       });
     })
-
-  // Assign Flag Number to Rider
-  app.post("/api/v1/flag", (req, res) => {
-    db.Flag.create({
-      FlagNum: req.body.FlagNumber,
-      UserID: req.body.UserID,
-      RallyYear: req.body.RallyYear
-    }).then(() => {
-      res.status(202).send();
-    }).catch(err => {
-      logger.error("Error when saving flag number assignments:" + err);
-    })
-  })
-
-  // Check Flag Number Validity
-  app.get("/api/v1/flag/:id", (req,res) => {
-    const id = req.params.id;
-    db.Flag.findOne({
-      where: {
-        FlagNum: id,
-        RallyYear: 2022
-      }
-    }).then(function (dbPost) {
-      res.json(dbPost);
-    });
-  })
 
   // Find a Random Available Flag Number
   app.get("/api/v1/randomAvailableFlag", (req, res) => {
@@ -515,62 +489,6 @@ module.exports = function (app) {
   });
 
   // 
-  // Bike Related
-  // 
-
-  // Create a Bike
-  app.post("/api/v1/bike", (req, res) => {
-    db.Bike.create({
-      user_id: req.body.UserID,
-      Year: req.body.BikeYear,
-      Make: req.body.BikeMake,
-      Model: req.body.BikeModel,
-    }).then(() => {
-      res.status(202).send();
-    });
-  });
-
-  // Update a Bike
-  app.put("/api/v1/bike", (req, res) => {
-    db.Bike.update({
-      Year: req.body.BikeYear,
-      Make: req.body.BikeMake,
-      Model: req.body.BikeModel,
-    }, {
-      where: { id: req.body.BikeID }
-    }).then(() => {
-      res.status(202).send();
-    });
-  });
-
-  // Get all bikes
-  app.get("/api/v1/bikes", function (req, res) {
-    db.Bike.findAll({}).then(function (bikeArray) {
-      res.json(bikeArray);
-    });
-  });
-
-  // Get a specific bike
-  app.get("/api/v1/bike/:id", function(req, res) {
-    const id = req.params.id;
-    db.Bike.findOne({
-      where: { id: id }
-    }).then(function(bikeInfo) {
-      res.json(bikeInfo);
-    });
-  });
-
-  // Delete a bike
-  app.delete("/api/v1/bike/:id", function(req, res) {
-    const id = req.params.id;
-    db.Bike.destroy({
-      where: { id: id }
-    }).then(() => {
-      res.status(202).send();
-    });
-  });
-
-  // 
   // Submission Related
   // 
 
@@ -814,6 +732,7 @@ module.exports = function (app) {
   // Handle Registration Flow
   app.post("/api/v1/regFlow", async (req, res) => {
     var RegStep = req.body.RegStep;
+    console.log("regFlow called with step: " + RegStep);
 
     if (RegStep == "Rider") {
       console.log(RegStep + " step entered.");
@@ -1271,5 +1190,16 @@ module.exports = function (app) {
     }).then(function (waiverData) {
       res.json(waiverData);
     });
+  })
+
+  // Send SMS Message
+  app.get("/api/v1/sendSMS", (req, res) => {
+    console.log("==== api/sendSMS reached ====");
+    // const waiverID = req.params.id;
+    try {
+      twilio.sendSMSMessage();
+    } catch {
+      logger.error("Error in sendSMS API call.");
+    }
   })
 }
