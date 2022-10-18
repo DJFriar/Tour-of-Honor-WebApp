@@ -473,7 +473,7 @@ $(document).ready(function() {
   $(".signWaiverButton").on("click", function(e) {
     e.preventDefault();
     var UserID = $(this).data("userid");
-    const waiverURL = "https://waiver.smartwaiver.com/v/tohDev/?auto_anyoneelseneedtosign=0&auto_tag=" + UserID;
+    const waiverURL = "https://waiver.smartwaiver.com/v/toh2023/?auto_anyoneelseneedtosign=0&auto_tag=" + UserID;
     var WaiverInfo = {
       RegStep: "Waiver",
       UserID,
