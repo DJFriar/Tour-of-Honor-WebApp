@@ -759,10 +759,19 @@ module.exports.queryAllConfigs = async function queryAllConfigs() {
 module.exports.queryAllFAQs = async function queryAllFAQs() {
   try {
     var result = await db.Faq.findAll({ })
-    logger.info(result.dataValues);
     return result;
   } catch (err) {
     logger.error("queryAllFAQs:" + err);
+    throw err;
+  }
+}
+
+module.exports.queryAllRules = async function queryAllRules() {
+  try {
+    var result = await db.Rule.findAll({ })
+    return result;
+  } catch (err) {
+    logger.error("queryAllRules:" + err);
     throw err;
   }
 }
