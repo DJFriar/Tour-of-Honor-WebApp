@@ -39,20 +39,14 @@ const logger = createLogger({
 });
 
 // When in Production, send the logs to Logtail
-if (process.env.NODE_ENV == 'Production') {
+if (process.env.NODE_ENV !== 'Development') {
   logger.add(new LogtailTransport(logtail));
 }
 
 // If we're not in Production then **ALSO** log to the `console`
 // with the colorized simple format.
-if (process.env.NODE_ENV !== 'Production') {
-  logger.add(new LogtailTransport(logtail)); // Temporary while testing
-
+if (process.env.NODE_ENV == 'Development') {
   logger.add(new transports.Console({
-    // format: format.combine(
-    //   format.colorize(),
-    //   format.simple()
-    // )
     format: format.combine(
       format.colorize({ all: true }),
       format.timestamp({

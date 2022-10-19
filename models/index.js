@@ -1,13 +1,14 @@
 "use strict";
-
 const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
+
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || "Development";
-const config = require(__dirname + "/../config/config.js")[env];
+const config = require(__dirname + "/../config/db-config.js")[env];
 const db = {};
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+
+const sequelize = new Sequelize(config);
 
 fs
   .readdirSync(__dirname)
@@ -23,6 +24,12 @@ Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
+});
+
+sequelize.authenticate().then(() => {
+  console.log('DB connection has been established successfully.');
+}).catch((error) => {
+  console.error('Unable to connect to the DB: ', error);
 });
 
 db.sequelize = sequelize;
