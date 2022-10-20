@@ -58,4 +58,20 @@ if (process.env.NODE_ENV == 'Development') {
   }));
 }
 
+const dblogger = createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: format.combine(
+    format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss'
+    }),
+    format.json()
+  ),
+  defaultMeta: { service: 'TourOfHonor DB' },
+  transports: [
+    new transports.File({ filename: 'logs/db-error.log', level: 'error'}),
+    new transports.File({ filename: 'logs/db-info.log' })
+  ]
+});
+
 exports.logger = logger
+exports.dblogger = dblogger

@@ -1,6 +1,7 @@
 const ApiFlagRouter = require("express").Router();
 
 const db = require("../../../models");
+const { logger } = require("../../../controllers/logger");
 
 ApiFlagRouter.route("/")
   .post((req, res) => {
