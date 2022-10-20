@@ -1,8 +1,10 @@
 "use strict";
+// require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
 
+const { dblogger } = require("../controllers/logger");
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || "Development";
 const config = require(__dirname + "/../config/db-config.js")[env];
