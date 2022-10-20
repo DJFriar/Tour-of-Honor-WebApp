@@ -5,6 +5,7 @@ const { logger } = require("../../../controllers/logger");
 
 ApiFlagRouter.route("/")
   .post((req, res) => {
+    console.log("FlagPostAPI entered");
     db.Flag.create({
       FlagNum: req.body.FlagNumber,
       UserID: req.body.UserID,
