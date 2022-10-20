@@ -1000,6 +1000,7 @@ module.exports = function (app) {
           id: req.body.OrderID
         }
       }).then(() => {
+        logger.info("Order " + req.body.OrderID + " was updated with FlagInfo.");
         res.status(202).send();
       }).catch(err => {
         logger.error("Error updating order with FlagInProgress info: " + err);
