@@ -981,7 +981,7 @@ module.exports = function (app) {
       })
     }
 
-    if (RegStep == "FlagInProgess") {
+    if (RegStep == "FlagInProgress") {
       console.log(RegStep + " step entered.");
 
       var FlagInfo = { };
