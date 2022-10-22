@@ -5,13 +5,13 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const fromNumber = process.env.TWILIO_FROM_NUMBER;
 const client = require('twilio')(accountSid, authToken);
 
-function sendSMSMessage(destNumber) {
-  console.log("==== sendSMSMessage() called ====");
+function sendSMSMessage(destNumber, messageText) {
+  const formattedNumber = "+1" + destNumber.replace(/^(\+)|\D/g, "$1");
 
   const smsMessage = {
-    to: destNumber,
+    to: formattedNumber,
     from: fromNumber,
-    body: 'Test SMS from TOH!',
+    body: messageText,
   };
 
   client.messages
