@@ -28,9 +28,13 @@
           <label class="uk-form-label" for="Email">Email</label>
           <input class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com" value="<%= User.Email %>">
         </div>
-        <div class="uk-width-1-1@s">
+        <div class="uk-width-2-3@s">
           <label class="uk-form-label" for="Address1">Street Address</label>
           <input class="uk-input" required id="Address1" type="text" placeholder="Street Address" value="<%= User.Address1 %>"></input>
+        </div>
+        <div class="uk-width-1-3@s">
+          <label class="uk-form-label" for="CellNumber">Cell Number</label>
+          <input class="uk-input toh-input" id="CellNumber" type="tel" placeholder="(XXX) XXX-XXXX" pattern=”[0-9]{3}-[0-9]{3}-[0-9]{4}” value="<%= User.CellNumber %>">
         </div>
         <div class="uk-width-1-3@s">
           <label class="uk-form-label" for="City">City</label>
@@ -74,8 +78,8 @@
         </div>
         <div class="uk-width-1-2@s uk-text-center">
           <label class="uk-form-label" for="saveProfileEdits">&nbsp;</label>
+          <button type="button" id="resetPasswordLink" class="uk-button uk-button-danger button-rounded">Reset Login Password</button>
           <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Update User Profile</button>
-          <button type="button" id="resetPasswordLink" class="uk-button uk-button-primary button-rounded">Reset Login Password</button>
         </div>
       </form>
       <div class="toh-mt-24">

@@ -11,10 +11,44 @@ $(document).ready(() => {
     "searching": false
   });
 
+  //Format Cell Number field into (nnn) nnn-nnnn
+  $('#CellNumber').on('input', function (e){
+    var $phoneField = e.target;
+    var cursorPosition = $phoneField.selectionStart;
+    var numericString = $phoneField.value.replace(/\D/g, '').substring(0, 10);
+
+    // let user backspace over the '-'
+    if (cursorPosition === 9 && numericString.length > 6) return;
+
+    // let user backspace over the ') '
+    if (cursorPosition === 5 && numericString.length > 3) return;
+    if (cursorPosition === 4 && numericString.length > 3) return;
+
+    var match = numericString.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
+    if (match) {
+        var newVal = '(' + match[1];
+        newVal += match[2] ? ') ' + match[2] : '';
+        newVal += match[3] ? '-' + match[3] : '';
+
+        // to help us put the cursor back in the right place
+        var delta = newVal.length - Math.min($phoneField.value.length, 14);      
+        $phoneField.value = newVal;
+        $phoneField.selectionEnd = cursorPosition + delta;
+    } else {
+        $phoneField.value = '';        
+    }
+  })
+
   // Save changes to user profile
   $("#saveProfileEdits").on("click", function() {
     var UserID = $(this).data("userid");
+    var RiderFlagNumber = $("#FlagNumber").val().trim();
     var PillionFlagNumberInput = $("#PillionFlagNumber").val().trim();
+
+    // Replace flag number if N/A
+    if (!RiderFlagNumber || RiderFlagNumber == "N/A") {
+      RiderFlagNumber = 0;
+    }
     if (!PillionFlagNumberInput || PillionFlagNumberInput == "N/A") {
       PillionFlagNumberInput = 0;
     }
@@ -23,13 +57,14 @@ $(document).ready(() => {
       UserID,
       FirstName: $("#FirstName").val().trim(),
       LastName: $("#LastName").val().trim(),
-      FlagNumber: $("#FlagNumber").val().trim(),
+      FlagNumber: RiderFlagNumber,
       PillionFlagNumber: PillionFlagNumberInput,
       Email: $("#Email").val().trim(),
       Address1: $("#Address1").val().trim(),
       City: $("#City").val().trim(),
       State: $("#State").val().trim(),
       ZipCode: $("#ZipCode").val().trim(),
+      CellNumber: $("#CellNumber").val().trim(),
       TimeZone: $("#TimeZone").val().trim()
     }
 

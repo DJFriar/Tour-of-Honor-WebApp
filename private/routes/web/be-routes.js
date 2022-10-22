@@ -615,6 +615,7 @@ module.exports = function (app) {
       State: req.body.State,
       ZipCode: req.body.ZipCode,
       TimeZone: req.body.TimeZone,
+      CellNumber: req.body.CellNumber,
       isAdmin: req.body.isAdmin
     }, {
       where: { id: req.body.UserID }
@@ -625,7 +626,13 @@ module.exports = function (app) {
   // Handle Address Update
   app.put("/api/v1/saveAddress", function (req, res) {
     db.User.update({
-      Address1: req.body.Address1
+      Address1: req.body.Address1,
+      City: req.body.City,
+      State: req.body.State,
+      ZipCode: req.body.ZipCode,
+      Email: req.body.Email,
+      CellNumber: req.body.CellNumber,
+      TimeZone: req.body.TimeZone
     }, {
       where: { id: req.body.UserID }
     });

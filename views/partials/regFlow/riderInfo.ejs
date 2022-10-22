@@ -11,6 +11,11 @@
         <% } %>
         <%= User.City %>, <%= User.State %>&nbsp;<%= User.ZipCode %> <br />
         <%= User.Email %> <br />
+        <% if(User.CellNumber) { %>
+          <%= User.CellNumber %> <br />
+        <% } else { %>
+          <i>(XXX) XXX-XXXX</i> <br />
+        <% } %>
       </div>
       <div class="toh-mb-18">
         <% if(!User.Address1) { %>
@@ -27,7 +32,7 @@
       <p>You are not logged in. If you particpated in the 2022 Rally, please <a href="/login">login</a> before proceeding.</p>
     <% } %>
     <div id="setAddressModal" class="modal">
-      <%- include('../../partials/setAddressModal'); %>
+      <%- include('../../partials/editAddressModal'); %>
     </div>
   </div>
 </div>
