@@ -4,6 +4,10 @@
     <div class="uk-navbar-left">
       <a class="uk-navbar-item uk-logo uk-hidden@s" href="/memorials">TOH</a>
       <a class="uk-navbar-item uk-logo uk-visible@s" href="/memorials"><img class="toh-logo" src="/images/toh_logo.png"></a>
+      <div>
+        <%= User.FirstName %> <%= User.LastName %><br />
+        <%= User.Email %>
+      </div>
     </div>
     <div class="uk-navbar-right">
       <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a> -->
