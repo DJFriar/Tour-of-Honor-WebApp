@@ -326,7 +326,7 @@ const orderSteps = [
     });
   });
 
-  app.get("/admin/user-management", isAuthenticated, async (req, res) => {
+  app.get("/admin/rider-management", isAuthenticated, async (req, res) => {
     var activeUser = false
     if (req.user) { activeUser = true };
     try {
@@ -338,8 +338,8 @@ const orderSteps = [
       { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
       { "ID":"2", "FirstName":"Billy", "LastName":"Gibbons", "States":"TX" }
     ]
-    res.locals.title = "TOH User Manager"
-    res.render("pages/admin/user-management", {
+    res.locals.title = "TOH Rider Manager"
+    res.render("pages/admin/rider-management", {
       activeUser,
       User: req.user,
       sponsorData,
