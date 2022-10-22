@@ -257,6 +257,10 @@ a.hidden-link:visited {
   margin-right: 12px;
 }
 
+.toh-mt-12 {
+  margin-top: 12px;
+}
+
 .toh-mb-12 {
   margin-bottom: 12px;
 }
@@ -330,7 +334,7 @@ a.hidden-link:visited {
   text-decoration: none !important;
 }
 
-.editUserButton, .sendProfileEmailButton {
+.editUserButton, .sendProfileEmailButton , .sendSMSTextButton {
   cursor: pointer;
   font-size: 1em;
 }

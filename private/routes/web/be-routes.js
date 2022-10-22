@@ -615,6 +615,7 @@ module.exports = function (app) {
       State: req.body.State,
       ZipCode: req.body.ZipCode,
       TimeZone: req.body.TimeZone,
+      CellNumber: req.body.CellNumber,
       isAdmin: req.body.isAdmin
     }, {
       where: { id: req.body.UserID }
@@ -625,7 +626,13 @@ module.exports = function (app) {
   // Handle Address Update
   app.put("/api/v1/saveAddress", function (req, res) {
     db.User.update({
-      Address1: req.body.Address1
+      Address1: req.body.Address1,
+      City: req.body.City,
+      State: req.body.State,
+      ZipCode: req.body.ZipCode,
+      Email: req.body.Email,
+      CellNumber: req.body.CellNumber,
+      TimeZone: req.body.TimeZone
     }, {
       where: { id: req.body.UserID }
     });
@@ -1199,6 +1206,19 @@ module.exports = function (app) {
     // const waiverID = req.params.id;
     try {
       twilio.sendSMSMessage();
+    } catch {
+      logger.error("Error in sendSMS API call.");
+    }
+  })
+
+  // Send SMS Message
+  app.post("/api/v1/sendSMS", (req, res) => {
+    console.log("==== api/sendSMS reached ====");
+    const UserID = req.body.UserID;
+    const destNumber = req.body.destNumber;
+    const messageText = req.body.Message;
+    try {
+      twilio.sendSMSMessage(destNumber, messageText);
     } catch {
       logger.error("Error in sendSMS API call.");
     }

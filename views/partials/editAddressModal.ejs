@@ -1,0 +1,47 @@
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h4 class="toh-mb-18">Edit Contact Info</h4>
+  <form class="signup uk-grid-small uk-form-stacked uk-flex-center uk-text-center uk-child-width-1-1@s" style="margin: 0px 10px" uk-grid>
+    <div class="uk-width-1-1@s">
+      <label class="uk-form-label" for="Address1">Street Address</label>
+      <input class="uk-input" required id="Address1" type="text" placeholder="Street Address" value="<%= User.Address1 %>"></input>
+    </div>
+    <div class="uk-width-1-3@s toh-mt-12">
+      <label class="uk-form-label" for="City">City</label>
+      <input class="uk-input toh-input" id="City" type="text" placeholder="City" value="<%= User.City %>">
+    </div>
+    <div class="uk-width-1-3@s toh-mt-12">
+      <label class="uk-form-label" for="State">State</label>
+      <input class="uk-input toh-input" id="State" maxlength="2" type="text" placeholder="ST" value="<%= User.State %>">
+    </div>
+    <div class="uk-width-1-3@s toh-mt-12">
+      <label class="uk-form-label" for="ZipCode">Zip Code</label>
+      <input class="uk-input toh-input" id="ZipCode" maxlength="5" type="zipcode" placeholder="zip" value="<%= User.ZipCode %>">
+    </div>    
+    <div class="uk-width-1-3@s toh-mt-12">
+      <label class="uk-form-label" for="Email">Email</label>
+      <input class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com" value="<%= User.Email %>">
+    </div>
+    <div class="uk-width-1-3@s toh-mt-12">
+      <label class="uk-form-label" for="CellNumber">Cell Number</label>
+      <input class="uk-input toh-input" id="CellNumber" type="tel" pattern=”[0-9]{3}-[0-9]{3}-[0-9]{4}” value="<%= User.CellNumber %>">
+    </div>
+    <div class="uk-width-1-3@s toh-mt-12">
+      <div class="uk-width-1-1@s" uk-tooltip="title: This will adjust the times you see on the site; pos: bottom" >
+        <label class="uk-form-label" for="TimeZone">Time Zone</label>
+        <select class="uk-select toh-input" name="TimeZone" id="TimeZone">
+          <option value="PDT">Pacific</option>
+          <option value="MDT">Mountain</option>
+          <option value="CDT">Central</option>
+          <option value="EDT">Eastern</option>
+        </select>
+      </div>
+    </div>
+    <p class="toh-mt-18">NOTE: When you click on Save Changes, the system will make you login again to ensure your changes are properly applied.</p>
+    <div>
+      <label class="uk-form-label">&nbsp;</label>
+      <button class="uk-button uk-button-secondary uk-button-small button-rounded cancelButton" id="cancelSaveAddressButton">Cancel</button>
+      <button class="uk-button uk-button-primary uk-button-small button-rounded" id="saveNewAddressBtn" data-userid="<%= User.id %>">Save Changes</button>
+    </div>
+  </form>
+</div>
