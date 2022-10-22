@@ -728,9 +728,10 @@ $(document).ready(function() {
   // ************************
 
   // Handle Dialog Close & Cancel Buttons
-  $(".close, #cancelButton").on("click", function(e) {
+  $(".close, #cancelButton, .cancelButton").on("click", function(e) {
     e.preventDefault();
     $(".modal").css("display","none");
+    $(".setAddressModal").css("display","none");
   })
 
   // Monitor for Continue to Summary Button to be enabled
