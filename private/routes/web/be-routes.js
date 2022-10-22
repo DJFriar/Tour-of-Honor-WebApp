@@ -1210,4 +1210,17 @@ module.exports = function (app) {
       logger.error("Error in sendSMS API call.");
     }
   })
+
+  // Send SMS Message
+  app.post("/api/v1/sendSMS", (req, res) => {
+    console.log("==== api/sendSMS reached ====");
+    const UserID = req.body.UserID;
+    const destNumber = req.body.destNumber;
+    const messageText = req.body.Message;
+    try {
+      twilio.sendSMSMessage(destNumber, messageText);
+    } catch {
+      logger.error("Error in sendSMS API call.");
+    }
+  })
 }

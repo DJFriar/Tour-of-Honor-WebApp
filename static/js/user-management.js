@@ -27,10 +27,10 @@ $(document).ready(function() {
     }
   });
 
-  // Handle Edit User Button
+  // Handle Edit Rider Button
   $("#usersTable").on("click", ".editUserButton", function() {
     var id = $(this).data("uid");
-    $(".modal").css("display","block");
+    $("#userDetailEditModal").css("display","block");
     $.ajax("/api/v1/user/" + id, {
       type: "GET",
     }).then(
@@ -49,6 +49,21 @@ $(document).ready(function() {
         } else {
           $("#isAdmin").prop("checked", false);
         }
+      }
+    )
+  })
+
+  // Handle Text Rider Button
+  $("#usersTable").on("click", ".sendSMSTextButton", function() {
+    var id = $(this).data("uid");
+    $("#sendTextMessageModal").css("display","block");
+    $.ajax("/api/v1/user/" + id, {
+      type: "GET",
+    }).then(
+      function(res) {
+        $("#TextUserID").val(res.id);
+        $("#TextCellNumber").val(res.CellNumber);
+        $("#TextName").text(res.FirstName + " " + res.LastName);
       }
     )
   })
@@ -106,29 +121,47 @@ $(document).ready(function() {
     );
   });
 
-    // Handle Send Profile Email Button
-    $("#usersTable").on("click", ".sendProfileEmailButton", function() {
-      var id = $(this).data("uid");
-      var profileData = { };
-      $.ajax("/api/v1/user/" + id, {
-        type: "GET",
-      }).then(
-        function(res) {
-          profileData.FlagNumber = res.FlagNumber;
-          profileData.UserName = res.UserName;
-          profileData.FirstName = res.FirstName;
-          profileData.Email = res.Email;
-          $.ajax("/api/v1/portalemail", {
-            type: "POST",
-            data: profileData
-          }).then(
-            function() {
-              location.reload();
-            }
-          )
-        }
-      )
-    })
+  // Handle Send Text Message button
+  $("#sendTextMessageButton").on("click", function() {
+    var UserID = $("#TextUserID").val().trim();
+    var cellNumber = $("#TextCellNumber").val().trim();
+    var textMessageData = {
+      UserID,
+      destNumber: cellNumber,
+      Message: $("#textMessageContent").val().trim()
+    }
+    $.ajax("/api/v1/sendSMS", {
+      type: "POST",
+      data: textMessageData
+    }).then(() => { 
+      console.log("==== api/v1/sendSMS Successful");
+      $("#sendTextMessageModal").css("display","none");
+    });
+  });
+
+  // Handle Send Profile Email Button
+  $("#usersTable").on("click", ".sendProfileEmailButton", function() {
+    var id = $(this).data("uid");
+    var profileData = { };
+    $.ajax("/api/v1/user/" + id, {
+      type: "GET",
+    }).then(
+      function(res) {
+        profileData.FlagNumber = res.FlagNumber;
+        profileData.UserName = res.UserName;
+        profileData.FirstName = res.FirstName;
+        profileData.Email = res.Email;
+        $.ajax("/api/v1/portalemail", {
+          type: "POST",
+          data: profileData
+        }).then(
+          function() {
+            location.reload();
+          }
+        )
+      }
+    )
+  })
 
   // Check Rider Flag Number Uniqueness
   $("#FlagNum").on("input paste", function() {

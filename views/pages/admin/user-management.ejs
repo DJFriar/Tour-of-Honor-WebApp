@@ -14,12 +14,75 @@
       <h4>RIDER MANAGEMENT</h4>
       <div class="admin-container" id='tabs'>
         <ul uk-tab>
-          <li><a href="#registration">Rider Registration</a></li>
           <li><a href="#riders">Riders</a></li>
+          <li><a href="#registration">Rider Registration</a></li>
           <!-- <li><a href="#">Sponsors</a></li> -->
         </ul>
 
         <ul class="uk-switcher uk-margin">
+          <!-- Users Tab -->
+          <li id="riders">
+            <h5>USERS</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
+              <thead>
+                <tr>
+                  <th>Flag #</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% Users.forEach(function(user) { %>
+                  <tr>
+                    <td>
+                      <% if(user.FlagNumber > 0) { %>
+                        <%= user.FlagNumber %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <%= user.FirstName %>
+                    </td>
+                    <td>
+                      <%= user.LastName %>
+                    </td>
+                    <td>
+                      <% if(user.CellNumber) { %>
+                        <%= user.Email %> <i class="fal fa-message-sms fa-lg"></i>
+                      <% } else { %>
+                        <%= user.Email %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <% if(user.isAdmin) { %>
+                        Admin
+                      <% } else { %>
+                        User
+                      <% } %>
+                    </td>
+                    <td>
+                      <div class="uk-inline">
+                        <button class="uk-button uk-button-default" type="button">Actions</button>
+                        <div uk-dropdown="mode: click">
+                          <div class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit Rider</div>
+                          <% if(user.CellNumber) { %>
+                            <br />
+                            <div class="sendSMSTextButton" data-uid="<%- user.id %>"><i class="fal fa-message-sms fa-lg"></i> Text Rider</div>
+                          <% } %>
+                          <% if(!user.ZipCode) { %>
+                            <br />
+                            <div class="sendProfileEmailButton" data-uid="<%- user.id %>"><i class="fal fa-envelope fa-lg"></i> Send Welcome Email</div>
+                          <% } %>
+                        </div>
+                    </div>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
           <!-- Rider Registration -->
           <li id="registration">
             <h5>RIDER REGISTRATION</h5>
@@ -111,63 +174,8 @@
               </div>
             </form>
           </li>
-          <!-- Users Tab -->
-          <li id="riders">
-            <h5>USERS</h5>
-            <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
-              <thead>
-                <tr>
-                  <th>Flag #</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% Users.forEach(function(user) { %>
-                  <tr>
-                    <td>
-                      <% if(user.FlagNumber > 0) { %>
-                        <%= user.FlagNumber %>
-                      <% } %>
-                    </td>
-                    <td>
-                      <%= user.FirstName %>
-                    </td>
-                    <td>
-                      <%= user.LastName %>
-                    </td>
-                    <td>
-                      <%= user.Email %>
-                    </td>
-                    <td>
-                      <% if(user.isAdmin) { %>
-                        Admin
-                      <% } else { %>
-                        User
-                      <% } %>
-                    </td>
-                    <td>
-                      <div class="uk-inline">
-                        <button class="uk-button uk-button-default" type="button">Actions</button>
-                        <div uk-dropdown="mode: click">
-                          <div class="editUserButton" data-uid="<%- user.id %>"><i class="fal fa-edit fa-lg"></i> Edit User</div>
-                          <% if(!user.ZipCode) { %>
-                            <br />
-                            <div class="sendProfileEmailButton" data-uid="<%- user.id %>"><i class="fal fa-envelope fa-lg"></i> Send Welcome Email</div>
-                          <% } %>
-                        </div>
-                    </div>
-                    </td>
-                  </tr>
-                <% }) %>
-              </tbody>
-            </table>
-          </li>
           <!-- Sponsor Tab -->
-          <li>
+          <li id="sponsors">
             <h5>SPONSORS</h5>
             <table class="uk-table uk-table-striped uk-table-small" id="sponsorsTable">
               <thead>
@@ -204,6 +212,10 @@
       <!-- This is the user edit modal -->
       <div id="userDetailEditModal" class="modal">
         <%- include('../../partials/userDetailEditor'); %>
+      </div>
+      <!-- This is the send text message modal -->
+      <div id="sendTextMessageModal" class="modal">
+        <%- include('../../partials/sendSMSTextModal'); %>
       </div>
     </main>
     <footer>
