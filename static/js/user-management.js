@@ -121,6 +121,11 @@ $(document).ready(function() {
     );
   });
 
+  // Charaacter counter for Text Message box
+  $("#textMessageContent").keyup(function() {
+    countChar(this);
+  });
+
   // Handle Send Text Message button
   $("#sendTextMessageButton").on("click", function() {
     var UserID = $("#TextUserID").val().trim();
@@ -133,8 +138,7 @@ $(document).ready(function() {
     $.ajax("/api/v1/sendSMS", {
       type: "POST",
       data: textMessageData
-    }).then(() => { 
-      console.log("==== api/v1/sendSMS Successful");
+    }).then(function() { 
       $("#sendTextMessageModal").css("display","none");
     });
   });
@@ -360,6 +364,17 @@ $(document).ready(function() {
     console.log(err.responseJSON.errors[0].message);
     alert(err.responseJSON.errors[0].message);
     return;
+  }
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 320) {
+      val.value = val.value.substring(0, 320);
+      $(".characterCount").text("Characters remaining: 0");
+    } else {
+      remainder = 320 - len;
+      $(".characterCount").text("Characters remaining: " + remainder);
+    }
   }
 
 });

@@ -414,3 +414,7 @@ a.hidden-link:visited {
   font-size: 1.3em;
   color: #0000009E;
 }
+
+.characterCount {
+  float: right;
+}
