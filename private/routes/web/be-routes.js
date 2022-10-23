@@ -1141,13 +1141,13 @@ module.exports = function (app) {
   })
 
   // Delete a Charity
-  app.post("/api/v1/charity/:id", (req, res) => {
+  app.delete("/api/v1/charity/:id", (req, res) => {
     const charityid = req.params.id;
 
     db.Charity.destroy({
       where: { id: charityid }
     }).then(() => {
-      res.status(202).send();
+      res.status(200).send();
     });
   })
 
