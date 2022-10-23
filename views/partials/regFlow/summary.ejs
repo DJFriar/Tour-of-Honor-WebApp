@@ -12,19 +12,22 @@
       This order includes a <span class="dataValueBold"><%= OrderInfo.ShirtSize %> <%= OrderInfo.ShirtStyle %></span>.
     </p>
     <h5>Additional Items</h5>
-    <p>Below you will find a selection of items vailable on the official <a href="https://shop.tourofhonor.com" target="_blank">Tour of Honor Shop</a>. If you order before February 1st your items will come with your registration packet (with the exception of any customized items).</p>
+    <p>
+      If you wish to order additional shirts, you can order them by clicking View Product buttons below. If you order before February 1st they will come with your registration packet. For other items in the Tour 
+      of Honor store, you can check them out <a href="https://shop.tourofhonor.com" target="_blank">here</a>.
+    </p>
     <div class="uk-flex-center toh-mt-18" uk-grid>
       <div class="uk-width-1-4@s">
-        <%- include('../buyButtons/pokerChips') %>
+        <%- include('../buyButtons/mechanicsShirt') %>
       </div>
       <div class="uk-width-1-4@s">
-        <%- include('../buyButtons/customPokerChips') %>
+        <%- include('../buyButtons/poloShirt') %>
+      </div>
+      <div class="uk-width-1-4@s">
+        <%- include('../buyButtons/redButtonUpShirt') %>
       </div>
       <div class="uk-width-1-4@s">
         <%- include('../buyButtons/stickers') %>
-      </div>
-      <div class="uk-width-1-4@s">
-        <%- include('../buyButtons/challengeCoins') %>
       </div>
     </div>
   </div>
