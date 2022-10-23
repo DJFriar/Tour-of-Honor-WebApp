@@ -564,20 +564,15 @@ $(document).ready(function () {
   // Handle Keep Existing Flag Yes button
   $(".keepExistingFlagNum").on("click", function (e) {
     e.preventDefault();
+
     const UserID = $(this).data("userid");
     const OrderID = $(this).data("orderid");
     const whoami = $(this).data("whoami");
     const enableWhen = $(this).data("enablewhen");
     const ExistingFlagNum = $(this).data("existingflagnumber");
 
-    var FlagNumberInfo = {
-      RallyYear: 2023,
-      UserID,
-      FlagNumber: ExistingFlagNum,
-    }
-
     var OrderUpdateInfo = {
-      RegStep: "FlagInProgess",
+      RegStep: "FlagInProgress",
       whoami,
       RallyYear: 2023,
       UserID,
@@ -585,41 +580,21 @@ $(document).ready(function () {
       RequestedFlagNumber: ExistingFlagNum,
     }
 
-    // Update the Flag table to assign the flag to the user.
-    $.ajax("/api/v1/flag", {
+    $.ajax("/api/v1/regFlow", {
+      beforeSend: function() { $(".spinnerBox").removeClass("hide-me"); },
+      complete: function () { $(".spinnerBox").addClass("hide-me"); },
       type: "POST",
-      data: FlagNumberInfo,
+      data: OrderUpdateInfo
     }).then(() => {
-      $.ajax("/api/v1/regFlow", {
-        type: "POST",
-        data: OrderUpdateInfo
-      }).then(() => {
-        if (whoami === "rider") {
-          riderReady = true;
-          $("#flagAssignedRider").removeClass("hide-me");
-        }
-        if (whoami === "passenger") {
-          passReady = true;
-          $("#flagAssignedPassenger").removeClass("hide-me");
-        }
-      }).catch(err => {
-        console.log("Error when updating Order Info: " + err);
-      })
+      location.reload();
     }).catch(err => {
-      console.log("Error when saving existing Flag Assignment: " + err);
-    });
-
-    if (enableWhen === "rider" && riderReady) {
-      $("#goToSummaryBtn").prop("disabled", false)
-    }
-    if (enableWhen === "pass" && (riderReady && passReady)) {
-      $("#goToSummaryBtn").prop("disabled", false)
-    }
+      toastr.error("An error occured while reserving your existing flag.", null, {"progressBar": "true", "closeButton": "true", "positionClass": "toast-top-center"})
+    })
 
   })
 
   // Handle Keep Existing Flag No button for Rider
-  $(".chooseAnotherFlagNum").on("click", function (e) {
+  $(".chooseFlagNum").on("click", function (e) {
     e.preventDefault();
     var UserID = $(this).data("userid");
     var whoami = $(this).data("whoami");
@@ -683,12 +658,6 @@ $(document).ready(function () {
     enableWhen = $(this).data("enablewhen");
     const requestedFlagNumber = $("#RequestedFlagNumber").val().trim();
 
-    var FlagNumberInfo = {
-      RallyYear: 2023,
-      UserID,
-      FlagNumber: requestedFlagNumber,
-    }
-
     var OrderUpdateInfo = {
       RegStep: "FlagInProgress",
       whoami,
@@ -697,41 +666,30 @@ $(document).ready(function () {
       OrderID,
       RequestedFlagNumber: requestedFlagNumber,
     }
-
-    $.ajax("/api/v1/flag", {
+    
+    $.ajax("/api/v1/regFlow", {
+      beforeSend: function() { 
+        $(".modal").css("display", "none"); 
+        $(".spinnerBox").removeClass("hide-me"); 
+      },
+      complete: function () { $(".spinnerBox").addClass("hide-me"); },
       type: "POST",
-      data: FlagNumberInfo
+      data: OrderUpdateInfo
     }).then(() => {
-      $.ajax("/api/v1/regFlow", {
-        type: "POST",
-        data: OrderUpdateInfo
-      }).then(() => {
-        $(".modal").css("display", "none");
-        if (whoami === "rider") {
-          riderReady = true;
-          $("#flagAssignedRider").removeClass("hide-me");
-        }
-        if (whoami === "passenger") {
-          passReady = true;
-          $("#flagAssignedPassenger").removeClass("hide-me");
-        }
-      }).catch(err => {
-        console.log("Error when updating Order Info: " + err);
-      });
+      location.reload();
     }).catch(err => {
-      console.log("Error when saving new Flag Assignment: " + err);
-    });
-
+      toastr.error("An error occured while reserving your flag.", null, {"progressBar": "true", "closeButton": "true", "positionClass": "toast-top-center"})
+    })
   })
 
   // Handle Continue to Summary Button
   $("#goToSummaryBtn").on("click", function (e) {
     e.preventDefault();
-    var UserID = $(this).data("userid");
+    var OrderID = $(this).data("orderid");
 
     var FlagInfoCompleted = {
       RegStep: "FlagComplete",
-      UserID,
+      OrderID,
       NextStepNum: 8
     }
     console.log(FlagInfoCompleted);
@@ -739,8 +697,7 @@ $(document).ready(function () {
       type: "POST",
       data: FlagInfoCompleted
     }).then(() => {
-      $("#RegStep8").removeClass("disabled");
-      UIkit.switcher("#registrationSwitcher").show(8);
+      location.reload();
     })
 
   })
@@ -750,7 +707,7 @@ $(document).ready(function () {
   // ************************
   // ** Misc Support Items **
   // ************************
-  /* #region  MIsc Support Items */
+  /* #region  Misc Support Items */
 
   // Handle Dialog Close & Cancel Buttons
   $(".close, #cancelButton, .cancelButton").on("click", function (e) {
@@ -834,6 +791,5 @@ $(document).ready(function () {
       $("#savePassengerInfo").prop("disabled", false);
     }
   }
-
   /* #endregion */
 });

@@ -1,0 +1,32 @@
+<% if(!PassengerFirstName) { %>
+  <p>Hi <%= FirstName %>,</p>
+<% } %>
+<% if(PassengerFirstName) { %>
+  <p>Hi <%= FirstName %> and <%= PassengerFirstName %>,</p>
+<% } %>
+<p>Thank you for registering for the <%= RallyYear %> Tour of Honor. Below you will find a summary of your order. If you should see any errors or need to change anything, please send an email to <a href="mailto:orders@tourofhonor.com">orders@tourofhonor.com</a> (or reply to this email).</p>
+
+<% if(ShirtStyle != "Donation") { %>
+  <p>We have you down for a <%= ShirtSize %> <%= ShirtStyle %> shirt and Flag #<%= FlagNumber %>.</p>
+<% } %>
+<% if(ShirtStyle == "Donation") { %>
+  <p>You are Flag #<%= FlagNumber %> and have chosen to donate the cost of the shirt to charity.</p>
+<% } %>
+<% if(PassengerFirstName && PassengerShirtSize != "Donation") { %>
+  <p>We have <%= PassengerFirstName %> down for a <%= PassengerShirtSize %> <%= PassengerShirtStyle %> shirt and Flag #<%= PassengerFlagNumber %>.</p>
+<% } %>
+<% if(PassengerFirstName && PassengerShirtStyle == "Donation") { %>
+  <p><%= PassengerFirstName %> will be Flag #<%= PassengerFlagNumber %> and has chosen to donate the cost of the shirt to charity.</p>
+<% } %>
+
+<% if(EmailNotes) { %>
+  <%= EmailNotes %>
+<% } %>
+
+<p>
+  Cheers,<br/>
+  Steve and Dave Brooks<br/>
+  Tour of Honor<br/>
+  <a href="www.tourofhonor.com">tourofhonor.com</a><br/>
+  "A Ride to Remember"<br/>
+</p>

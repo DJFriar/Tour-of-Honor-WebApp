@@ -1,5 +1,6 @@
 <div>
   <% if (OrderInfo.PassUserID > 0) { %>
+    <!-- Rider and Passenger Flag Selection -->
     <div style="padding-left: 60px; padding-right: 60px;" uk-grid>
       <div class="uk-width-1-2@s">
         <%- include('../../partials/flagSelectionRider') %>
@@ -8,22 +9,23 @@
         <%- include('../../partials/flagSelectionPassenger') %>
       </div>
     </div>
-    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+    <div class="uk-width-1-1@s toh-mt-24">
       <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
       <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
       <% } else { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
       <% } %>
     </div>
   <% } else { %>
+    <!-- Rider Only Flag Selection -->
     <%- include('../../partials/flagSelectionRider') %>
-    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+    <div class="uk-width-1-1@s toh-mt-24">
       <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
       <% if (OrderInfo.RequestedRiderFlagNumber) { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
       <% } else { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
       <% } %>
     </div>
   <% } %>

@@ -13,6 +13,7 @@
       <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a> -->
       <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <ul class="uk-navbar-nav uk-visible@m">
+        <li><a href="/registration">2023 Registration</a></li>
         <% if(User.isAdmin) { %>
           <li>
             <a href="#">Admin</a>
@@ -31,7 +32,6 @@
             <a href="#">Rally</a>
             <div class="uk-navbar-dropdown">
               <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li><a href="/registration">2023 Registration</a></li>
                 <li><a href="/memorials">Memorials</a></li>
                 <li><a href="/trophies">Trophy Statuses</a></li>
                 <!-- <li><a href="/livefeed">Live Feed</a></li>

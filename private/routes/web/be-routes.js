@@ -24,7 +24,7 @@ const twilio = require("../../../controllers/twilio");
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
 
-module.exports = function (app) { 
+module.exports = function (app) {
 
   // Handle Metric Reporting
   app.get('/metrics', async (req, res) => {
@@ -39,9 +39,9 @@ module.exports = function (app) {
   // Handle Sample Image Updates
   app.post("/update-sample-image",
     uploadSubmission.uploadImages,
-    uploadSubmission.handleSampleImage, 
+    uploadSubmission.handleSampleImage,
     (req, res) => {
-      db.Memorial.update({ 
+      db.Memorial.update({
         Code: req.body.EditMemorialCode.toUpperCase(),
         Name: req.body.EditMemorialName,
         Category: req.body.EditMemorialCategory,
@@ -72,7 +72,7 @@ module.exports = function (app) {
       },
       raw: true
     }).then(function (flags) {
-      var allowedNumbers = _.range(11,1201,1);
+      var allowedNumbers = _.range(11, 1201, 1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
       var goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
@@ -97,7 +97,7 @@ module.exports = function (app) {
       ],
       raw: true
     }).then(function (flags) {
-      var allowedNumbers = _.range(11,1201,1);
+      var allowedNumbers = _.range(11, 1201, 1);
       var badNumbers = flags.map(inUse => inUse.FlagNum);
       var goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const nextFlag = _.min(goodNumbers);
@@ -106,7 +106,7 @@ module.exports = function (app) {
   })
 
   // Check Email Validity
-  app.get("/api/v1/email/:email", (req,res) => {
+  app.get("/api/v1/email/:email", (req, res) => {
     const email = req.params.email;
     db.User.findOne({
       where: {
@@ -181,21 +181,21 @@ module.exports = function (app) {
     });
   })
 
-    // Fetch a Memorial by Code
-    app.get("/api/v1/memorial/c/:code", (req, res) => {
-      const code = req.params.code;
-      db.Memorial.findOne({
-        where: {
-          Code: code
-        }
-      }).then(function (dbPost) {
-        res.json(dbPost);
-      });
-    })
+  // Fetch a Memorial by Code
+  app.get("/api/v1/memorial/c/:code", (req, res) => {
+    const code = req.params.code;
+    db.Memorial.findOne({
+      where: {
+        Code: code
+      }
+    }).then(function (dbPost) {
+      res.json(dbPost);
+    });
+  })
 
   // Update a Memorial
   app.put("/api/v1/memorial", function (req, res) {
-    db.Memorial.update({ 
+    db.Memorial.update({
       Code: req.body.Code.toUpperCase(),
       Name: req.body.Name,
       Category: req.body.Category,
@@ -258,7 +258,7 @@ module.exports = function (app) {
 
   // Update a Memorial Text Entry
   app.put("/api/v1/memorial-text", function (req, res) {
-    db.MemorialMeta.update({ 
+    db.MemorialMeta.update({
       MemorialID: req.body.MemorialID,
       Heading: req.body.Heading,
       Text: req.body.Text
@@ -302,10 +302,10 @@ module.exports = function (app) {
           UserID: x.id,
           RallyYear: 2022,
         })
-        .then((y) => {
-          console.log("User Created Successfully");
-          res.status(202).json(y);
-        })
+          .then((y) => {
+            console.log("User Created Successfully");
+            res.status(202).json(y);
+          })
       })
       .catch(err => {
         logger.error("Signup API Error Encountered" + err);
@@ -367,10 +367,10 @@ module.exports = function (app) {
   app.put("/api/v1/rideronboarding", function (req, res) {
     let Password = req.body.Password;
     const encryptedPassword = bcrypt.hashSync(
-        Password,
-        bcrypt.genSaltSync(10),
-        null
-      );
+      Password,
+      bcrypt.genSaltSync(10),
+      null
+    );
     db.User.update({
       UserName: req.body.UserName,
       ZipCode: req.body.ZipCode,
@@ -383,18 +383,18 @@ module.exports = function (app) {
       console.log("User Onboarded Successfully");
       res.status(200).send();
     })
-    .catch(err => {
-      logger.error("Rider Onboarding Error Encountered: " + err);
-      res.status(401).json(err);
-    });
+      .catch(err => {
+        logger.error("Rider Onboarding Error Encountered: " + err);
+        res.status(401).json(err);
+      });
   })
 
   app.post("/api/v1/resetpasswordrequest", async (req, res) => {
     try {
       // Look for the user in the DB
-      const User = await db.User.findOne({ 
-        where: { 
-          Email: req.body.Email 
+      const User = await db.User.findOne({
+        where: {
+          Email: req.body.Email
         }
       });
       // Error if the user isn't found.
@@ -402,9 +402,9 @@ module.exports = function (app) {
         return res.status(400).send("User email not found.");
       }
       // See if a token already exists for the user.
-      let ResetToken = await db.ResetToken.findOne({ 
+      let ResetToken = await db.ResetToken.findOne({
         where: {
-          user_id: User.id 
+          user_id: User.id
         }
       });
       // If not, create a new token.
@@ -413,13 +413,13 @@ module.exports = function (app) {
           user_id: User.id,
           Token: crypto.randomBytes(32).toString("hex")
         })
-        .then((data) => {
-          ResetToken = data;
-        })
-        .catch(err => {
-          logger.error("Error creating token");
-          res.status(401).json(err);
-        })
+          .then((data) => {
+            ResetToken = data;
+          })
+          .catch(err => {
+            logger.error("Error creating token");
+            res.status(401).json(err);
+          })
       }
       // Send the password reset email.
       const PWResetLink = `${process.env.BASE_URL}/forgotpassword/${User.id}/${ResetToken.Token}`;
@@ -436,15 +436,15 @@ module.exports = function (app) {
   app.put("/api/v1/resetpasswordaction", function (req, res) {
     let Password = req.body.Password;
     const encryptedPassword = bcrypt.hashSync(
-        Password,
-        bcrypt.genSaltSync(10),
-        null
-      );
+      Password,
+      bcrypt.genSaltSync(10),
+      null
+    );
     // Update user's password
     db.User.update({
       Password: encryptedPassword
     }, {
-      where: { id: req.body.UserID} 
+      where: { id: req.body.UserID }
     });
     // Remove the token that was created.
     db.ResetToken.destroy({
@@ -502,7 +502,7 @@ module.exports = function (app) {
       PillionFlagNumber = 0;
       if (req.body.hasPillion) {
         PillionFlagNumber = req.user.PillionFlagNumber.toString();
-        RiderArray.push(PillionFlagNumber);      
+        RiderArray.push(PillionFlagNumber);
       }
       if (req.body.isGroupSubmission) {
         GroupRiders = req.body.GroupRiderInfo;
@@ -533,7 +533,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error("Error encountered when getting memorial ID.");
     }
-    if(memID > 0) {
+    if (memID > 0) {
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.FlagNumber,
         MemorialID: memID,
@@ -548,12 +548,12 @@ module.exports = function (app) {
     // Update the submission record to mark it as scored
     db.Submission.update({
       Status: req.body.Status,
-      ScorerNotes:  req.body.ScorerNotes
+      ScorerNotes: req.body.ScorerNotes
     }, {
       where: { id: req.body.SubmissionID }
     });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
-    if(req.body.Status == 1) {
+    if (req.body.Status == 1) {
       // Grant credit to the submitter
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.SubmittedFlagNumber,
@@ -693,7 +693,7 @@ module.exports = function (app) {
     db.Trophy.update({
       FlagNumbers: req.body.FlagNumbers
     }, {
-      where: { 
+      where: {
         RegionID: req.body.RegionID,
         PlaceNum: req.body.TrophyPlace
       }
@@ -741,6 +741,7 @@ module.exports = function (app) {
     var RegStep = req.body.RegStep;
     console.log("regFlow called with step: " + RegStep);
 
+    /* #region  RegStep Rider */
     if (RegStep == "Rider") {
       console.log(RegStep + " step entered.");
       console.log("UserID = " + req.body.UserID);
@@ -755,12 +756,14 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
     }
+    /* #endregion */
 
+    /* #region  RegStep Bike */
     if (RegStep == "Bike") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         NextStepNum: 2
-      },{
+      }, {
         where: {
           RallyYear: 2023,
           UserID: req.body.UserID
@@ -772,13 +775,15 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+    /* #endregion */
 
+    /* #region  RegStep NoPassenger */
     if (RegStep == "NoPassenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         PassUserID: req.body.PassUserID,
         NextStepNum: 3
-      },{
+      }, {
         where: {
           RallyYear: 2023,
           UserID: req.body.UserID
@@ -790,13 +795,15 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+    /* #endregion */
 
+    /* #region  RegStep ExistingPassenger */
     if (RegStep == "ExistingPassenger") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         PassUserID: req.body.PassUserID,
         NextStepNum: 3
-      },{
+      }, {
         where: {
           RallyYear: 2023,
           UserID: req.body.UserID
@@ -809,7 +816,9 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+    /* #endregion */
 
+    /* #region  RegStep NewPassenger */
     if (RegStep == "NewPassenger") {
       console.log(RegStep + " step entered.");
 
@@ -835,7 +844,7 @@ module.exports = function (app) {
               db.Order.update({
                 PassUserID: newUser.id,
                 NextStepNum: 3
-              },{
+              }, {
                 where: {
                   RallyYear: 2023,
                   UserID: req.body.UserID
@@ -849,13 +858,15 @@ module.exports = function (app) {
       })
 
     }
+    /* #endregion */
 
+    /* #region  RegStep Charity */
     if (RegStep == "Charity") {
       console.log(RegStep + " step entered.");
       db.Order.update({
         CharityChosen: req.body.CharityChoice,
         NextStepNum: 4
-      },{
+      }, {
         where: {
           RallyYear: 2023,
           UserID: req.body.UserID
@@ -868,7 +879,7 @@ module.exports = function (app) {
           }
         }).then((dbOrder) => {
           var hasPassenger = false;
-          if (dbOrder.PassUserID > 0) { hasPassenger = true; } 
+          if (dbOrder.PassUserID > 0) { hasPassenger = true; }
           res.status(202).send({ hasPassenger });
         })
       }).catch(err => {
@@ -876,7 +887,9 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+    /* #endregion */
 
+    /* #region  RegStep Shirts */
     if (RegStep == "Shirts") {
       console.log(RegStep + " step entered.");
       console.log("Shirt info provided:" + req.body);
@@ -894,7 +907,7 @@ module.exports = function (app) {
       var PassShirtSize = req.body.PassShirtSize;
       var PassShirtStyle = req.body.PassShirtStyle;
       var ShirtSizesToSurcharge = ["2X", "3X", "4X", "5X"];
-      var ShirtStylesToSurcharge = ["Long-Sleeved","Ladies Short-Sleeved"]
+      var ShirtStylesToSurcharge = ["Long-Sleeved", "Ladies Short-Sleeved"]
 
       var ShirtDetails = {
         ShirtSize,
@@ -904,13 +917,13 @@ module.exports = function (app) {
 
       console.log("Subtotal = $" + totalPrice);
 
-      if(ShirtStylesToSurcharge.includes(ShirtStyle)) {
+      if (ShirtStylesToSurcharge.includes(ShirtStyle)) {
         console.log("Adding Rider Style Surcharge");
         totalPrice += ShirtStyleSurcharge;
         console.log("Subtotal = $" + totalPrice);
       }
 
-      if(ShirtSizesToSurcharge.includes(ShirtSize)) {
+      if (ShirtSizesToSurcharge.includes(ShirtSize)) {
         console.log("Adding Rider Size Surcharge");
         totalPrice += ShirtSizeSurcharge;
         console.log("Subtotal = $" + totalPrice);
@@ -923,12 +936,12 @@ module.exports = function (app) {
         console.log("Subtotal = $" + totalPrice);
         ShirtDetails.PassShirtSize = PassShirtSize;
         ShirtDetails.PassShirtStyle = PassShirtStyle;
-        if(ShirtStylesToSurcharge.includes(PassShirtStyle)) {
+        if (ShirtStylesToSurcharge.includes(PassShirtStyle)) {
           console.log("Adding Passenger Style Surcharge");
           totalPrice += ShirtStyleSurcharge;
           console.log("Subtotal = $" + totalPrice);
         }
-        if(ShirtSizesToSurcharge.includes(PassShirtSize)) {
+        if (ShirtSizesToSurcharge.includes(PassShirtSize)) {
           console.log("Adding Passenger Size Surcharge");
           totalPrice += ShirtSizeSurcharge;
           console.log("Subtotal = $" + totalPrice);
@@ -961,12 +974,16 @@ module.exports = function (app) {
       })
 
     }
+    /* #endregion */
 
+    /* #region  RegStep Payment */
     if (RegStep == "Payment") {
       console.log(RegStep + " step entered.");
       res.send("success");
     }
+    /* #endregion */
 
+    /* #region  RegStep Waiver */
     if (RegStep == "Waiver") {
       console.log(RegStep + " step entered.");
 
@@ -987,47 +1004,60 @@ module.exports = function (app) {
         res.status(401).json(err);
       })
     }
+    /* #endregion */
 
+    /* #region  RegStep FlagInProgress */
     if (RegStep == "FlagInProgress") {
       console.log(RegStep + " step entered.");
-
-      var FlagInfo = { };
-
+      var FlagInfo = {
+        FlagNum: req.body.RequestedFlagNumber,
+        UserID: req.body.UserID,
+        RallyYear: req.body.RallyYear
+      };
+      var OrderInfo = {};
       if (req.body.whoami === "rider") {
-        FlagInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
+        OrderInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
       }
       if (req.body.whoami === "passenger") {
-        FlagInfo.RequestedPassFlagNumber = req.body.RequestedFlagNumber;
+        OrderInfo.RequestedPassFlagNumber = req.body.RequestedFlagNumber;
       }
 
-      // Update Order with Flag info
-      db.Order.update(FlagInfo, {
-        where: {
-          RallyYear: 2023,
-          id: req.body.OrderID
-        }
-      }).then(() => {
-        logger.info("Order " + req.body.OrderID + " was updated with FlagInfo.");
-        res.status(202).send();
+      // Update the DB tables
+      // Assign the Flag number to the rider
+      db.Flag.create(FlagInfo).then(() => {
+        logger.info("Flag number " + req.body.FlagNumber + " assigned to UserID " + req.body.UserID);
+        // Update Order with Flag info
+        db.Order.update(OrderInfo, {
+          where: {
+            RallyYear: req.body.RallyYear,
+            id: req.body.OrderID
+          }
+        }).then(() => {
+          logger.info("Order " + req.body.OrderID + " was updated with FlagInfo.");
+          res.status(202).send();
+        }).catch(err => {
+          logger.error("Error updating order with FlagInProgress info: " + err);
+          res.status(400).json(err);
+        })
       }).catch(err => {
-        logger.error("Error updating order with FlagInProgress info: " + err);
-        res.status(401).json(err);
+        logger.error("Error when saving flag number assignments:" + err);
+        res.status(400).json(err);
       })
-
     }
+    /* #endregion */
 
+    /* #region  RegStep FlagComplete */
     if (RegStep == "FlagComplete") {
       console.log(RegStep + " step entered.");
 
       var FlagInfoComplete = {
-        UserID,
         NextStepNum: 8
       }
 
       db.Order.update(FlagInfoComplete, {
         where: {
           RallyYear: 2023,
-          UserID: req.body.UserID
+          id: req.body.OrderID
         }
       }).then(() => {
         res.status(202).send();
@@ -1037,6 +1067,7 @@ module.exports = function (app) {
       })
 
     }
+    /* #endregion */
 
   })
 
@@ -1114,7 +1145,7 @@ module.exports = function (app) {
     const charityid = req.params.id;
 
     db.Charity.destroy({
-      where: { id : charityid }
+      where: { id: charityid }
     }).then(() => {
       res.status(202).send();
     });
@@ -1124,7 +1155,7 @@ module.exports = function (app) {
   app.post("/api/v1/group", (req, res) => {
     db.UserGroup.create({
       Name: req.body.GroupName,
-      Description :req.body.GroupDescription,
+      Description: req.body.GroupDescription,
       IsAdmin: req.body.GroupIsAdmin,
       IsActive: req.body.GroupIsActive,
       IsProtected: 0
@@ -1143,7 +1174,7 @@ module.exports = function (app) {
 
     db.UserGroup.update({
       Name: req.body.GroupName,
-      Description :req.body.GroupDescription,
+      Description: req.body.GroupDescription,
       IsAdmin: req.body.GroupIsAdmin,
       IsActive: req.body.GroupIsActive
     }, {
@@ -1211,7 +1242,7 @@ module.exports = function (app) {
     } catch {
       logger.error("Error in sendSMS API call.");
     }
-    
+
     res.status(200).send();
   })
 }
