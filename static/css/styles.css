@@ -440,3 +440,7 @@ a.hidden-link:visited {
   height: 200px;
   width: 200px;
 }
+
+.dataValueBold {
+  font-weight: bold;
+}

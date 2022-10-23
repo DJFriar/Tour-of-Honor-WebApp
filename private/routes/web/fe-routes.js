@@ -66,13 +66,6 @@ const orderSteps = [
     "Subtitle": "Flag Number",
     "StepNumber": 8,
     "Partial": "flagNumber"
-  },
-  {
-    "StepIndex": 8,
-    "Title": "",
-    "Subtitle": "Summary",
-    "StepNumber": 9,
-    "Partial": "summary"
   }
 ]
 
@@ -323,6 +316,17 @@ const orderSteps = [
       AwardNames,
       Regions,
       TrophyList
+    });
+  });
+
+  app.get("/admin/flag-manager", isAuthenticated, async (req, res) => {
+    var activeUser = false
+    if (req.user) { activeUser = true };
+    res.locals.title = "TOH Flag Manager"
+    res.render("pages/admin/flag-manager", {
+      activeUser,
+      User: req.user,
+      NotificationText: "",
     });
   });
 
