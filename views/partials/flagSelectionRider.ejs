@@ -1,4 +1,4 @@
-<h4 class="toh-mb-18">Rider Flag Number</h4>
+<h4 class="toh-mb-18">Rider Flag Number <% if (OrderInfo.RequestedRiderFlagNumber) { %><span id="flagAssignedRider" style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-lg"></i><% } %></span></h4>
 <div style="padding-left: 60px; padding-right: 60px;">
   <div class="toh-mb-18">
     <div class="toh-flag-mockup uk-align-center">
@@ -18,28 +18,20 @@
   <% if(User.FlagNumber > 10 && !OrderInfo.RequestedRiderFlagNumber) { %>
     <div id="keepExistingFlagNumSection">
       <p>Would you like to keep this flag number again for next year?</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-userid="<%= User.id %>">No</button>
+      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-userid="<%= User.id %>">No</button>
       <button type="button" id="keepExistingFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded keepExistingFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= User.id %>" data-existingflagnumber="<%= User.FlagNumber %>">Yes</button>
     </div>
   <% } else { %>
     <% if(User.FlagNumber >= 1 && User.FlagNumber <= 10) { %>
       <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
+      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
-    <% if(User.FlagNumber == 0) { %>
+    <% if(User.FlagNumber == 0 && !OrderInfo.RequestedRiderFlagNumber) { %>
       <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseAnotherFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseAnotherFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
+      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
   <% } %>
-  <div class="toh-mt-18 hide-me" id="flagAssignedRider">
-    <span style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-10x"></i></span> 
-  </div>
   <% if (OrderInfo.RequestedRiderFlagNumber) { %>
-    <div>
-      <p>You have already chosen your flag number. If you need to make a change, please reach out to support.</p>
-    </div>
-    <div class="toh-mt-18" id="flagAssignedRider">
-      <span style="color:green" uk-tooltip="Flag number has been locked in."><i class="fas fa-check fa-10x"></i></span> 
-    </div>
+    <p>Your flag number choice has been confirmed. If you need to make a change, please reach out to support.</p>
   <% } %>
 </div>
