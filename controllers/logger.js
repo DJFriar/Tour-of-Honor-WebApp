@@ -24,7 +24,7 @@ const logger = createLogger({
     format.splat(),
     format.json()
   ),
-  defaultMeta: { service: 'TourOfHonor' },
+  defaultMeta: { service: 'TourOfHonor-Web' },
   transports: [
     // new LogtailTransport(logtail),
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
@@ -35,7 +35,7 @@ const logger = createLogger({
   ],
   rejectionHandlers: [
     new transports.File({ filename: 'logs/PromiseRejections.log' }),
-  ],
+  ]
 });
 
 // When in Production, send the logs to Logtail
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== 'Development') {
 
 // If we're not in Production then **ALSO** log to the `console`
 // with the colorized simple format.
-if (process.env.NODE_ENV == 'Development') {
+if (process.env.NODE_ENV === 'Development') {
   logger.add(new transports.Console({
     format: format.combine(
       format.colorize({ all: true }),
@@ -59,11 +59,12 @@ if (process.env.NODE_ENV == 'Development') {
 }
 
 const dblogger = createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: 'info',
   format: format.combine(
     format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss'
     }),
+    format.errors({ stack: true }),
     format.json()
   ),
   defaultMeta: { service: 'TourOfHonor DB' },
