@@ -588,7 +588,7 @@ $(document).ready(function () {
     }).then(() => {
       location.reload();
     }).catch(err => {
-      toastr.error("An error occured while reserving your existing flag.", null, {"progressBar": "true", "closeButton": "true", "positionClass": "toast-top-center"})
+      showToastrError("An error occured while reserving your existing flag.");
     })
 
   })
@@ -678,7 +678,7 @@ $(document).ready(function () {
     }).then(() => {
       location.reload();
     }).catch(err => {
-      toastr.error("An error occured while reserving your flag.", null, {"progressBar": "true", "closeButton": "true", "positionClass": "toast-top-center"})
+      showToastrError("An error occured while reserving your flag.");
     })
   })
 
@@ -791,5 +791,19 @@ $(document).ready(function () {
       $("#savePassengerInfo").prop("disabled", false);
     }
   }
+
+  // Show Toastr Alert
+  function showToastrError(message) {
+    const toastrOptions = {
+      "closeButton": "true", 
+      "positionClass": "toast-top-center", 
+      "preventDuplicates":"true", 
+      "progressBar": "true", 
+      "timeOut": "2500"
+    }
+
+    toastr.error(message, null, toastrOptions);
+  }
+
   /* #endregion */
 });
