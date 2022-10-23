@@ -37,7 +37,7 @@ $(document).ready(() => {
         window.location.replace("/memorials"); 
       }
     }).catch(err => {
-      toastr.error("Invalid login. Please try again.", null, {"closeButton": "true", "positionClass": "toast-top-center", "preventDuplicates":"true", "progressBar": "true", "timeOut": "200",  })
+      toastr.error("Invalid login. Please try again.", null, {"closeButton": "true", "positionClass": "toast-top-center", "preventDuplicates":"true", "progressBar": "true", "timeOut": "2500",  })
     });
   }
 });
