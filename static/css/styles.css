@@ -418,3 +418,25 @@ a.hidden-link:visited {
 .characterCount {
   float: right;
 }
+
+.spinnerBox {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: black;
+  opacity: 0.7;
+}
+
+.spinner {
+  background-color: transparent;
+  position: fixed;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  left: 50%;
+  height: 200px;
+  width: 200px;
+}
