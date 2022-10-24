@@ -1,254 +1,244 @@
-const q = require("../../queries");
-const { DateTime } = require("luxon");
+const { DateTime } = require('luxon');
+const q = require('../../queries');
 
-const isAuthenticated = require("../../../config/isAuthenticated");
-const isAdmin = require("../../../config/isAdmin");
+const isAuthenticated = require('../../../config/isAuthenticated');
+// const isAdmin = require('../../../config/isAdmin');
 const { logger } = require('../../../controllers/logger');
 
 module.exports = function (app) {
+  const { baseSampleImageUrl } = app.locals;
+  const { baseImageUrl } = app.locals;
 
-const baseSampleImageUrl = app.locals.baseSampleImageUrl;
-const baseImageUrl = app.locals.baseImageUrl;
-
-const orderSteps = [
-  {
-    "StepIndex": 0,
-    "Title": "Step 1",
-    "Subtitle": "Rider Info",
-    "StepNumber": 1,
-    "Partial": "riderInfo"
-  },
-  {
-    "StepIndex": 1,
-    "Title": "Step 2",
-    "Subtitle": "Bike Info",
-    "StepNumber": 2,
-    "Partial": "bikeInfo"
-  },
-  {
-    "StepIndex": 2,
-    "Title": "Step 3",
-    "Subtitle": "Passenger Info",
-    "StepNumber": 3,
-    "Partial": "passengerInfo"
-  },
-  {
-    "StepIndex": 3,
-    "Title": "Step 4",
-    "Subtitle": "Charity Choice",
-    "StepNumber": 4,
-    "Partial": "charityChoice"
-  },
-  {
-    "StepIndex": 4,
-    "Title": "Step 5",
-    "Subtitle": "T-Shirts",
-    "StepNumber": 5,
-    "Partial": "t-shirt"
-  },
-  {
-    "StepIndex": 5,
-    "Title": "Step 6",
-    "Subtitle": "Payment",
-    "StepNumber": 6,
-    "Partial": "payment"
-  },
-  {
-    "StepIndex": 6,
-    "Title": "Step 7",
-    "Subtitle": "Waiver",
-    "StepNumber": 7,
-    "Partial": "waiver"
-  },
-  {
-    "StepIndex": 7,
-    "Title": "Step 8",
-    "Subtitle": "Flag Number",
-    "StepNumber": 8,
-    "Partial": "flagNumber"
-  }
-]
-
+  const orderSteps = [
+    {
+      StepIndex: 0,
+      Title: 'Step 1',
+      Subtitle: 'Rider Info',
+      StepNumber: 1,
+      Partial: 'riderInfo',
+    },
+    {
+      StepIndex: 1,
+      Title: 'Step 2',
+      Subtitle: 'Bike Info',
+      StepNumber: 2,
+      Partial: 'bikeInfo',
+    },
+    {
+      StepIndex: 2,
+      Title: 'Step 3',
+      Subtitle: 'Passenger Info',
+      StepNumber: 3,
+      Partial: 'passengerInfo',
+    },
+    {
+      StepIndex: 3,
+      Title: 'Step 4',
+      Subtitle: 'Charity Choice',
+      StepNumber: 4,
+      Partial: 'charityChoice',
+    },
+    {
+      StepIndex: 4,
+      Title: 'Step 5',
+      Subtitle: 'T-Shirts',
+      StepNumber: 5,
+      Partial: 't-shirt',
+    },
+    {
+      StepIndex: 5,
+      Title: 'Step 6',
+      Subtitle: 'Payment',
+      StepNumber: 6,
+      Partial: 'payment',
+    },
+    {
+      StepIndex: 6,
+      Title: 'Step 7',
+      Subtitle: 'Waiver',
+      StepNumber: 7,
+      Partial: 'waiver',
+    },
+    {
+      StepIndex: 7,
+      Title: 'Step 8',
+      Subtitle: 'Flag Number',
+      StepNumber: 8,
+      Partial: 'flagNumber',
+    },
+  ];
 
   // ===============================================================================
-  //#region READ (GET)
+  // #region READ (GET)
   // ===============================================================================
 
-  app.get("/", async (req,res) => {
+  app.get('/', async (req, res) => {
     res.redirect('/login');
   });
 
-  app.get("/admin", isAuthenticated, async (req,res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Admin Home"
-    res.render("pages/admin", {
+  app.get('/admin', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Admin Home';
+    res.render('pages/admin', {
       activeUser,
       User: req.user,
-      NotificationText: ""
+      NotificationText: '',
     });
   });
 
-  app.get("/scoring/", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
+  app.get('/scoring/', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let PendingSubmissions;
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var PendingSubmissions = await q.queryPendingSubmissions();
+      PendingSubmissions = await q.queryPendingSubmissions();
     } catch (err) {
-      logger.error("Error encountered: queryPendingSubmissions:" + err);
+      logger.error(`Error encountered: queryPendingSubmissions:${err}`);
     }
     try {
-      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
-    } catch {
-      logger.error("Error encountered: queryTimeZoneData");
+      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
     }
-    res.locals.title = "TOH Scoring Dashboard"
-    res.render("pages/scoring", {
+    res.locals.title = 'TOH Scoring Dashboard';
+    res.render('pages/scoring', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       PendingSubmissions,
       TimeZone,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/scored/", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
+  app.get('/scored/', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Submissions;
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var Submissions = await q.queryScoredSubmissions();
+      Submissions = await q.queryScoredSubmissions();
     } catch (err) {
-      logger.error("Error encountered: queryScoredSubmissions:" + err);
+      logger.error(`Error encountered: queryScoredSubmissions:${err}`);
     }
     try {
-      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
-    } catch {
-      logger.error("Error encountered: queryTimeZoneData");
+      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
     }
-    res.locals.title = "TOH Scored"
-    res.render("pages/scored", {
+    res.locals.title = 'TOH Scored';
+    res.render('pages/scored', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Submissions,
       TimeZone,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/submission/undefined", isAuthenticated, async (req, res) => {
-    res.redirect("/scoring");
-  })
+  app.get('/submission/undefined', isAuthenticated, async (req, res) => {
+    res.redirect('/scoring');
+  });
 
-  app.get("/submission/:id", isAuthenticated, async (req, res) => {
-    OtherRidersArray = [];
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    const id = req.params.id;
+  app.get('/submission/:id', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let OtherFlags;
+    let OtherRidersArray = [];
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
+    }
+    const { id } = req.params;
     try {
-      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
-    } catch {
-      logger.error("Error encountered: queryTimeZoneData");
+      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
     }
     try {
-      var Submissions = await q.queryAllSubmissions(id);
-      if (Submissions.length == 0) {
-        res.redirect("/error");
+      const Submissions = await q.queryAllSubmissions(id);
+      if (Submissions.length === 0) {
+        res.redirect('/error');
       } else {
         OtherFlags = Submissions[0].OtherRiders;
         OtherRidersArray = OtherFlags.split(',');
-        res.locals.title = "TOH Submission " + id
-        res.render("pages/submission", {
+        res.locals.title = `TOH Submission ${id}`;
+        res.render('pages/submission', {
           activeUser,
           User: req.user,
-          NotificationText: "",
+          NotificationText: '',
           baseImageUrl,
           baseSampleImageUrl,
           Submissions,
           OtherRidersArray,
           TimeZone,
-          dt: DateTime
+          dt: DateTime,
         });
       }
-    } catch {
-      console.log("queryAllSubmissions failed for id " + id);
+    } catch (err) {
+      console.log(`queryAllSubmissions failed for id ${id}`);
     }
   });
 
-  app.get("/error", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Error"
-    res.render("pages/error", {
+  app.get('/error', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Error';
+    res.render('pages/error', {
       activeUser,
       User: req.user,
-      NotificationText: ""
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/alt-entry", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Alt Entry"
-    res.render("pages/admin/alt-entry", {
+  app.get('/admin/alt-entry', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Alt Entry';
+    res.render('pages/admin/alt-entry', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/memorial-editor", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var categoryData = await q.queryAllCategories();
-    } catch {
-      logger.error("Error encountered: queryAllCategories");
+  app.get('/admin/memorial-editor', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let categoryData;
+    let MemorialData;
+    let restrictionData;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var MemorialData = await q.queryAllMemorials();
-    } catch {
-      logger.error("Error encountered: queryAllMemorials");
+      categoryData = await q.queryAllCategories();
+    } catch (err) {
+      logger.error('Error encountered: queryAllCategories');
     }
     try {
-      var restrictionData = await q.queryAllRestrictions();
-    } catch {
-      logger.error("Error encountered: queryAllRestrictions");
-    }
-    res.locals.title = "TOH Memorial Editor OLD"
-    res.render("pages/admin/memorial-editor", {
-      activeUser,
-      User: req.user,
-      baseImageUrl,
-      baseSampleImageUrl,
-      categoryData,
-      MemorialData,
-      restrictionData,
-      NotificationText: ""
-    });
-  });
-
-  app.get("/admin/memorial-editor2", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var categoryData = await q.queryAllCategories();
-    } catch {
-      logger.error("Error encountered: queryAllCategories");
+      MemorialData = await q.queryAllMemorials();
+    } catch (err) {
+      logger.error('Error encountered: queryAllMemorials');
     }
     try {
-      var MemorialData = await q.queryAllMemorials();
-    } catch {
-      logger.error("Error encountered: queryAllMemorials");
+      restrictionData = await q.queryAllRestrictions();
+    } catch (err) {
+      logger.error('Error encountered: queryAllRestrictions');
     }
-    try {
-      var restrictionData = await q.queryAllRestrictions();
-    } catch {
-      logger.error("Error encountered: queryAllRestrictions");
-    }
-    res.locals.title = "TOH Memorial Editor"
-    res.render("pages/admin/memorial-editor2", {
+    res.locals.title = 'TOH Memorial Editor OLD';
+    res.render('pages/admin/memorial-editor', {
       activeUser,
       User: req.user,
       baseImageUrl,
@@ -256,170 +246,229 @@ const orderSteps = [
       categoryData,
       MemorialData,
       restrictionData,
-      NotificationText: ""
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/memorial-text/:memCode", isAuthenticated, async (req, res) => {
-    const memCode = req.params.memCode;
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var MemorialData = await q.queryMemorial(memCode);
-    } catch {
-      logger.error("Error encountered: queryMemorial");
+  app.get('/admin/memorial-editor2', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let categoryData;
+    let MemorialData;
+    let restrictionData;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var MemorialText = await q.queryMemorialText(memCode);
-    } catch {
-      logger.error("Error encountered: queryMemorialText");
+      categoryData = await q.queryAllCategories();
+    } catch (err) {
+      logger.error('Error encountered: queryAllCategories');
     }
-    res.locals.title = "TOH Memorial Text"
-    res.render("pages/admin/memorial-text", {
+    try {
+      MemorialData = await q.queryAllMemorials();
+    } catch (err) {
+      logger.error('Error encountered: queryAllMemorials');
+    }
+    try {
+      restrictionData = await q.queryAllRestrictions();
+    } catch (err) {
+      logger.error('Error encountered: queryAllRestrictions');
+    }
+    res.locals.title = 'TOH Memorial Editor';
+    res.render('pages/admin/memorial-editor2', {
+      activeUser,
+      User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
+      categoryData,
+      MemorialData,
+      restrictionData,
+      NotificationText: '',
+    });
+  });
+
+  app.get('/admin/memorial-text/:memCode', isAuthenticated, async (req, res) => {
+    const { memCode } = req.params;
+    let activeUser = false;
+    let MemorialData;
+    let MemorialText;
+    if (req.user) {
+      activeUser = true;
+    }
+    try {
+      MemorialData = await q.queryMemorial(memCode);
+    } catch (err) {
+      logger.error('Error encountered: queryMemorial');
+    }
+    try {
+      MemorialText = await q.queryMemorialText(memCode);
+    } catch (err) {
+      logger.error('Error encountered: queryMemorialText');
+    }
+    res.locals.title = 'TOH Memorial Text';
+    res.render('pages/admin/memorial-text', {
       activeUser,
       User: req.user,
       MemorialData,
       MemorialText,
-      NotificationText: ""
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/trophy-editor", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var Regions = await q.queryRegionList();
-    } catch {
-      logger.error("Error encountered: queryRegionList");
+  app.get('/admin/trophy-editor', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let AwardNames;
+    let Awards;
+    let Regions;
+    let TrophyList;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var TrophyList = await q.queryTrophiesList();
-    } catch {
-      logger.error("Error encountered: queryTrophiesList");
+      Regions = await q.queryRegionList();
+    } catch (err) {
+      logger.error('Error encountered: queryRegionList');
     }
     try {
-      var AwardNames = await q.queryAwardNamesList();
-    } catch {
-      logger.error("Error encountered: queryAwardNamesList");
+      TrophyList = await q.queryTrophiesList();
+    } catch (err) {
+      logger.error('Error encountered: queryTrophiesList');
     }
     try {
-      var Awards = await q.queryAwardList();
-    } catch {
-      logger.error("Error encountered: queryAwardList");
+      AwardNames = await q.queryAwardNamesList();
+    } catch (err) {
+      logger.error('Error encountered: queryAwardNamesList');
     }
-    res.locals.title = "TOH Trophy Editor"
-    res.render("pages/admin/trophy-editor", {
+    try {
+      Awards = await q.queryAwardList();
+    } catch (err) {
+      logger.error('Error encountered: queryAwardList');
+    }
+    res.locals.title = 'TOH Trophy Editor';
+    res.render('pages/admin/trophy-editor', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Awards,
       AwardNames,
       Regions,
-      TrophyList
+      TrophyList,
     });
   });
 
-  app.get("/admin/flag-manager", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Flag Manager"
-    res.render("pages/admin/flag-manager", {
+  app.get('/admin/flag-manager', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Flag Manager';
+    res.render('pages/admin/flag-manager', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/rider-management", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var Users = await q.queryAllUsers();
-    } catch {
-      logger.error("Error encountered: queryAllUsers");
+  app.get('/admin/rider-management', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Users;
+    if (req.user) {
+      activeUser = true;
     }
-    var sponsorData = [
-      { "ID":"1", "FirstName":"Stevie", "LastName":"Nicks", "States":"AZ, CA" },
-      { "ID":"2", "FirstName":"Billy", "LastName":"Gibbons", "States":"TX" }
-    ]
-    res.locals.title = "TOH Rider Manager"
-    res.render("pages/admin/rider-management", {
+    try {
+      Users = await q.queryAllUsers();
+    } catch (err) {
+      logger.error('Error encountered: queryAllUsers');
+    }
+    const sponsorData = [
+      { ID: '1', FirstName: 'Stevie', LastName: 'Nicks', States: 'AZ, CA' },
+      { ID: '2', FirstName: 'Billy', LastName: 'Gibbons', States: 'TX' },
+    ];
+    res.locals.title = 'TOH Rider Manager';
+    res.render('pages/admin/rider-management', {
       activeUser,
       User: req.user,
       sponsorData,
       Users,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
-  app.get("/admin/group-management", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var Groups = await q.queryAllGroups();
-    } catch {
-      logger.error("Error encountered: queryAllGroups");
+  app.get('/admin/group-management', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Groups;
+    if (req.user) {
+      activeUser = true;
     }
-    res.locals.title = "TOH Group Manager"
-    res.render("pages/admin/group-management", {
+    try {
+      Groups = await q.queryAllGroups();
+    } catch (err) {
+      logger.error('Error encountered: queryAllGroups');
+    }
+    res.locals.title = 'TOH Group Manager';
+    res.render('pages/admin/group-management', {
       activeUser,
       User: req.user,
       Groups,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
-  app.get("/changelog", async (req,res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Changelog"
-    res.render("pages/changelog", {
+  app.get('/changelog', async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Changelog';
+    res.render('pages/changelog', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
-  app.get("/disabled", async (req, res) => {
-    res.locals.title = "TOH Site Disabled"
-    res.render("pages/disabled", {
-      NotificationText: ""
+  app.get('/disabled', async (req, res) => {
+    res.locals.title = 'TOH Site Disabled';
+    res.render('pages/disabled', {
+      NotificationText: '',
     });
   });
 
-  app.get("/forgotpassword", async (req,res) => {
-    res.locals.title = "TOH Forgot Password"
-    res.render("pages/forgot-password", {
-      NotificationText: "",
+  app.get('/forgotpassword', async (req, res) => {
+    res.locals.title = 'TOH Forgot Password';
+    res.render('pages/forgot-password', {
+      NotificationText: '',
       UserID: 0,
-      TokenValidity: [{ "Valid":2 }]
+      TokenValidity: [{ Valid: 2 }],
     });
-  })
+  });
 
-  app.get("/forgotpassword/:id/:token", async (req,res) => {
+  app.get('/forgotpassword/:id/:token', async (req, res) => {
     const UserID = req.params.id;
     const Token = req.params.token;
+    let TokenValidity;
     try {
-      var TokenValidity = await q.queryTokenValidity(UserID, Token);
-    } catch {
-      logger.error("Error encountered: queryTokenValidity");
+      TokenValidity = await q.queryTokenValidity(UserID, Token);
+    } catch (err) {
+      logger.error('Error encountered: queryTokenValidity');
     }
-    res.locals.title = "TOH Forgot Password"
-    res.render("pages/forgot-password", {
-      NotificationText: "",
+    res.locals.title = 'TOH Forgot Password';
+    res.render('pages/forgot-password', {
+      NotificationText: '',
       UserID,
-      TokenValidity
+      TokenValidity,
     });
-  })
+  });
 
-  app.get("/livefeed", async (req,res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    res.locals.title = "TOH Live Feed"
-    res.render("pages/livefeed", {
+  app.get('/livefeed', async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Live Feed';
+    res.render('pages/livefeed', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
     });
   });
 
@@ -428,283 +477,343 @@ const orderSteps = [
   //   res.redirect('/disabled');
   // });
 
-  app.get("/login", async (req, res) => {
-    res.locals.title = "TOH Login"
-    res.render("pages/login", {
-      NotificationText: ""
+  app.get('/login', async (req, res) => {
+    res.locals.title = 'TOH Login';
+    res.render('pages/login', {
+      NotificationText: '',
     });
   });
 
-  app.get("/logout", (req, res) => {
+  app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect("/");
+    res.redirect('/');
   });
 
-  app.get("/memorials", async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var Memorials = await q.queryAllAvailableMemorials();
-    } catch {
-      logger.error("Error encountered: queryAllAvailableMemorials");
+  app.get('/memorials', async (req, res) => {
+    let activeUser = false;
+    let Memorials;
+    if (req.user) {
+      activeUser = true;
     }
-    res.locals.title = "TOH Memorial List"
-    res.render("pages/memorials", {
+    try {
+      Memorials = await q.queryAllAvailableMemorials();
+    } catch (err) {
+      logger.error('Error encountered: queryAllAvailableMemorials');
+    }
+    res.locals.title = 'TOH Memorial List';
+    res.render('pages/memorials', {
       activeUser,
       User: req.user,
-      NotificationText: "",
-      Memorials
+      NotificationText: '',
+      Memorials,
     });
   });
 
-  app.get("/memorial/:memCode", async (req, res) => {
-    var activeUser = false;
-    const memCode = req.params.memCode;
-    var memID = 0;
-    var isMemorialInSubmissions = false;
-    var isMemorialInXref = false;
-    var isAvailableToSubmit = false;
+  app.get('/memorial/:memCode', async (req, res) => {
+    let activeUser = false;
+    const { memCode } = req.params;
+    let memID = 0;
+    let MemorialData;
+    let MemorialText;
+    let isMemorialInSubmissions = false;
+    let isMemorialInXref = false;
+    let isAvailableToSubmit = false;
     try {
-      var memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
+      const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (error) {
-      logger.error("Error encountered when getting memorial ID.");
+      logger.error('Error encountered when getting memorial ID.');
     }
     try {
-      var MemorialData = await q.queryMemorial(memCode);
-    } catch {
-      logger.error("Error encountered: queryMemorial");
+      MemorialData = await q.queryMemorial(memCode);
+    } catch (err) {
+      logger.error('Error encountered: queryMemorial');
     }
     try {
-      var MemorialText = await q.queryMemorialText(memCode);
-    } catch {
-      logger.error("Error encountered: queryMemorialText");
+      MemorialText = await q.queryMemorialText(memCode);
+    } catch (err) {
+      logger.error('Error encountered: queryMemorialText');
     }
-    var MemorialStatus = 0;
-    var SubmissionStatus = [];
-    var UserData = [];
-    if (req.user) { 
+    let MemorialStatus = 0;
+    let SubmissionStatus = [];
+    let UserData = [];
+    if (req.user) {
       activeUser = true;
-      UserData = req.user
+      UserData = req.user;
       try {
-        var MemorialStatusResponse = await q.queryMemorialStatusByRider(req.user.FlagNumber, memID);
+        const MemorialStatusResponse = await q.queryMemorialStatusByRider(
+          req.user.FlagNumber,
+          memID
+        );
         if (MemorialStatusResponse.length > 0) {
           MemorialStatus = MemorialStatusResponse[0].id;
           isMemorialInXref = true;
         } else {
           MemorialStatus = 0;
         }
-      } catch {
-        logger.error("Error encountered: queryMemorialStatusByRider");
+      } catch (err) {
+        logger.error('Error encountered: queryMemorialStatusByRider');
       }
       try {
         SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
-        if (SubmissionStatus.length > 0 && SubmissionStatus[0].Status != 2) { 
+        if (SubmissionStatus.length > 0 && SubmissionStatus[0].Status !== 2) {
           isMemorialInSubmissions = true;
         }
-      } catch {
-        logger.error("Error encountered: querySubmissionStatusByRider");
+      } catch (err) {
+        logger.error('Error encountered: querySubmissionStatusByRider');
       }
-      if (!isMemorialInXref && !isMemorialInSubmissions) { isAvailableToSubmit = true}
-    };
-
-    if(SubmissionStatus.length == 0) {
-      SubmissionStatus.unshift({Status: 4});
+      if (!isMemorialInXref && !isMemorialInSubmissions) {
+        isAvailableToSubmit = true;
+      }
     }
-    res.locals.title = "TOH Memorial - " + memCode;
-    res.render("pages/memorial", {
+
+    if (SubmissionStatus.length === 0) {
+      SubmissionStatus.unshift({ Status: 4 });
+    }
+    res.locals.title = `TOH Memorial - ${memCode}`;
+    res.render('pages/memorial', {
       activeUser,
       User: UserData,
-      NotificationText: "",
+      NotificationText: '',
       baseImageUrl,
       baseSampleImageUrl,
       isAvailableToSubmit,
       MemorialData,
       MemorialStatus,
       MemorialText,
-      SubmissionStatus
+      SubmissionStatus,
     });
   });
 
-  app.get("/secretdoor", async (req, res) => {
-    res.locals.title = "TOH Secret Door"
-    res.render("pages/secretdoor", {
-      NotificationText: ""
+  app.get('/secretdoor', async (req, res) => {
+    res.locals.title = 'TOH Secret Door';
+    res.render('pages/secretdoor', {
+      NotificationText: '',
     });
   });
 
-  app.get("/signup", async (req, res) => {
-    res.locals.title = "TOH Signup"
-    res.render("pages/signup", {
-      NotificationText: ""
+  app.get('/signup', async (req, res) => {
+    res.locals.title = 'TOH Signup';
+    res.render('pages/signup', {
+      NotificationText: '',
     });
   });
 
-  app.get("/submit", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
+  app.get('/submit', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Categories;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var Categories = await q.queryAllCategories();
-    } catch {
-      logger.error("Error encountered: queryAllCategories");
+      Categories = await q.queryAllCategories();
+    } catch (err) {
+      logger.error('Error encountered: queryAllCategories');
     }
 
-    var targetMemorial = [
-      { "Memorial_ID":"2", "Category":"Gold Star Family", "Code":"GS005", "Name":"GSFMM - Layfayette Park", "City":"Albany", "State":"NY", "SampleImage":"GS005.jpg" },
-      { "Memorial_ID":"3", "Category":"Huey", "Code":"H802", "Name":"159220 - AH-1J SeaCobra", "City":"Addison", "State":"TX", "SampleImage":"H802.jpg" },
-    ]
-    res.locals.title = "TOH Submit"
-    res.render("pages/submit", {
+    const targetMemorial = [
+      {
+        Memorial_ID: '2',
+        Category: 'Gold Star Family',
+        Code: 'GS005',
+        Name: 'GSFMM - Layfayette Park',
+        City: 'Albany',
+        State: 'NY',
+        SampleImage: 'GS005.jpg',
+      },
+      {
+        Memorial_ID: '3',
+        Category: 'Huey',
+        Code: 'H802',
+        Name: '159220 - AH-1J SeaCobra',
+        City: 'Addison',
+        State: 'TX',
+        SampleImage: 'H802.jpg',
+      },
+    ];
+    res.locals.title = 'TOH Submit';
+    res.render('pages/submit', {
       activeUser,
       User: req.user,
       targetMemorial,
-      NotificationText: "",
-      Categories
+      NotificationText: '',
+      Categories,
     });
   });
 
-  app.get("/welcome", async (req, res) => {
-    res.locals.title = "TOH Rider Onboarding"
-    res.render("pages/welcome-rider", {
-      NotificationText: "",
-      ValidateNewRider: [{ "id":0 }]
+  app.get('/welcome', async (req, res) => {
+    res.locals.title = 'TOH Rider Onboarding';
+    res.render('pages/welcome-rider', {
+      NotificationText: '',
+      ValidateNewRider: [{ id: 0 }],
     });
   });
 
-  app.get("/welcome/:username", async (req, res) => {
-    const UserName = req.params.username
+  app.get('/welcome/:username', async (req, res) => {
+    const UserName = req.params.username;
+    let ValidateNewRider;
     try {
-      var ValidateNewRider = await q.queryNewRiderValidation(UserName);
-    } catch {
-      logger.error("Error encountered: queryNewRiderValidation");
+      ValidateNewRider = await q.queryNewRiderValidation(UserName);
+    } catch (err) {
+      logger.error('Error encountered: queryNewRiderValidation');
     }
-    if(!ValidateNewRider[0]) {
-      res.redirect("/welcome");
+    if (!ValidateNewRider[0]) {
+      res.redirect('/welcome');
     } else {
-      res.locals.title = "TOH Rider Onboarding"
-      res.render("pages/welcome-rider", {
-        NotificationText: "",
-        ValidateNewRider
+      res.locals.title = 'TOH Rider Onboarding';
+      res.render('pages/welcome-rider', {
+        NotificationText: '',
+        ValidateNewRider,
       });
     }
   });
 
-  app.get("/riders", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var riderList = await q.queryAllRiders();
-    } catch {
-      logger.error("Error encountered: queryAllRiders");
+  app.get('/riders', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let riderList;
+    let totalEarnedByRider;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
-    } catch {
-      logger.error("Error encountered: queryEarnedMemorialsByAllRiders");
+      riderList = await q.queryAllRiders();
+    } catch (err) {
+      logger.error('Error encountered: queryAllRiders');
     }
-    res.locals.title = "TOH Rider List"
-    res.render("pages/rider-list", {
+    try {
+      totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    } catch (err) {
+      logger.error('Error encountered: queryEarnedMemorialsByAllRiders');
+    }
+    res.locals.title = 'TOH Rider List';
+    res.render('pages/rider-list', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       riderList,
-      totalEarnedByRider
+      totalEarnedByRider,
     });
   });
 
-  app.get("/stats", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
-    } catch {
-      logger.error("Error encountered: queryEarnedMemorialsByAllRiders");
+  app.get('/stats', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let totalEarnedByRider;
+    if (req.user) {
+      activeUser = true;
     }
-    res.locals.title = "TOH Stats"
-    res.render("pages/stats", {
+    try {
+      totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
+    } catch (err) {
+      logger.error('Error encountered: queryEarnedMemorialsByAllRiders');
+    }
+    res.locals.title = 'TOH Stats';
+    res.render('pages/stats', {
       activeUser,
       User: req.user,
-      NotificationText: "",
-      totalEarnedByRider
+      NotificationText: '',
+      totalEarnedByRider,
     });
   });
 
-  app.get("/trophies", isAuthenticated, async (req, res) => {
-    var activeUser = false
-    if (req.user) { activeUser = true };
-    try {
-      var Regions = await q.queryRegionList();
-    } catch {
-      logger.error("Error encountered: queryRegionList");
+  app.get('/trophies', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Regions;
+    let TrophyList;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var TrophyList = await q.queryTrophiesList();
-    } catch {
-      logger.error("Error encountered: queryTrophiesList");
+      Regions = await q.queryRegionList();
+    } catch (err) {
+      logger.error('Error encountered: queryRegionList');
     }
-    res.locals.title = "TOH Trophy List"
-    res.render("pages/trophies", {
+    try {
+      TrophyList = await q.queryTrophiesList();
+    } catch (err) {
+      logger.error('Error encountered: queryTrophiesList');
+    }
+    res.locals.title = 'TOH Trophy List';
+    res.render('pages/trophies', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Regions,
-      TrophyList
+      TrophyList,
     });
   });
 
-  app.get("/user-profile", isAuthenticated, async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
-    try {
-      var RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
-    } catch {
-      logger.error("Error encountered: querySubmissionsByRider");
+  app.get('/user-profile', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let RiderSubmissionHistory;
+    let RiderBikeInfo;
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var RiderBikeInfo = await q.queryAllBikes(req.user.id);
-    } catch {
-      logger.error("Error encountered: queryAllBikes");
+      RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
+    } catch (err) {
+      logger.error('Error encountered: querySubmissionsByRider');
     }
     try {
-      var TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
-    } catch {
-      logger.error("Error encountered: queryTimeZoneData");
+      RiderBikeInfo = await q.queryAllBikes(req.user.id);
+    } catch (err) {
+      logger.error('Error encountered: queryAllBikes');
+    }
+    try {
+      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
     }
 
-    res.locals.title = "TOH User Profile"
-    res.render("pages/user-profile", {
+    res.locals.title = 'TOH User Profile';
+    res.render('pages/user-profile', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       RiderSubmissionHistory,
       RiderBikeInfo,
       TimeZone,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/public-profile", async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
+  app.get('/public-profile', async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
 
-    res.render("pages/public-profile", {
+    res.render('pages/public-profile', {
       activeUser,
-      NotificationText: "",
-      dt: DateTime
+      NotificationText: '',
+      dt: DateTime,
     });
   });
 
-  app.get("/registration", async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
-    if (!req.user) { return res.redirect('/signup'); }
+  app.get('/registration', async (req, res) => {
+    let activeUser = false;
+    let BaseRiderRate;
+    let Charities;
+    let OrderInfo;
+    let PassengerSurcharge;
+    let RiderBikeInfo;
+    let ShirtSizeSurcharge;
+    let ShirtStyleSurcharge;
+    let TotalOrderCost;
+    if (req.user) {
+      activeUser = true;
+    }
+    if (!req.user) {
+      return res.redirect('/signup');
+    }
 
     try {
-      var OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
+      OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
-          var passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
+          const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
           if (passFlagNum && passFlagNum > 0) {
             OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
             OrderInfo.PassFlagNum = passFlagNum.FlagNum;
@@ -713,85 +822,84 @@ const orderSteps = [
             OrderInfo.PassFlagNum = 0;
           }
         } catch (err) {
-          logger.error("Error encountered: queryFlagNumFromUserID " + err);
+          logger.error(`Error encountered: queryFlagNumFromUserID ${err}`);
         }
       }
     } catch (err) {
-      logger.error("Error encountered: queryOrderInfoByRider " + err);
+      logger.error(`Error encountered: queryOrderInfoByRider ${err}`);
     }
 
-
-    if (!OrderInfo || OrderInfo.length == 0) {
+    if (!OrderInfo || OrderInfo.length === 0) {
       OrderInfo = {};
       OrderInfo.NextStepNum = 0;
       OrderInfo.PassUserID = 0;
     }
 
     try {
-      var TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
-    } catch  (err) {
-      logger.error("Error encountered: queryTotalOrderCostByRider " + err);
+      TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
+    } catch (err) {
+      logger.error(`Error encountered: queryTotalOrderCostByRider ${err}`);
     }
-    if (!TotalOrderCost || TotalOrderCost.length == 0) {
+    if (!TotalOrderCost || TotalOrderCost.length === 0) {
       TotalOrderCost = [];
-      TotalOrderCost.push({"Price": 0})
+      TotalOrderCost.push({ Price: 0 });
     }
 
     try {
-      var BaseRiderRateObject = await q.queryBaseRiderRate();
-      var BaseRiderRate = BaseRiderRateObject[0].Price;
-      var PassengerSurchargeObject = await q.queryPassengerSurcharge();
-      var PassengerSurcharge = PassengerSurchargeObject[0].iValue;
-      var ShirtSizeSurchargeObject = await q.queryShirtSizeSurcharge();
-      var ShirtSizeSurcharge = ShirtSizeSurchargeObject[0].iValue;
-      var ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
-      var ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
+      const BaseRiderRateObject = await q.queryBaseRiderRate();
+      BaseRiderRate = BaseRiderRateObject[0].Price;
+      const PassengerSurchargeObject = await q.queryPassengerSurcharge();
+      PassengerSurcharge = PassengerSurchargeObject[0].iValue;
+      const ShirtSizeSurchargeObject = await q.queryShirtSizeSurcharge();
+      ShirtSizeSurcharge = ShirtSizeSurchargeObject[0].iValue;
+      const ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
+      ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
     } catch (err) {
-      logger.error("Error encountered while gathering pricing info." + err);
+      logger.error(`Error encountered while gathering pricing info.${err}`);
     }
 
     try {
-      var Charities = await q.queryAllCharities();
+      Charities = await q.queryAllCharities();
     } catch (err) {
-      logger.error("Error encountered: queryAllCharities" + err);
+      logger.error(`Error encountered: queryAllCharities${err}`);
     }
 
     try {
-      var RiderBikeInfo = await q.queryBikesByRider(req.user.id);
+      RiderBikeInfo = await q.queryBikesByRider(req.user.id);
     } catch (err) {
-      logger.error("Error encountered: queryBikesByRider" + err);
+      logger.error(`Error encountered: queryBikesByRider${err}`);
     }
 
     // Check for Rider Waiver info
     if (OrderInfo.UserID > 0) {
       try {
-        var RiderWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.UserID)
+        const RiderWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.UserID);
         OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
       } catch (err) {
-        logger.error("Error encountered: Rider queryWaiverIDByUser" + err);
+        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
       }
     } else {
-      OrderInfo.RiderWaiverID = "";
+      OrderInfo.RiderWaiverID = '';
     }
 
     // Check for Passenger Waiver info
     if (OrderInfo.PassUserID > 0) {
       try {
-        var PassWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.PassUserID)
+        const PassWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.PassUserID);
         OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
       } catch (err) {
-        logger.error("Error encountered: Rider queryWaiverIDByUser" + err);
+        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
       }
     }
 
-    console.log("==== OrderInfo from fe-routes ====");
+    console.log('==== OrderInfo from fe-routes ====');
     console.log(OrderInfo);
 
-    res.locals.title = "TOH Registration"
-    res.render("pages/registration", {
+    res.locals.title = 'TOH Registration';
+    res.render('pages/registration', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       BaseRiderRate,
       Charities,
       OrderInfo,
@@ -801,121 +909,136 @@ const orderSteps = [
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
       TotalOrderCost,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/admin/orders", isAuthenticated, async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
+  app.get('/admin/orders', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Orders;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var Orders = await q.queryAllOrders();
-    } catch {
-      logger.error("Error encountered: queryAllOrders");
+      Orders = await q.queryAllOrders();
+    } catch (err) {
+      logger.error('Error encountered: queryAllOrders');
     }
 
-    res.locals.title = "TOH Orders"
-    res.render("pages/admin/orders", {
+    res.locals.title = 'TOH Orders';
+    res.render('pages/admin/orders', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Orders,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/admin/charity-manager", isAuthenticated, async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
+  app.get('/admin/charity-manager', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Charities;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var Charities = await q.queryAllCharities();
-    } catch {
-      logger.error("Error encountered: queryAllCharities");
+      Charities = await q.queryAllCharities();
+    } catch (err) {
+      logger.error('Error encountered: queryAllCharities');
     }
 
-    res.locals.title = "TOH Charity Manager"
-    res.render("pages/admin/charity-manager", {
+    res.locals.title = 'TOH Charity Manager';
+    res.render('pages/admin/charity-manager', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Charities,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/admin/site-config", isAuthenticated, async (req, res) => {
-    var activeUser = false;
-    if (req.user) { activeUser = true };
+  app.get('/admin/site-config', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    let Configs;
+    if (req.user) {
+      activeUser = true;
+    }
     try {
-      var Configs = await q.queryAllConfigs();
-    } catch {
-      logger.error("Error encountered: queryAllConfigs");
+      Configs = await q.queryAllConfigs();
+    } catch (err) {
+      logger.error('Error encountered: queryAllConfigs');
     }
 
-    res.locals.title = "TOH Site Config"
-    res.render("pages/admin/site-config", {
+    res.locals.title = 'TOH Site Config';
+    res.render('pages/admin/site-config', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       Configs,
-      dt: DateTime
+      dt: DateTime,
     });
   });
 
-  app.get("/waiver-check/:userid", async (req, res) => {
-    const userid = req.params.userid;
-    var activeUser = false;
-    if (req.user) { activeUser = true };
-    try {
-      var WaiverID = await q.queryWaiverIDByUser(userid) || "";
-    } catch {
-      logger.error("Error encountered: queryWaiverIDByUser");
+  app.get('/waiver-check/:userid', async (req, res) => {
+    const { userid } = req.params;
+    let activeUser = false;
+    let WaiverID;
+    if (req.user) {
+      activeUser = true;
     }
-    res.locals.title = "TOH Waiver Check"
-    res.render("pages/waiver-check", {
+    try {
+      WaiverID = (await q.queryWaiverIDByUser(userid)) || '';
+    } catch (err) {
+      logger.error('Error encountered: queryWaiverIDByUser');
+    }
+    res.locals.title = 'TOH Waiver Check';
+    res.render('pages/waiver-check', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       dt: DateTime,
       UserID: userid,
-      WaiverID
+      WaiverID,
     });
   });
 
-  app.get("/waiver-check", async (req, res) => {
+  app.get('/waiver-check', async (req, res) => {
     const userid = req.query.id;
-    var activeUser = false;
-    if (req.user) { activeUser = true };
-    try {
-      var WaiverID = await q.queryWaiverIDByUser(userid) || "";
-    } catch {
-      logger.error("Error encountered: queryWaiverIDByUser");
+    let activeUser = false;
+    let OrderInfo;
+    let WaiverID;
+    if (req.user) {
+      activeUser = true;
     }
     try {
-      var OrderInfo = await q.queryOrderInfoByRider(userid, 2023);
+      WaiverID = (await q.queryWaiverIDByUser(userid)) || '';
     } catch (err) {
-      logger.error("Error encountered: queryOrderInfoByRider " + err);
+      logger.error('Error encountered: queryWaiverIDByUser');
+    }
+    try {
+      OrderInfo = await q.queryOrderInfoByRider(userid, 2023);
+    } catch (err) {
+      logger.error(`Error encountered: queryOrderInfoByRider ${err}`);
     }
 
-    if (!OrderInfo || OrderInfo.length == 0) {
+    if (!OrderInfo || OrderInfo.length === 0) {
       OrderInfo = [];
       OrderInfo.push({ id: 0 });
       OrderInfo.push({ OrderNumber: 0 });
     }
 
-    res.locals.title = "TOH Waiver Check"
-    res.render("pages/waiver-check", {
+    res.locals.title = 'TOH Waiver Check';
+    res.render('pages/waiver-check', {
       activeUser,
       User: req.user,
-      NotificationText: "",
+      NotificationText: '',
       dt: DateTime,
       OrderInfo,
       UserID: userid,
-      WaiverID
+      WaiverID,
     });
   });
 
-  //#endregion
+  // #endregion
   // ===============================================================================
-
-}
+};
