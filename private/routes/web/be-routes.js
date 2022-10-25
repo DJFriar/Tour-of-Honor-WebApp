@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const ejs = require('ejs');
 const _ = require('lodash');
 const { DateTime } = require('luxon');
@@ -314,7 +315,7 @@ module.exports = function (app) {
           UserID: x.id,
           RallyYear: 2022,
         }).then((y) => {
-          console.log('User Created Successfully');
+          logger.info('User Created Successfully');
           res.status(202).json(y);
         });
       })
@@ -376,9 +377,9 @@ module.exports = function (app) {
         emailBody
       );
       res.send('Portal Email Sent');
-    } catch (error) {
+    } catch (err) {
       res.send('An error occurred while sending portal email.');
-      console.log(error);
+      logger.error(err);
     }
   });
 
@@ -399,7 +400,7 @@ module.exports = function (app) {
       }
     )
       .then(() => {
-        console.log('User Onboarded Successfully');
+        logger.info('User Onboarded Successfully');
         res.status(200).send();
       })
       .catch((err) => {
@@ -453,7 +454,7 @@ module.exports = function (app) {
       res.send('Password reset link sent to your email account');
     } catch (err) {
       res.send("An error occurred while resetting user's password.");
-      console.log(err);
+      logger.error(err);
     }
   });
 
@@ -715,8 +716,6 @@ module.exports = function (app) {
         FlagNumber: flag,
       },
     }).then((dbPost) => {
-      console.log('==== lookupRiderByFlag ====');
-      console.log(dbPost);
       res.json(dbPost);
     });
   });
@@ -787,12 +786,11 @@ module.exports = function (app) {
   // Handle Registration Flow
   app.post('/api/v1/regFlow', async (req, res) => {
     const { RegStep } = req.body;
-    console.log(`regFlow called with step: ${RegStep}`);
+    logger.debug(`regFlow called with step: ${RegStep}`);
 
     /* #region  RegStep Rider */
     if (RegStep === 'Rider') {
-      console.log(`${RegStep} step entered.`);
-      console.log(`UserID = ${req.body.UserID}`);
+      logger.debug(`${RegStep} step entered.`);
       db.Order.create({
         UserID: req.body.UserID,
         NextStepNum: 1,
@@ -810,7 +808,7 @@ module.exports = function (app) {
 
     /* #region  RegStep Bike */
     if (RegStep === 'Bike') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       db.Order.update(
         {
           NextStepNum: 2,
@@ -834,7 +832,7 @@ module.exports = function (app) {
 
     /* #region  RegStep NoPassenger */
     if (RegStep === 'NoPassenger') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       db.Order.update(
         {
           PassUserID: req.body.PassUserID,
@@ -860,7 +858,7 @@ module.exports = function (app) {
     /* #region  RegStep ExistingPassenger */
     if (RegStep === 'ExistingPassenger') {
       // let hasPassenger;
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       db.Order.update(
         {
           PassUserID: req.body.PassUserID,
@@ -886,7 +884,7 @@ module.exports = function (app) {
 
     /* #region  RegStep NewPassenger */
     if (RegStep === 'NewPassenger') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
 
       // Check to see if Email is unique
       db.User.findOne({
@@ -929,7 +927,7 @@ module.exports = function (app) {
 
     /* #region  RegStep Charity */
     if (RegStep === 'Charity') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       db.Order.update(
         {
           CharityChosen: req.body.CharityChoice,
@@ -965,16 +963,16 @@ module.exports = function (app) {
 
     /* #region  RegStep Shirts */
     if (RegStep === 'Shirts') {
-      console.log(`${RegStep} step entered.`);
-      console.log(`Shirt info provided:${req.body}`);
+      logger.debug(`${RegStep} step entered.`);
+      logger.debug(`Shirt info provided:${req.body}`);
       const BaseRiderRateObject = await q.queryBaseRiderRate();
-      const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price);
+      const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price, 10);
       const PassengerSurchargeObject = await q.queryPassengerSurcharge();
-      const PassengerSurcharge = parseInt(PassengerSurchargeObject[0].iValue);
+      const PassengerSurcharge = parseInt(PassengerSurchargeObject[0].iValue, 10);
       const ShirtSizeSurchargeObject = await q.queryShirtSizeSurcharge();
-      const ShirtSizeSurcharge = parseInt(ShirtSizeSurchargeObject[0].iValue);
+      const ShirtSizeSurcharge = parseInt(ShirtSizeSurchargeObject[0].iValue, 10);
       const ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
-      const ShirtStyleSurcharge = parseInt(ShirtStyleSurchargeObject[0].iValue);
+      const ShirtStyleSurcharge = parseInt(ShirtStyleSurchargeObject[0].iValue, 10);
       let totalPrice = BaseRiderRate;
       const { ShirtSize } = req.body;
       const { ShirtStyle } = req.body;
@@ -989,41 +987,32 @@ module.exports = function (app) {
         NextStepNum: 5,
       };
 
-      console.log(`Subtotal = $${totalPrice}`);
+      logger.debug(`Subtotal = $${totalPrice}`);
 
       if (ShirtStylesToSurcharge.includes(ShirtStyle)) {
-        console.log('Adding Rider Style Surcharge');
+        logger.debug('Adding Rider Style Surcharge');
         totalPrice += ShirtStyleSurcharge;
-        console.log(`Subtotal = $${totalPrice}`);
+        logger.debug(`Subtotal = $${totalPrice}`);
       }
 
       if (ShirtSizesToSurcharge.includes(ShirtSize)) {
-        console.log('Adding Rider Size Surcharge');
         totalPrice += ShirtSizeSurcharge;
-        console.log(`Subtotal = $${totalPrice}`);
       }
 
       if (req.body.hasPass === 'true') {
-        console.log('Order has Passenger');
-
         totalPrice += PassengerSurcharge;
-        console.log(`Subtotal = $${totalPrice}`);
         ShirtDetails.PassShirtSize = PassShirtSize;
         ShirtDetails.PassShirtStyle = PassShirtStyle;
         if (ShirtStylesToSurcharge.includes(PassShirtStyle)) {
-          console.log('Adding Passenger Style Surcharge');
           totalPrice += ShirtStyleSurcharge;
-          console.log(`Subtotal = $${totalPrice}`);
         }
         if (ShirtSizesToSurcharge.includes(PassShirtSize)) {
-          console.log('Adding Passenger Size Surcharge');
           totalPrice += ShirtSizeSurcharge;
-          console.log(`Subtotal = $${totalPrice}`);
         }
       }
 
       const PriceTierObject = await q.queryTierByPrice(totalPrice);
-      const PriceTier = parseInt(PriceTierObject[0].Tier);
+      const PriceTier = parseInt(PriceTierObject[0].Tier, 10);
       const { ShopifyVariantID } = PriceTierObject[0];
       ShirtDetails.PriceTier = PriceTier;
 
@@ -1053,14 +1042,14 @@ module.exports = function (app) {
 
     /* #region  RegStep Payment */
     if (RegStep === 'Payment') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       res.send('success');
     }
     /* #endregion */
 
     /* #region  RegStep Waiver */
     if (RegStep === 'Waiver') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
 
       const WaiverInfo = {
         NextStepNum: 7,
@@ -1085,7 +1074,7 @@ module.exports = function (app) {
 
     /* #region  RegStep FlagInProgress */
     if (RegStep === 'FlagInProgress') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
       const FlagInfo = {
         FlagNum: req.body.RequestedFlagNumber,
         UserID: req.body.UserID,
@@ -1129,7 +1118,7 @@ module.exports = function (app) {
 
     /* #region  RegStep FlagComplete */
     if (RegStep === 'FlagComplete') {
-      console.log(`${RegStep} step entered.`);
+      logger.debug(`${RegStep} step entered.`);
 
       const FlagInfoComplete = {
         NextStepNum: 8,
@@ -1187,7 +1176,7 @@ module.exports = function (app) {
               },
             }
           ).then(() => {
-            console.info(`Shopify Order Number updated for rider ${id}`);
+            logger.info(`Shopify Order Number updated for rider ${id}`);
             res.json(orderNumber);
           });
         }
@@ -1327,7 +1316,6 @@ module.exports = function (app) {
 
   // Send SMS Message
   app.post('/api/v1/sendSMS', (req, res) => {
-    // const { UserID } = req.body;
     const { destNumber } = req.body;
     const messageText = req.body.Message;
 
