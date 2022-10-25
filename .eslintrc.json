@@ -1,11 +1,18 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jquery": true
   },
   "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": ["error"]
-  }
+    "prettier/prettier": ["error"],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "no-use-before-define": ["error", "nofunc"],
+    "func-names": ["error", "always"]
+  },
+  "globals": {
+    "toastr": "writable"
+}
 }

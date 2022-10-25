@@ -1,18 +1,14 @@
 /* eslint-disable consistent-return */
 const ejs = require('ejs');
 const _ = require('lodash');
-const { DateTime } = require('luxon');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 // const multer = require('multer');
 const fetch = require('node-fetch');
 // const { getDefaultSettings } = require('http2');
 // const Shopify = require('shopify-api');
-const Sequelize = require('sequelize');
-
-const { Op } = Sequelize;
-
 const { register } = require('prom-client');
+
 const db = require('../../../models');
 const q = require('../../queries');
 const uploadSubmission = require('../../../controllers/uploadSubmission');
@@ -86,29 +82,6 @@ module.exports = function (app) {
       const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
       res.json(randomFlag);
-    });
-  });
-
-  // Find Next Available Flag Number
-  app.get('/api/v1/nextAvailableFlag', (req, res) => {
-    const rallyYearArray = [process.env.ORDERING_RALLY_YEAR];
-    if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
-      rallyYearArray.unshift(process.env.CURRENT_RALLY_YEAR);
-    }
-    db.Flag.findAll({
-      where: {
-        RallyYear: {
-          [Op.in]: rallyYearArray,
-        },
-      },
-      order: [['FlagNum', 'ASC']],
-      raw: true,
-    }).then((flags) => {
-      const allowedNumbers = _.range(11, 1201, 1);
-      const badNumbers = flags.map((inUse) => inUse.FlagNum);
-      const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
-      const nextFlag = _.min(goodNumbers);
-      res.json(nextFlag);
     });
   });
 
