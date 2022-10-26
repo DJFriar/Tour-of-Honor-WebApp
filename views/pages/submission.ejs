@@ -11,7 +11,7 @@
     <% } %>
     <div id="toh-scoring-page">
       <p style="margin: 0;"><a class="hidden-link" href="/scoring"><i class="fas fa-filter"></i> <span id="selectFilterValue"></span></a> | Submission #<%= Submissions[0].id %></p>
-      <h4>Pending <%= Submissions[0].CatName %> Submission </h4>
+      <h1>Pending <%= Submissions[0].CatName %> Submission </h1>
       <% if(NotificationText) { %>
         <%- include('../partials/notice'); %>
       <% } %>

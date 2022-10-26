@@ -10,7 +10,7 @@
       <%- include('../partials/topnav'); %>
     <% } %>
     <main>
-      <h4>Change Log</h4>
+      <h1>Change Log</h1>
       <% if(NotificationText) { %>
         <%- include('../../partials/notice'); %>
       <% } %>
@@ -24,6 +24,15 @@
         <ul class="uk-switcher uk-margin">
           <!-- Web Portal -->
           <li id="web">
+            <h6>22.10.3.354</h6>
+            <ul>
+              <li>Fixes to the Registration Flow to make things work better in Firefox and Chrome.</li>
+              <li>Removed Nickname from Bikes.</li>
+              <li>Fixed the footer to actually stick to the bottom of the screen.</li>
+              <li>Added a link to this Changelog in the top menu under the User icon.</li>
+              <li>Resolved a bug that made Firefox think the registration page was not standards-compliant HTML.</li>
+            </ul>
+            
             <h6>22.9.26.318</h6>
             <ul>
               <li>Fixes to the Registration Flow to make things work better in Firefox and Chrome.</li>
