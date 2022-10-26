@@ -1,5 +1,3 @@
-const { logger } = require('../../controllers/logger');
-
 /* eslint-disable no-restricted-globals */
 $(document).ready(() => {
   let riderReady = false;
@@ -441,6 +439,13 @@ $(document).ready(() => {
     }
 
     $.ajax('/api/v1/regFlow', {
+      beforeSend() {
+        $('.modal').css('display', 'none');
+        $('.spinnerBox').removeClass('hide-me');
+      },
+      complete() {
+        $('.spinnerBox').addClass('hide-me');
+      },
       type: 'POST',
       data: ShirtOrderInfo,
     }).then(() => {
@@ -589,7 +594,6 @@ $(document).ready(() => {
       })
       .catch((err) => {
         showToastrError('An error occured while reserving your existing flag.');
-        logger.error(`Error in regFlow Step 7 - keepExistingFlagNum: ${err}`);
       });
   });
 
@@ -693,7 +697,6 @@ $(document).ready(() => {
       })
       .catch((err) => {
         showToastrError('An error occured while reserving your flag.');
-        logger.error(`Error in regFlow Step 7 - saveNewFlagNumChoiceBtn: ${err}`);
       });
   });
 
@@ -760,7 +763,7 @@ $(document).ready(() => {
         }
       })
       .catch((err) => {
-        logger.error(`Error when saving new Flag Assignment: ${err}`);
+        showToastrError('An error occured whle validating your waiver.');
       });
   }
 
