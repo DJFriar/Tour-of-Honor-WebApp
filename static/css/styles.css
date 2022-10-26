@@ -229,6 +229,10 @@ a.hidden-link:visited {
   height: 80px
 }
 
+.toh-m-0 {
+  margin: 0;
+}
+
 .toh-mb-0 {
   margin-bottom: 0px;
 }
@@ -435,4 +439,8 @@ a.hidden-link:visited {
 
 .dataValueBold {
   font-weight: bold;
+}
+
+.toh-changelog > ul {
+  margin-bottom: 12px;
 }
