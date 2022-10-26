@@ -2,17 +2,24 @@
   "env": {
     "browser": true,
     "es6": true,
-    "jquery": true
+    "jquery": true,
+    "node": true
   },
   "extends": ["airbnb", "prettier"],
+  "globals": {
+    "toastr": "writable",
+    "UIKit": "writable"
+  },
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
+    "default-case-last": "error",
+    "default-param-last": ["error"],
+    "func-names": ["error", "always"],
     "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
     "no-use-before-define": ["error", "nofunc"],
-    "func-names": ["error", "always"]
-  },
-  "globals": {
-    "toastr": "writable"
-}
+    "no-useless-call": "error",
+    "prefer-exponentiation-operator": "error",
+    "prefer-regex-literals": "error"
+  }
 }
