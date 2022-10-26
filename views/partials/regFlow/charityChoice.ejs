@@ -4,10 +4,10 @@
   <form class="uk-grid-small uk-form-stacked" uk-grid>
     <div class="uk-width-1-3@s">&nbsp;</div>
     <div class="uk-width-1-3@s">
-      <label class="uk-form-label" for="CharityChoice">Charity Choice</label>
+      <label class="uk-form-label uk-text-left" for="CharityChoice">I'd like to support:</label>
       <select class="uk-select toh-input" required name="CharityChoice" id="CharityChoice">
-        <option value="0">
-          No Preference
+        <option disabled selected value>
+          -- Select a Charity --
         </option>
         <% Charities.forEach(function(charity) { %>
           <option value="<%= charity.id %>">
