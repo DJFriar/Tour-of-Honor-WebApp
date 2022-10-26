@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
   background-color: #C0DFFD;
 }
 
@@ -22,7 +22,7 @@ main {
 }
 
 footer {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-size: 0.75em;
 }
 
@@ -40,6 +40,11 @@ hr {
 
 .hide-me {
   display: none !important;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  /* font-family: 'Raleway', Helvetica, Arial, sans-serif; */
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -406,9 +411,15 @@ a.hidden-link:visited {
 }
 
 .registrationTitleText {
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 1.3em;
   color: #0000009E;
+}
+
+.registrationSubtitleText {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
 }
 
 .characterCount {
@@ -443,4 +454,9 @@ a.hidden-link:visited {
 
 .toh-changelog > ul {
   margin-bottom: 12px;
+}
+
+.uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
 }
