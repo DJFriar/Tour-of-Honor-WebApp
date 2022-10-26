@@ -19,6 +19,7 @@ const db = require('./models');
 app.locals.envName = process.env.NODE_ENV;
 app.locals.envNameShort = process.env.NODE_ENV_SHORT;
 app.locals.envIsProd = false;
+app.locals.envIsDev = false;
 app.locals.baseImageUrl = process.env.BASE_IMAGE_URL;
 app.locals.baseSampleImageUrl = process.env.BASE_SAMPLE_IMAGE_URL;
 app.locals.CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
@@ -26,6 +27,10 @@ app.locals.OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
 
 if (process.env.IS_PROD === 'true') {
   app.locals.envIsProd = true;
+}
+
+if (process.env.NODE_ENV === 'Development') {
+  app.locals.envIsDev = true;
 }
 
 app.set('view engine', 'ejs');
