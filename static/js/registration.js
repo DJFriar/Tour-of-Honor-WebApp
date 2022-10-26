@@ -390,6 +390,11 @@ $(document).ready(() => {
   // ****************************
   /* #region  Charity Choice Tab */
 
+  // Enabled the Button when a choice is made
+  $('#CharityChoice').on('change', function() {
+    $('#saveCharityChoiceBtn').removeAttr('disabled');
+  });
+
   // Handle Charity Choice Button
   $('#saveCharityChoiceBtn').on('click', function saveCharityChoiceBtn(e) {
     e.preventDefault();
