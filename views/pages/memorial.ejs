@@ -9,7 +9,7 @@
     <% } else { %>
       <%- include('../partials/topnav'); %>
     <% } %>
-    <h4 style="text-align:center">
+    <h1 style="text-align:center">
       <%= MemorialData[0].Name %> 
       (<%= MemorialData[0].Code %>) &nbsp;
       <% if(SubmissionStatus[0].Status == 0) { %>
@@ -18,7 +18,7 @@
       <% if(SubmissionStatus[0].Status == 1) { %>
         <i class="fas fa-shield-check" color="green"></i>
       <% } %>
-    </h4>
+    </h1>
     <% if(NotificationText) { %>
       <%- include('../partials/notice'); %>
     <% } %>

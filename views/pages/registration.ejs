@@ -1,52 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <%- include('../partials/head'); %>
-  </head>
-  
-  <body>
-    <div class="pageWrapper">
-      <% if(activeUser) { %>
-        <%- include('../partials/topnavUser'); %>
-      <% } else { %>
-        <%- include('../partials/topnav'); %>
-      <% } %>
-      <%- include('../partials/spinner'); %>
-      <main>
-        <div class="uk-container uk-margin-auto">
-          <% if(OrderInfo.NextStepNum < 8) { %>
-          <h4>Registration <span style="font-size: 12pt; font-weight:400; color: #666;">&nbsp;&nbsp;&nbsp;All steps must be completed. After payment, log into your account again to complete the Waiver and Flag Number steps.</span></h4>
-            <div class="uk-text-center toh-mt-24">
-              <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
-                <% OrderSteps.forEach(function(orderStep) { %>
-                  <li><a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>"><span class="registrationTitleText"><%= orderStep.Title %></span><br/><%= orderStep.Subtitle %></a></li>
-                <% }) %>
-              </ul>
-      
-              <ul class="uk-switcher uk-margin">
-                <% OrderSteps.forEach(function(orderStep) { %>
-                  <% if (OrderInfo.NextStepNum == orderStep.StepIndex) { %>
-                    <li class="uk-active"><%- include('../partials/regFlow/' + orderStep.Partial); %></li>
-                  <% } else { %>
-                    <li><%- include('../partials/regFlow/' + orderStep.Partial); %></li>
-                    <% } %>
-                <% }) %>
-              </ul>
-            </div>
-            <div class="hiddenData">
-              <span id="checkoutUrl" data-checkouturl="<%= OrderInfo.CheckoutURL %>"></span>
-              <span id="nextStepNum" data-nextstepnum="<%= OrderInfo.NextStepNum %>"></span>
-            </div>
-          <% } %>
-          <% if(OrderInfo.NextStepNum == 8) { %>
-            <%- include('../partials/regFlow/summary'); %>
-          <% } %>
-        </div>
-      </main>
-      <footer>
-        <%- include('../partials/footer'); %>
-      </footer>
-    </div>
-    <script type="text/javascript" src="js/registration.js"></script>
-  </body>
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <%- include('../partials/spinner'); %>
+    <main>
+      <div class="uk-container uk-margin-auto">
+        <% if(OrderInfo.NextStepNum < 8) { %>
+          <h1>Registration 
+            <span style="font-size: 12pt; font-weight:400; color: #666;">&nbsp;&nbsp;&nbsp;All steps must be
+              completed. After payment, log into your account again to complete the Waiver and Flag Number
+              steps.
+            </span>
+          </h1>
+          <div class="uk-text-center toh-mt-24">
+            <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher
+              active="<%= OrderInfo.NextStepNum %>">
+              <% OrderSteps.forEach(function(orderStep) { %>
+                <li>
+                  <a class="disabled" href="#" id="<%= " RegStep" + orderStep.StepIndex %>">
+                  <span class="registrationTitleText"><%= orderStep.Title %></span><br />
+                  <span class="registrationSubtitleText"><%= orderStep.Subtitle %></span></a>
+                </li>
+              <% }) %>
+            </ul>
+
+            <ul class="uk-switcher uk-margin">
+              <% OrderSteps.forEach(function(orderStep) { %>
+                <% if (OrderInfo.NextStepNum==orderStep.StepIndex) { %>
+                  <li class="uk-active">
+                    <%- include('../partials/regFlow/' + orderStep.Partial); %>
+                  </li>
+                <% } else { %>
+                  <li>
+                    <%- include('../partials/regFlow/' + orderStep.Partial); %>
+                  </li>
+                <% } %>
+              <% }) %>
+            </ul>
+          </div>
+          <div class="hiddenData">
+            <span id="checkoutUrl" data-checkouturl="<%= OrderInfo.CheckoutURL %>"></span>
+            <span id="nextStepNum" data-nextstepnum="<%= OrderInfo.NextStepNum %>"></span>
+          </div>
+        <% } %>
+        <% if(OrderInfo.NextStepNum==8) { %>
+          <%- include('../partials/regFlow/summary'); %>
+        <% } %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="js/registration.js"></script>
+</body>
+
 </html>

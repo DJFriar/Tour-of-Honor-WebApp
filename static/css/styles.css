@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
   background-color: #C0DFFD;
 }
 
@@ -22,7 +22,7 @@ main {
 }
 
 footer {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-size: 0.75em;
 }
 
@@ -42,36 +42,33 @@ hr {
   display: none !important;
 }
 
-h2 {
-  font-weight: 600;
-  font-size: 3em;
-  margin: 0px;
+h1,h2,h3,h4,h5,h6 {
+  /* font-family: 'Raleway', Helvetica, Arial, sans-serif; */
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
 }
 
-h3 {
+h1 {
   font-weight: 600;
   font-size: 2.5em;
   margin: 0px;
 }
 
-@media (max-width: 959px) {
-  h3 {
-    font-size: 1.75em;
-    margin: 0px;
-  }
-}
-
-h4 {
+h2 {
   font-weight: 600;
   font-size: 2em;
   margin: 0px;
 }
 
-@media (max-width: 959px) {
-  h4 {
-    font-size: 1.5em;
-    margin: 0px;
-  }
+h3 {
+  font-weight: 600;
+  font-size: 1.5em;
+  margin: 0px;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 1.25em;
+  margin: 0px;
 }
 
 h5 {
@@ -235,6 +232,10 @@ a.hidden-link:visited {
 
 .toh-logo {
   height: 80px
+}
+
+.toh-m-0 {
+  margin: 0;
 }
 
 .toh-mb-0 {
@@ -410,9 +411,15 @@ a.hidden-link:visited {
 }
 
 .registrationTitleText {
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 1.3em;
   color: #0000009E;
+}
+
+.registrationSubtitleText {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
 }
 
 .characterCount {
@@ -443,4 +450,13 @@ a.hidden-link:visited {
 
 .dataValueBold {
   font-weight: bold;
+}
+
+.toh-changelog > ul {
+  margin-bottom: 12px;
+}
+
+.uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
 }

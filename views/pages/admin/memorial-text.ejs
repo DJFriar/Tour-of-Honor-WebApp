@@ -11,12 +11,12 @@
     <% } %>
     <main>
       <a href="/admin/memorial-editor2" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Memorial Editor</button></a>
-      <h4>MEMORIAL TEXT EDITOR</h4>
+      <h1>Memorial Text Editor</h1>
       <% if(NotificationText) { %>
         <%- include('../../partials/notice'); %>
       <% } %>
       <div class="admin-container">
-        <h6>Editing Text for <%= MemorialData[0].Code %> (<%= MemorialData[0].Name %> - <%= MemorialData[0].City %>, <%= MemorialData[0].State %>)</h6>
+        <h6>Editing text for <%= MemorialData[0].Code %> (<%= MemorialData[0].Name %> in <%= MemorialData[0].City %>, <%= MemorialData[0].State %>)</h6>
         <div class="memorialTextBtnDiv" style="margin: 8px 0;">
           <button type="button" class="uk-button uk-button-primary addMemorialTextBtn">Add Memorial Text</button>
         </div>

@@ -1,6 +1,6 @@
 <div class="modal-content">
   <span class="close">&times;</span>
-  <h4 class="toh-mb-18">Edit Contact Info</h4>
+  <h3 class="toh-mb-18">Edit Contact Info</h3>
   <form class="signup uk-grid-small uk-form-stacked uk-flex-center uk-text-center uk-child-width-1-1@s" style="margin: 0px 10px" uk-grid>
     <div class="uk-width-1-1@s">
       <label class="uk-form-label" for="Address1">Street Address</label>
@@ -23,7 +23,7 @@
       <input class="uk-input toh-input" id="Email" type="email" placeholder="someone@domain.com" value="<%= User.Email %>">
     </div>
     <div class="uk-width-1-3@s toh-mt-12">
-      <label class="uk-form-label" for="CellNumber">Cell Number</label>
+      <label class="uk-form-label" for="CellNumber">Cell Number&nbsp;<span uk-tooltip="We only use this for emergency communications. We do NOT advertise via phone/text."><i class="fa-solid fa-circle-question"></i></span></label>
       <input class="uk-input toh-input" id="CellNumber" type="tel" pattern=”[0-9]{3}-[0-9]{3}-[0-9]{4}” value="<%= User.CellNumber %>">
     </div>
     <div class="uk-width-1-3@s toh-mt-12">
