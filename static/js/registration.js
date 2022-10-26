@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 $(document).ready(() => {
   let riderReady = false;
@@ -391,7 +392,7 @@ $(document).ready(() => {
   /* #region  Charity Choice Tab */
 
   // Enabled the Button when a choice is made
-  $('#CharityChoice').on('change', function() {
+  $('#CharityChoice').on('change', () => {
     $('#saveCharityChoiceBtn').removeAttr('disabled');
   });
 
@@ -515,7 +516,7 @@ $(document).ready(() => {
         $('#RegStep6').removeClass('disabled');
         UIkit.switcher('#registrationSwitcher').show(6);
       } else {
-        console.log('Unable to confirm successful payment.');
+        showToastrError('Unable to confirm payment.');
       }
     });
   });
@@ -597,7 +598,7 @@ $(document).ready(() => {
       .then(() => {
         location.reload();
       })
-      .catch((err) => {
+      .catch(() => {
         showToastrError('An error occured while reserving your existing flag.');
       });
   });
@@ -700,7 +701,7 @@ $(document).ready(() => {
       .then(() => {
         location.reload();
       })
-      .catch((err) => {
+      .catch(() => {
         showToastrError('An error occured while reserving your flag.');
       });
   });
@@ -767,7 +768,7 @@ $(document).ready(() => {
           $('#flagAssignedPassenger').removeClass('hide-me');
         }
       })
-      .catch((err) => {
+      .catch(() => {
         showToastrError('An error occured whle validating your waiver.');
       });
   }

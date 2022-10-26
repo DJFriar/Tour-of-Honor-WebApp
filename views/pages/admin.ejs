@@ -1,6 +1,7 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
+
 <body>
   <div class="pageWrapper">
     <% if(activeUser) { %>
@@ -9,9 +10,9 @@
       <%- include('../partials/topnav'); %>
     <% } %>
     <main>
-      <div class="content">
-        <h1>Rally Admin Tool</h1>
-        &nbsp;<br/>
+      <h1>Rally Admin Tool</h1>
+      <div class="content" style="font-size: 18px;">
+        &nbsp;<br />
         <% if(NotificationText) { %>
           <%- include('../partials/notice'); %>
         <% } %>
@@ -19,7 +20,7 @@
         <a href="/admin/charity-manager">Charity Manager</a><br />
         <!-- <a href="/admin/flag-manager">Flag Manager</a><br /> -->
         <a href="/admin/group-management">Group Management</a><br />
-        <a href="/admin/memorial-editor2">Memorial Editor</a><br/>
+        <a href="/admin/memorial-editor2">Memorial Editor</a><br />
         <a href="/admin/orders">Registration Orders</a><br />
         <a href="/admin/rider-management">Rider Management</a><br />
         <a href="/admin/site-config">Site Config</a><br />
