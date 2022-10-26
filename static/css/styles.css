@@ -60,22 +60,10 @@ h3 {
   margin: 0px;
 }
 
-@media (max-width: 959px) {
-  h3 {
-    margin: 0px;
-  }
-}
-
 h4 {
   font-weight: 600;
   font-size: 1.25em;
   margin: 0px;
-}
-
-@media (max-width: 959px) {
-  h4 {
-    margin: 0px;
-  }
 }
 
 h5 {
