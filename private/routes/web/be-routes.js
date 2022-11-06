@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 const ejs = require('ejs');
 const _ = require('lodash');
-const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 // const multer = require('multer');
 const fetch = require('node-fetch');
@@ -62,11 +61,11 @@ module.exports = function (app) {
         },
         {
           where: { id: req.body.EditMemorialID },
-        }
+        },
       ).then(() => {
         res.redirect('/admin/memorial-editor2');
       });
-    }
+    },
   );
 
   // Find a Random Available Flag Number
@@ -195,7 +194,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.MemorialID },
-      }
+      },
     );
     res.send('success');
   });
@@ -249,7 +248,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.id },
-      }
+      },
     );
     res.send('success');
   });
@@ -322,7 +321,7 @@ module.exports = function (app) {
       await sendEmail(
         req.body.Email,
         'Welcome to the Tour of Honor [IMPORTANT, PLEASE READ]',
-        emailBody
+        emailBody,
       );
       res.send('Welcome Email Sent');
     } catch (err) {
@@ -347,7 +346,7 @@ module.exports = function (app) {
       await sendEmail(
         req.body.Email,
         'Tour of Honor Scoring Portal Registration [IMPORTANT, PLEASE READ]',
-        emailBody
+        emailBody,
       );
       res.send('Portal Email Sent');
     } catch (err) {
@@ -370,7 +369,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.UserID },
-      }
+      },
     )
       .then(() => {
         logger.info('User Onboarded Successfully');
@@ -380,75 +379,6 @@ module.exports = function (app) {
         logger.error(`Rider Onboarding Error Encountered: ${err}`);
         res.status(401).json(err);
       });
-  });
-
-  app.post('/api/v1/resetpasswordrequest', async (req, res) => {
-    try {
-      // Look for the user in the DB
-      const User = await db.User.findOne({
-        where: {
-          Email: req.body.Email,
-        },
-      });
-      // Error if the user isn't found.
-      if (!User) {
-        return res.status(400).send('User email not found.');
-      }
-      // See if a token already exists for the user.
-      let ResetToken = await db.ResetToken.findOne({
-        where: {
-          user_id: User.id,
-        },
-      });
-      // If not, create a new token.
-      if (!ResetToken) {
-        await db.ResetToken.create({
-          user_id: User.id,
-          Token: crypto.randomBytes(32).toString('hex'),
-        })
-          .then((data) => {
-            ResetToken = data;
-          })
-          .catch((err) => {
-            logger.error('Error creating token');
-            res.status(401).json(err);
-          });
-      }
-      // Send the password reset email.
-      const PWResetLink = `${process.env.BASE_URL}/forgotpassword/${User.id}/${ResetToken.Token}`;
-      const emailBody = await ejs.renderFile('./views/emails/emailPasswordReset.ejs', {
-        URL: PWResetLink,
-      });
-      await sendEmail(
-        User.Email,
-        'Tour of Honor Scoring Portal - Password Reset Request',
-        emailBody
-      );
-      res.send('Password reset link sent to your email account');
-    } catch (err) {
-      res.send("An error occurred while resetting user's password.");
-      logger.error(err);
-    }
-  });
-
-  // Handle User Password Change
-  app.put('/api/v1/resetpasswordaction', (req, res) => {
-    const { Password } = req.body;
-    const encryptedPassword = bcrypt.hashSync(Password, bcrypt.genSaltSync(10), null);
-    // Update user's password
-    db.User.update(
-      {
-        Password: encryptedPassword,
-      },
-      {
-        where: { id: req.body.UserID },
-      }
-    );
-    // Remove the token that was created.
-    db.ResetToken.destroy({
-      where: { user_id: req.body.UserID },
-    });
-    res.send('success');
   });
 
   // Using the passport.authenticate middleware with our local strategy.
@@ -523,7 +453,7 @@ module.exports = function (app) {
         Status: 0, // 0 = Pending Approval
       });
       res.redirect('/memorials');
-    }
+    },
   );
 
   // Handle Manual Entry
@@ -556,7 +486,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.SubmissionID },
-      }
+      },
     );
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if (req.body.Status === 1) {
@@ -593,7 +523,7 @@ module.exports = function (app) {
     await sendEmail(
       'potm@tourofhonor.com',
       'Tour of Honor Scoring Team - POTM Suggestion',
-      emailBody
+      emailBody,
     );
     res.send('POTM Suggestion has been sent.');
   });
@@ -633,7 +563,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.UserID },
-      }
+      },
     );
     res.send('success');
   });
@@ -652,7 +582,7 @@ module.exports = function (app) {
       },
       {
         where: { id: req.body.UserID },
-      }
+      },
     );
     res.send('success');
   });
@@ -716,7 +646,7 @@ module.exports = function (app) {
           RegionID: req.body.RegionID,
           PlaceNum: req.body.TrophyPlace,
         },
-      }
+      },
     );
     res.send('success');
   });
@@ -791,7 +721,7 @@ module.exports = function (app) {
             RallyYear: 2023,
             UserID: req.body.UserID,
           },
-        }
+        },
       )
         .then(() => {
           res.status(200).send();
@@ -816,7 +746,7 @@ module.exports = function (app) {
             RallyYear: 2023,
             UserID: req.body.UserID,
           },
-        }
+        },
       )
         .then(() => {
           res.status(200).send();
@@ -842,7 +772,7 @@ module.exports = function (app) {
             RallyYear: 2023,
             UserID: req.body.UserID,
           },
-        }
+        },
       )
         .then(() => {
           // hasPassenger = true;
@@ -888,7 +818,7 @@ module.exports = function (app) {
                   RallyYear: 2023,
                   UserID: req.body.UserID,
                 },
-              }
+              },
             ).then(() => {
               res.status(200).send();
             });
@@ -911,7 +841,7 @@ module.exports = function (app) {
             RallyYear: 2023,
             UserID: req.body.UserID,
           },
-        }
+        },
       )
         .then(() => {
           db.Order.findOne({
@@ -1131,7 +1061,7 @@ module.exports = function (app) {
           orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
         } catch (err) {
           logger.warn(
-            `orderNumber not found for TOH Order ${o.id}. Order is likely not paid for yet.${err}`
+            `orderNumber not found for TOH Order ${o.id}. Order is likely not paid for yet.${err}`,
           );
           res.json(0);
         }
@@ -1147,7 +1077,7 @@ module.exports = function (app) {
                 RallyYear: 2023,
                 UserID: id,
               },
-            }
+            },
           ).then(() => {
             logger.info(`Shopify Order Number updated for rider ${id}`);
             res.json(orderNumber);
@@ -1234,7 +1164,7 @@ module.exports = function (app) {
         where: {
           id: groupid,
         },
-      }
+      },
     )
       .then(() => {
         logger.info(`Group ${groupid} updated.`);

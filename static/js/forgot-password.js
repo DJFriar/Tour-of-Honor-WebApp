@@ -1,45 +1,86 @@
 $(document).ready(() => {
-  $("#sendResetLinkButton").on("click", function() {
-    var passwordResetRequest = {
-      Email: $("#Email").val().trim()
+  $('#sendResetLinkButton').on('click', () => {
+    const passwordResetRequest = {
+      Email: $('#Email').val().trim(),
     };
 
-    $.ajax("/api/v1/resetpasswordrequest", {
-      type: "POST",
-      data: passwordResetRequest
+    $.ajax('/api/v1/email/resetpasswordrequest', {
+      type: 'POST',
+      data: passwordResetRequest,
     })
       .then(() => {
-        window.location.reload();
+        toastr.success('Request Successful. Check your email for further instructions.', null, {
+          closeButton: 'false',
+          positionClass: 'toast-top-center',
+          preventDuplicates: 'true',
+          progressBar: 'false',
+          timeOut: '0',
+        });
       })
       .catch(handlePWResetError);
   });
 
-  $("#resetPasswordButton").on("click", function() {
-    var passwordResetAction = {
-      Password: $("#Password").val().trim(),
-      PasswordConfirm: $("#PasswordConfirm").val().trim(),
-      UserID: $("#UserID").val().trim()
+  $('#resetPasswordButton').on('click', () => {
+    const passwordResetAction = {
+      Password: $('#Password').val().trim(),
+      PasswordConfirm: $('#PasswordConfirm').val().trim(),
+      UserID: $('#UserID').val().trim(),
     };
 
-    // Make sure that the new passwords match.
-    if (passwordResetAction.Password != passwordResetAction.PasswordConfirm) {
-      alert("Password mismatch. Please check that both fields contain the same password.");
+    if (!passwordResetAction.Password) {
+      toastr.error('New Password field cannot be blank.', null, {
+        closeButton: 'true',
+        positionClass: 'toast-top-center',
+        preventDuplicates: 'true',
+        progressBar: 'true',
+        timeOut: '2500',
+      });
       return;
+    }
+
+    if (!passwordResetAction.PasswordConfirm) {
+      toastr.error('Confirm New Password field cannot be blank.', null, {
+        closeButton: 'true',
+        positionClass: 'toast-top-center',
+        preventDuplicates: 'true',
+        progressBar: 'true',
+        timeOut: '2500',
+      });
+      return;
+    }
+
+    // Make sure that the new passwords match.
+    if (passwordResetAction.Password !== passwordResetAction.PasswordConfirm) {
+      toastr.error(
+        'Password mismatch. Please check that both fields contain the same password.',
+        null,
+        {
+          closeButton: 'true',
+          positionClass: 'toast-top-center',
+          preventDuplicates: 'true',
+          progressBar: 'true',
+          timeOut: '2500',
+        },
+      );
     } else {
-      $.ajax("/api/v1/resetpasswordaction", {
-        type: "PUT",
-        data: passwordResetAction
+      $.ajax('/api/v1/email/resetpasswordaction', {
+        type: 'PUT',
+        data: passwordResetAction,
       })
         .then(() => {
-          window.location.replace("/login");
+          window.location.replace('/login');
         })
         .catch(handlePWResetError);
     }
-  })
+  });
 
-  function handlePWResetError(err) {
-    console.log(err);
-    $("#alert .msg").text(err.responseJSON);
-    $("#alert").fadeIn(500);
+  function handlePWResetError() {
+    toastr.error('An error was encountered. Please try again.', null, {
+      closeButton: 'true',
+      positionClass: 'toast-top-center',
+      preventDuplicates: 'true',
+      progressBar: 'true',
+      timeOut: '2500',
+    });
   }
 });
