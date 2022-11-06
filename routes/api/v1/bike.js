@@ -27,7 +27,7 @@ ApiBikeRouter.route('/')
       },
       {
         where: { id: req.body.BikeID },
-      }
+      },
     ).then(() => {
       res.status(202).send();
     });
