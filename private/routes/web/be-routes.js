@@ -24,6 +24,7 @@ const twilio = require('../../../controllers/twilio');
 // const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 // const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
 
+// eslint-disable-next-line func-names
 module.exports = function (app) {
   // Handle Metric Reporting
   app.get('/metrics', async (req, res) => {
@@ -287,7 +288,7 @@ module.exports = function (app) {
           UserID: x.id,
           RallyYear: 2022,
         }).then((y) => {
-          logger.info('User Created Successfully');
+          logger.info('User Created Successfully', { calledFrom: 'be-routes.js' });
           res.status(202).json(y);
         });
       })
@@ -372,7 +373,7 @@ module.exports = function (app) {
       },
     )
       .then(() => {
-        logger.info('User Onboarded Successfully');
+        logger.info('User Onboarded Successfully', { calledFrom: 'be-routes.js' });
         res.status(200).send();
       })
       .catch((err) => {
@@ -409,7 +410,7 @@ module.exports = function (app) {
       isActive: 0,
     })
       .then(() => {
-        logger.info('New User Created Successfully');
+        logger.info('New User Created Successfully', { calledFrom: 'be-routes.js' });
         res.status(202).send();
       })
       .catch((err) => {
@@ -699,7 +700,7 @@ module.exports = function (app) {
         NextStepNum: 1,
       })
         .then((o) => {
-          logger.info(`Order ${o.id} created.`);
+          logger.info(`Order ${o.id} created.`, { calledFrom: 'be-routes.js' });
           res.status(200).send();
         })
         .catch((err) => {
@@ -922,9 +923,13 @@ module.exports = function (app) {
       // Generate the Shopify URL & ID
       const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
       ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
-      logger.info(`Checkout URL Generated: ${ShirtDetails.CheckoutURL}`);
+      logger.info(`Checkout URL Generated: ${ShirtDetails.CheckoutURL}`, {
+        calledFrom: 'be-routes.js',
+      });
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
-      logger.info(`Checkout ID Generated: ${ShirtDetails.CheckoutID}`);
+      logger.info(`Checkout ID Generated: ${ShirtDetails.CheckoutID}`, {
+        calledFrom: 'be-routes.js',
+      });
 
       // Update Order with the shirt details
       db.Order.update(ShirtDetails, {
@@ -995,7 +1000,9 @@ module.exports = function (app) {
       // Assign the Flag number to the rider
       db.Flag.create(FlagInfo)
         .then(() => {
-          logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`);
+          logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`, {
+            calledFrom: 'be-routes.js',
+          });
           // Update Order with Flag info
           db.Order.update(OrderInfo, {
             where: {
@@ -1004,16 +1011,22 @@ module.exports = function (app) {
             },
           })
             .then(() => {
-              logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`);
+              logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`, {
+                calledFrom: 'be-routes.js',
+              });
               res.status(202).send();
             })
             .catch((err) => {
-              logger.error(`Error updating order with FlagInProgress info: ${err}`);
+              logger.error(`Error updating order with FlagInProgress info: ${err}`, {
+                calledFrom: 'be-routes.js',
+              });
               res.status(400).json(err);
             });
         })
         .catch((err) => {
-          logger.error(`Error when saving flag number assignments:${err}`);
+          logger.error(`Error when saving flag number assignments:${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(400).json(err);
         });
     }
@@ -1054,7 +1067,9 @@ module.exports = function (app) {
       },
     }).then(async (o) => {
       if (o.OrderNumber === null) {
-        logger.info('OrderNumber not found locally, checking Shopify...');
+        logger.info('OrderNumber not found locally, checking Shopify...', {
+          calledFrom: 'be-routes.js',
+        });
         // Check Shopify for an Order Number
         let orderNumber;
         try {
@@ -1079,13 +1094,17 @@ module.exports = function (app) {
               },
             },
           ).then(() => {
-            logger.info(`Shopify Order Number updated for rider ${id}`);
+            logger.info(`Shopify Order Number updated for rider ${id}`, {
+              calledFrom: 'be-routes.js',
+            });
             res.json(orderNumber);
           });
         }
       }
       if (o.OrderNumber) {
-        logger.info(`Shopify Order Number found locally: ${o.OrderNumber}`);
+        logger.info(`Shopify Order Number found locally: ${o.OrderNumber}`, {
+          calledFrom: 'be-routes.js',
+        });
         res.json(o.OrderNumber);
       }
     });
@@ -1110,7 +1129,7 @@ module.exports = function (app) {
       URL: req.body.CharityURL,
     })
       .then((c) => {
-        logger.info(`Charity ${c.id} created.`);
+        logger.info(`Charity ${c.id} created.`, { calledFrom: 'be-routes.js' });
         res.status(200).send();
       })
       .catch((err) => {
@@ -1140,11 +1159,11 @@ module.exports = function (app) {
       IsProtected: 0,
     })
       .then((g) => {
-        logger.info(`Group ${g.id} created.`);
+        logger.info(`Group ${g.id} created.`, { calledFrom: 'be-routes.js' });
         res.status(200).send();
       })
       .catch((err) => {
-        logger.error(`Error creating Group: ${err}`);
+        logger.error(`Error creating Group: ${err}`, { calledFrom: 'be-routes.js' });
         res.status(401).json(err);
       });
   });
@@ -1167,11 +1186,11 @@ module.exports = function (app) {
       },
     )
       .then(() => {
-        logger.info(`Group ${groupid} updated.`);
+        logger.info(`Group ${groupid} updated.`, { calledFrom: 'be-routes.js' });
         res.status(200).send();
       })
       .catch((err) => {
-        logger.error(`Error creating Group: ${err}`);
+        logger.error(`Error creating Group: ${err}`, { calledFrom: 'be-routes.js' });
         res.status(401).json(err);
       });
   });
@@ -1181,7 +1200,7 @@ module.exports = function (app) {
     const smartWaiverURL = `https://api.smartwaiver.com/v4/waivers/${waiverID}`;
     const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
 
-    logger.info('Waiver Webhook Response', req.body);
+    logger.info('Waiver Webhook Response', req.body, { calledFrom: 'be-routes.js' });
 
     fetch(smartWaiverURL, {
       method: 'get',

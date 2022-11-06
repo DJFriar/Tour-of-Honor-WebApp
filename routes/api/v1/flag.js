@@ -14,11 +14,13 @@ ApiFlagRouter.route('/').post((req, res) => {
     RallyYear: req.body.RallyYear,
   })
     .then(() => {
-      logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`);
+      logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`, {
+        calledFrom: 'flag.js',
+      });
       res.status(202).send();
     })
     .catch((err) => {
-      logger.error(`Error when saving flag number assignments:${err}`);
+      logger.error(`Error when saving flag number assignments:${err}`, { calledFrom: 'flag.js' });
     });
 });
 
