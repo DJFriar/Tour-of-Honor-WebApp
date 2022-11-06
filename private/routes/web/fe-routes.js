@@ -543,7 +543,7 @@ module.exports = function (app) {
       try {
         const MemorialStatusResponse = await q.queryMemorialStatusByRider(
           req.user.FlagNumber,
-          memID
+          memID,
         );
         if (MemorialStatusResponse.length > 0) {
           MemorialStatus = MemorialStatusResponse[0].id;
@@ -891,9 +891,6 @@ module.exports = function (app) {
         logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
       }
     }
-
-    console.log('==== OrderInfo from fe-routes ====');
-    console.log(OrderInfo);
 
     res.locals.title = 'TOH Registration';
     res.render('pages/registration', {
