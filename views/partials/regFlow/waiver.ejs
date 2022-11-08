@@ -6,7 +6,6 @@
   </p>
   <div class="uk-width-1-1@s">
     <% if (OrderInfo.RiderWaiverID) { %>
-      <!-- Rider Waiver <%= OrderInfo.RiderWaiverID %> -->
       <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
       <button type="button" id="riderWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Rider Waiver Signed</button>
     <% } else { %>
@@ -15,7 +14,6 @@
     <% } %>
     <% if (OrderInfo.PassUserID > 0) { %>
       <% if (OrderInfo.PassengerWaiverID) { %>
-        <!-- Passenger Waiver <%= OrderInfo.PassengerWaiverID %> -->
         <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
         <button type="button" id="passengerWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Passenger Waiver Signed</button>
       <% } else { %>
@@ -25,7 +23,6 @@
     <% } %>
   </div>
   <div class="uk-width-1-1@s toh-mt-18">
-    <!-- <p>The button to advance beyond the waiver and choose your flag number is disabled at the moment, but should be back tomorrow (Sun, Oct 9th, 2022)</p> -->
     <% if (OrderInfo.PassUserID > 0) { %>
       <% if (OrderInfo.PassengerWaiverID && OrderInfo.RiderWaiverID) { %>
         <label class="uk-form-label" for="continueToFlagNumberBtn2">&nbsp;</label>

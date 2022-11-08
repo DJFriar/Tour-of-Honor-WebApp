@@ -21,7 +21,7 @@ const {
 } = require('../../../controllers/shopify');
 const twilio = require('../../../controllers/twilio');
 
-// const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 // const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
 
 // eslint-disable-next-line func-names
@@ -73,7 +73,7 @@ module.exports = function (app) {
   app.get('/api/v1/randomAvailableFlag', (req, res) => {
     db.Flag.findAll({
       where: {
-        RallyYear: 2022,
+        RallyYear: CurrentRallyYear,
       },
       raw: true,
     }).then((flags) => {
@@ -119,7 +119,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: 2022,
+      RallyYear: CurrentRallyYear,
     }).then(() => {
       res.redirect('/admin/memorial-editor');
     });
@@ -143,7 +143,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: 2022,
+      RallyYear: CurrentRallyYear,
     }).then(() => {
       res.redirect('/admin/memorial-editor2');
     });
@@ -278,7 +278,6 @@ module.exports = function (app) {
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       UserName: req.body.UserName,
-      FlagNumber: req.body.FlagNumber,
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password,
     })
@@ -286,7 +285,7 @@ module.exports = function (app) {
         db.Flag.create({
           FlagNum: req.body.FlagNumber,
           UserID: x.id,
-          RallyYear: 2022,
+          RallyYear: CurrentRallyYear,
         }).then((y) => {
           logger.info('User Created Successfully', { calledFrom: 'be-routes.js' });
           res.status(202).json(y);
@@ -399,7 +398,6 @@ module.exports = function (app) {
     db.User.create({
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
-      FlagNumber: 0, // REMOVE THIS AFTER 2022 RALLY
       Email: req.body.Email.toLowerCase(),
       Password: req.body.Password,
       Address1: req.body.Address1,
@@ -471,7 +469,7 @@ module.exports = function (app) {
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.FlagNumber,
         MemorialID: memID,
-        RallyYear: 2022,
+        RallyYear: CurrentRallyYear,
       });
     }
     res.send('success');
@@ -495,7 +493,7 @@ module.exports = function (app) {
       db.EarnedMemorialsXref.create({
         FlagNum: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
-        RallyYear: 2022,
+        RallyYear: CurrentRallyYear,
       });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
@@ -504,7 +502,7 @@ module.exports = function (app) {
           db.EarnedMemorialsXref.create({
             FlagNum: rider,
             MemorialID: req.body.SubmittedMemorialID,
-            RallyYear: 2022,
+            RallyYear: CurrentRallyYear,
           });
         });
       }
@@ -658,7 +656,7 @@ module.exports = function (app) {
       FlagNum: req.body.FlagNumber,
       Name: req.body.AwardName,
       RideDate: req.body.AwardDate,
-      RallyYear: 2022,
+      RallyYear: CurrentRallyYear,
     });
     res.send('success');
   });
