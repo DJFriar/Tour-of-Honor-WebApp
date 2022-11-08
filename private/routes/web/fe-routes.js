@@ -5,6 +5,7 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 // const isAdmin = require('../../../config/isAdmin');
 const { logger } = require('../../../controllers/logger');
 
+// eslint-disable-next-line func-names
 module.exports = function (app) {
   const { baseSampleImageUrl } = app.locals;
   const { baseImageUrl } = app.locals;
@@ -184,7 +185,7 @@ module.exports = function (app) {
         });
       }
     } catch (err) {
-      console.log(`queryAllSubmissions failed for id ${id}`);
+      logger.error(`queryAllSubmissions failed for id ${id}`, { calledBy: 'fe-routes.js' });
     }
   });
 
