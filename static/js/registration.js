@@ -708,7 +708,7 @@ $(document).ready(() => {
       if (flagNumber > 0) {
         $('#RequestedFlagNumber').val(flagNumber);
         $('#flagAvailabilityResponse')
-          .text('This flag number is available.')
+          .text(`Flag #${flagNumber} is available.`)
           .css('color', 'green')
           .removeClass('hide-me');
         $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
@@ -730,13 +730,13 @@ $(document).ready(() => {
     }).then((flagInfo) => {
       if (flagInfo) {
         $('#flagAvailabilityResponse')
-          .text('This flag number is not available.')
+          .text(`Flag #${requestedFlagNumber} is not available.`)
           .css('color', 'red')
           .removeClass('hide-me');
         $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
       } else {
         $('#flagAvailabilityResponse')
-          .text('This flag number is available.')
+          .text(`Flag #${requestedFlagNumber} is available.`)
           .css('color', 'green')
           .removeClass('hide-me');
         $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
@@ -812,6 +812,9 @@ $(document).ready(() => {
     e.preventDefault();
     $('.modal').css('display', 'none');
     $('.setAddressModal').css('display', 'none');
+    $('#RequestedFlagNumber').val('');
+    $('#flagAvailabilityResponse').addClass('hide-me');
+    $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
   });
 
   // Monitor for Continue to Summary Button to be enabled
