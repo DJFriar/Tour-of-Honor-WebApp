@@ -752,7 +752,6 @@ $(document).ready(() => {
     const OrderID = $(this).data('orderid');
     enableWhen = $(this).data('enablewhen');
     const requestedFlagNumber = $('#RequestedFlagNumber').val().trim();
-
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
@@ -762,23 +761,32 @@ $(document).ready(() => {
       RequestedFlagNumber: requestedFlagNumber,
     };
 
-    $.ajax('/api/v1/regFlow', {
-      beforeSend() {
-        $('.modal').css('display', 'none');
-        $('.spinnerBox').removeClass('hide-me');
-      },
-      complete() {
-        $('.spinnerBox').addClass('hide-me');
-      },
-      type: 'POST',
-      data: OrderUpdateInfo,
-    })
-      .then(() => {
-        location.reload();
+    if (!requestedFlagNumber || requestedFlagNumber < 11) {
+      showToastrError('A flag number is required.');
+      $('#RequestedFlagNumber').val('');
+      $('#flagAvailabilityResponse').addClass('hide-me');
+      $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    }
+
+    if (requestedFlagNumber > 10) {
+      $.ajax('/api/v1/regFlow', {
+        beforeSend() {
+          $('.modal').css('display', 'none');
+          $('.spinnerBox').removeClass('hide-me');
+        },
+        complete() {
+          $('.spinnerBox').addClass('hide-me');
+        },
+        type: 'POST',
+        data: OrderUpdateInfo,
       })
-      .catch(() => {
-        showToastrError('An error occured while reserving your flag.');
-      });
+        .then(() => {
+          location.reload();
+        })
+        .catch(() => {
+          showToastrError('An error occured while reserving your flag.');
+        });
+    }
   });
 
   // Handle Continue to Summary Button
