@@ -45,7 +45,7 @@ app.use(
     secret: process.env.SESSIONKEY,
     resave: true,
     saveUninitialized: true,
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -81,12 +81,12 @@ db.sequelize.sync().then(() => {
   app.listen(PORT, () => {
     console.log('\n');
     console.log(
-      `==> 🌎  Server running in ${app.locals.envName} mode. isProd is ${app.locals.envIsProd}.`
+      `==> 🌎  Server running in ${app.locals.envName} mode. isProd is ${app.locals.envIsProd}.`,
     );
     console.log(
       '==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.',
       PORT,
-      PORT
+      PORT,
     );
     console.log('\n');
   });

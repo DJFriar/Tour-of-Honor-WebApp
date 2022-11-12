@@ -39,7 +39,7 @@ router.post('/',
     }
 
     if (!req.files) {
-      logger.info("No files were uploaded");
+      logger.info("No files were uploaded", { calledFrom: 'submission.js' });
       return res.status(400).send("No files were uploaded.");
     }
 
@@ -106,9 +106,9 @@ router.post('/',
     async function uploadToS3(fileName, file) {
       try {
         const s3result = await uploadRiderSubmittedImage(fileName, file);
-        logger.info(s3result);
+        logger.info(s3result, { calledFrom: 'submission.js' });
       } catch (err){
-        logger.error("S3 Upload Failed: " + err)
+        logger.error("S3 Upload Failed: " + err, { calledFrom: 'submission.js' })
       }
     }
   }

@@ -5,6 +5,7 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 // const isAdmin = require('../../../config/isAdmin');
 const { logger } = require('../../../controllers/logger');
 
+// eslint-disable-next-line func-names
 module.exports = function (app) {
   const { baseSampleImageUrl } = app.locals;
   const { baseImageUrl } = app.locals;
@@ -184,7 +185,7 @@ module.exports = function (app) {
         });
       }
     } catch (err) {
-      console.log(`queryAllSubmissions failed for id ${id}`);
+      logger.error(`queryAllSubmissions failed for id ${id}`, { calledBy: 'fe-routes.js' });
     }
   });
 
@@ -543,7 +544,7 @@ module.exports = function (app) {
       try {
         const MemorialStatusResponse = await q.queryMemorialStatusByRider(
           req.user.FlagNumber,
-          memID
+          memID,
         );
         if (MemorialStatusResponse.length > 0) {
           MemorialStatus = MemorialStatusResponse[0].id;
@@ -891,9 +892,6 @@ module.exports = function (app) {
         logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
       }
     }
-
-    console.log('==== OrderInfo from fe-routes ====');
-    console.log(OrderInfo);
 
     res.locals.title = 'TOH Registration';
     res.render('pages/registration', {
