@@ -814,7 +814,7 @@ $(document).ready(() => {
     $('.setAddressModal').css('display', 'none');
     $('#RequestedFlagNumber').val('');
     $('#flagAvailabilityResponse').addClass('hide-me');
-    $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
+    $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
   });
 
   // Monitor for Continue to Summary Button to be enabled
