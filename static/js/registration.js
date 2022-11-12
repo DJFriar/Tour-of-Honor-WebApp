@@ -429,7 +429,23 @@ $(document).ready(() => {
     const selection = $('#RiderShirtStyle').val();
     console.log(`Rider T-Shirt Selected: ${selection}`);
 
+    if (selection !== 'Donation') {
+      $('#RiderSizeNA').remove();
+      $('#RiderShirtSize').prop('disabled', false);
+      $('#RiderSizeXL').prop('selected', true);
+    }
+
+    if (selection === 'Donation') {
+      if ($("#RiderShirtSize option[value='NA']").length === 0) {
+        $('#RiderShirtSize').append(
+          $('<option />').val('NA').attr('id', 'RiderSizeNA').prop('selected', true).html('N/A'),
+        );
+      }
+      $('#RiderShirtSize').prop('disabled', true);
+    }
+
     if (selection === 'Ladies V-Neck') {
+      $('#RiderSizeLG').prop('selected', true);
       $('#RiderSize4X').remove();
       $('#RiderSize5X').remove();
     } else {
@@ -449,9 +465,24 @@ $(document).ready(() => {
   // Update shirt size dropown options when Passenger's shirt is selected.
   $('#PassengerShirtStyle').change(() => {
     const selection = $('#PassengerShirtStyle').val();
-    console.log(`Passenger T-Shirt Selected: ${selection}`);
+
+    if (selection !== 'Donation') {
+      $('#PassSizeNA').remove();
+      $('#PassengerShirtSize').prop('disabled', false);
+      $('#PassSizeXL').prop('selected', true);
+    }
+
+    if (selection === 'Donation') {
+      if ($("#PassengerShirtSize option[value='NA']").length === 0) {
+        $('#PassengerShirtSize').append(
+          $('<option />').val('NA').attr('id', 'PassSizeNA').prop('selected', true).html('N/A'),
+        );
+      }
+      $('#PassengerShirtSize').prop('disabled', true);
+    }
 
     if (selection === 'Ladies V-Neck') {
+      $('#PassSizeLG').prop('selected', true);
       $('#PassSize4X').remove();
       $('#PassSize5X').remove();
     } else {
