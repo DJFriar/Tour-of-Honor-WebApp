@@ -427,7 +427,6 @@ $(document).ready(() => {
   // Update shirt size dropown options when Rider's shirt is selected.
   $('#RiderShirtStyle').change(() => {
     const selection = $('#RiderShirtStyle').val();
-    console.log(`Rider T-Shirt Selected: ${selection}`);
 
     if (selection !== 'Donation') {
       $('#RiderSizeNA').remove();
