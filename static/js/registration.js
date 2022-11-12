@@ -313,7 +313,7 @@ $(document).ready(() => {
           existingPassengerEmailFound = true;
           $('#PassengerEmailForm').css('border', '4px solid red');
           $('#emailValidationError').text(
-            'Email address must be unique. Please use a different email.'
+            'Email address must be unique. Please use a different email.',
           );
           $('#savePassengerInfo').prop('disabled', true);
         } else {
@@ -423,6 +423,50 @@ $(document).ready(() => {
   // ** T-Shirt Choice Tab (4) **
   // ****************************
   /* #region  T-Shirt Choice Tab */
+
+  // Update shirt size dropown options when Rider's shirt is selected.
+  $('#RiderShirtStyle').change(() => {
+    const selection = $('#RiderShirtStyle').val();
+    console.log(`Rider T-Shirt Selected: ${selection}`);
+
+    if (selection === 'Ladies V-Neck') {
+      $('#RiderSize4X').remove();
+      $('#RiderSize5X').remove();
+    } else {
+      if ($("#RiderShirtSize option[value='4X']").length === 0) {
+        $('#RiderShirtSize').append(
+          $('<option />').val('4X').attr('id', 'RiderSize4X').html('4X (+$3)'),
+        );
+      }
+      if ($("#RiderShirtSize option[value='5X']").length === 0) {
+        $('#RiderShirtSize').append(
+          $('<option />').val('5X').attr('id', 'RiderSize5X').html('5X (+$3)'),
+        );
+      }
+    }
+  });
+
+  // Update shirt size dropown options when Passenger's shirt is selected.
+  $('#PassengerShirtStyle').change(() => {
+    const selection = $('#PassengerShirtStyle').val();
+    console.log(`Passenger T-Shirt Selected: ${selection}`);
+
+    if (selection === 'Ladies V-Neck') {
+      $('#PassSize4X').remove();
+      $('#PassSize5X').remove();
+    } else {
+      if ($("#PassengerShirtSize option[value='4X']").length === 0) {
+        $('#PassengerShirtSize').append(
+          $('<option />').val('4X').attr('id', 'PassSize4X').html('4X (+$3)'),
+        );
+      }
+      if ($("#PassengerShirtSize option[value='5X']").length === 0) {
+        $('#PassengerShirtSize').append(
+          $('<option />').val('5X').attr('id', 'PassSize5X').html('5X (+$3)'),
+        );
+      }
+    }
+  });
 
   // Handle Save T-Shirt Choices Button
   $('#saveTshirtInfo').on('click', function saveTshirtInfo(e) {
