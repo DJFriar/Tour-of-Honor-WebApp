@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
 $(document).ready(() => {
-  let riderReady = false;
-  let passReady = false;
+  const riderReady = false;
+  const passReady = false;
   let enableWhen = '';
   const CheckoutURL = $('#checkoutUrl').data('checkouturl');
   const nextStepNum = $('#nextStepNum').data('nextstepnum');
@@ -607,11 +607,6 @@ $(document).ready(() => {
     e.preventDefault();
     const UserID = $(this).data('userid');
     const waiverURL = `https://waiver.smartwaiver.com/v/toh2023/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
-    const WaiverInfo = {
-      RegStep: 'Waiver',
-      UserID,
-      NextStepNum: 7,
-    };
     window.open(waiverURL);
   });
 
@@ -710,12 +705,18 @@ $(document).ready(() => {
     $.ajax('/api/v1/flag/nextAvailable', {
       type: 'GET',
     }).then((flagNumber) => {
-      $('#RequestedFlagNumber').val(flagNumber);
-      $('#flagAvailabilityResponse')
-        .text('This flag number is available.')
-        .css('color', 'green')
-        .removeClass('hide-me');
-      $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
+      if (flagNumber > 0) {
+        $('#RequestedFlagNumber').val(flagNumber);
+        $('#flagAvailabilityResponse')
+          .text('This flag number is available.')
+          .css('color', 'green')
+          .removeClass('hide-me');
+        $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
+      } else {
+        $('#flagAvailabilityResponse')
+          .text('An error occurred, please try again.')
+          .css('color', 'red');
+      }
     });
   });
 
@@ -822,30 +823,30 @@ $(document).ready(() => {
   }
 
   // Generate random passsword for new users
-  const randomString = (length = 14) => Math.random().toString(16).substr(2, length);
+  // const randomString = (length = 14) => Math.random().toString(16).substr(2, length);
 
   // Check for Waiver by UserID
-  function checkForWaiver(id) {
-    $.ajax('/api/v1/checkWaiverStatus', {
-      type: 'GET',
-      data: {
-        UserID: id,
-      },
-    })
-      .then(() => {
-        if (whoami === 'rider') {
-          riderReady = true;
-          $('#flagAssignedRider').removeClass('hide-me');
-        }
-        if (whoami === 'passenger') {
-          passReady = true;
-          $('#flagAssignedPassenger').removeClass('hide-me');
-        }
-      })
-      .catch(() => {
-        showToastrError('An error occured whle validating your waiver.');
-      });
-  }
+  // function checkForWaiver(id) {
+  //   $.ajax('/api/v1/checkWaiverStatus', {
+  //     type: 'GET',
+  //     data: {
+  //       UserID: id,
+  //     },
+  //   })
+  //     .then(() => {
+  //       if (whoami === 'rider') {
+  //         riderReady = true;
+  //         $('#flagAssignedRider').removeClass('hide-me');
+  //       }
+  //       if (whoami === 'passenger') {
+  //         passReady = true;
+  //         $('#flagAssignedPassenger').removeClass('hide-me');
+  //       }
+  //     })
+  //     .catch(() => {
+  //       showToastrError('An error occured whle validating your waiver.');
+  //     });
+  // }
 
   // Password validation
   function validatePassword() {

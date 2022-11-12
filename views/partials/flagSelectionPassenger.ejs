@@ -6,7 +6,7 @@
         <% if (OrderInfo.RequestedPassFlagNumber) { %>
           <%= OrderInfo.RequestedPassFlagNumber %> 
         <% } else { %>
-          <% if (OrderInfo.PassFlagNum === 0) { %>
+          <% if (OrderInfo.PassFlagNum === 0 || !OrderInfo.PassFlagNum ) { %>
             ?
           <% } else { %>
             <%= OrderInfo.PassFlagNum %> 
@@ -22,11 +22,11 @@
       <button type="button" id="keepExistingFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded keepExistingFlagNum" data-whoami="passenger" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.PassUserID %>" data-existingflagnumber="<%= OrderInfo.PassFlagNum %>">Yes</button>
     </div>
   <% } else { %>
-    <% if(User.FlagNumber >= 1 && User.FlagNumber <= 10) { %>
+    <% if(OrderInfo.PassFlagNum >= 1 && OrderInfo.PassFlagNum <= 10) { %>
       <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
       <button type="button" id="chooseFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="passenger" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.PassUserID %>">No</button>
       <% } %>
-    <% if(OrderInfo.PassFlagNum == 0 && !OrderInfo.RequestedPassFlagNumber) { %>
+    <% if(!OrderInfo.RequestedPassFlagNumber && (OrderInfo.PassFlagNum == 0 || !OrderInfo.PassFlagNum)) { %>
       <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
       <button type="button" id="chooseFlagNumPassenger" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="passenger" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.PassUserID %>">Choose Flag Number</button>      
     <% } %>

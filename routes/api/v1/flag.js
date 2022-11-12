@@ -6,6 +6,17 @@ const { Op } = require('sequelize');
 const db = require('../../../models');
 const { logger } = require('../../../controllers/logger');
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const rallyYearArray = [];
+
+// Set rally year array to honor prior year flag reservations
+if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
+  rallyYearArray.push(currentRallyYear - 1, currentRallyYear);
+} else {
+  rallyYearArray.push(currentRallyYear);
+}
+
+// POST: Flag assignment
 ApiFlagRouter.route('/').post((req, res) => {
   logger.debug('FlagPostAPI entered');
   db.Flag.create({
@@ -24,25 +35,8 @@ ApiFlagRouter.route('/').post((req, res) => {
     });
 });
 
-// Check Flag Number Validity
-ApiFlagRouter.route('/:id').get((req, res) => {
-  const { id } = req.params;
-  db.Flag.findOne({
-    where: {
-      FlagNum: id,
-      RallyYear: 2022,
-    },
-  }).then((dbPost) => {
-    res.json(dbPost);
-  });
-});
-
-// Find Next Available Flag Number
+// GET: Find Next Available Flag Number
 ApiFlagRouter.route('/nextAvailable').get((req, res) => {
-  const rallyYearArray = [process.env.ORDERING_RALLY_YEAR];
-  if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
-    rallyYearArray.unshift(process.env.CURRENT_RALLY_YEAR);
-  }
   db.Flag.findAll({
     where: {
       RallyYear: {
@@ -57,6 +51,21 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
     const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
     const nextFlag = _.min(goodNumbers);
     res.json(nextFlag);
+  });
+});
+
+// GET: Check Flag Number Validity
+ApiFlagRouter.route('/:id').get((req, res) => {
+  const { id } = req.params;
+  db.Flag.findOne({
+    where: {
+      FlagNum: id,
+      RallyYear: {
+        [Op.in]: rallyYearArray,
+      },
+    },
+  }).then((dbPost) => {
+    res.json(dbPost);
   });
 });
 
