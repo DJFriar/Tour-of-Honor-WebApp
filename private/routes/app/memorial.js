@@ -34,8 +34,6 @@ router.get("/status/:memid/:userid", async (req, res) => {
   const userId = req.params.userid;
   try {
     var MemorialStatus = await q.queryMemorialStatusByUser(memId, userId);
-    console.log("==== Memorial Status ====");
-    console.log("Memorial " + memId + " & User " + userId);
   } catch(err) {
     console.log("Error encountered: queryMemorialStatusByUser");
     console.log(err);

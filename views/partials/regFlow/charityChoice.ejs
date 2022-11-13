@@ -1,0 +1,25 @@
+<div>
+  <h4 class="toh-mb-18">Charity Choice</h4>
+  <p>Please choose what charity you would like to support from the list below.</p>
+  <form class="uk-grid-small uk-form-stacked" uk-grid>
+    <div class="uk-width-1-3@s">&nbsp;</div>
+    <div class="uk-width-1-3@s">
+      <label class="uk-form-label" for="CharityChoice">Charity Choice</label>
+      <select class="uk-select toh-input" required name="CharityChoice" id="CharityChoice">
+        <option value="0">
+          No Preference
+        </option>
+        <% Charities.forEach(function(charity) { %>
+          <option value="<%= charity.id %>">
+            <%= charity.Name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="uk-width-1-3@s">&nbsp;</div>
+    <div class="uk-width-1-1@s">
+      <label class="uk-form-label" for="saveCharityChoiceBtn">&nbsp;</label>
+      <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveCharityChoiceBtn" data-userid="<%= User.id %>">Support This Charity</button>
+    </div>
+  </form>
+</div>

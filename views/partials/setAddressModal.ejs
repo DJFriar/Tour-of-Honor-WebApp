@@ -1,0 +1,15 @@
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h4 class="toh-mb-18">Set Address</h4>
+  <form class="uk-grid-small uk-form-stacked uk-flex-center uk-text-center uk-child-width-1-1@s" uk-grid>
+    <div>
+      <label class="uk-form-label" for="newAddress">Enter Your Street Address:</label>
+      <input class="uk-input uk-width-1-3" type="text" name="newAddress" id="newAddress" placeholder="">
+    </div>
+    <div>
+      <label class="uk-form-label">&nbsp;</label>
+      <button class="uk-button uk-button-secondary uk-button-small button-rounded" id="cancelButton">Cancel</button>
+      <button class="uk-button uk-button-primary uk-button-small button-rounded" id="saveNewAddressBtn" data-userid="<%= User.id %>">Save Address</button>
+    </div>
+  </form>
+</div>

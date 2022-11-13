@@ -89,16 +89,22 @@ footer {
   margin-bottom: 12;
 }
 
-/* #memorial-editor h4 {
-  margin-top: 20px;
-} */
-
 #editMemorialInfo label {
   margin-top: 12px;
 }
 
 form {
   margin-bottom: 12px;
+}
+
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+  pointer-events: none !important;
+}
+
+a.disabled:hover {
+  text-decoration: none;
 }
 
 a.hidden-link:link,
@@ -198,16 +204,40 @@ a.hidden-link:visited {
   height: 80px
 }
 
+.toh-mb-0 {
+  margin-bottom: 0px;
+}
+
+.toh-mt-8 {
+  margin-top: 8px;
+}
+
+.toh-ml-8 {
+  margin-left: 8px;
+}
+
 .toh-mb-8 {
   margin-bottom: 8px;
 }
 
-.toh-mb-18 {
-  margin-bottom: 18px;
+.toh-mr-12 {
+  margin-right: 12px;
+}
+
+.toh-mb-12 {
+  margin-bottom: 12px;
 }
 
 .toh-mt-18 {
   margin-top: 18px;
+}
+
+.toh-mr-18 {
+  margin-right: 18px;
+}
+
+.toh-mb-18 {
+  margin-bottom: 18px;
 }
 
 .toh-mt-24 {
@@ -233,6 +263,13 @@ a.hidden-link:visited {
   margin: 15% auto;
   padding: 20px;
   width: 80%
+}
+
+.modal-content-mini {
+  background-color: #C0DFFD;
+  margin: 15% auto;
+  padding: 20px;
+  width: 30%
 }
 
 .close {
@@ -280,4 +317,47 @@ a.hidden-link:visited {
   font-weight: bold;
   margin-bottom: 0;
   text-transform: uppercase;
+}
+
+.toh-input {
+  border-radius: 8px;
+}
+
+.toh-inline-label {
+  display: inline !important;
+}
+
+.toh-flag-mockup {
+  width: 180px;
+  height: 120px;
+  padding: 4px 10px;
+  background-color: yellow;
+}
+
+.toh-flag-number {
+  color:#000;
+  font-weight: 600;
+  font-size: 4em;
+  margin-top: 14px;
+}
+
+.button-rounded {
+  border-radius: 8px;
+}
+
+.force-uppercase {
+  text-transform: uppercase;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.hiddenData {
+  color: #C0DFFD;
+}
+
+#registrationSwitcher {
+  display: flex;
+  justify-content: center;
 }

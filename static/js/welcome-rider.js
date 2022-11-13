@@ -5,6 +5,8 @@ $(document).ready(() => {
     console.log("New Rider Profile Update Button Clicked");
     var updateRider = {
       UserName: $("#UserName").val().trim(),
+      City: $("#City").val().trim(),
+      State: $("#State").val().trim(),
       ZipCode: $("#ZipCode").val().trim(),
       Password: $("#Password").val().trim(),
       PasswordConfirm: $("#PasswordConfirm").val().trim(),
@@ -23,6 +25,18 @@ $(document).ready(() => {
     // Make sure that zip code isn't blank.
     if (!updateRider.ZipCode) {
       alert("Zip Code is required.");
+      return;
+    }
+
+    // Make sure that city isn't blank.
+    if (!updateRider.City) {
+      alert("City is required.");
+      return;
+    }
+
+    // Make sure that state isn't blank.
+    if (!updateRider.State) {
+      alert("State is required.");
       return;
     }
 

@@ -1,0 +1,65 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <% if(activeUser) { %>
+    <%- include('../partials/topnavUser'); %>
+  <% } else { %>
+    <%- include('../partials/topnav'); %>
+  <% } %>
+  <main>
+    <h4>Rally Registration</h4>
+    <div class="uk-text-center toh-mt-24">
+      <ul id="registrationSwitcher" class="uk-subnav uk-subnav-pill" uk-switcher active="<%= OrderInfo.NextStepNum %>">
+        <li><a href="#" id="RegStep0">Rider Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep1">Bike Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep2">Passenger Info</a></li>
+        <li><a class="disabled" href="#" id="RegStep3">Charity Choice</a></li>
+        <li><a class="disabled" href="#" id="RegStep4">T-Shirts</a></li>
+        <li><a class="disabled" href="#" id="RegStep5">Payment</a></li>
+        <li><a class="disabled" href="#" id="RegStep6">Waiver</a></li>
+        <li><a class="disabled" href="#" id="RegStep7">Flag Number</a></li>
+        <li><a class="disabled" href="#" id="RegStep8">Summary</a></li>
+      </ul>
+
+      <ul class="uk-switcher uk-margin">
+        <li>
+          <%- include('../partials/regFlow/riderInfo'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/bikeInfo'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/passengerInfo'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/charityChoice'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/t-shirt'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/payment'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/waiver'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/flagNumber'); %>
+        </li>
+        <li>
+          <%- include('../partials/regFlow/summary'); %>
+        </li>
+      </ul>
+    </div>
+    <div class="hiddenData">
+      <span id="checkoutUrl" data-checkouturl="<%= OrderInfo.CheckoutURL %>"></span>
+      <span id="nextStepNum" data-nextstepnum="<%= OrderInfo.NextStepNum %>"></span>
+    </div>
+  </main>
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+  <script type="text/javascript" src="js/registration.js"></script>
+</body>

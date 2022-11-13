@@ -28,16 +28,16 @@ $(document).ready(() => {
     $.post("/api/v1/login", {
       Email: email,
       Password: password
-    })
-      .then((res) => {
-        if (res.isAdmin) {
-          window.location.replace("/admin");
-        } else {
-          window.location.replace("/memorials");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then((res) => {
+      if (res.isAdmin == 1) { 
+        window.location.replace("/admin"); 
+      } else if (res.isActive == 0) { 
+        window.location.replace("/registration"); 
+      } else { 
+        window.location.replace("/memorials"); 
+      }
+    }).catch(err => {
+      console.log(err);
+    });
   }
 });

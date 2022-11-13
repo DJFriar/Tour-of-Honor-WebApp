@@ -9,7 +9,7 @@
     <%- include('../../partials/topnav'); %>
   <% } %>
   <main>
-    <a href="/admin/memorial-editor" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Memorial Editor</button></a>
+    <a href="/admin/memorial-editor2" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Memorial Editor</button></a>
     <h4>MEMORIAL TEXT EDITOR</h4>
     <% if(NotificationText) { %>
       <%- include('../../partials/notice'); %>
@@ -63,7 +63,7 @@
                   <button class="uk-button uk-button-default" type="button">Actions</button>
                   <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
                     <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemTextBtn" data-uid="<%- memText.id %>"><i class="fal fa-edit fa-fw"></i> Edit Mem Text</span></button>
-                    <button class="uk-button uk-button-link" type="button"><span class="deleteMemTextBtn" data-uid="<%- memText.id %>"><i class="far fa-trash-alt fa-fw"></i> Delete Mem Text</span></button>
+                    <button class="uk-button uk-button-link" type="button"><span class="deleteMemTextBtn" data-uid="<%- memText.id %>"><i class="fal fa-trash-can fa-fw"></i> Delete Mem Text</span></button>
                   </div>
                 </div>
               </td>

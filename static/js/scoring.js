@@ -2,7 +2,7 @@ $(document).ready(function () {
   // Create the Pending Table
   var pendingTable = $('#PendingTable').DataTable({
     "order": [[ 0, "asc" ]],
-    "pageLength": 100,
+    "pageLength": 50,
     "columnDefs": [
       {
         "targets": [0],
@@ -45,26 +45,6 @@ $(document).ready(function () {
   .search(3)
   .draw()
   var heldTableData = heldTable.rows({order:'current', search:'applied'}).data();
-
-  // Create the Scored Table
-  var scoredTable = $('#ScoredTable').DataTable({
-    "order": [[ 1, "desc" ]],
-    "pageLength": 50,
-    "columnDefs": [
-      {
-        "targets": [0],
-        "visible": false,
-        "Searchable": false
-      },
-      {
-        "targets": [1],
-        "visible": false,
-        "Searchable": false
-      }
-    ]
-  });
-
-  var scoredTableData  = scoredTable.rows().data();
 
   // Force tables to be full width
   $('table#PendingTable').css('width', '100%');

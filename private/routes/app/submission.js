@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../../models");
 const { DateTime } = require("luxon");
+const sharp = require("sharp");
 const fileUpload = require("express-fileupload");
 const q = require("../../queries");
+const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
+const { logger } = require('../../../controllers/logger');
 
 // Fetch submissions for given user ID
 router.get('/byUser/:id', async (req,res) => {
@@ -27,8 +30,8 @@ router.post('/',
     const MemorialCode = req.body.MemorialCode;
     const currentTimestamp = DateTime.now().toMillis(); 
     const primaryFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-1.jpg`;
-    const optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
-
+    let optionalFilename = "OptionalImageNotProvided.png";
+    
     if (req.body.OtherRiders != "undefined" && req.body.OtherRiders != "") {
       GroupRiders = req.body.OtherRiders;
       GroupRiderArray = GroupRiders.split(',');
@@ -36,7 +39,7 @@ router.post('/',
     }
 
     if (!req.files) {
-      console.log("No files were uploaded");
+      logger.info("No files were uploaded");
       return res.status(400).send("No files were uploaded.");
     }
 
@@ -46,23 +49,28 @@ router.post('/',
     } else {
       primaryFile = images;
     }
-    const primaryPath = "static/uploads/" + primaryFilename;
-    primaryFile.mv(primaryPath, (err) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-    })
-    // Handle the optional image
-    if (images.length > 1) {
-      const secondaryFile = images[1];
-      const secondaryPath = "static/uploads/" + optionalFilename;
-      secondaryFile.mv(secondaryPath, (err) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-      })
+
+    try {
+      const primaryImageFileData = primaryFile.data;
+      shrinkImage(primaryFilename, primaryImageFileData);
+    } catch (err) {
+      logger.error("Error shrinking primary image: " + err)
+      return res.status(500).send(err);
     }
 
+    // Handle the optional image
+    if (images.length > 1) {
+      optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
+      try {
+        const optionalImageFileData = images[1].data;
+        shrinkImage(optionalFilename, optionalImageFileData);
+      } catch (err) {
+        logger.error("Error shrinking optional image: " + err)
+        return res.status(500).send(err);
+      }
+    }
+
+    // Save entry to the DB
     db.Submission.create({
       UserID: req.body.UserID,
       MemorialID: req.body.MemorialID,
@@ -70,9 +78,39 @@ router.post('/',
       OptionalImage: optionalFilename,
       RiderNotes: req.body.RiderNotes,
       OtherRiders: RiderArray.toString(),
+      Source: req.body.Source,
       Status: 0 // 0 = Pending Approval
     });
+
+    // Respond back to device that all is well
     res.send({result:"success"});
+
+    // FUNCTIONS
+    async function shrinkImage(fileName, file) {
+      try {
+        await sharp(file)
+          .resize(1440, 1440, {
+            fit: sharp.fit.inside,
+            withoutEnlargement: true
+          })
+          .withMetadata()
+          .toFormat("jpeg")
+          .jpeg()
+          .toBuffer()
+          .then(resizedImage => uploadToS3(fileName, resizedImage))
+      } catch (err) {
+        logger.error("shrinkImage failed. " + err)
+      }
+    }
+    
+    async function uploadToS3(fileName, file) {
+      try {
+        const s3result = await uploadRiderSubmittedImage(fileName, file);
+        logger.info(s3result);
+      } catch (err){
+        logger.error("S3 Upload Failed: " + err)
+      }
+    }
   }
 );
 

@@ -1,13 +1,35 @@
 $(document).ready(function() {
 
-  $("#input-primary").bind("change keyup", function () {      
-    if ($("#input-primary").val() != "") {
-      $(this).closest("form").find(":submit").removeAttr("disabled");
-      $("#buttonSpan").removeAttr("uk-tooltip");
-    } else {
-      $(this).closest("form").find(":submit").attr("disabled", "disabled");      
-    }
-  });
+  if ($("#MultiImage").val() == "0") {
+    $("#input-primary").bind("change keyup", function () {      
+      if ($("#input-primary").val() != "") {
+        $(this).closest("form").find(":submit").removeAttr("disabled");
+        $("#buttonSpan").removeAttr("uk-tooltip");
+      } else {
+        $(this).closest("form").find(":submit").attr("disabled", "disabled");      
+      }
+    });
+    $("#input-optional").prop("required", false);
+  }
+  
+  if ($("#MultiImage").val() == "1") {
+    $("#input-primary").bind("change keyup", function () {      
+      if ($("#input-primary").val() != "" && $("#input-optional").val() != "") {
+        $(this).closest("form").find(":submit").removeAttr("disabled");
+        $("#buttonSpan").removeAttr("uk-tooltip");
+      } else {
+        $(this).closest("form").find(":submit").attr("disabled", "disabled");      
+      }
+    });
+    $("#input-optional").bind("change keyup", function () {      
+      if ($("#input-optional").val() != "" && $("#input-primary").val() != "") {
+        $(this).closest("form").find(":submit").removeAttr("disabled");
+        $("#buttonSpan").removeAttr("uk-tooltip");
+      } else {
+        $(this).closest("form").find(":submit").attr("disabled", "disabled");      
+      }
+    });
+  }
 
   $("#isGroupSubmission").change(function() {
     if (this.checked) {
@@ -19,29 +41,28 @@ $(document).ready(function() {
     }
   });
 
-  let handlePrimaryPhoto = function (input, placeToInsertImagePreview) {
-    if (input.files) {
+  let handlePrimaryPhoto = function (primaryInput) {
+    if (primaryInput.files) {
       let reader = new FileReader();
       reader.onload = function (event) {
         $(".primaryImagePlaceholder")
           .attr("src", event.target.result)
-        // $(this).closest("form").find(":submit").removeAttr("disabled");  
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(primaryInput.files[0]);
     }
   };
   $("#input-primary").on("change", function () {
     handlePrimaryPhoto(this, "label#inputPrimaryLabel");
   });
 
-  let handleOptionalPhoto = function (input, placeToInsertImagePreview) {
-    if (input.files) {
+  let handleOptionalPhoto = function (optionalInput) {
+    if (optionalInput.files) {
       let reader = new FileReader();
       reader.onload = function (event) {
         $(".optionalImagePlaceholder")
           .attr("src", event.target.result)
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(optionalInput.files[0]);
     }
   };
   $("#input-optional").on("change", function () {

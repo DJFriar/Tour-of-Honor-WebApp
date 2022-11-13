@@ -3,6 +3,7 @@ $(document).ready(function () {
   selectedFilter = localStorage.getItem("categoryFilter");
   $("#selectFilterValue").text(selectedFilter);
 
+  // Validate Scorer Notes before allowing Rejection
   $("#scorerNotes").on("input", function () { 
     var scorerNotes = $("#scorerNotes").val().trim()
     if (scorerNotes.length >= 5) {
@@ -55,7 +56,6 @@ $(document).ready(function () {
     }).then(
       goToNextPendingSubmission(selectedFilter)
     );
-    
   })
 
   // Handle Reject Button
@@ -74,7 +74,19 @@ $(document).ready(function () {
     }).then(
       goToNextPendingSubmission(selectedFilter)
     );
-    
+  });
+
+  // Handle POTM Button
+  $(".potmButton").on("click", function() {
+    var subID = $(this).data("submissionid");
+    var potmInfo = {
+      SubmissionID: subID
+    };
+
+    $.ajax("/handle-potmSubmission", {
+      type: "PUT",
+      data: potmInfo
+    })
   });
 
   function goToNextPendingSubmission(category) {

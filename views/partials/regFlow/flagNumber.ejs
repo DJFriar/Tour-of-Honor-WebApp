@@ -1,0 +1,35 @@
+<div>
+  <% if (OrderInfo.PassUserID > 0) { %>
+    <div style="padding-left: 60px; padding-right: 60px;" uk-grid>
+      <div class="uk-width-1-2@s">
+        <%- include('../../partials/flagSelectionRider') %>
+      </div>
+      <div class="uk-width-1-2@s">
+        <%- include('../../partials/flagSelectionPassenger') %>
+      </div>
+    </div>
+    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+      <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
+      <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } else { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } %>
+    </div>
+
+  <% } else { %>
+    <%- include('../../partials/flagSelectionRider') %>
+    <div class="uk-width-1-1@s toh-mt-18" style="margin-top: 150px;">
+      <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
+      <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } else { %>
+        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-userid="<%= User.id %>">Continue to Summary</button>
+      <% } %>
+    </div>
+  <% } %>
+  <!-- This is the Choose New Flag Number modal -->
+  <div id="chooseFlagNumberModal" class="modal">
+    <%- include('../../partials/chooseFlagNumberModal'); %>
+  </div>
+</div>
