@@ -6,6 +6,7 @@ module.exports = {
     password: process.env.DBPASS,
     database: process.env.DATABASE,
     host: process.env.DBHOST,
+    port: process.env.DBPORT,
     dialect: "mysql"
   },
   Testing: {
@@ -13,6 +14,7 @@ module.exports = {
     password: process.env.DBPASS,
     database: process.env.DATABASE,
     host: process.env.DBHOST,
+    port: process.env.DBPORT,
     dialect: "mysql"
   },
   Production: {
@@ -20,6 +22,7 @@ module.exports = {
     password: process.env.DBPASS,
     database: process.env.DATABASE,
     host: process.env.DBHOST,
+    port: process.env.DBPORT,
     dialect: "mysql"
   }
 };
