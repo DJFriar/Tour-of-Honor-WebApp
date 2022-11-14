@@ -28,14 +28,8 @@ passport.use(
         if (!dbUser.validPassword(password)) {
           return done(null, false);
         }
-        // If none of the above are triggered, get modified User object
-        const userInfo = await q.queryUserInfo(email);
-        // return the userInfo
-        if (process.env.NODE_ENV === 'Development') {
-          console.log('==== User Info ====');
-          console.log(userInfo);
-        }
-        return done(null, userInfo);
+        // If none of the above are triggered, return the userInfo
+        return done(null, dbUser);
       });
     },
   ),
@@ -48,8 +42,13 @@ passport.serializeUser((user, cb) => {
   cb(null, user);
 });
 
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
+passport.deserializeUser(async (obj, cb) => {
+  const userInfo = await q.queryUserInfo(obj.Email);
+  if (process.env.NODE_ENV === 'Development') {
+    console.log('==== User Info ====');
+    console.log(userInfo[0]);
+  }
+  cb(null, userInfo[0]);
 });
 
 // Exporting our configured passport
