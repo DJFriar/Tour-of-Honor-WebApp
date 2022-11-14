@@ -1,5 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
-  const Charity = sequelize.define("Charity", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Charity = sequelize.define('Charity', {
     RallyYear: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -7,12 +8,12 @@ module.exports = function(sequelize, DataTypes) {
     },
     Name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     URL: {
       type: DataTypes.STRING,
-      allowNull: true
-    }
+      allowNull: true,
+    },
   });
 
   return Charity;

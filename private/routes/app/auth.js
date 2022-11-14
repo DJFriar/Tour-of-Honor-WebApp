@@ -9,7 +9,6 @@ router.post("/", async (req, res) => {
   const { flag, zipcode } = req.body;
   const User = await q.queryUserIDFromFlagNum(flag);
   const UserData = User[0];
-  console.log(UserData);
   if (!UserData || UserData.ZipCode !== zipcode) {
     console.log("==== auth response ====");
     console.log(User.FlagNumber);

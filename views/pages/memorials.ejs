@@ -3,74 +3,75 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <main>
-    <h4>Memorials</h4>
-    &nbsp;<br/>
-    <% if(NotificationText) { %>
-      <%- include('../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
     <% } %>
-    <div>
-      <div class="uk-align-center uk-text-center memorialFilterButtons">
-        <button class="uk-button uk-button-primary memorialFilterButton showAllMemorials">All</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showTOHMemorials">State Memorials</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton show911Memorials">9/11</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showCemeteryMemorials">Cemeteries</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showDBMemorials">Doughboys</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showGSFMemorials">Gold Star Family</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showHueyMemorials">Hueys</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showMadonnaMemorials">Madonna Trail</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showSOLMemorials">Statue of Liberty</button>
-        <button class="uk-button uk-button-secondary memorialFilterButton showK9Memorials">War Dogs/K9</button>
+    <main>
+      <h1>Memorials</h1>
+      &nbsp;<br/>
+      <% if(NotificationText) { %>
+        <%- include('../partials/notice'); %>
+      <% } %>
+      <div>
+        <div class="uk-align-center uk-text-center memorialFilterButtons">
+          <button class="uk-button uk-button-primary memorialFilterButton showAllMemorials">All</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showTOHMemorials">State Memorials</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton show911Memorials">9/11</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showCemeteryMemorials">Cemeteries</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showDBMemorials">Doughboys</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showGSFMemorials">Gold Star Family</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showHueyMemorials">Hueys</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showMadonnaMemorials">Madonna Trail</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showSOLMemorials">Statue of Liberty</button>
+          <button class="uk-button uk-button-secondary memorialFilterButton showK9Memorials">War Dogs/K9</button>
+        </div>
       </div>
-    </div>
-    <!-- <p class="toh-alert">Note that state memorials will not be visible until April 1, 2022 at 00:01 EST.</p> -->
-    <!-- #region Memorial Table -->
-    <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
-      <thead>
-        <tr>
-          <th>Code</th>
-          <th>Category</th>
-          <th>Name</th>
-          <th>City</th>
-          <th>State</th>
-          <th>Access</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% Memorials.forEach(function(memorial) { %>
+      <p class="toh-alert">Note that state memorials will not be visible until April 1, 2023 at 00:01 EST.</p>
+      <!-- #region Memorial Table -->
+      <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
+        <thead>
           <tr>
-            <td>
-              <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= memorial.Code %>"><%= memorial.Code %></a></span>
-            </td>
-            <td>
-              <%= memorial.CategoryName %>
-            </td>
-            <td>
-              <%= memorial.Name %>
-            </td>
-            <td>
-              <%= memorial.City %>
-            </td>
-            <td>
-              <%= memorial.State %>
-            </td>
-            <td>
-              <%= memorial.Access %>
-            </td>
+            <th>Code</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Access</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <!-- #endregion -->
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
-
+        </thead>
+        <tbody>
+          <% Memorials.forEach(function(memorial) { %>
+            <tr>
+              <td>
+                <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= memorial.Code %>"><%= memorial.Code %></a></span>
+              </td>
+              <td>
+                <%= memorial.CategoryName %>
+              </td>
+              <td>
+                <%= memorial.Name %>
+              </td>
+              <td>
+                <%= memorial.City %>
+              </td>
+              <td>
+                <%= memorial.State %>
+              </td>
+              <td>
+                <%= memorial.Access %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <!-- #endregion -->
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/memorials.js"></script>
 </body>

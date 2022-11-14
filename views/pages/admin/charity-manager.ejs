@@ -2,53 +2,55 @@
   <%- include('../../partials/head'); %>
 </head>
 <body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>Charity Manager<span class="uk-align-right"><button type="button" id="addNewCharityBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Charity</button></span></h4>
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
     <% } %>
-    <table class="uk-table uk-table-striped uk-table-small" id="charitiesTable">
-      <thead>
-        <tr>
-          <th>Charity Name</th>
-          <th>Charity URL</th>
-          <th>Rally Year</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% Charities.forEach(function(Charity) { %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Charity Manager<span class="uk-align-right"><button type="button" id="addNewCharityBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Charity</button></span></h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <table class="uk-table uk-table-striped uk-table-small" id="charitiesTable">
+        <thead>
           <tr>
-            <td>
-              <%= Charity.Name %>
-            </td>
-            <td>
-              <%= Charity.URL %>
-            </td>
-            <td>
-              <%= Charity.RallyYear %>
-            </td>
-            <td>
-              <span class="editCharityInfoBtn clickable" uk-tooltip="Edit Charity" data-charityid="<%- Charity.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
-              <span class="deleteCharityBtn clickable" uk-tooltip="Delete Charity" data-charityid="<%- Charity.id %>"><i class="fal fa-trash-can"></i></span>
-            </td>
+            <th>Charity Name</th>
+            <th>Charity URL</th>
+            <th>Rally Year</th>
+            <th>Actions</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <!-- This is the Add New Charity modal -->
-    <div id="charityInfoAddModal" class="modal">
-      <%- include('../../partials/charityAddModal'); %>
-    </div>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
+        </thead>
+        <tbody>
+          <% Charities.forEach(function(Charity) { %>
+            <tr>
+              <td>
+                <%= Charity.Name %>
+              </td>
+              <td>
+                <%= Charity.URL %>
+              </td>
+              <td>
+                <%= Charity.RallyYear %>
+              </td>
+              <td>
+                <span class="editCharityInfoBtn clickable" uk-tooltip="Edit Charity" data-charityid="<%- Charity.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
+                <span class="deleteCharityBtn clickable" uk-tooltip="Delete Charity" data-charityid="<%- Charity.id %>"><i class="fal fa-trash-can"></i></span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <!-- This is the Add New Charity modal -->
+      <div id="charityInfoAddModal" class="modal">
+        <%- include('../../partials/charityAddModal'); %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/charities.js"></script>
 </body>

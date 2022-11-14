@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <h1>Waiver Check</h1>
+      <input id="activeUser" type="hidden" value="<%= activeUser %>">
+      <input id="UserID" type="hidden" value="<%= UserID %>">
+      <% if(OrderInfo.OrderNumber > 0) { %>
+        <input id="OrderNumber" type="hidden" value="<%= OrderInfo.OrderNumber %>">
+        <h5>Order #<%= OrderInfo.OrderNumber %></h5>
+        <!-- <%= WaiverID.WaiverID %> -->
+        <div id="waiverFirstLoadText">
+          <p>Thank you for signing the waiver. This page will auto advance once we validate your waiver (generally within 15 seconds).</p>
+          <p id="countdownTimer1"></p>
+        </div>
+        <div id="waiverFirstFailureText" class="hide-me">
+          <p>We were unable to validate your waiver. Please wait 10 more seconds while we try again.</p>
+          <p id="countdownTimer2"></p>
+        </div>
+        <div id="waiverSecondFailureText" class="hide-me">
+          <p>We are still unable to validate your waiver. You will now be taken back to the waiver page to try singing again.</p>
+        </div>
+      <% } else { %>
+        <input id="OrderNumber" type="hidden" value="0">
+        <h5>Order Not Found</h5>
+        <p>No order was found. You will be redirected to the Registration page shortly.</p>
+      <% } %>
+      
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="/js/waiver-check.js"></script>
+</body>

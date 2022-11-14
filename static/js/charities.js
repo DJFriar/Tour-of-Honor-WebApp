@@ -16,6 +16,7 @@ $(document).ready(function() {
 
   // Handle Save New Charity Button
   $("#saveNewCharityBtn").on("click", function(e) {
+    e.preventDefault();
     var charityInfo = {
       RallyYear: 2023,
       CharityName: $("#CharityName").val().trim(),
@@ -26,7 +27,9 @@ $(document).ready(function() {
       type: "POST",
       data: charityInfo
     }).then(
-      function() { location.replace("/admin/charity-manager"); }
+      function() { 
+        location.reload(); 
+      }
     )
   })
 

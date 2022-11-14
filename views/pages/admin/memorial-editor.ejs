@@ -3,172 +3,173 @@
 </head>
 
 <body id="memorial-editor">
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>MEMORIAL EDITOR</h4>
-
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
     <% } %>
-    <div class="memorialBtnDiv" style="margin-top: 8px;">
-      <button type="button" class="uk-button uk-button-primary addMemorialButton">Add New Memorial</button>
-      <!-- <button type="button" class="uk-button uk-button-primary bulkAddMemorialButton">Bulk Add Memorials</button> -->
-    </div>
-    <!-- #region Bulk Upload New Memorials -->
-    <div class="hide-me" id="bulkAddMemorialFile">
-      <input type="file" id="csv-file" name="csv-file">
-    </div>
-    <!-- #endregion -->
-    <!-- #region Add New Memorial Form -->
-    <div class="hide-me" id="editMemorialInfo">
-      <h5>ADD NEW MEMORIAL</h5>
-      <form class="uk-grid-small uk-form-stacked" action="/api/v1/memorial" method="POST" uk-grid>
-        <div class="uk-width-1-2@s">
-          <label class="uk-form-label" for="MemorialCategory">Memorial Category*</label>
-          <select class="uk-select" required name="MemorialCategory" id="MemorialCategory">
-            <% categoryData.forEach(function(category) { %>
-              <option value="<%= category.id %>">
-                <%= category.Name %>
-              </option>
-            <% }) %>
-          </select>
-        </div>
-        <div class="uk-width-1-2@s">
-          <label class="uk-form-label" for="MemorialRegion">Memorial Region</label>
-          <input class="uk-input uk-width-1-1" type="text" name="MemorialRegion" id="MemorialRegion" placeholder="memorialRegion">
-        </div>
-        <div class="uk-width-1-5@s">
-          <label class="uk-form-label" for="MemorialCode">Memorial Code*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialCode" id="MemorialCode" placeholder="memorialCode">
-        </div>
-        <div class="uk-width-4-5@s">
-          <label class="uk-form-label" for="MemorialName">Memorial Name*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialName" id="MemorialName" placeholder="memorialName">
-        </div>
-        <div class="uk-width-1-1@s">
-          <label class="uk-form-label" for="MemorialAddress1">Address1</label>
-          <input class="uk-input uk-width-1-1" type="text" name="MemorialAddress1" placeholder="memorialAddress1">
-        </div>
-        <div class="uk-width-1-1@s">
-          <label class="uk-form-label" for="MemorialAddress2">Address2</label>
-          <input class="uk-input uk-width-1-1" type="text" name="MemorialAddress2" id="MemorialAddress2" placeholder="memorialAddress2">
-        </div>
-        <div class="uk-width-1-1@s">
-          <label class="uk-form-label" for="MemorialURL">URL</label>
-          <input class="uk-input uk-width-1-1" type="text" name="MemorialURL" id="MemorialURL" placeholder="memorialURL">
-        </div>
-        <div class="uk-width-1-3@s">
-          <label class="uk-form-label" for="MemorialCity">City*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialCity" id="MemorialCity" placeholder="memorialCity">
-        </div>
-        <div class="uk-width-1-6@s">
-          <label class="uk-form-label" for="MemorialState">State*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialState" id="MemorialState" placeholder="memorialState">
-        </div>
-        <div class="uk-width-1-4@s">
-          <label class="uk-form-label" for="MemorialLatitude">Latitude*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialLatitude" id="MemorialLatitude" placeholder="memorialLatitude">
-        </div>
-        <div class="uk-width-1-4@s">
-          <label class="uk-form-label" for="MemorialLongitude">Longitude*</label>
-          <input class="uk-input uk-width-1-1" required type="text" name="MemorialLongitude" id="MemorialLongitude" placeholder="memorialLongitude">
-        </div>
-        <div class="uk-width-1-6@s">
-          <label class="uk-form-label" for="MultiImage">Require Two Images</label>
-          <select class="uk-select" name="MultiImage" id="MultiImage">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
-          </select>
-        </div>
-        <div class="uk-width-1-3@s">
-          <label class="uk-form-label" for="SampleImage">Sample Image (2021PA3.jpg)
-            <input style="margin-left: 85;" class="uk-checkbox" type="checkbox" name="ImageNeeded" id="ImageNeeded"> Request Image?
-          </label>
-          <input class="uk-input uk-width-1-1" type="text" name="SampleImage" id="SampleImage" placeholder="sampleImage">
-        </div>
-        <div class="uk-width-1-6@s">
-          <label class="uk-form-label" for="MemorialAccess">Access</label>
-          <input class="uk-input uk-width-1-1" type="text" name="MemorialAccess" id="MemorialAccess" placeholder="24/7">
-        </div>
-        <div class="uk-width-1-6@s">
-          <label class="uk-form-label" for="MemorialRestrictions">Restrictions</label>
-          <select class="uk-select" name="MemorialRestrictions" id="MemorialRestrictions">
-            <% restrictionData.forEach(function(restriction) { %>
-              <option value="<%= restriction.id %>">
-                <%= restriction.Name %>
-              </option>
-            <% }) %>
-          </select>
-        </div>
-        
-        <div style="margin-top: 16px;">
-          <label class="uk-form-label">&nbsp;</label>
-          <button class="uk-button uk-button-secondary uk-button-small addMemorialButton">Cancel</button>
-          <button class="uk-button uk-button-primary uk-button-small" id="saveMemorial">Save</button>
-        </div>
-      </form>
-    </div>
-    <!-- #endregion -->
-    <!-- #region Memorial Table -->
-    <p style="margin-top: 0;">&nbsp;</p>
-    <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
-      <thead>
-        <tr>
-          <th>Memorial Code</th>
-          <th>Memorial Name</th>
-          <th>City</th>
-          <th>State</th>
-          <th>Access</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% MemorialData.forEach(function(memorial) { %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>MEMORIAL EDITOR</h1>
+
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <div class="memorialBtnDiv" style="margin-top: 8px;">
+        <button type="button" class="uk-button uk-button-primary addMemorialButton">Add New Memorial</button>
+        <!-- <button type="button" class="uk-button uk-button-primary bulkAddMemorialButton">Bulk Add Memorials</button> -->
+      </div>
+      <!-- #region Bulk Upload New Memorials -->
+      <div class="hide-me" id="bulkAddMemorialFile">
+        <input type="file" id="csv-file" name="csv-file">
+      </div>
+      <!-- #endregion -->
+      <!-- #region Add New Memorial Form -->
+      <div class="hide-me" id="editMemorialInfo">
+        <h5>ADD NEW MEMORIAL</h5>
+        <form class="uk-grid-small uk-form-stacked" action="/api/v1/memorial" method="POST" uk-grid>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="MemorialCategory">Memorial Category*</label>
+            <select class="uk-select" required name="MemorialCategory" id="MemorialCategory">
+              <% categoryData.forEach(function(category) { %>
+                <option value="<%= category.id %>">
+                  <%= category.Name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="MemorialRegion">Memorial Region</label>
+            <input class="uk-input uk-width-1-1" type="text" name="MemorialRegion" id="MemorialRegion" placeholder="memorialRegion">
+          </div>
+          <div class="uk-width-1-5@s">
+            <label class="uk-form-label" for="MemorialCode">Memorial Code*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialCode" id="MemorialCode" placeholder="memorialCode">
+          </div>
+          <div class="uk-width-4-5@s">
+            <label class="uk-form-label" for="MemorialName">Memorial Name*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialName" id="MemorialName" placeholder="memorialName">
+          </div>
+          <div class="uk-width-1-1@s">
+            <label class="uk-form-label" for="MemorialAddress1">Address1</label>
+            <input class="uk-input uk-width-1-1" type="text" name="MemorialAddress1" placeholder="memorialAddress1">
+          </div>
+          <div class="uk-width-1-1@s">
+            <label class="uk-form-label" for="MemorialAddress2">Address2</label>
+            <input class="uk-input uk-width-1-1" type="text" name="MemorialAddress2" id="MemorialAddress2" placeholder="memorialAddress2">
+          </div>
+          <div class="uk-width-1-1@s">
+            <label class="uk-form-label" for="MemorialURL">URL</label>
+            <input class="uk-input uk-width-1-1" type="text" name="MemorialURL" id="MemorialURL" placeholder="memorialURL">
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="MemorialCity">City*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialCity" id="MemorialCity" placeholder="memorialCity">
+          </div>
+          <div class="uk-width-1-6@s">
+            <label class="uk-form-label" for="MemorialState">State*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialState" id="MemorialState" placeholder="memorialState">
+          </div>
+          <div class="uk-width-1-4@s">
+            <label class="uk-form-label" for="MemorialLatitude">Latitude*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialLatitude" id="MemorialLatitude" placeholder="memorialLatitude">
+          </div>
+          <div class="uk-width-1-4@s">
+            <label class="uk-form-label" for="MemorialLongitude">Longitude*</label>
+            <input class="uk-input uk-width-1-1" required type="text" name="MemorialLongitude" id="MemorialLongitude" placeholder="memorialLongitude">
+          </div>
+          <div class="uk-width-1-6@s">
+            <label class="uk-form-label" for="MultiImage">Require Two Images</label>
+            <select class="uk-select" name="MultiImage" id="MultiImage">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="SampleImage">Sample Image (2021PA3.jpg)
+              <input style="margin-left: 85;" class="uk-checkbox" type="checkbox" name="ImageNeeded" id="ImageNeeded"> Request Image?
+            </label>
+            <input class="uk-input uk-width-1-1" type="text" name="SampleImage" id="SampleImage" placeholder="sampleImage">
+          </div>
+          <div class="uk-width-1-6@s">
+            <label class="uk-form-label" for="MemorialAccess">Access</label>
+            <input class="uk-input uk-width-1-1" type="text" name="MemorialAccess" id="MemorialAccess" placeholder="24/7">
+          </div>
+          <div class="uk-width-1-6@s">
+            <label class="uk-form-label" for="MemorialRestrictions">Restrictions</label>
+            <select class="uk-select" name="MemorialRestrictions" id="MemorialRestrictions">
+              <% restrictionData.forEach(function(restriction) { %>
+                <option value="<%= restriction.id %>">
+                  <%= restriction.Name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          
+          <div style="margin-top: 16px;">
+            <label class="uk-form-label">&nbsp;</label>
+            <button class="uk-button uk-button-secondary uk-button-small addMemorialButton">Cancel</button>
+            <button class="uk-button uk-button-primary uk-button-small" id="saveMemorial">Save</button>
+          </div>
+        </form>
+      </div>
+      <!-- #endregion -->
+      <!-- #region Memorial Table -->
+      <p style="margin-top: 0;">&nbsp;</p>
+      <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
+        <thead>
           <tr>
-            <td>
-              <%= memorial.Code %>
-            </td>
-            <td>
-              <%= memorial.Name %>
-            </td>
-            <td>
-              <%= memorial.City %>
-            </td>
-            <td>
-              <%= memorial.State %>
-            </td>
-            <td>
-              <%= memorial.Access %>
-            </td>
-            <td>
-              <div class="uk-inline">
-                <button class="uk-button uk-button-default" type="button">Actions</button>
-                <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
-                  <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Info</span></button>
-                  <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Text</span></a>
-                  <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-trash-can"></i> Delete Memorial</span></button>
-                </div>
-              </div>
-            </td>
+            <th>Memorial Code</th>
+            <th>Memorial Name</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Access</th>
+            <th>Actions</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <!-- #endregion -->
-    <!-- This is the Memorial Info edit modal -->
-    <div id="memorialInfoEditModal" class="modal">
-      <%- include('../../partials/memorialInfoEditModal'); %>
-    </div>
-  </main>
+        </thead>
+        <tbody>
+          <% MemorialData.forEach(function(memorial) { %>
+            <tr>
+              <td>
+                <%= memorial.Code %>
+              </td>
+              <td>
+                <%= memorial.Name %>
+              </td>
+              <td>
+                <%= memorial.City %>
+              </td>
+              <td>
+                <%= memorial.State %>
+              </td>
+              <td>
+                <%= memorial.Access %>
+              </td>
+              <td>
+                <div class="uk-inline">
+                  <button class="uk-button uk-button-default" type="button">Actions</button>
+                  <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
+                    <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Info</span></button>
+                    <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Text</span></a>
+                    <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-trash-can"></i> Delete Memorial</span></button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <!-- #endregion -->
+      <!-- This is the Memorial Info edit modal -->
+      <div id="memorialInfoEditModal" class="modal">
+        <%- include('../../partials/memorialInfoEditModal'); %>
+      </div>
+    </main>
 
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
-
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/memorial-editor.js"></script>
 </body>

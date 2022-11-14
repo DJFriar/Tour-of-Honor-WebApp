@@ -1,11 +1,11 @@
 <div class="modal-content">
   <span class="close">&times;</span>
-  <h4>Edit Memorial Text for <%= MemorialData[0].Code %></h4>
-  <h6 style="margin: 0px; margin-bottom: 4px;"><%= MemorialData[0].Name %> - <%= MemorialData[0].City %>, <%= MemorialData[0].State %></h6>
+  <h3>Edit Memorial Text for <%= MemorialData[0].Code %></h3>
+  <h4 class="toh-mb-8"><%= MemorialData[0].Name %> in <%= MemorialData[0].City %>, <%= MemorialData[0].State %></h4>
   <form class="uk-grid-small uk-form-stacked" uk-grid>
     <input class="uk-input" id="EditMemorialID" type="hidden" placeholder="" value="<%= MemorialData[0].id %>">
     <input class="uk-input" id="EditMemorialTextID" type="hidden" placeholder="">
-    <div class="uk-width-1-1@s" style="margin: 8px 0;">
+    <div class="uk-width-1-1@s toh-mb-8">
       <label class="uk-form-label" for="MemorialTextHeading">Memorial Heading</label>
       <input class="uk-input uk-width-1-1" type="text" name="MemorialTextHeading" id="MemorialTextHeading" placeholder="">
     </div>
@@ -13,10 +13,12 @@
       <label class="uk-form-label" for="MemorialText">Memorial Text</label>
       <textarea class="uk-textarea" rows="5" name="MemorialText" id="MemorialText" placeholder=""></textarea>
     </div>
-    <div>
-      <label class="uk-form-label">&nbsp;</label>
-      <button class="uk-button uk-button-secondary uk-button-small" id="cancelButton">Cancel</button>
-      <button class="uk-button uk-button-primary uk-button-small" id="saveMemTextChangesBtn">Save</button>
+    <div class="uk-width-1-1@s">
+      <div style="float: right;">
+        <label class="uk-form-label">&nbsp;</label>
+        <button class="uk-button uk-button-secondary button-rounded cancelButton" id="cancelEditMemorialButton">Cancel</button>
+        <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveMemTextChangesBtn">Save</button>
+      </div>
     </div>
   </form>
 </div>

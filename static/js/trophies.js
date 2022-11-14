@@ -1,20 +1,20 @@
 $(document).ready(() => {
   // Handle Trophies
-  $("#awardTrophy").on("click", function() {
-    var regionID = $("#TrophyRegion").val();
-    var trophyPlace = $("#TrophyPlace").val();
-    var flagNumber = $("#FlagNum").val();
-    var trophyData = {
+  $('#awardTrophy').on('click', () => {
+    const regionID = $('#TrophyRegion').val();
+    const trophyPlace = $('#TrophyPlace').val();
+    const flagNumber = $('#FlagNumber').val();
+    const trophyData = {
       RegionID: regionID,
       TrophyPlace: trophyPlace,
       FlagNumber: flagNumber,
     };
 
-    $.ajax("/api/v1/award-trophy", {
-      type: "PUT",
-      data: trophyData
-    }).then(
-      function() { location.reload(); }
-    );
+    $.ajax('/api/v1/award-trophy', {
+      type: 'PUT',
+      data: trophyData,
+    }).then(() => {
+      location.reload();
+    });
   });
-})
+});

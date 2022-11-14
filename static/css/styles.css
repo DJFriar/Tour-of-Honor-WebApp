@@ -1,23 +1,35 @@
+  /* following style will be applied to every element */
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
   background-color: #C0DFFD;
 }
 
-.container {
-  padding: 12px;
-}
-
-.admin-container {
-  padding: 8px 48px;
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
-  padding: 10px;
+  flex-grow: 1;
+  padding: 0 10px;
+}
+
+footer {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+  font-size: 0.75em;
 }
 
 @media (min-width: 960px) {
   main {
-    padding: 20px;
+    flex-grow: 1;
+    padding: 0 20px;
   }
 }
 
@@ -30,38 +42,33 @@ hr {
   display: none !important;
 }
 
-h2 {
-  font-weight: 600;
-  font-size: 3em;
-  margin: 0px;
+h1,h2,h3,h4,h5,h6 {
+  /* font-family: 'Raleway', Helvetica, Arial, sans-serif; */
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
 }
 
-h3 {
+h1 {
   font-weight: 600;
   font-size: 2.5em;
   margin: 0px;
 }
 
-@media (max-width: 959px) {
-  h3 {
-    font-size: 1.75em;
-    /* color: #fff; */
-    margin: 0px;
-  }
-}
-
-h4 {
-  /* font-family: 'Stardos Stencil', sans-serif; */
+h2 {
   font-weight: 600;
   font-size: 2em;
   margin: 0px;
 }
 
-@media (max-width: 959px) {
-  h4 {
-    font-size: 1.5em;
-    margin: 0px;
-  }
+h3 {
+  font-weight: 600;
+  font-size: 1.5em;
+  margin: 0px;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 1.25em;
+  margin: 0px;
 }
 
 h5 {
@@ -74,23 +81,6 @@ h6 {
   font-weight: 600;
   font-size: 1.25em;
   margin: 12px 0px;
-}
-
-footer {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.75em;
-}
-
-.memorialData h4 {
-  margin-bottom: 12px;
-}
-
-#memorialInfo {
-  margin-bottom: 12;
-}
-
-#editMemorialInfo label {
-  margin-top: 12px;
 }
 
 form {
@@ -110,6 +100,26 @@ a.disabled:hover {
 a.hidden-link:link,
 a.hidden-link:visited {
   color: #666;
+}
+
+.container {
+  padding: 12px;
+}
+
+.admin-container {
+  padding: 8px 48px;
+}
+
+.memorialData h4 {
+  margin-bottom: 12px;
+}
+
+#memorialInfo {
+  margin-bottom: 12;
+}
+
+#editMemorialInfo label {
+  margin-top: 12px;
 }
 
 .fa-clipboard-check {
@@ -145,6 +155,15 @@ a.hidden-link:visited {
   border: black 1px solid;
   font-weight: 600;
   font-size: 1.05em;
+}
+
+.toh-rider-flag-sm {
+  /* padding: 2px 4px; */
+  background-color: yellow;
+  color:#000;
+  border: black 1px solid;
+  font-weight: 600;
+  font-size: .80em;
 }
 
 .toh-id-flag {
@@ -200,8 +219,32 @@ a.hidden-link:visited {
   margin-bottom: 18px;
 }
 
+.labelValidationStatusFailed {
+  background-color: #f0506e;
+  border-radius: 8px;
+  color: #fff;
+  float: right;
+  padding: 2px 8px;
+}
+
+.labelValidationStatusSuccess {
+  background-color: #32d296;
+  border-radius: 8px;
+  color: #fff;
+  float: right;
+  padding: 2px 8px;
+}
+
+.noOrderFoundText {
+  font-weight: bold;
+}
+
 .toh-logo {
   height: 80px
+}
+
+.toh-m-0 {
+  margin: 0;
 }
 
 .toh-mb-0 {
@@ -222,6 +265,10 @@ a.hidden-link:visited {
 
 .toh-mr-12 {
   margin-right: 12px;
+}
+
+.toh-mt-12 {
+  margin-top: 12px;
 }
 
 .toh-mb-12 {
@@ -297,7 +344,7 @@ a.hidden-link:visited {
   text-decoration: none !important;
 }
 
-.editUserButton, .sendProfileEmailButton {
+.editUserButton, .sendProfileEmailButton , .sendSMSTextButton {
   cursor: pointer;
   font-size: 1em;
 }
@@ -345,6 +392,12 @@ a.hidden-link:visited {
   border-radius: 8px;
 }
 
+.toh-button-success {
+  background-color: #32d296;
+  border: 1px solid transparent;
+  color: #fff;
+}
+
 .force-uppercase {
   text-transform: uppercase;
 }
@@ -360,4 +413,59 @@ a.hidden-link:visited {
 #registrationSwitcher {
   display: flex;
   justify-content: center;
+}
+
+.forceOrderUpdateText {
+  font-size: .9em;
+}
+
+.registrationTitleText {
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.3em;
+  color: #0000009E;
+}
+
+.registrationSubtitleText {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
+}
+
+.characterCount {
+  float: right;
+}
+
+.spinnerBox {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: black;
+  opacity: 0.7;
+}
+
+.spinner {
+  background-color: transparent;
+  position: fixed;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  left: 50%;
+  height: 200px;
+  width: 200px;
+}
+
+.dataValueBold {
+  font-weight: bold;
+}
+
+.toh-changelog > ul {
+  margin-bottom: 12px;
+}
+
+.uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+
 }

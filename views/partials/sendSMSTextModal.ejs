@@ -1,0 +1,24 @@
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <h3>Send Text Message to <span id="TextName"></span></h3>
+  <form class="uk-grid-small uk-form-stacked toh-mt-12" uk-grid>
+    <input class="uk-input" id="TextUserID" type="hidden" placeholder="">
+    <input class="uk-input" id="TextCellNumber" type="hidden" placeholder="">
+    <div class="uk-width-1-1@s">
+      <label class="uk-form-label" for="textMessageContent">Message to Send</label>
+      <textarea class="uk-textarea toh-input" id="textMessageContent" rows="4" maxlength="320" value="textMessageContent"></textarea>
+      <span class="characterCount">Characters remaining: 0</span>
+    </div>
+    <div class="uk-width-1-3@s">
+      &nbsp;
+    </div>
+    <div class="uk-width-1-6@s">
+      <label class="uk-form-label" for="cancelButton">&nbsp;</label>
+      <button class="uk-button uk-button-secondary button-rounded cancelButton" id="cancelChangesButton" type="button">Cancel</button>
+    </div>
+    <div class="uk-width-1-6@s">
+      <label class="uk-form-label" for="sendTextMessageButton">&nbsp;</label>
+      <button class="uk-button uk-button-primary button-rounded" id="sendTextMessageButton" type="button">Save</button>
+    </div>
+  </form>
+</div>

@@ -1,5 +1,5 @@
-<div>
-  <h4 class="toh-mb-18">Passenger Info</h4>
+<div class="uk-container-small uk-margin-auto">
+  <h2 class="toh-mb-18">Passenger Info</h2>
   <div class="toh-mb-18">
     <p>Do you want to register a passenger at this time and receive the discounted rate?</p>
     <button type="button" id="registerPassengerNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, thank you</button>
@@ -30,24 +30,38 @@
     </div>
   </div>
   <div id="passengerInfoForm" class="toh-mb-18 hide-me" style="margin: 0px 60px">
-    <form class="uk-grid-small uk-form-stacked" uk-grid>
+    <p>Please enter your passenger's information below. Note they need their own unique email.</p>
+    <form class="signup uk-grid-small uk-form-stacked" id="passengerSignup" uk-grid>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerFirstNameForm">First Name</label>
         <input class="uk-input toh-input" required id="PassengerFirstNameForm" type="text" placeholder="Firstname">
+        <span>&nbsp;</span>
       </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerLastNameForm">Last Name</label>
         <input class="uk-input toh-input" required id="PassengerLastNameForm" type="text" placeholder="Lastname">
-      </div>
-      <div class="uk-width-1-2@s">
-        <label class="uk-form-label" for="PassengerUserNameForm">Username</label>
-        <input class="uk-input toh-input" required id="PassengerUserNameForm" type="text" placeholder="Username">
+        <span>&nbsp;</span>
       </div>
       <div class="uk-width-1-2@s">
         <label class="uk-form-label" for="PassengerEmailForm">Email</label>
-        <input class="uk-input toh-input" required id="PassengerEmailForm" type="email" placeholder="someone@domain.com">
+        <input class="uk-input toh-input" required id="PassengerEmailForm" type="email" placeholder="someone@domain.com" autocomplete="username">
+        <span>&nbsp;</span>
       </div>
-            
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerEmailFormConfirm">Confirm Email</label>
+        <input class="uk-input toh-input" required id="PassengerEmailFormConfirm" type="email" placeholder="someone@domain.com" autocomplete="username">
+        <span class="labelValidationStatusFailed hide-me" id="emailValidationStatus"></span>
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerPasswordForm">Password</label>
+        <input class="uk-input toh-input" required id="PassengerPasswordForm" type="password" placeholder="************" autocomplete="new-password">
+        <span>&nbsp;</span>
+      </div>
+      <div class="uk-width-1-2@s">
+        <label class="uk-form-label" for="PassengerPasswordConfirmForm">Confirm Password</label>
+        <input class="uk-input toh-input" required id="PassengerPasswordConfirmForm" type="password" placeholder="************" autocomplete="new-password">
+        <span class="labelValidationStatusFailed hide-me" id="passwordValidationStatus"></span>
+      </div>
       <div class="uk-width-1-1@s uk-text-center">
         <label class="uk-form-label" for="savePassengerInfo">&nbsp;</label>
         <button type="button" id="savePassengerInfo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Save Passenger Info</button>

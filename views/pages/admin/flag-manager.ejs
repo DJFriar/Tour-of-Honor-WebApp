@@ -1,0 +1,33 @@
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Flag Manager</h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <div>
+        <p>This page is for various flag related tools</p>
+        <div>
+          <p>Flag Number Lookup</p>
+          <label class="uk-form-label" for="FlagNumberLookup">Flag Number</label>
+          <input class="uk-input toh-input" required id="FlagNumberLookup" type="text" maxlength="4" placeholder="####">
+          <button class="uk-button-primary button-rounded">Lookup Flag</button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="/js/flag-manager.js"></script>
+</body>

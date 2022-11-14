@@ -3,122 +3,123 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>MEMORIAL METADATA</h4>
-    <div class="admin-container">
-      <ul uk-tab>
-        <li><a href="#">Memorial Data</a></li>
-        <li><a href="#">Restrictions</a></li>
-        <li><a href="#">Categories</a></li>
-      </ul>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>MEMORIAL METADATA</h1>
+      <div class="admin-container">
+        <ul uk-tab>
+          <li><a href="#">Memorial Data</a></li>
+          <li><a href="#">Restrictions</a></li>
+          <li><a href="#">Categories</a></li>
+        </ul>
 
-      <ul class="uk-switcher uk-margin">
-        <!-- Memorial Data Tab -->
-        <li>
-          <h5>MEMORIAL DATA</h5>
-          <div class="memorialDataBtnDiv" style="margin: 8px;">
-            <button type="button" class="uk-button uk-button-primary addMemorialDataButton">Add Memorial Data</button>
-          </div>
-          <table class="uk-table uk-table-striped uk-table-small" id="memorialMetadataTable">
-            <thead>
-              <tr>
-                <th>Memorial Code</th>
-                <th>Heading</th>
-                <th>Text</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% memorialData.forEach(function(memorial) { %>
+        <ul class="uk-switcher uk-margin">
+          <!-- Memorial Data Tab -->
+          <li>
+            <h5>MEMORIAL DATA</h5>
+            <div class="memorialDataBtnDiv" style="margin: 8px;">
+              <button type="button" class="uk-button uk-button-primary addMemorialDataButton">Add Memorial Data</button>
+            </div>
+            <table class="uk-table uk-table-striped uk-table-small" id="memorialMetadataTable">
+              <thead>
                 <tr>
-                  <td>
-                    <%= memorial.Memorial_ID %>
-                  </td>
-                  <td>
-                    <%= memorial.Heading %>
-                  </td>
-                  <td>
-                    <%= memorial.Text %>
-                  </td>
-                  <td>
-                    <span class="deleteBonusButton" data-uid="<%- memorialData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
-                    <span class="editBonusButton" data-uid="<%- memorialData.ID %>"><i class="fal fa-edit"></i></span>
-                  </td>
+                  <th>Memorial Code</th>
+                  <th>Heading</th>
+                  <th>Text</th>
+                  <th>Actions</th>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-        <!-- Restrictions Tab -->
-        <li>
-          <h5>RESTRICTIONS</h5>
-          <table class="uk-table uk-table-striped uk-table-small" id="restrictionsTable">
-            <thead>
-              <tr>
-                <th>Restriction</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% restrictionData.forEach(function(restriction) { %>
+              </thead>
+              <tbody>
+                <% memorialData.forEach(function(memorial) { %>
+                  <tr>
+                    <td>
+                      <%= memorial.Memorial_ID %>
+                    </td>
+                    <td>
+                      <%= memorial.Heading %>
+                    </td>
+                    <td>
+                      <%= memorial.Text %>
+                    </td>
+                    <td>
+                      <span class="deleteBonusButton" data-uid="<%- memorialData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                      <span class="editBonusButton" data-uid="<%- memorialData.ID %>"><i class="fal fa-edit"></i></span>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
+          <!-- Restrictions Tab -->
+          <li>
+            <h5>RESTRICTIONS</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="restrictionsTable">
+              <thead>
                 <tr>
-                  <td>
-                    <%= restriction.Name %>
-                  </td>
-                  <td>
-                    <span class="deleteBonusButton" data-uid="<%- restrictionData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
-                    <span class="editBonusButton" data-uid="<%- restrictionData.ID %>"><i class="fal fa-edit"></i></span>
-                  </td>
+                  <th>Restriction</th>
+                  <th>Actions</th>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-        <!-- Categories Tab -->
-        <li>
-          <h5>CATEGORIES</h5>
-          <table class="uk-table uk-table-striped uk-table-small" id="categoryTable">
-            <thead>
-              <tr>
-                <th>Category Name</th>
-                <th>Short Code</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% categoryData.forEach(function(category) { %>
+              </thead>
+              <tbody>
+                <% restrictionData.forEach(function(restriction) { %>
+                  <tr>
+                    <td>
+                      <%= restriction.Name %>
+                    </td>
+                    <td>
+                      <span class="deleteBonusButton" data-uid="<%- restrictionData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                      <span class="editBonusButton" data-uid="<%- restrictionData.ID %>"><i class="fal fa-edit"></i></span>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
+          <!-- Categories Tab -->
+          <li>
+            <h5>CATEGORIES</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="categoryTable">
+              <thead>
                 <tr>
-                  <td>
-                    <%= category.Name %>
-                  </td>
-                  <td>
-                    <%= category.ShortCode %>
-                  </td>
-                  <td>
-                    <span class="deleteBonusButton" data-uid="<%- categoryData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
-                    <span class="editBonusButton" data-uid="<%- categoryData.ID %>"><i class="fal fa-edit"></i></span>
-                  </td>
+                  <th>Category Name</th>
+                  <th>Short Code</th>
+                  <th>Actions</th>
                 </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </li>
-      </ul>
-    </div>
-    <!-- This is the memorial edit modal -->
-    <div id="memorialTextEditModal" class="modal">
-      <%- include('../../partials/memorialTextEditModal'); %>
-    </div>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
-
+              </thead>
+              <tbody>
+                <% categoryData.forEach(function(category) { %>
+                  <tr>
+                    <td>
+                      <%= category.Name %>
+                    </td>
+                    <td>
+                      <%= category.ShortCode %>
+                    </td>
+                    <td>
+                      <span class="deleteBonusButton" data-uid="<%- categoryData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                      <span class="editBonusButton" data-uid="<%- categoryData.ID %>"><i class="fal fa-edit"></i></span>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </div>
+      <!-- This is the memorial edit modal -->
+      <div id="memorialTextEditModal" class="modal">
+        <%- include('../../partials/memorialTextEditModal'); %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/memorial-metadata.js"></script>
 </body>

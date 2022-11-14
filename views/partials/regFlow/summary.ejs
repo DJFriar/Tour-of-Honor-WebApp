@@ -1,33 +1,34 @@
 <div>
-  <h4 class="toh-mb-18">Summary</h4>
-  <div class="uk-align-center uk-text-center">
+  <h2>Registration Complete</h2>
+  <div class="toh-mt-24">
     <p>
-      Thank you for your support! Below is a summary of your order. <br />
-      If for some reason you see an error or need to make a change, please send an email to <a href="mailto:orders@tourofhonor.com">orders@tourofhonor.com</a>
+      Thank you for your support! Below is a summary of your order. If you see an error or need to make a change, please send an email to <a href="mailto:dave.brooks@tourofhonor.com">orders@tourofhonor.com</a>
     </p>
-    <div uk-flex>
-      <table class="uk-flex-center">
-        <tr>
-          <td>Rally Year:</td> 
-          <td><%= OrderInfo.RallyYear %></td>
-        </tr>
-        <tr>
-          <td>Order Number:</td> 
-          <td><%= OrderInfo.OrderNumber %></td>
-        </tr>
-        <tr>
-          <td>Rider Shirt:</td> 
-          <td><%= OrderInfo.ShirtSize %>&nbsp;<%= OrderInfo.ShirtStyle %></td>
-        </tr>
-        <tr>
-          <td>Passenger:</td> 
-          <td><%= OrderInfo.PassUserID %></td>
-        </tr>
-        <tr>
-          <td>Charity Chosen:</td> 
-          <td><%= OrderInfo.CharityChosen %></td>
-        </tr>
-      </table>
+    <p>
+      Your order number is <span class="dataValueBold"><%= OrderInfo.OrderNumber %></span>. 
+      You registered for the <span class="dataValueBold"><%= OrderInfo.RallyYear %></span> 
+      Tour of Honor as a <span class="dataValueBold"><% if (OrderInfo.RequestedPassFlagNumber) { %> solo rider<% } else { %> rider & passenger<% } %></span> 
+      and your flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedRiderFlagNumber %></span>. 
+      This order includes a <span class="dataValueBold"><%= OrderInfo.ShirtSize %> <%= OrderInfo.ShirtStyle %></span>.
+    </p>
+    <h5>Additional Items</h5>
+    <p>
+      If you wish to order additional shirts, you can order them by clicking View Product buttons below. If you order before February 1st they will come with your registration packet. For other items in the Tour 
+      of Honor store, you can check them out <a href="https://shop.tourofhonor.com" target="_blank">here</a>.
+    </p>
+    <div class="uk-flex-center toh-mt-18" uk-grid>
+      <div class="uk-width-1-4@s">
+        <%- include('../buyButtons/additionalShirts') %>
+      </div>
+      <div class="uk-width-1-4@s">
+        <%- include('../buyButtons/rideToMeet') %>
+      </div>
+      <div class="uk-width-1-4@s">
+        <%- include('../buyButtons/additionalCharity') %>
+      </div>
+      <div class="uk-width-1-4@s">
+        <%- include('../buyButtons/customPokerChips') %>
+      </div>
     </div>
   </div>
 </div>

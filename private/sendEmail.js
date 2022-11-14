@@ -1,5 +1,14 @@
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
+const { logger } = require('../controllers/logger');
 
+/**
+ *
+ * Sends an email to the specified recipient.
+ *
+ * @param {string} email Email address to send to
+ * @param {string} subject Subject of email
+ * @param {string} text Body of email
+ */
 const sendEmail = async (email, subject, text) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -16,13 +25,12 @@ const sendEmail = async (email, subject, text) => {
       from: { name: 'TOH Scoring Portal', address: process.env.EMAIL_USERNAME },
       to: email,
       bcc: 'scoringportal@tourofhonor.com',
-      subject: subject,
+      subject,
       html: text,
     });
-
-    console.log("Email sent successfully");
-  } catch(error) {
-    console.log(error, "email not sent");
+    logger.info('Email sent successfully', { calledFrom: 'sendEmail.js' });
+  } catch (error) {
+    logger.error(error, 'email not sent');
   }
 };
 

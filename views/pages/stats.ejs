@@ -3,42 +3,44 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <h4>Stats</h4>
-  <% if(NotificationText) { %>
-    <%- include('../partials/notice'); %>
-  <% } %>
-  <main>
-    <div>
-      <h5>Total Memorials Earned</h5>
-      <table class="uk-table uk-table-striped uk-table-small" id="riderStats">
-        <thead>
-          <tr>
-            <th>Rider</th>
-            <th>Earned Memorials</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% totalEarnedByRider.forEach(function(riderStat) { %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <h1>Stats</h1>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <div>
+        <h5>Total Memorials Earned</h5>
+        <table class="uk-table uk-table-striped uk-table-small" id="riderStats">
+          <thead>
             <tr>
-              <td>
-                <%= riderStat.RiderName %>
-              </td>
-              <td>
-                <%= riderStat.TotalEarnedMemorials %>
-              </td>
+              <th>Rider</th>
+              <th>Earned Memorials</th>
             </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+          </thead>
+          <tbody>
+            <% totalEarnedByRider.forEach(function(riderStat) { %>
+              <tr>
+                <td>
+                  <%= riderStat.RiderName %>
+                </td>
+                <td>
+                  <%= riderStat.TotalEarnedMemorials %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="js/stats.js"></script>
 </body>

@@ -1,29 +1,22 @@
-module.exports = function(sequelize, DataTypes) {
-  const Bike = sequelize.define("Bike", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Bike = sequelize.define('Bike', {
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    BikeName: {
-      type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     Year: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     Make: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     Model: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    Color: {
-      type: DataTypes.STRING,
-      allowNull: true
-    }
   });
 
   return Bike;

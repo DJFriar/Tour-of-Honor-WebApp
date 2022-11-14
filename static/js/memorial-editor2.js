@@ -117,7 +117,7 @@ $(document).ready(function() {
   })
 
   // Handle Dialog Cancel Button
-  $("#cancelButton").on("click", function() {
+  $(".cancelButton").on("click", function() {
     $(".modal").css("display","none");
   })
 

@@ -3,22 +3,24 @@
 </head>
 
 <body>
-  <% if(activeUser) { %>
-    <%- include('../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../partials/topnav'); %>
-  <% } %>
-  <h4>Uh Oh!</h4>
-  <% if(NotificationText) { %>
-    <%- include('../partials/notice'); %>
-  <% } %>
-  <main>
-    <div>
-      <p>An error has been encountered. Please try your action again. If you end up here again, please report this error.</p>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <h1>Uh Oh!</h1>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <div>
+        <p>An error has been encountered. Please try your action again. If you end up here again, please report this error.</p>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="js/stats.js"></script>
 </body>

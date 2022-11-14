@@ -2,42 +2,44 @@
   <%- include('../../partials/head'); %>
 </head>
 <body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>Alternate Entry Tool</h4>
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
     <% } %>
-    <p>This tool is used to grant credit for visiting a memorial to a ride when they submit proof via email or snail mail.</p>
-    <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-      <div class="uk-width-1-4@s">
-        <label class="uk-form-label" for="MemorialCode">Memorial Code</label>
-        <input required class="uk-input toh-input" id="MemorialCode" type="text" placeholder="SL007">
-      </div>
-      <div class="uk-width-1-4@s">
-        <label class="uk-form-label" for="FlagNum">Flag Number</label>
-        <input required class="uk-input toh-input" id="FlagNum" type="number" placeholder="###">
-      </div>
-      <!-- <div class="uk-width-1-4@s">
-        <label class="uk-form-label" for="Source">Submission Source</label>
-        <select required class="uk-select" name="Source" id="Source">
-          <option value="5">Email</option>
-          <option value="6">Snail Mail</option>
-        </select>
-      </div> -->
-      <div class="uk-width-1-4@s ">
-        <label class="uk-form-label" for="markMemorialEarned">&nbsp;</label>
-        <button type="button" id="markMemorialEarned" class="uk-button uk-button-primary button-rounded">Mark Memorial Earned</button>
-      </div>
-    </form>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Alternate Entry Tool</h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <p>This tool is used to grant credit for visiting a memorial to a ride when they submit proof via email or snail mail.</p>
+      <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+        <div class="uk-width-1-4@s">
+          <label class="uk-form-label" for="MemorialCode">Memorial Code</label>
+          <input required class="uk-input toh-input" id="MemorialCode" type="text" placeholder="SL007">
+        </div>
+        <div class="uk-width-1-4@s">
+          <label class="uk-form-label" for="FlagNumber">Flag Number</label>
+          <input required class="uk-input toh-input" id="FlagNumber" type="number" placeholder="###">
+        </div>
+        <!-- <div class="uk-width-1-4@s">
+          <label class="uk-form-label" for="Source">Submission Source</label>
+          <select required class="uk-select" name="Source" id="Source">
+            <option value="5">Email</option>
+            <option value="6">Snail Mail</option>
+          </select>
+        </div> -->
+        <div class="uk-width-1-4@s ">
+          <label class="uk-form-label" for="markMemorialEarned">&nbsp;</label>
+          <button type="button" id="markMemorialEarned" class="uk-button uk-button-primary button-rounded">Mark Memorial Earned</button>
+        </div>
+      </form>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/alt-entry.js"></script>
 </body>

@@ -1,0 +1,37 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <h1>Frequently Asked Questions</h1>
+      <div class="uk-container uk-align-center">
+        <% if(Faqs && Faqs.length > 0) { %>
+          <ul uk-accordion>
+            <% Faqs.forEach(function (faq) { %>
+              <li>
+                <a class="uk-accordion-title" href="#"><%= faq.Question %></a>
+                <div class="uk-accordion-content">
+                  <p><%= faq.Answer %></p>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <!-- <script type="text/javascript" src="js/faqs.js"></script> -->
+</body>

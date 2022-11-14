@@ -1,142 +1,145 @@
 <head>
   <%- include('../../partials/head'); %>
 </head>
-<body>
-  <% if(activeUser) { %>
-    <%- include('../../partials/topnavUser'); %>
-  <% } else { %>
-    <%- include('../../partials/topnav'); %>
-  <% } %>
-  <main>
-    <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-    <h4>Trophies & Awards</h4>
-    <% if(NotificationText) { %>
-      <%- include('../../partials/notice'); %>
-    <% } %>
-    &nbsp;<br/>
-    <div class="trophy-container" id='tabs'>
-      <ul uk-tab>
-        <li><a href="#trophies">Trophies</a></li>
-        <li><a href="#awards">Awards</a></li>
-      </ul>
 
-      <ul class="uk-switcher uk-margin">
-        <!-- Trophies -->
-        <li id="trophies">
-          <h6>Award Trophy</h6>
-          <p>Choose the region, the place and then enter the flag number(s) that you want to award the trophy to. If more than one flag number, separate them by a comma without any spaces as shown in the box. 
-            If you make a mistake, you can just enter it again as it updates the record everytime you click Award Trophy.</p>
-          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="TrophyRegion">Trophy Region</label>
-              <select required class="uk-select toh-input" name="TrophyRegion" id="TrophyRegion">
-                <% Regions.forEach(function(region) { %>
-                  <option value="<%= region.id %>">
-                    <%= region.Region %>
-                  </option>
-                <% }) %>
-              </select>
-            </div>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="TrophyPlace">Trophy Place</label>
-              <select required class="uk-select toh-input" name="TrophyPlace" id="TrophyPlace">
-                <option value="1st">1st</option>
-                <option value="2nd">2nd</option>
-                <option value="3rd">3rd</option>
-              </select>
-            </div>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="FlagNums">Flag Numbers</label>
-              <input required class="uk-input toh-input" id="FlagNums" type="text" placeholder="###,###">
-            </div>
-            <div class="uk-width-1-4@s ">
-              <label class="uk-form-label" for="awardTrophy">&nbsp;</label>
-              <button type="button" id="awardTrophy" class="uk-button uk-button-primary button-rounded">Award Trophy</button>
-            </div>
-          </form>
-          <br />
-          <h6>Trophy Status</h6>
-          <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
-            <% Regions.forEach(function(region) { %>
-              <div>
-                <div class="uk-card uk-card-default uk-card-body">
-                  <h3 class="uk-card-title"><%= region.Region %></h3>
-                  <% TrophyList.forEach(function(trophy) { %> 
-                    <% if(trophy.Region == region.Region) { %>
-                      <p><%= trophy.PlaceNum %> - <% if(trophy.FlagNumbers) { %> <%= trophy.FlagNumbers %> <% } else { %> Available  <% } %></p>
-                    <% } %>
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Trophies & Awards</h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      &nbsp;<br/>
+      <div class="trophy-container" id='tabs'>
+        <ul uk-tab>
+          <li><a href="#trophies">Trophies</a></li>
+          <li><a href="#awards">Awards</a></li>
+        </ul>
+
+        <ul class="uk-switcher uk-margin">
+          <!-- Trophies -->
+          <li id="trophies">
+            <h6>Award Trophy</h6>
+            <p>Choose the region, the place and then enter the flag number(s) that you want to award the trophy to. If more than one flag number, separate them by a comma without any spaces as shown in the box. 
+              If you make a mistake, you can just enter it again as it updates the record everytime you click Award Trophy.</p>
+            <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="TrophyRegion">Trophy Region</label>
+                <select required class="uk-select toh-input" name="TrophyRegion" id="TrophyRegion">
+                  <% Regions.forEach(function(region) { %>
+                    <option value="<%= region.id %>">
+                      <%= region.Region %>
+                    </option>
                   <% }) %>
-                </div>
+                </select>
               </div>
-            <% }) %>
-          </div>
-        </li>
-        <!-- Awards -->
-        <li id="awards">
-          <h6>Grant an Award</h6>
-          <p>Enter the required info to grant an award.</p>
-          <form class="signup uk-grid-small uk-form-stacked" uk-grid>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="AwardName">Award Name</label>
-              <select required class="uk-select toh-input" name="AwardName" id="AwardName">
-                <% AwardNames.forEach(function(awardName) { %> 
-                  <option value="<%= awardName.ShortName %>">
-                    <%= awardName.FullName %>
-                  </option>
-                <% }) %>
-              </select>
-            </div>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="FlagNum">Flag Number</label>
-              <input required class="uk-input toh-input" id="FlagNum" type="number" placeholder="###">
-            </div>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="Date">Date</label>
-              <input required class="uk-input toh-input" id="Date" type="date" placeholder="###">
-            </div>
-            <div class="uk-width-1-4@s ">
-              <label class="uk-form-label" for="grantAward">&nbsp;</label>
-              <button type="button" id="grantAward" class="uk-button uk-button-primary button-rounded">Grant Award</button>
-            </div>
-          </form>
-          <br />
-          <h6>Earned Awards</h6>
-          <!-- #region Awards Table -->
-          <table class="uk-table uk-table-striped uk-table-small" id="awardTable">
-            <thead>
-              <tr>
-                <th>UserID</th>
-                <th>Award</th>
-                <th>Date Earned</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% Awards.forEach(function(award) { %>
-                <tr>
-                  <td>
-                    <%= award.FirstName %> <%= award.LastName %> (<%= award.FlagNum %>)
-                  </td>
-                  <td>
-                    <%= award.Name %>
-                  </td>
-                  <td>
-                    <%= award.RideDate %>
-                  </td>
-                  <td>
-                    <div class="deleteAwardButton" data-uid="<%- award.id %>"><i class="fal fa-trash-can fa-lg"></i></div>
-                  </td>
-                </tr>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="TrophyPlace">Trophy Place</label>
+                <select required class="uk-select toh-input" name="TrophyPlace" id="TrophyPlace">
+                  <option value="1st">1st</option>
+                  <option value="2nd">2nd</option>
+                  <option value="3rd">3rd</option>
+                </select>
+              </div>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="FlagNums">Flag Numbers</label>
+                <input required class="uk-input toh-input" id="FlagNums" type="text" placeholder="###,###">
+              </div>
+              <div class="uk-width-1-4@s ">
+                <label class="uk-form-label" for="awardTrophy">&nbsp;</label>
+                <button type="button" id="awardTrophy" class="uk-button uk-button-primary button-rounded">Award Trophy</button>
+              </div>
+            </form>
+            <br />
+            <h6>Trophy Status</h6>
+            <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match" uk-grid>
+              <% Regions.forEach(function(region) { %>
+                <div>
+                  <div class="uk-card uk-card-default uk-card-body">
+                    <h3 class="uk-card-title"><%= region.Region %></h3>
+                    <% TrophyList.forEach(function(trophy) { %> 
+                      <% if(trophy.Region == region.Region) { %>
+                        <p><%= trophy.PlaceNum %> - <% if(trophy.FlagNumbers) { %> <%= trophy.FlagNumbers %> <% } else { %> Available  <% } %></p>
+                      <% } %>
+                    <% }) %>
+                  </div>
+                </div>
               <% }) %>
-            </tbody>
-          </table>
-          <!-- #endregion -->
-        </li>
-      </ul>
-    </div>
-  </main>
-  <footer>
-    <%- include('../../partials/footer'); %>
-  </footer>
+            </div>
+          </li>
+          <!-- Awards -->
+          <li id="awards">
+            <h6>Grant an Award</h6>
+            <p>Enter the required info to grant an award.</p>
+            <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="AwardName">Award Name</label>
+                <select required class="uk-select toh-input" name="AwardName" id="AwardName">
+                  <% AwardNames.forEach(function(awardName) { %> 
+                    <option value="<%= awardName.ShortName %>">
+                      <%= awardName.FullName %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="FlagNumber">Flag Number</label>
+                <input required class="uk-input toh-input" id="FlagNumber" type="number" placeholder="###">
+              </div>
+              <div class="uk-width-1-4@s">
+                <label class="uk-form-label" for="Date">Date</label>
+                <input required class="uk-input toh-input" id="Date" type="date" placeholder="###">
+              </div>
+              <div class="uk-width-1-4@s ">
+                <label class="uk-form-label" for="grantAward">&nbsp;</label>
+                <button type="button" id="grantAward" class="uk-button uk-button-primary button-rounded">Grant Award</button>
+              </div>
+            </form>
+            <br />
+            <h6>Earned Awards</h6>
+            <!-- #region Awards Table -->
+            <table class="uk-table uk-table-striped uk-table-small" id="awardTable">
+              <thead>
+                <tr>
+                  <th>UserID</th>
+                  <th>Award</th>
+                  <th>Date Earned</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% Awards.forEach(function(award) { %>
+                  <tr>
+                    <td>
+                      <%= award.FirstName %> <%= award.LastName %> (<%= award.FlagNumber %>)
+                    </td>
+                    <td>
+                      <%= award.Name %>
+                    </td>
+                    <td>
+                      <%= award.RideDate %>
+                    </td>
+                    <td>
+                      <div class="deleteAwardButton" data-uid="<%- award.id %>"><i class="fal fa-trash-can fa-lg"></i></div>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+            <!-- #endregion -->
+          </li>
+        </ul>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="/js/trophy-editor.js"></script>
 </body>

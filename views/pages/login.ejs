@@ -2,38 +2,45 @@
   <%- include('../partials/head'); %>
 </head>
 
-<body <%- envIsProd ? '' : 'style="background-color: rgba(245, 75, 75, 0.708)"'%>>
-  <%- include('../partials/topnav'); %>
-  <main>
-    <div class="uk-container-xsmall uk-margin-auto">
-      <div class="">
-        <% if(envIsProd) { %>
-          <h3 class="uk-text-center">Scoring Portal Login</h3>
-          <p class="uk-text-center">Please login below using the <strong>email address</strong> and <strong>password</strong> that you registered with.</p>
-        <% } else { %>
-          <h3 class="uk-text-center">TOH Test Site</h3>
-          <p class="uk-text-center" style="color: black;font-weight: 600; font-size: xx-large;">This site is accessible to TOH staff only. If you are a rider, then you want to go to <a href="https://scoring.tourofhonor.com">https://scoring.tourofhonor.com</a></p>
-        <% } %>
-        <form class="login">
-          <div class="uk-margin">
-            <label class="uk-form-label largerLabel" for="UserEmail">Email Address</label>
-            <input class="uk-input toh-input" id="UserEmail" type="email" placeholder="name@domain.com">
-          </div>
-          <div class="uk-margin">
-            <label class="uk-form-label largerLabel" for="UserPassword">Password</label>
-            <input class="uk-input toh-input" id="UserPassword" type="password" placeholder="Password">
-          </div>
-          <button class="uk-button uk-button-primary uk-button-small button-rounded">Login</button>
-          <span style="font-size: .9em; padding-left: 16px"><a href="/forgotpassword">Forgot Password?</a></span>
-        </form>
-        <% if(envIsProd) { %>
-          <p>If you have not registered for the 2022 rally, please click <a href="https://www.tourofhonor.com/pages/register.html">here</a>.</p>
-        <% } %>
+<body <%- envIsTest ? 'style="background-color: rgba(245, 75, 75, 0.708)"' : envIsDev ? 'style="background-color: coral"' : ''%> >
+  <div class="pageWrapper">
+    <%- include('../partials/topnav'); %>
+    <main>
+      <div class="uk-container-xsmall uk-margin-auto content">
+        <div class="">
+          <% if(envIsDev) { %>
+            <h3 class="uk-text-center">TOH Dev Site</h3>
+            <p class="uk-text-center" style="color: black;font-weight: 600; font-size: xx-large;">Hello Tommy,<br /> What shall we code today?</p>
+          <% } %>
+          <% if(envIsTest) { %>
+            <h3 class="uk-text-center">TOH Test Site</h3>
+            <p class="uk-text-center" style="color: black;font-weight: 600; font-size: xx-large;">This site is accessible to TOH staff only. If you are a rider, then you want to go to <a href="https://scoring.tourofhonor.com">https://scoring.tourofhonor.com</a></p>
+          <% } %>
+          <% if(envIsProd) { %>
+            <h3 class="uk-text-center">Scoring Portal Login</h3>
+            <p class="uk-text-center">Please login below using the <strong>email address</strong> and <strong>password</strong> that you registered with.</p>
+          <% } %>
+          <form class="login">
+            <div class="uk-margin">
+              <label class="uk-form-label largerLabel" for="UserEmail">Email Address</label>
+              <input class="uk-input toh-input" id="UserEmail" type="email" placeholder="name@domain.com" autocomplete="username">
+            </div>
+            <div class="uk-margin">
+              <label class="uk-form-label largerLabel" for="UserPassword">Password</label>
+              <input class="uk-input toh-input" id="UserPassword" type="password" placeholder="Password" autocomplete="current-password">
+            </div>
+            <button class="uk-button uk-button-primary uk-button-small button-rounded">Login</button>
+            <span style="font-size: .9em; padding-left: 16px"><a href="/forgotpassword">Forgot Password?</a></span>
+          </form>
+          <% if(envIsProd) { %>
+            <p>If you have not registered for the <%= CurrentRallyYear %> rally, please click <a href="https://www.tourofhonor.com/pages/register.html">here</a>.</p>
+          <% } %>
+        </div>
       </div>
-    </div>
-  </main>
-  <footer>
-    <%- include('../partials/footer'); %>
-  </footer>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
   <script type="text/javascript" src="js/login.js"></script>
 </body>

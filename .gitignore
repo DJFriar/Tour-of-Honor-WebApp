@@ -5,3 +5,4 @@ node_modules
 static/uploads
 __pycache__
 logs
+secrets

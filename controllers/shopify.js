@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { response } = require('express');
 const fetch = require("isomorphic-fetch");
 
 const storefrontToken = process.env.SHOPIFY_STOREFRONT_KEY;
@@ -95,7 +94,7 @@ async function checkOrderStatusByCheckoutID(checkoutid) {
   query = buildGraphQLQueryToGetOrderNumber();
   query_vars = getQueryVars(checkoutid);
   orderStatusResponse = await postQuery(query, query_vars)
-  console.debug(orderStatusResponse)
+  // console.debug(orderStatusResponse)
   orderNumber = orderStatusResponse.data.node.order.name;
 
   return orderNumber.slice(1);
@@ -103,29 +102,3 @@ async function checkOrderStatusByCheckoutID(checkoutid) {
 
 exports.generateShopifyCheckout = generateShopifyCheckout
 exports.checkOrderStatusByCheckoutID = checkOrderStatusByCheckoutID
-
-
-
-
-
-
-
-
-
-// async function main(){
-//     query = buildGraphQLQuery()
-//     // uncomment to see raw query body
-//     // console.log(query)
-//     query_vars = getQueryVars("gid://shopify/ProductVariant/39851016749111")
-//     // uncomment to view raw query params
-//     // console.log(query_vars)
-//     response = await postQuery(query,query_vars)
-//     // console.debug(response)
-//     if (response.data.checkoutCreate)
-//       console.debug(response.data.checkoutCreate)
-//       console.debug(response.data.checkoutCreate.checkout.webUrl)
-//     // console.debug(response.errors[0].locations)
-//     // console.debug(response.errors[0].extensions)
-// }
-
-// main()

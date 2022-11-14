@@ -1,30 +1,33 @@
-<!-- Desktop Navigation -->
+<!-- Desktop Navigation (Open) -->
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
   <nav class="uk-navbar-container" uk-navbar="mode: click" id="master-topnav">
     <div class="uk-navbar-left">
       <a class="uk-navbar-item uk-logo uk-hidden@s" href="/">TOH</a>
       <a class="uk-navbar-item uk-logo uk-visible@s" href="/memorials"><img class="toh-logo" src="/images/toh_logo.png"></a>
+      <ul class="uk-navbar-nav uk-visible@m">
+        <li><a href="/memorials">Memorials</a></li>
+        <!-- <li><a href="/livefeed">Live Feed</a></li> -->
+        <li>
+          <a href="#">More</a>
+          <div class="uk-navbar-dropdown">
+            <ul class="uk-nav uk-navbar-dropdown-nav">
+              <li><a href="/faqs">FAQs</a></li>
+              <li><a href="/rules">Rules</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="/registration">2023 Registration</a></li>
+
+      </ul>
     </div>
     <div class="uk-navbar-right">
       <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a>
       <ul class="uk-navbar-nav uk-visible@m">
-        <li><a href="/scoring">Scoring</a></li>
-        <li><a href="/memorials">Memorials</a></li>
-        <!-- <li><a href="/livefeed">Live Feed</a></li> -->
-        <!-- <li>
-          <a href="#">More</a>
-          <div class="uk-navbar-dropdown">
-            <ul class="uk-nav uk-navbar-dropdown-nav">
-              <li><a href="/history">History</a></li>
-              <li><a href="/covid1000">COVID-1000</a></li>
-              <li><a href="/2020">2020</a></li>
-              <li><a href="/contact">Contact</a></li>
-            </ul>
-          </div>
-        </li> -->
+
         <li id="topnavLogin"><a href="/login">Login&nbsp;<span class="fal fa-sign-in fa-lg"></span></a></li>
       </ul>
+      
     </div>
   </nav>
   <hr style="color: black;">

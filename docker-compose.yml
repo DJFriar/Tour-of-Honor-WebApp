@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  webapp:
+    image: node:16.17
+    secrets:
+      - mysql_user
+      - mysql_password
+    command: sh -c "npm ci && npm run dev"
+    ports:
+      - 3700:3700
+    working_dir: /opt/Tour-of-Honor
+    volumes:
+      - ./:/opt/Tour-of-Honor
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_DB: tour_of_honor
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password
+  mysql_user:
+    file: ./secrets/mysql_user
+  mysql_password:
+    file: ./secrets/mysql_password
