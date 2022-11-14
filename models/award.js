@@ -1,10 +1,11 @@
-module.exports = function(sequelize, DataTypes) {
-  const Award = sequelize.define("Award", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Award = sequelize.define('Award', {
     Name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    FlagNum: {
+    FlagNumber: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -15,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     RallyYear: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    }
+    },
   });
   return Award;
 };

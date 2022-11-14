@@ -20,7 +20,7 @@ if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
 ApiFlagRouter.route('/').post((req, res) => {
   logger.debug('FlagPostAPI entered');
   db.Flag.create({
-    FlagNum: req.body.FlagNumber,
+    FlagNumber: req.body.FlagNumber,
     UserID: req.body.UserID,
     RallyYear: req.body.RallyYear,
   })
@@ -43,11 +43,11 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
         [Op.in]: rallyYearArray,
       },
     },
-    order: [['FlagNum', 'ASC']],
+    order: [['FlagNumber', 'ASC']],
     raw: true,
   }).then((flags) => {
     const allowedNumbers = _.range(11, 1201, 1);
-    const badNumbers = flags.map((inUse) => inUse.FlagNum);
+    const badNumbers = flags.map((inUse) => inUse.FlagNumber);
     const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
     const nextFlag = _.min(goodNumbers);
     res.json(nextFlag);
@@ -59,7 +59,7 @@ ApiFlagRouter.route('/:id').get((req, res) => {
   const { id } = req.params;
   db.Flag.findOne({
     where: {
-      FlagNum: id,
+      FlagNumber: id,
       RallyYear: {
         [Op.in]: rallyYearArray,
       },

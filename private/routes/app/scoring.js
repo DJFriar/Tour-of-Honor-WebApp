@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
   if (req.body.Status === 1) {
     // Grant credit to the submitter
     db.EarnedMemorialsXref.create({
-      FlagNum: req.body.FlagNumber,
+      FlagNumber: req.body.FlagNumber,
       MemorialID: req.body.MemorialID,
       RallyYear: rallyYear,
     });
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
       const RiderFlagArray = req.body.OtherRiders.split(',');
       RiderFlagArray.forEach((rider) => {
         db.EarnedMemorialsXref.create({
-          FlagNum: rider,
+          FlagNumber: rider,
           MemorialID: req.body.MemorialID,
           RallyYear: rallyYear,
         });

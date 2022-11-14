@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Flag = sequelize.define(
     'Flag',
     {
-      FlagNum: {
+      FlagNumber: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

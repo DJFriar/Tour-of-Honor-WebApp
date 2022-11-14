@@ -821,8 +821,8 @@ module.exports = function (app) {
         try {
           const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
           if (passFlagNum && passFlagNum > 0) {
-            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
-            OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNumber;
+            OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
           } else {
             OrderInfo.dataValues.PassFlagNum = 0;
             OrderInfo.PassFlagNum = 0;

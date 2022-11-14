@@ -1,18 +1,18 @@
 $(document).ready(() => {
   // Handle Memorial Earned Button
-  $("#markMemorialEarned").on("click", function() {
-    var memorialCode = $("#MemorialCode").val();
-    var flagNumber = $("#FlagNum").val();
-    var earnedMemorial = {
+  $('#markMemorialEarned').on('click', () => {
+    const memorialCode = $('#MemorialCode').val();
+    const flagNumber = $('#FlagNumber').val();
+    const earnedMemorial = {
       MemorialCode: memorialCode,
       FlagNumber: flagNumber,
     };
 
-    $.ajax("/handle-alt-entry", {
-      type: "PUT",
-      data: earnedMemorial
-    }).then(
-      function() { location.reload(); }
-    );
+    $.ajax('/handle-alt-entry', {
+      type: 'PUT',
+      data: earnedMemorial,
+    }).then(() => {
+      location.reload();
+    });
   });
-})
+});

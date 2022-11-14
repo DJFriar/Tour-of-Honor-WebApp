@@ -78,7 +78,7 @@ module.exports = function (app) {
       raw: true,
     }).then((flags) => {
       const allowedNumbers = _.range(11, 1201, 1);
-      const badNumbers = flags.map((inUse) => inUse.FlagNum);
+      const badNumbers = flags.map((inUse) => inUse.FlagNumber);
       const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
       const randomFlag = goodNumbers[Math.floor(Math.random() * goodNumbers.length)];
       res.json(randomFlag);
@@ -283,7 +283,7 @@ module.exports = function (app) {
     })
       .then((x) => {
         db.Flag.create({
-          FlagNum: req.body.FlagNumber,
+          FlagNumber: req.body.FlagNumber,
           UserID: x.id,
           RallyYear: CurrentRallyYear,
         }).then((y) => {
@@ -467,7 +467,7 @@ module.exports = function (app) {
     }
     if (memID > 0) {
       db.EarnedMemorialsXref.create({
-        FlagNum: req.body.FlagNumber,
+        FlagNumber: req.body.FlagNumber,
         MemorialID: memID,
         RallyYear: CurrentRallyYear,
       });
@@ -491,7 +491,7 @@ module.exports = function (app) {
     if (req.body.Status === 1) {
       // Grant credit to the submitter
       db.EarnedMemorialsXref.create({
-        FlagNum: req.body.SubmittedFlagNumber,
+        FlagNumber: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
         RallyYear: CurrentRallyYear,
       });
@@ -500,7 +500,7 @@ module.exports = function (app) {
         const RiderFlagArray = req.body.SubmittedOtherRiders.split(',');
         RiderFlagArray.forEach((rider) => {
           db.EarnedMemorialsXref.create({
-            FlagNum: rider,
+            FlagNumber: rider,
             MemorialID: req.body.SubmittedMemorialID,
             RallyYear: CurrentRallyYear,
           });
@@ -653,7 +653,7 @@ module.exports = function (app) {
   // Handle Granting Awards
   app.put('/api/v1/award-iba', async (req, res) => {
     db.Award.create({
-      FlagNum: req.body.FlagNumber,
+      FlagNumber: req.body.FlagNumber,
       Name: req.body.AwardName,
       RideDate: req.body.AwardDate,
       RallyYear: CurrentRallyYear,
@@ -982,7 +982,7 @@ module.exports = function (app) {
     if (RegStep === 'FlagInProgress') {
       logger.debug(`${RegStep} step entered.`);
       const FlagInfo = {
-        FlagNum: req.body.RequestedFlagNumber,
+        FlagNumber: req.body.RequestedFlagNumber,
         UserID: req.body.UserID,
         RallyYear: req.body.RallyYear,
       };

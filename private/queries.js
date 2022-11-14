@@ -7,7 +7,7 @@ const { logger } = require('../controllers/logger');
 module.exports.queryUserInfo = async function queryUserInfo(email) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNum,0) FlagNum, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNum > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
       {
         replacements: [email],
         type: QueryTypes.SELECT,
@@ -578,7 +578,7 @@ module.exports.queryPendingBikeInfo = async function queryPendingBikeInfo(rider)
 module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemorialsByAllRiders() {
   try {
     const result = await sequelize.query(
-      "SELECT emx.FlagNum, CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx INNER JOIN Flags f ON emx.FlagNum = f.FlagNum LEFT JOIN Users u ON f.UserID = u.id INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNum, u.FirstName, u.LastName",
+      "SELECT emx.FlagNumber, CONCAT(u.FirstName, ' ', u.LastName) AS 'RiderName', COUNT(emx.id) AS 'TotalEarnedMemorials' FROM EarnedMemorialsXref emx INNER JOIN Flags f ON emx.FlagNumber = f.FlagNumber LEFT JOIN Users u ON f.UserID = u.id INNER JOIN Memorials m on emx.MemorialID = m.id GROUP BY emx.FlagNumber, u.FirstName, u.LastName",
       { type: QueryTypes.SELECT },
     );
     return result;
@@ -611,7 +611,7 @@ module.exports.queryMemorialStatusByRider = async function queryMemorialStatusBy
 ) {
   try {
     const result = await sequelize.query(
-      'SELECT id FROM EarnedMemorialsXref WHERE FlagNum = ? AND MemorialID = ?',
+      'SELECT id FROM EarnedMemorialsXref WHERE FlagNumber = ? AND MemorialID = ?',
       {
         replacements: [rider, memCode],
         type: QueryTypes.SELECT,
@@ -632,7 +632,7 @@ module.exports.querySubmissionStatusByRider = async function querySubmissionStat
 ) {
   try {
     const result = await sequelize.query(
-      'SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNum FROM Flags WHERE UserID = ?), OtherRiders)) ORDER BY s.updatedAt DESC LIMIT 1',
+      'SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNumber FROM Flags WHERE UserID = ?), OtherRiders)) ORDER BY s.updatedAt DESC LIMIT 1',
       {
         replacements: [memCode, rider, rider],
         type: QueryTypes.SELECT,
@@ -713,7 +713,7 @@ module.exports.queryTrophiesList = async function queryTrophiesList() {
 module.exports.queryAwardList = async function queryAwardList() {
   try {
     const result = await sequelize.query(
-      'SELECT a.id, a.Name, a.RideDate, a.FlagNum, u.FirstName, u.LastName FROM Awards a LEFT JOIN Users u ON a.FlagNum = u.FlagNumber',
+      'SELECT a.id, a.Name, a.RideDate, a.FlagNumber, u.FirstName, u.LastName FROM Awards a LEFT JOIN Users u ON a.FlagNumber = u.FlagNumber',
       {
         type: QueryTypes.SELECT,
       },

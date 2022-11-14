@@ -1,250 +1,236 @@
-$(document).ready(function() {
+$(document).ready(() => {
   existingRiderFlagNumberFound = false;
   existingPassengerFlagNumberFound = false;
   hasPassenger = false;
   $('#usersTable').DataTable({
-    pageLength: 100
+    pageLength: 100,
   });
   $('#sponsorsTable').DataTable();
 
-  $("#hasPassenger").change(function() {
+  $('#hasPassenger').change(function () {
     if (this.checked) {
-      $(".PassengerInfoDiv").removeClass("hide-me");
-      $("#PassengerFirstName").prop("required", true);
-      $("#PassengerLastName").prop("required", true);
-      $("#PassengerFlagNum").prop("required", true);
-      $("#PassengerShirtStyle").prop("required", true);
-      $("#PassengerShirtSize").prop("required", true);
+      $('.PassengerInfoDiv').removeClass('hide-me');
+      $('#PassengerFirstName').prop('required', true);
+      $('#PassengerLastName').prop('required', true);
+      $('#PassengerFlagNum').prop('required', true);
+      $('#PassengerShirtStyle').prop('required', true);
+      $('#PassengerShirtSize').prop('required', true);
       hasPassenger = true;
     } else {
-      $(".PassengerInfoDiv").addClass("hide-me");
-      $("#PassengerFirstName").prop("required", false);
-      $("#PassengerLastName").prop("required", false);
-      $("#PassengerFlagNum").prop("required", false);
-      $("#PassengerShirtStyle").prop("required", false);
-      $("#PassengerShirtSize").prop("required", false);
+      $('.PassengerInfoDiv').addClass('hide-me');
+      $('#PassengerFirstName').prop('required', false);
+      $('#PassengerLastName').prop('required', false);
+      $('#PassengerFlagNum').prop('required', false);
+      $('#PassengerShirtStyle').prop('required', false);
+      $('#PassengerShirtSize').prop('required', false);
       hasPassenger = false;
     }
   });
 
   // Handle Edit Rider Button
-  $("#usersTable").on("click", ".editUserButton", function() {
-    var id = $(this).data("uid");
-    $("#userDetailEditModal").css("display","block");
-    $.ajax("/api/v1/user/" + id, {
-      type: "GET",
-    }).then(
-      function(res) {
-        $("#EditUserID").val(res.id);
-        $("#EditUserName").val(res.UserName);
-        if (res.FlagNumber > 0) {
-          $("#EditFlagNumber").val(res.FlagNumber);
-        }
-        $("#EditFirstName").val(res.FirstName);
-        $("#EditLastName").val(res.LastName);
-        $("#EditEmail").val(res.Email);
-        $("#EditZipCode").val(res.ZipCode);
-        if (res.isAdmin) {
-          $("#isAdmin").prop("checked", true);
-        } else {
-          $("#isAdmin").prop("checked", false);
-        }
+  $('#usersTable').on('click', '.editUserButton', function () {
+    const id = $(this).data('uid');
+    $('#userDetailEditModal').css('display', 'block');
+    $.ajax(`/api/v1/user/${id}`, {
+      type: 'GET',
+    }).then((res) => {
+      $('#EditUserID').val(res.id);
+      $('#EditUserName').val(res.UserName);
+      if (res.FlagNumber > 0) {
+        $('#EditFlagNumber').val(res.FlagNumber);
       }
-    )
-  })
+      $('#EditFirstName').val(res.FirstName);
+      $('#EditLastName').val(res.LastName);
+      $('#EditEmail').val(res.Email);
+      $('#EditZipCode').val(res.ZipCode);
+      if (res.isAdmin) {
+        $('#isAdmin').prop('checked', true);
+      } else {
+        $('#isAdmin').prop('checked', false);
+      }
+    });
+  });
 
   // Handle Text Rider Button
-  $("#usersTable").on("click", ".sendSMSTextButton", function() {
-    var id = $(this).data("uid");
-    $("#sendTextMessageModal").css("display","block");
-    $.ajax("/api/v1/user/" + id, {
-      type: "GET",
-    }).then(
-      function(res) {
-        $("#TextUserID").val(res.id);
-        $("#TextCellNumber").val(res.CellNumber);
-        $("#TextName").text(res.FirstName + " " + res.LastName);
-      }
-    )
-  })
+  $('#usersTable').on('click', '.sendSMSTextButton', function () {
+    const id = $(this).data('uid');
+    $('#sendTextMessageModal').css('display', 'block');
+    $.ajax(`/api/v1/user/${id}`, {
+      type: 'GET',
+    }).then((res) => {
+      $('#TextUserID').val(res.id);
+      $('#TextCellNumber').val(res.CellNumber);
+      $('#TextName').text(`${res.FirstName} ${res.LastName}`);
+    });
+  });
 
   // Handle Edit User Dialog Close Button
-  $(".close").on("click", function() {
-    $(".modal").css("display","none");
-  })
+  $('.close').on('click', () => {
+    $('.modal').css('display', 'none');
+  });
 
   // Handle Edit Dialog Cancel Button
-  $(".cancelButton").on("click", function() {
-    $(".modal").css("display","none");
-  })
+  $('.cancelButton').on('click', () => {
+    $('.modal').css('display', 'none');
+  });
 
   // Handle Save Changes Button
-  $("#saveUserChangesButton").on("click", function() {
-    var id = $("#EditUserID").val();
-    var FlagNumber = 0;
-    var isAdmin = false;
+  $('#saveUserChangesButton').on('click', () => {
+    const id = $('#EditUserID').val();
+    let FlagNumber = 0;
+    let isAdmin = false;
 
-    if (parseInt($("#EditFlagNumber").val(),10) > 0) {
-      FlagNumber = parseInt($("#EditFlagNumber").val(),10);
+    if (parseInt($('#EditFlagNumber').val(), 10) > 0) {
+      FlagNumber = parseInt($('#EditFlagNumber').val(), 10);
     }
-    if ($("#isAdmin").prop("checked") == true) {
-      isAdmin = true
+    if ($('#isAdmin').prop('checked') == true) {
+      isAdmin = true;
     }
-    
-    var updateUser = {
+
+    const updateUser = {
       UserID: id,
-      FlagNumber: FlagNumber,
-      UserName: $("#EditUserName").val().trim(),
-      FirstName: $("#EditFirstName").val().trim(),
-      LastName: $("#EditLastName").val().trim(),
-      Email: $("#EditEmail").val().trim(),
-      ZipCode: $("#EditZipCode").val().trim(),
-      isAdmin: isAdmin
+      FlagNumber,
+      UserName: $('#EditUserName').val().trim(),
+      FirstName: $('#EditFirstName').val().trim(),
+      LastName: $('#EditLastName').val().trim(),
+      Email: $('#EditEmail').val().trim(),
+      ZipCode: $('#EditZipCode').val().trim(),
+      isAdmin,
     };
-    $.ajax("/api/v1/user/", {
-      type: "put",
-      data: updateUser
-    }).then(
-      function() { location.reload(); }
-    );
+    $.ajax('/api/v1/user/', {
+      type: 'put',
+      data: updateUser,
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Handle Delete User Button
-  $(".deleteUserButton").on("click", function() {
-    var id = $(this).data("uid");
-    $.ajax("/api/v1/user/" + id, {
-      type: "DELETE"
-    }).then(
-      function() {
-        location.reload();
-      }
-    );
+  $('.deleteUserButton').on('click', function () {
+    const id = $(this).data('uid');
+    $.ajax(`/api/v1/user/${id}`, {
+      type: 'DELETE',
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Charaacter counter for Text Message box
-  $("#textMessageContent").keyup(function() {
+  $('#textMessageContent').keyup(function () {
     countChar(this);
   });
 
   // Handle Send Text Message button
-  $("#sendTextMessageButton").on("click", function() {
-    var UserID = $("#TextUserID").val().trim();
-    var cellNumber = $("#TextCellNumber").val().trim();
-    var textMessageData = {
+  $('#sendTextMessageButton').on('click', () => {
+    const UserID = $('#TextUserID').val().trim();
+    const cellNumber = $('#TextCellNumber').val().trim();
+    const textMessageData = {
       UserID,
       destNumber: cellNumber,
-      Message: $("#textMessageContent").val().trim()
-    }
-    $.ajax("/api/v1/sendSMS", {
-      type: "POST",
-      data: textMessageData
-    }).then(function() { 
-      $("#sendTextMessageModal").css("display","none");
+      Message: $('#textMessageContent').val().trim(),
+    };
+    $.ajax('/api/v1/sendSMS', {
+      type: 'POST',
+      data: textMessageData,
+    }).then(() => {
+      $('#sendTextMessageModal').css('display', 'none');
     });
   });
 
   // Handle Send Profile Email Button
-  $("#usersTable").on("click", ".sendProfileEmailButton", function() {
-    var id = $(this).data("uid");
-    var profileData = { };
-    $.ajax("/api/v1/user/" + id, {
-      type: "GET",
-    }).then(
-      function(res) {
-        profileData.FlagNumber = res.FlagNumber;
-        profileData.UserName = res.UserName;
-        profileData.FirstName = res.FirstName;
-        profileData.Email = res.Email;
-        $.ajax("/api/v1/portalemail", {
-          type: "POST",
-          data: profileData
-        }).then(
-          function() {
-            location.reload();
-          }
-        )
-      }
-    )
-  })
+  $('#usersTable').on('click', '.sendProfileEmailButton', function () {
+    const id = $(this).data('uid');
+    const profileData = {};
+    $.ajax(`/api/v1/user/${id}`, {
+      type: 'GET',
+    }).then((res) => {
+      profileData.FlagNumber = res.FlagNumber;
+      profileData.UserName = res.UserName;
+      profileData.FirstName = res.FirstName;
+      profileData.Email = res.Email;
+      $.ajax('/api/v1/portalemail', {
+        type: 'POST',
+        data: profileData,
+      }).then(() => {
+        location.reload();
+      });
+    });
+  });
 
   // Check Rider Flag Number Uniqueness
-  $("#FlagNum").on("input paste", function() {
-    var id = $(this).val();
+  $('#FlagNumber').on('input paste', function () {
+    const id = $(this).val();
     if (id) {
-      $.ajax("/api/v1/flag/" + id, {
-        type: "GET"
-      }).then(
-        function(flagInfo) {
-          if (flagInfo) {
-            existingRiderFlagNumberFound = true;
-            $("#FlagNum").css("border","4px solid red")
-          } else {
-            existingRiderFlagNumberFound = false;
-            $("#FlagNum").css("border","none")
-          }
+      $.ajax(`/api/v1/flag/${id}`, {
+        type: 'GET',
+      }).then((flagInfo) => {
+        if (flagInfo) {
+          existingRiderFlagNumberFound = true;
+          $('#FlagNumber').css('border', '4px solid red');
+        } else {
+          existingRiderFlagNumberFound = false;
+          $('#FlagNumber').css('border', 'none');
         }
-      );
+      });
     }
-  })
+  });
 
   // Check Passenger Flag Number Uniqueness
-  $("#PassengerFlagNum").on("input paste", function() {
-    var id = $(this).val();
+  $('#PassengerFlagNum').on('input paste', function () {
+    const id = $(this).val();
     if (id) {
-      $.ajax("/api/v1/flag/" + id, {
-        type: "GET"
-      }).then(
-        function(flagInfo) {
-          if (flagInfo) {
-            existingPassengerFlagNumberFound = true;
-            $("#PassengerFlagNum").css("border","4px solid red")
-          } else {
-            existingPassengerFlagNumberFound = false;
-            $("#PassengerFlagNum").css("border","none")
-          }
+      $.ajax(`/api/v1/flag/${id}`, {
+        type: 'GET',
+      }).then((flagInfo) => {
+        if (flagInfo) {
+          existingPassengerFlagNumberFound = true;
+          $('#PassengerFlagNum').css('border', '4px solid red');
+        } else {
+          existingPassengerFlagNumberFound = false;
+          $('#PassengerFlagNum').css('border', 'none');
         }
-      );
+      });
     }
-  })
+  });
 
   // Handle Rider Registration
-  $("#createUserButton").on("click", function() {
-    var randomUserName = randomString(8);
-    var randomPassUserName = randomString(8);
-    var newUser = {
-      FirstName: $("#FirstName").val().trim(),
-      LastName: $("#LastName").val().trim(),
-      Email: $("#Email").val().trim(),
+  $('#createUserButton').on('click', () => {
+    const randomUserName = randomString(8);
+    const randomPassUserName = randomString(8);
+    const newUser = {
+      FirstName: $('#FirstName').val().trim(),
+      LastName: $('#LastName').val().trim(),
+      Email: $('#Email').val().trim(),
       UserName: randomUserName,
       Password: randomString(14),
-      FlagNumber: $("#FlagNum").val().trim()
+      FlagNumber: $('#FlagNumber').val().trim(),
     };
 
-    var newPassenger = {
-      FirstName: $("#PassengerFirstName").val().trim(),
-      LastName: $("#PassengerLastName").val().trim(),
-      Email: randomPassUserName + '@placeholder.com',
+    const newPassenger = {
+      FirstName: $('#PassengerFirstName').val().trim(),
+      LastName: $('#PassengerLastName').val().trim(),
+      Email: `${randomPassUserName}@placeholder.com`,
       UserName: randomPassUserName,
       Password: randomString(14),
-      FlagNumber: $("#PassengerFlagNum").val().trim()
+      FlagNumber: $('#PassengerFlagNum').val().trim(),
     };
 
-    var welcomeEmailInfo = {
-      FirstName: $("#FirstName").val().trim(),
-      Email: $("#Email").val().trim(),
+    const welcomeEmailInfo = {
+      FirstName: $('#FirstName').val().trim(),
+      Email: $('#Email').val().trim(),
       UserName: randomUserName,
-      FlagNumber: $("#FlagNum").val().trim(),
-      ShirtStyle: $("#ShirtStyle").val(),
-      ShirtSize: $("#ShirtSize").val().trim(),
-      PassengerFirstName: $("#PassengerFirstName").val().trim(),
-      PassengerLastName: $("#PassengerLastName").val().trim(),
-      PassengerEmail: "",
+      FlagNumber: $('#FlagNumber').val().trim(),
+      ShirtStyle: $('#ShirtStyle').val(),
+      ShirtSize: $('#ShirtSize').val().trim(),
+      PassengerFirstName: $('#PassengerFirstName').val().trim(),
+      PassengerLastName: $('#PassengerLastName').val().trim(),
+      PassengerEmail: '',
       PassengerUserName: randomUserName,
-      PassengerFlagNumber: $("#PassengerFlagNum").val().trim(),
-      PassengerShirtStyle: $("#PassengerShirtStyle").val(),
-      PassengerShirtSize: $("#PassengerShirtSize").val().trim(),
-      EmailNotes: $("#EmailNotes").val().trim()
-    }
+      PassengerFlagNumber: $('#PassengerFlagNum').val().trim(),
+      PassengerShirtStyle: $('#PassengerShirtStyle').val(),
+      PassengerShirtSize: $('#PassengerShirtSize').val().trim(),
+      EmailNotes: $('#EmailNotes').val().trim(),
+    };
 
     // Make sure that rider first name isn't blank.
     if (!newUser.FirstName) {
@@ -276,14 +262,14 @@ $(document).ready(function() {
     }
 
     // Make sure that rider shirt size isn't blank.
-    if (welcomeEmailInfo.ShirtStyle != "Donation") {
-      if(!welcomeEmailInfo.ShirtSize) {
+    if (welcomeEmailInfo.ShirtStyle != 'Donation') {
+      if (!welcomeEmailInfo.ShirtSize) {
         alert("Rider's Shirt Size is required.");
         return;
       }
     }
 
-    //Check Passenger Info
+    // Check Passenger Info
     if (hasPassenger) {
       // Make sure that passenger first name isn't blank.
       if (!welcomeEmailInfo.PassengerFirstName) {
@@ -315,8 +301,8 @@ $(document).ready(function() {
       }
 
       // Make sure that passenger shirt size isn't blank.
-      if (welcomeEmailInfo.PassengerShirtStyle != "Donation") {
-        if(!welcomeEmailInfo.PassengerShirtSize) {
+      if (welcomeEmailInfo.PassengerShirtStyle != 'Donation') {
+        if (!welcomeEmailInfo.PassengerShirtSize) {
           alert("Passenger's Shirt Size is required.");
           return;
         }
@@ -324,24 +310,24 @@ $(document).ready(function() {
     }
 
     // If shirt is donated, set a false value for ShirtSize
-    if (welcomeEmailInfo.ShirtStyle == "Donation") {
-      welcomeEmailInfo.ShirtSize = "Donated";
+    if (welcomeEmailInfo.ShirtStyle == 'Donation') {
+      welcomeEmailInfo.ShirtSize = 'Donated';
     }
-    if (welcomeEmailInfo.PassengerShirtStyle == "Donation") {
-      welcomeEmailInfo.PassengerShirtSize = "Donated";
+    if (welcomeEmailInfo.PassengerShirtStyle == 'Donation') {
+      welcomeEmailInfo.PassengerShirtSize = 'Donated';
     }
 
     // Create the new rider
-    $.ajax("/api/v1/user", {
-      type: "POST",
-      data: newUser
+    $.ajax('/api/v1/user', {
+      type: 'POST',
+      data: newUser,
     })
       .then((res) => {
-        if(hasPassenger) {
-          $.ajax("/api/v1/user", {
-            type: "POST",
-            data: newPassenger
-          })
+        if (hasPassenger) {
+          $.ajax('/api/v1/user', {
+            type: 'POST',
+            data: newPassenger,
+          });
         }
         sendWelcomeEmail();
       })
@@ -349,36 +335,32 @@ $(document).ready(function() {
 
     function sendWelcomeEmail() {
       // Send the user a welcome email.
-      $.ajax("/api/v1/welcomeemail", {
-        type: "POST",
-        data: welcomeEmailInfo
+      $.ajax('/api/v1/welcomeemail', {
+        type: 'POST',
+        data: welcomeEmailInfo,
       })
         .then(() => {
           window.location.reload();
         })
         .catch(handleRegistrationError);
     }
-  })
+  });
 
   function handleRegistrationError(err) {
     console.log(err.responseJSON.errors[0].message);
     alert(err.responseJSON.errors[0].message);
-    return;
   }
 
   function countChar(val) {
-    var len = val.value.length;
+    const len = val.value.length;
     if (len >= 320) {
       val.value = val.value.substring(0, 320);
-      $(".characterCount").text("Characters remaining: 0");
+      $('.characterCount').text('Characters remaining: 0');
     } else {
       remainder = 320 - len;
-      $(".characterCount").text("Characters remaining: " + remainder);
+      $('.characterCount').text(`Characters remaining: ${remainder}`);
     }
   }
-
 });
 
-const randomString = (length = 14) => {
-  return Math.random().toString(16).substr(2, length);
-};
+const randomString = (length = 14) => Math.random().toString(16).substr(2, length);
