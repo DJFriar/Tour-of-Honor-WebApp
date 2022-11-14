@@ -1,19 +1,10 @@
-<!-- Desktop Navigation -->
+<!-- Desktop Navigation (Auth) -->
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
   <nav class="uk-navbar-container" uk-navbar="mode: click" id="master-topnav">
     <div class="uk-navbar-left">
       <a class="uk-navbar-item uk-logo uk-hidden@s" href="/memorials">TOH</a>
       <a class="uk-navbar-item uk-logo uk-visible@s" href="/memorials"><img class="toh-logo" src="/images/toh_logo.png"></a>
-      <div>
-        <%= User.FirstName %> <%= User.LastName %><br />
-        <%= User.Email %>
-      </div>
-    </div>
-    <div class="uk-navbar-right">
-      <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a> -->
-      <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <ul class="uk-navbar-nav uk-visible@m">
-        <li><a href="/registration">2023 Registration</a></li>
         <% if(User.isAdmin) { %>
           <li>
             <a href="#">Admin</a>
@@ -62,8 +53,19 @@
             </ul>
           </div>
         </li>
+        <li><a href="/registration">2023 Registration</a></li>
+      </ul>
+    </div>
+    <div class="uk-navbar-right">
+      <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a> -->
+      <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
+      <div class="uk-text-right">
+        <%= User.FirstName %>&nbsp;<%= User.LastName %>&nbsp;<i class="fal fa-circle-user fa-1x"></i><br />
+        <%= User.Email %>&nbsp;<i class="fal fa-envelope fa-1x"></i>
+      </div>
+      <ul class="uk-navbar-nav uk-visible@m">
         <li>
-          <a href="#"><i class="fal fa-circle-user fa-lg"></i></a>
+          <a href="#"><span class="toh-label toh-rider-flag"><%= User.FlagNumber %></span></a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
               <li><a href="/user-profile" class="hidden-link">Profile</a></li>
