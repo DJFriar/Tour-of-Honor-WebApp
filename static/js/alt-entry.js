@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 $(document).ready(() => {
   // Handle Memorial Earned Button
   $('#markMemorialEarned').on('click', () => {

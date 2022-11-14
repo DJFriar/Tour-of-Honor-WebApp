@@ -1,4 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
   const Flag = sequelize.define(
     'Flag',
     {

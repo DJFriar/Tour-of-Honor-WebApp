@@ -1,5 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
-  const Memorial = sequelize.define("Memorial", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Memorial = sequelize.define('Memorial', {
     Name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -7,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     Code: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     Category: {
       type: DataTypes.INTEGER,
@@ -45,14 +46,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     MultiImage: {
       type: DataTypes.BOOLEAN,
-      defaultValue: 0        
+      defaultValue: 0,
     },
     Restrictions: {
       type: DataTypes.INTEGER,
-      defaultValue: 0        
+      defaultValue: 0,
     },
     RallyYear: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     URL: {
       type: DataTypes.STRING,
@@ -61,4 +62,3 @@ module.exports = function(sequelize, DataTypes) {
 
   return Memorial;
 };
-

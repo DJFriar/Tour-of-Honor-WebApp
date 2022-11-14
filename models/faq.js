@@ -1,13 +1,14 @@
-module.exports = function(sequelize, DataTypes) {
-  const Faq = sequelize.define("Faq", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Faq = sequelize.define('Faq', {
     Question: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     Answer: {
       type: DataTypes.STRING,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   });
 
   return Faq;

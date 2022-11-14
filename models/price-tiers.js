@@ -1,5 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
-  const PriceTier = sequelize.define("PriceTier", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const PriceTier = sequelize.define('PriceTier', {
     Tier: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -19,9 +20,8 @@ module.exports = function(sequelize, DataTypes) {
     IsActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 1
-    }
+      defaultValue: 1,
+    },
   });
   return PriceTier;
 };
-
