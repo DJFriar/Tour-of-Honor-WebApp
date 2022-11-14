@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+require('dotenv').config();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -29,8 +31,10 @@ passport.use(
         // If none of the above are triggered, get modified User object
         const userInfo = await q.queryUserInfo(email);
         // return the userInfo
-        console.log('==== User Info ====');
-        console.log(userInfo);
+        if (process.env.NODE_ENV === 'Development') {
+          console.log('==== User Info ====');
+          console.log(userInfo);
+        }
         return done(null, userInfo);
       });
     },
