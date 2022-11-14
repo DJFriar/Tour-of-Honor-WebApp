@@ -1,5 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
-  const Trophy = sequelize.define("Trophy", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Trophy = sequelize.define('Trophy', {
     RegionID: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -15,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     FlagNumbers: {
       type: DataTypes.STRING,
       allowNull: true,
-    }
+    },
   });
   return Trophy;
 };

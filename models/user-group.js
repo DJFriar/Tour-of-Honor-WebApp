@@ -1,28 +1,29 @@
-module.exports = function(sequelize, DataTypes) {
-  const UserGroup = sequelize.define("UserGroup", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const UserGroup = sequelize.define('UserGroup', {
     Name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
     Description: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: ""
+      defaultValue: '',
     },
     IsActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 1
+      defaultValue: 1,
     },
     IsAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
     IsProtected: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 0
+      defaultValue: 0,
     },
   });
 

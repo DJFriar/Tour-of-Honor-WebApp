@@ -1,85 +1,54 @@
 $(document).ready(() => {
   $('#awardTable').DataTable({
     // "order": [[ 3, "desc" ]],
-    "pageLength": 25
+    pageLength: 25,
   });
 
   // Handle Trophies
-  $("#awardTrophy").on("click", function() {
-    var regionID = $("#TrophyRegion").val();
-    var trophyPlace = $("#TrophyPlace").val();
-    var flagNumbers = $("#FlagNums").val();
-    var trophyData = {
+  $('#awardTrophy').on('click', () => {
+    const regionID = $('#TrophyRegion').val();
+    const trophyPlace = $('#TrophyPlace').val();
+    const flagNumbers = $('#FlagNums').val();
+    const trophyData = {
       RegionID: regionID,
       TrophyPlace: trophyPlace,
       FlagNumbers: flagNumbers,
     };
 
-    $.ajax("/api/v1/award-trophy", {
-      type: "PUT",
-      data: trophyData
-    }).then(
-      function() { location.reload(); }
-    );
+    $.ajax('/api/v1/award-trophy', {
+      type: 'PUT',
+      data: trophyData,
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Handle Awards
-  $("#grantAward").on("click", function() {
-    var awardName = $("#AwardName").val();
-    var flagNumber = $("#FlagNum").val();
-    var awardDate = $("#Date").val();
-    var awardData = {
+  $('#grantAward').on('click', () => {
+    const awardName = $('#AwardName').val();
+    const flagNumber = $('#FlagNumber').val();
+    const awardDate = $('#Date').val();
+    const awardData = {
       AwardName: awardName,
       AwardDate: awardDate,
       FlagNumber: flagNumber,
     };
 
-    $.ajax("/api/v1/award-iba", {
-      type: "PUT",
-      data: awardData
-    }).then(
-      function() { location.reload(); }
-    );
+    $.ajax('/api/v1/award-iba', {
+      type: 'PUT',
+      data: awardData,
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Handle Delete Award Button
-  $(".deleteAwardButton").on("click", function() {
-    var id = $(this).data("uid");
-    $.ajax("/api/v1/award-iba/" + id, {
-      type: "DELETE"
-    }).then(
-      function() {
-        location.reload();
-      }
-    );
+  $('.deleteAwardButton').on('click', function () {
+    const id = $(this).data('uid');
+    $.ajax(`/api/v1/award-iba/${id}`, {
+      type: 'DELETE',
+    }).then(() => {
+      location.reload();
+    });
   });
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});

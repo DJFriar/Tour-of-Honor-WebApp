@@ -1,12 +1,13 @@
-module.exports = function(sequelize, DataTypes) {
-  const Submission = sequelize.define("Submission", {
+/* eslint-disable func-names */
+module.exports = function (sequelize, DataTypes) {
+  const Submission = sequelize.define('Submission', {
     UserID: {
       type: DataTypes.INTEGER,
-      defaultValue: 0      
+      defaultValue: 0,
     },
     MemorialID: {
       type: DataTypes.INTEGER,
-      defaultValue: 0  
+      defaultValue: 0,
     },
     PrimaryImage: {
       type: DataTypes.STRING,
@@ -18,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Status: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
     },
     ScorerNotes: {
       type: DataTypes.STRING,
@@ -28,17 +29,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    OtherRiders : {
+    OtherRiders: {
       type: DataTypes.STRING,
       allowNull: true,
     },
     Source: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1
-    }
+      defaultValue: 1,
+    },
   });
 
   return Submission;
 };
-

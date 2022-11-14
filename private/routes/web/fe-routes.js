@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const { DateTime } = require('luxon');
 const q = require('../../queries');
 
@@ -485,9 +486,13 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
+  app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
   });
 
   app.get('/memorials', async (req, res) => {
@@ -816,8 +821,8 @@ module.exports = function (app) {
         try {
           const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
           if (passFlagNum && passFlagNum > 0) {
-            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNum;
-            OrderInfo.PassFlagNum = passFlagNum.FlagNum;
+            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNumber;
+            OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
           } else {
             OrderInfo.dataValues.PassFlagNum = 0;
             OrderInfo.PassFlagNum = 0;

@@ -58,7 +58,6 @@ app.use(passport.session());
 // ================================================================================
 // ROUTES
 // ================================================================================
-// require("./routes")(app);
 app.use(require('./routes'));
 
 const auth = require('./private/routes/app/auth');

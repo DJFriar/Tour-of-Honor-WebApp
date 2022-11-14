@@ -1,9 +1,9 @@
 // This is middleware for restricting routes a user is not allowed to visit if not logged in
-module.exports = function(req, res, next) {
+module.exports = (req, res, next) => {
   req.session.returnTo = req.originalUrl;
-  source = req.route.path;
-  publicPages = ["/", "/login", "/signup", "/history", "/contact"];
-  privatePages = ["/admin", "/user-profile", "/review", "/submit"]
+  const source = req.route.path;
+  const publicPages = ['/', '/login', '/signup', '/history', '/contact'];
+  // const privatePages = ['/admin', '/user-profile', '/review', '/submit'];
 
   // Logged in, private page
   if (req.user && !publicPages.includes(source)) {
@@ -16,25 +16,25 @@ module.exports = function(req, res, next) {
 
   // logged in, public page
   if (req.user && publicPages.includes(source)) {
-    if (source === "/") {
+    if (source === '/') {
       return next();
     }
-    return res.render("pages" + source, { activeUser: true, user: req.user });
+    return res.render(`pages${source}`, { activeUser: true, user: req.user });
   }
 
   // not logged in, private page
   if (!req.user && !publicPages.includes(source)) {
-    return res.redirect("/login");
+    return res.redirect('/login');
   }
 
   // not logged in, public page
   if (!req.user && publicPages.includes(source)) {
-    if (source === "/") {
+    if (source === '/') {
       return next();
     }
-    return res.render("pages" + source, { activeUser: false });
+    return res.render(`pages${source}`, { activeUser: false });
   }
 
   // everything failed
-  return res.redirect("/");
+  return res.redirect('/');
 };
