@@ -1,7 +1,26 @@
 const { Op, QueryTypes } = require('sequelize');
+
 const db = require('../models');
-const { sequelize, Sequelize } = require('../models');
+const { sequelize } = require('../models');
 const { logger } = require('../controllers/logger');
+
+module.exports.queryUserInfo = async function queryUserInfo(email) {
+  try {
+    const result = await sequelize.query(
+      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNum,0) FlagNum, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNum > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      {
+        replacements: [email],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryUserInfo(${email}`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
 
 module.exports.queryAllCategories = async function queryAllCategories() {
   try {
@@ -95,7 +114,7 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
     const result = await db.User.findAll({
       where: {
         FlagNumber: {
-          [Sequelize.Op.in]: [flag],
+          [Op.in]: [flag],
         },
       },
     });
