@@ -606,7 +606,8 @@ $(document).ready(() => {
   $('.signWaiverButton').on('click', function signWaiverButton(e) {
     e.preventDefault();
     const UserID = $(this).data('userid');
-    const waiverURL = `https://waiver.smartwaiver.com/v/toh2023/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
+    const WaiverName = $(this).data('waivername');
+    const waiverURL = `https://waiver.smartwaiver.com/v/${WaiverName}/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
     window.open(waiverURL);
   });
 

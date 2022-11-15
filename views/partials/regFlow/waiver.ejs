@@ -10,7 +10,7 @@
       <button type="button" id="riderWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Rider Waiver Signed</button>
     <% } else { %>
       <label class="uk-form-label" for="saveWaiverInfoRider">&nbsp;</label>
-      <button type="button" id="saveWaiverInfoRider" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= User.id %>">Sign Rider Waiver</button>
+      <button type="button" id="saveWaiverInfoRider" class="uk-button uk-button-primary button-rounded signWaiverButton" data-waivername="<%= WaiverName %>" data-userid="<%= User.id %>">Sign Rider Waiver</button>
     <% } %>
     <% if (OrderInfo.PassUserID > 0) { %>
       <% if (OrderInfo.PassengerWaiverID) { %>
@@ -18,7 +18,7 @@
         <button type="button" id="passengerWaiverSignedButton" class="uk-button toh-button-success button-rounded" disabled><i class="fa-light fa-circle-check"></i> Passenger Waiver Signed</button>
       <% } else { %>
         <label class="uk-form-label" for="saveWaiverInfoPassenger">&nbsp;</label>
-        <button type="button" id="saveWaiverInfoPassenger" class="uk-button uk-button-primary button-rounded signWaiverButton" data-userid="<%= OrderInfo.PassUserID %>">Sign Passenger Waiver</button>
+        <button type="button" id="saveWaiverInfoPassenger" class="uk-button uk-button-primary button-rounded signWaiverButton" data-waivername="<%= WaiverName %>" data-userid="<%= OrderInfo.PassUserID %>">Sign Passenger Waiver</button>
       <% } %>
     <% } %>
   </div>
