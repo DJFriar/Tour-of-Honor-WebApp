@@ -610,15 +610,36 @@ module.exports = function (app) {
     });
   });
 
-  // Find rider by flag number
-  app.get('/api/v1/lookupRiderByFlag/:flag', (req, res) => {
+  // Find active rider by flag number
+  app.get('/api/v1/lookupActiveRiderByFlag/:flag', (req, res) => {
     const { flag } = req.params;
-    db.User.findOne({
+    db.Flag.findOne({
       where: {
         FlagNumber: flag,
+        RallyYear: CurrentRallyYear,
       },
     }).then((dbPost) => {
       res.json(dbPost);
+    });
+  });
+
+  // Find rider info by flag number for the passenger registration tool
+  app.get('/api/v1/lookupPassInfoByFlag/:flag', async (req, res) => {
+    const { flag } = req.params;
+    // let PassengerInfo;
+    db.Flag.findOne({
+      where: {
+        FlagNumber: flag,
+        RallyYear: 2022,
+      },
+    }).then((flagInfo) => {
+      db.User.findOne({
+        where: {
+          id: flagInfo.UserID,
+        },
+      }).then((userInfo) => {
+        res.json(userInfo);
+      });
     });
   });
 
@@ -1206,12 +1227,14 @@ module.exports = function (app) {
     })
       .then((res2) => res2.json())
       .then((json) => {
+        console.log('===== waiver API json response ====');
+        console.log(json.waiver);
         const UserID = json.waiver.autoTag || 0;
         if (UserID > 0) {
           db.Waiver.create({
             UserID,
             WaiverID: waiverID,
-            RallyYear: 2023,
+            RallyYear: CurrentRallyYear,
           });
         } else {
           logger.error('UserID not found in SmartWaiver response.');
@@ -1227,7 +1250,7 @@ module.exports = function (app) {
     db.Waiver.findOne({
       where: {
         UserID: waiverID,
-        RallyYear: process.env.ORDERING_RALLY_YEAR,
+        RallyYear: CurrentRallyYear,
       },
     }).then((waiverData) => {
       res.json(waiverData);
