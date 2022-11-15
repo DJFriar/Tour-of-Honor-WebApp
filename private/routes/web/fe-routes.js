@@ -489,6 +489,7 @@ module.exports = function (app) {
   app.get('/logout', (req, res, next) => {
     req.logout((err) => {
       if (err) {
+        logger.error('Error while logging out.');
         return next(err);
       }
       res.redirect('/');
