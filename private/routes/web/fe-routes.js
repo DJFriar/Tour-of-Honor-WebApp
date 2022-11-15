@@ -516,14 +516,18 @@ module.exports = function (app) {
   });
 
   app.get('/memorial/:memCode', async (req, res) => {
-    let activeUser = false;
     const { memCode } = req.params;
-    let memID = 0;
-    let MemorialData;
-    let MemorialText;
+    let activeUser = false;
+    let isAvailableToSubmit = false;
     let isMemorialInSubmissions = false;
     let isMemorialInXref = false;
-    let isAvailableToSubmit = false;
+    let memID = 0;
+    let MemorialData;
+    let MemorialStatus = 0;
+    let MemorialText;
+    let SubmissionStatus = [];
+    let UserData = [];
+
     try {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
@@ -540,9 +544,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error('Error encountered: queryMemorialText');
     }
-    let MemorialStatus = 0;
-    let SubmissionStatus = [];
-    let UserData = [];
+
     if (req.user) {
       activeUser = true;
       UserData = req.user;
@@ -807,11 +809,19 @@ module.exports = function (app) {
     let ShirtSizeSurcharge;
     let ShirtStyleSurcharge;
     let TotalOrderCost;
+    let WaiverName;
+
     if (req.user) {
       activeUser = true;
     }
     if (!req.user) {
       return res.redirect('/signup');
+    }
+
+    if (process.env.NODE_ENV === 'Production') {
+      WaiverName = `toh${process.env.CURRENT_RALLY_YEAR}prod`;
+    } else {
+      WaiverName = `toh${process.env.CURRENT_RALLY_YEAR}test`;
     }
 
     try {
@@ -912,6 +922,7 @@ module.exports = function (app) {
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
       TotalOrderCost,
+      WaiverName,
       dt: DateTime,
     });
   });
