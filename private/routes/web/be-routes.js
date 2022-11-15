@@ -902,7 +902,7 @@ module.exports = function (app) {
       const { PassShirtSize } = req.body;
       const { PassShirtStyle } = req.body;
       const ShirtSizesToSurcharge = ['2X', '3X', '4X', '5X'];
-      const ShirtStylesToSurcharge = ['Long-Sleeved', 'Ladies Short-Sleeved'];
+      const ShirtStylesToSurcharge = ['Long-Sleeved', 'Ladies V-Neck'];
 
       const ShirtDetails = {
         ShirtSize,
