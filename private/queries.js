@@ -7,7 +7,7 @@ const { logger } = require('../controllers/logger');
 module.exports.queryUserInfo = async function queryUserInfo(email) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
       {
         replacements: [email],
         type: QueryTypes.SELECT,
