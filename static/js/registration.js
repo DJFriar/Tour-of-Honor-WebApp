@@ -255,7 +255,7 @@ $(document).ready(() => {
     $('#passengerFlagLookupResultsError').addClass('hide-me');
     const UserID = $(this).data('userid');
     const flag = $('#PassengerFlagNumber').val().trim();
-    $.ajax(`/api/v1/lookupRiderByFlag/${flag}`, {
+    $.ajax(`/api/v1/lookupPassInfoByFlag/${flag}`, {
       type: 'GET',
     }).then((res) => {
       if (res === null) {
@@ -270,7 +270,7 @@ $(document).ready(() => {
       } else {
         $('#passengerFlagLookupResults').removeClass('hide-me');
         $('#acceptPassengerFlagMatch').attr('data-passuserid', res.id);
-        $('#PassengerFirstName').text(`#${res.FlagNumber} ${res.FirstName}`);
+        $('#PassengerFirstName').text(`#${flag} ${res.FirstName}`);
         $('#PassengerLastName').text(res.LastName);
       }
     });

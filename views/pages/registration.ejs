@@ -27,7 +27,7 @@
               active="<%= OrderInfo.NextStepNum %>">
               <% OrderSteps.forEach(function(orderStep) { %>
                 <li>
-                  <a class="disabled" href="#" id="<%= " RegStep" + orderStep.StepIndex %>">
+                  <a class="disabled" href="#" id="<%= "RegStep" + orderStep.StepIndex %>">
                   <span class="registrationTitleText"><%= orderStep.Title %></span><br />
                   <span class="registrationSubtitleText"><%= orderStep.Subtitle %></span></a>
                 </li>
