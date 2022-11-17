@@ -1,6 +1,6 @@
 <!-- Desktop Navigation (Auth) -->
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
-  <nav class="uk-navbar-container" uk-navbar="mode: click" id="master-topnav">
+  <nav class="uk-navbar-container" uk-navbar="mode: click" id="master-topnav" <%- envIsTest ? 'style="background-color: rgba(245, 75, 75, 0.708) !important"' : envIsDev ? 'style="background-color: coral !important"' : ''%>>
     <div class="uk-navbar-left">
       <a class="uk-navbar-item uk-logo uk-hidden@s" href="/memorials">TOH</a>
       <a class="uk-navbar-item uk-logo uk-visible@s" href="/memorials"><img class="toh-logo" src="/images/toh_logo.png"></a>
