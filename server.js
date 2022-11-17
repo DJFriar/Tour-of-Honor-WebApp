@@ -55,6 +55,13 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  if (!req.envMode) {
+    req.envMode = process.env.NODE_ENV_SHORT;
+  }
+  next();
+});
+
 // ================================================================================
 // ROUTES
 // ================================================================================
