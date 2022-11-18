@@ -541,8 +541,15 @@ $(document).ready(() => {
   /* #region  Payment Info Tab */
 
   // Handle Rider Payment Button
-  $('#goToPayment').on('click', () => {
+  $('#goToPayment').on('click', (e) => {
+    e.preventDefault();
+    $('#shopifyWarningModal').css('display', 'block');
+  });
+
+  // Handle Checkout Now Button
+  $('#goToShopifyPaymentBtn').on('click', () => {
     window.open(CheckoutURL);
+    $('#shopifyWarningModal').css('display', 'none');
     $('#shopifyPaymentContainer').addClass('hide-me');
     $('#awaitingShopifyContent').removeClass('hide-me');
   });
