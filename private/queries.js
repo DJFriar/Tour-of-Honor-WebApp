@@ -423,6 +423,25 @@ module.exports.queryAllUsers = async function queryAllUsers(user = false) {
   }
 };
 
+module.exports.queryAllUsersWithFlagInfo = async function queryAllUsersWithFlagInfo(year) {
+  let result;
+  try {
+    result = await sequelize.query(
+      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND f.RallyYear = ?',
+      {
+        replacements: [year],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryAllUsersWithFlagInfo()`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
 module.exports.queryAllScorers = async function queryAllScorers(sponsor = false) {
   let result;
   try {
