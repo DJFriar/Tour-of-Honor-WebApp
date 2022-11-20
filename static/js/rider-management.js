@@ -3,6 +3,29 @@ $(document).ready(() => {
   existingPassengerFlagNumberFound = false;
   hasPassenger = false;
   $('#usersTable').DataTable({
+    ajax: {
+      url: '/api/v1/riders',
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'RiderFlagNumber' },
+      { data: 'RiderFirstName' },
+      { data: 'RiderLastName' },
+      { data: 'RiderEmail' },
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend: 'excel',
+        text: 'Save to Excel',
+        title: 'TOH Active Riders',
+        exportOptions: {
+          modifier: {
+            search: 'none',
+          },
+        },
+      },
+    ],
     pageLength: 100,
   });
   $('#sponsorsTable').DataTable();

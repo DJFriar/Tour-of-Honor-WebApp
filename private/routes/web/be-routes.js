@@ -1151,17 +1151,6 @@ module.exports = function (app) {
     });
   });
 
-  // Get all orders
-  app.get('/api/v1/orders', async (req, res) => {
-    let OrderDetails;
-    try {
-      OrderDetails = await q.queryAllOrdersWithDetail();
-    } catch (err) {
-      logger.error(`Error encountered: queryAllOrdersWithDetail.${err}`);
-    }
-    res.json(OrderDetails);
-  });
-
   // Save New Charity
   app.post('/api/v1/charity', (req, res) => {
     db.Charity.create({
