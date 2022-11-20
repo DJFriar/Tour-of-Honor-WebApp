@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(() => {
   $('#ordersTable').DataTable({
     ajax: {
       url: '/api/v1/orders',
@@ -6,10 +6,13 @@ $(document).ready(function() {
     },
     columns: [
       { data: 'OrderNumber' },
+      { data: 'NextStep' },
       { data: 'RiderFirstName' },
       { data: 'RiderLastName' },
+      { data: 'RiderFlagNumber' },
       { data: 'RiderShirt' },
       { data: 'PassengerName' },
+      { data: 'PassFlagNumber' },
       { data: 'PassengerShirt' },
       { data: 'CharityName' },
     ],
@@ -21,11 +24,11 @@ $(document).ready(function() {
         title: 'TOH Orders',
         exportOptions: {
           modifier: {
-            search: 'none'
-          }
-        }
-      }
+            search: 'none',
+          },
+        },
+      },
     ],
-    pageLength: 100
+    pageLength: 100,
   });
-})
+});
