@@ -22,6 +22,24 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
   }
 };
 
+module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
+  try {
+    const result = await sequelize.query(
+      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      {
+        replacements: [UserID],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryUserInfoByID(${UserID}`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
 module.exports.queryAllCategories = async function queryAllCategories() {
   try {
     const result = await db.Category.findAll({
@@ -240,7 +258,7 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
   try {
     if (id) {
       result = await sequelize.query(
-        "SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+        "SELECT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id INNER JOIN Flags f ON f.UserID = u.id WHERE s.id = ?",
         {
           replacements: [id],
           type: QueryTypes.SELECT,
@@ -248,7 +266,7 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
       );
     } else {
       result = await sequelize.query(
-        "SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
+        "SELECT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id INNER JOIN Flags f ON f.UserID = u.id WHERE s.Status IN (0,3)",
         {
           type: QueryTypes.SELECT,
         },
@@ -831,7 +849,7 @@ module.exports.queryAllOrders = async function queryAllOrders() {
 module.exports.queryAllOrdersWithDetail = async function queryAllOrdersWithDetail() {
   try {
     const result = await sequelize.query(
-      "SELECT  o.id, o.RallyYear, CASE WHEN ISNULL(o.OrderNumber) THEN 'UNPAID' ELSE o.OrderNumber END AS OrderNumber, CONCAT(o.ShirtSize, ' ', o.ShirtStyle) AS RiderShirt, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(o.PassShirtSize, ' ', o.PassShirtStyle) END AS PassengerShirt, u1.FirstName AS RiderFirstName, u1.LastName AS RiderLastName, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName, pt.Price AS PriceCharged, CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName FROM Orders o LEFT JOIN Users u1 ON o.UserID = u1.id LEFT JOIN Users u2 ON o.PassUserID = u2.id LEFT JOIN PriceTiers pt ON o.PriceTier = pt.id LEFT JOIN Charities c ON o.CharityChosen = c.id",
+      "SELECT o.id, CASE WHEN o.NextStepNum = 0 THEN 'Rider Info' WHEN o.NextStepNum = 1 THEN 'Bike Info' WHEN o.NextStepNum = 2 THEN 'Passenger Info' WHEN o.NextStepNum = 3 THEN 'Charity Choice' WHEN o.NextStepNum = 4 THEN 'T-Shirt Choice' WHEN o.NextStepNum = 5 THEN 'Payment' WHEN o.NextStepNum = 6 THEN 'Waiver' WHEN o.NextStepNum = 7 THEN 'Flag Number' WHEN o.NextStepNum = 8 THEN 'Completed' END AS NextStep,  o.RallyYear,  CASE WHEN ISNULL(o.OrderNumber) THEN 'UNPAID' ELSE o.OrderNumber END AS OrderNumber,  CONCAT(o.ShirtSize, ' ',  o.ShirtStyle) AS RiderShirt,  CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(o.PassShirtSize, ' ', o.PassShirtStyle) END AS PassengerShirt,  u1.FirstName AS RiderFirstName,  u1.LastName AS RiderLastName,  CASE WHEN ISNULL(o.RequestedRiderFlagNumber) THEN 'N/A' ELSE o.RequestedRiderFlagNumber END AS RiderFlagNumber, CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName,  CASE WHEN ISNULL(o.RequestedPassFlagNumber) THEN 'N/A' ELSE o.RequestedPassFlagNumber END AS PassFlagNumber, pt.Price AS PriceCharged,  CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName  FROM Orders o  LEFT JOIN Users u1 ON o.UserID = u1.id  LEFT JOIN Users u2 ON o.PassUserID = u2.id  LEFT JOIN PriceTiers pt ON o.PriceTier = pt.id  LEFT JOIN Charities c ON o.CharityChosen = c.id",
       {
         type: QueryTypes.SELECT,
       },
