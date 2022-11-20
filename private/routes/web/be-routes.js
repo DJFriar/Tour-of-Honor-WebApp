@@ -1007,6 +1007,9 @@ module.exports = function (app) {
         UserID: req.body.UserID,
         RallyYear: req.body.RallyYear,
       };
+      const UserInfo = {
+        isActive: 1,
+      };
       const OrderInfo = {};
       if (req.body.whoami === 'rider') {
         OrderInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
@@ -1033,7 +1036,24 @@ module.exports = function (app) {
               logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`, {
                 calledFrom: 'be-routes.js',
               });
-              res.status(202).send();
+              // Update User to be Active
+              db.User.update(UserInfo, {
+                where: {
+                  id: req.body.UserID,
+                },
+              })
+                .then(() => {
+                  logger.info(`User ${req.body.UserID} was marked active.`, {
+                    calledFrom: 'be-routes.js',
+                  });
+                  res.status(202).send();
+                })
+                .catch((err) => {
+                  logger.error(`Error marking User ${req.body.UserID} active: ${err}`, {
+                    calledFrom: 'be-routes.js',
+                  });
+                  res.status(400).json(err);
+                });
             })
             .catch((err) => {
               logger.error(`Error updating order with FlagInProgress info: ${err}`, {
@@ -1069,7 +1089,9 @@ module.exports = function (app) {
           res.status(202).send();
         })
         .catch((err) => {
-          logger.error(`Error updating order with FlagComplete info: ${err}`);
+          logger.error(`Error updating order ${req.body.OrderID} with FlagComplete info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
