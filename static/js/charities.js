@@ -28,6 +28,7 @@ $(document).ready(() => {
         text: 'Save to Excel',
         title: 'TOH Donation Summary',
         exportOptions: {
+          columns: ':visible',
           modifier: {
             search: 'none',
           },
