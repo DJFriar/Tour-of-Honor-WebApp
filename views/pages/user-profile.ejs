@@ -115,8 +115,8 @@
                     <%= Bike.Model %>
                   </td>
                   <td>
-                    <span class="editBikeInfoBtn clickable" uk-tooltip="Edit Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
-                    <span class="deleteBikeBtn clickable" uk-tooltip="Delete Bike" data-bikeid="<%- Bike.id %>"><i class="fal fa-trash-can"></i></span>
+                    <span class="editBikeInfoBtn clickable" uk-tooltip="Edit Bike" data-bikeid="<%- Bike.id %>"><i class="fa-light fa-pen-to-square fa-lg"></i></span>&nbsp;
+                    <span class="deleteBikeBtn clickable" uk-tooltip="Delete Bike" data-bikeid="<%- Bike.id %>"><i class="fa-light fa-trash-can"></i></span>
                   </td>
                 </tr>
               <% }) %>
@@ -149,19 +149,19 @@
                 </td>
                 <td>
                   <% if(riderSubmission.StatusID == 0) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fal fa-clock"></i>&nbsp;<%= riderSubmission.Status %></span>
+                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-light fa-clock"></i>&nbsp;<%= riderSubmission.Status %></span>
                   <% } %>
                   <% if(riderSubmission.StatusID == 1) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-check" color="green"></i>&nbsp;<%= riderSubmission.Status %></span>
+                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-shield-check" color="green"></i>&nbsp;<%= riderSubmission.Status %></span>
                   <% } %>
                   <% if(riderSubmission.StatusID == 2) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
+                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
                   <% } %>
                   <% if(riderSubmission.StatusID == 3) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fas fa-pause" color="orange"></i>&nbsp;<%= riderSubmission.Status %></span>
+                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-pause" color="orange"></i>&nbsp;<%= riderSubmission.Status %></span>
                   <% } %>
                   <% if(riderSubmission.ScorerNotes) { %>
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="fal fa-comment-alt-lines"></i></span>
+                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="fa-light fa-message-lines"></i></span>
                   <% } %>
                 </td>
                 <td>
@@ -169,7 +169,7 @@
                 </td>
                 <td>
                   <% if(riderSubmission.StatusID == 0) { %> 
-                    <span class="deleteSubmissionButton clickable" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fal fa-trash-can"></i></span>&nbsp;
+                    <span class="deleteSubmissionButton clickable" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fa-light fa-trash-can"></i></span>&nbsp;
                   <% } %>
                 </td>
               </tr>

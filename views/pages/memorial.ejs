@@ -13,10 +13,10 @@
       <%= MemorialData[0].Name %> 
       (<%= MemorialData[0].Code %>) &nbsp;
       <% if(SubmissionStatus[0].Status == 0) { %>
-        <i class="fal fa-clock"></i>
+        <i class="fa-light fa-clock"></i>
       <% } %>
       <% if(SubmissionStatus[0].Status == 1) { %>
-        <i class="fas fa-shield-check" color="green"></i>
+        <i class="fa-solid fa-shield-check" color="green"></i>
       <% } %>
     </h1>
     <% if(NotificationText) { %>
@@ -64,7 +64,7 @@
                 <input type="hidden" id="Source" name="Source" value="4">
                 <input type="hidden" id="MultiImage" name="MultiImage" value="<%= MemorialData[0].MultiImage %>">
                 <div class="uk-margin hide-me" id="GroupRiderInfoDiv">
-                  <label for="GroupRiderInfo" id="GroupRiderInfoLabel">Group Rider Flag Numbers&nbsp;<span uk-tooltip="Enter flag numbers only, seperated by a comma, ie '123,999,555'."><i class="fal fa-info-circle"></i></span></label>
+                  <label for="GroupRiderInfo" id="GroupRiderInfoLabel">Group Rider Flag Numbers&nbsp;<span uk-tooltip="Enter flag numbers only, seperated by a comma, ie '123,999,555'."><i class="fa-light fa-circle-info"></i></span></label>
                   <input class="uk-input toh-input uk-width-1-1" type="text" name="GroupRiderInfo" id="GroupRiderInfo" placeholder="">
                 </div>
                 <div class="uk-margin">

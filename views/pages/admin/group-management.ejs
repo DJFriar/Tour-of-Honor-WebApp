@@ -9,7 +9,7 @@
       <%- include('../../partials/topnav'); %>
     <% } %>
     <main>
-      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
       <h1>Group Manager<span class="uk-align-right"><button type="button" id="addNewGroupBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Group</button></span></h1>
       <% if(NotificationText) { %>
         <%- include('../../partials/notice'); %>
@@ -49,10 +49,10 @@
               </td>
               <td>
                 <% if(Group.IsProtected) { %> 
-                  <span uk-tooltip="Protected Group"><i class="fas fa-lock"></i></span> 
+                  <span uk-tooltip="Protected Group"><i class="fa-solid fa-lock"></i></span> 
                 <% } else { %>
-                  <span class="editGroupInfoBtn clickable" uk-tooltip="Edit Group" data-groupid="<%- Group.id %>"><i class="fal fa-edit fa-lg"></i></span>&nbsp;
-                  <span class="disableGroupBtn clickable" uk-tooltip="Disable Group" data-groupid="<%- Group.id %>"><i class="far fa-ban fa-lg"></i></span>
+                  <span class="editGroupInfoBtn clickable" uk-tooltip="Edit Group" data-groupid="<%- Group.id %>"><i class="fa-light fa-edit fa-lg"></i></span>&nbsp;
+                  <span class="disableGroupBtn clickable" uk-tooltip="Disable Group" data-groupid="<%- Group.id %>"><i class="fa-regular fa-ban fa-lg"></i></span>
                 <% } %>
               </td>
             </tr>

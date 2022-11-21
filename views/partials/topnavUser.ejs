@@ -57,11 +57,11 @@
       </ul>
     </div>
     <div class="uk-navbar-right">
-      <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fal fa-sign-in fa-lg"></i></a> -->
+      <!-- <a href="/login" class="uk-hidden@m hidden-link"><i class="fa-light fa-arrow-right-to-bracket fa-lg"></i></a> -->
       <a href="#mobilenav" class="uk-navbar-toggle uk-hidden@m" uk-navbar-toggle-icon uk-toggle="target: #mobilenav"></a>
       <div class="uk-text-right">
-        <%= User.FirstName %>&nbsp;<%= User.LastName %>&nbsp;<i class="fal fa-circle-user fa-1x"></i><br />
-        <%= User.Email %>&nbsp;<i class="fal fa-envelope fa-1x"></i>
+        <%= User.FirstName %>&nbsp;<%= User.LastName %>&nbsp;<i class="fa-light fa-circle-user fa-1x"></i><br />
+        <%= User.Email %>&nbsp;<i class="fa-light fa-envelope fa-1x"></i>
       </div>
       <ul class="uk-navbar-nav uk-visible@m">
         <li>
@@ -71,7 +71,7 @@
               <li><a href="/user-profile" class="hidden-link">Profile</a></li>
               <li><a href="/changelog" class="hidden-link">Changelog</a></li>
               <li class="uk-nav-divider"></li>
-              <li id="topnavLogout" class="hidden-link"><a href="/logout" class="hidden-link">Logout&nbsp;<span class="fal fa-arrow-right-from-bracket fa-lg"></span></a></li>
+              <li id="topnavLogout" class="hidden-link"><a href="/logout" class="hidden-link">Logout&nbsp;<span class="fa-light fa-arrow-right-from-bracket fa-lg"></span></a></li>
             </ul>
           </div>
         </li>
@@ -115,11 +115,11 @@
         </li>
       <% } %>
       <li class="uk-parent">
-        <a href="#"><i class="fal fa-circle-user fa-lg"></i></a>
+        <a href="#"><i class="fa-light fa-circle-user fa-lg"></i></a>
         <ul class="uk-nav-sub">
           <li><a href="/user-profile">Profile</a></li>
           <li><a href="/changelog">Changelog</a></li>
-          <li id="topnavLogout"><a href="/logout">Logout&nbsp;<span class="fal fa-arrow-right-from-bracket fa-lg"></span></a></li>
+          <li id="topnavLogout"><a href="/logout">Logout&nbsp;<span class="fa-light fa-arrow-right-from-bracket fa-lg"></span></a></li>
         </ul>
       </li>
     </ul>

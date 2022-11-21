@@ -73,7 +73,7 @@
                   <% } %>
                 </td>
                 <td>
-                  <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fal fa-user-friends"></i></span> <% } %> 
+                  <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fa-light fa-user-friends"></i></span> <% } %> 
                 </td>
                 <td>
                   <%= submission.Code %>
@@ -88,8 +88,8 @@
                   <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
                 </td>
                 <td>
-                  <% if(submission.Status == 1) { %> <span><i class="fas fa-shield-check" color="green"></i></span> <% } %> 
-                  <% if(submission.Status == 2) { %> <span><i class="fas fa-shield-exclamation" color="red"></i></span> <% } %> 
+                  <% if(submission.Status == 1) { %> <span><i class="fa-solid fa-shield-check" color="green"></i></span> <% } %> 
+                  <% if(submission.Status == 2) { %> <span><i class="fa-solid fa-shield-exclamation" color="red"></i></span> <% } %> 
                   &nbsp;<%= submission.StatusText %>
                 </td>
                 <td>
