@@ -20,13 +20,13 @@ $(document).ready(() => {
       { targets: [0], visible: false },
       { render: function (data, type, row) {
         if (data) {
-          return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fal fa-message-sms fa-lg"></i></div>'
+          return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fa-light fa-message-sms fa-lg"></i></div>'
         } else {
           return data
         }
       }, targets: [5] },
       { render: function (data, type, row) {
-        return '<div class="editUserButton" data-uid="' + row['id'] + '"><i class="fal fa-edit fa-lg"></i> Edit Rider</div>'
+        return '<div class="editUserButton" data-uid="' + row['id'] + '"><i class="fa-light fa-pen-to-square fa-lg"></i> Edit Rider</div>'
       }, targets: [6]}
     ],
     dom: 'Bfrtip',
