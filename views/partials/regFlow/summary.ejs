@@ -2,14 +2,30 @@
   <h2>Registration Complete</h2>
   <div class="toh-mt-24">
     <p>
-      Thank you for your support! Below is a summary of your order. If you see an error or need to make a change, please send an email to <a href="mailto:dave.brooks@tourofhonor.com">orders@tourofhonor.com</a>
+      Thank you for your support, <%= OrderInfo.RiderFirstName %>! Below is a summary of your order. If you see an error or need to make a change, please send an email to <a href="mailto:dave.brooks@tourofhonor.com">orders@tourofhonor.com</a>
     </p>
     <p>
       Your order number is <span class="dataValueBold"><%= OrderInfo.OrderNumber %></span>. 
-      You registered for the <span class="dataValueBold"><%= OrderInfo.RallyYear %></span> 
-      Tour of Honor as a <span class="dataValueBold"><% if (OrderInfo.RequestedPassFlagNumber) { %> solo rider<% } else { %> rider & passenger<% } %></span> 
-      and your flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedRiderFlagNumber %></span>. 
-      This order includes a <span class="dataValueBold"><%= OrderInfo.ShirtSize %> <%= OrderInfo.ShirtStyle %></span>.
+      You have successfully registered for the <span class="dataValueBold"><%= OrderInfo.RallyYear %></span> Tour of Honor as a 
+      <% if (OrderInfo.RequestedPassFlagNumber && OrderInfo.RequestedPassFlagNumber > 0) { %>
+        <span class="dataValueBold"> rider & passenger</span>. Your flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedRiderFlagNumber %></span> 
+        and <span class="dataValueBold"><%= OrderInfo.PassengerName %>'s</span> flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedPassFlagNumber %></span>.
+      <% } else { %>
+        <span class="dataValueBold"> solo rider</span>. Your flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedRiderFlagNumber %></span>.
+      <% } %>
+    </p><p>
+      You chose to support <span class="dataValueBold"><%= OrderInfo.CharityName %></span>
+      <% if (OrderInfo.ShirtStyle === 'Donation') { %>
+        and in lieu of a T-Shirt, opted to donate that value to charity.
+      <% } else { %>
+        and will be getting a <span class="dataValueBold"><%= OrderInfo.ShirtSize %> <%= OrderInfo.ShirtStyle %> T-Shirt</span>.
+      <% } %>
+      <% if (OrderInfo.PassShirtStyle && OrderInfo.PassShirtStyle === 'Donation') { %>
+        You <% if (OrderInfo.ShirtStyle === 'Donation') { %> also <% } %>opted to donate the value of your passenger's T-Shirt to charity.
+      <% } %>
+      <% if (OrderInfo.PassShirtStyle && OrderInfo.PassShirtStyle !== 'Donation') { %>
+        Your passenger will be getting a <span class="dataValueBold"><%= OrderInfo.PassShirtSize %> <%= OrderInfo.PassShirtStyle %> T-Shirt</span>.
+      <% } %>
     </p>
     <h5>Additional Items</h5>
     <p>

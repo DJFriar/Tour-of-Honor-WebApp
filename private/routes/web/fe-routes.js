@@ -801,6 +801,7 @@ module.exports = function (app) {
     let BaseRiderRate;
     let Charities;
     let OrderInfo;
+    let OrderInfoArray = [];
     let PassengerSurcharge;
     let RiderBikeInfo;
     let ShirtSizeSurcharge;
@@ -822,7 +823,10 @@ module.exports = function (app) {
     }
 
     try {
-      OrderInfo = await q.queryOrderInfoByRider(req.user.id, 2023);
+      OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, 2023);
+      OrderInfo = OrderInfoArray[0];
+      console.log('==== OrderInfo ====');
+      console.log(OrderInfo);
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
