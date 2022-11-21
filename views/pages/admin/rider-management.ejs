@@ -10,7 +10,7 @@
       <%- include('../../partials/topnav'); %>
     <% } %>
     <main>
-      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fas fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
       <h1>RIDER MANAGEMENT</h1>
       <div class="admin-container" id='tabs'>
         <ul uk-tab>
@@ -153,8 +153,8 @@
                       <%= sponsor.States %>
                     </td>
                     <td>
-                      <span class="deleteSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-trash-can"></i></span>&nbsp;
-                      <span class="editSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fal fa-edit"></i></span>
+                      <span class="deleteSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fa-light fa-trash-can"></i></span>&nbsp;
+                      <span class="editSponsorButton" data-uid="<%- sponsorData.ID %>"><i class="fa-light fa-pen-to-square"></i></span>
                     </td>
                   </tr>
                 <% }) %>
