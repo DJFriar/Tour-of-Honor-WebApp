@@ -1151,34 +1151,6 @@ module.exports = function (app) {
     });
   });
 
-  // Save New Charity
-  app.post('/api/v1/charity', (req, res) => {
-    db.Charity.create({
-      RallyYear: req.body.RallyYear,
-      Name: req.body.CharityName,
-      URL: req.body.CharityURL,
-    })
-      .then((c) => {
-        logger.info(`Charity ${c.id} created.`, { calledFrom: 'be-routes.js' });
-        res.status(200).send();
-      })
-      .catch((err) => {
-        logger.error(`Error creating charity: ${err}`);
-        res.status(401).json(err);
-      });
-  });
-
-  // Delete a Charity
-  app.delete('/api/v1/charity/:id', (req, res) => {
-    const charityid = req.params.id;
-
-    db.Charity.destroy({
-      where: { id: charityid },
-    }).then(() => {
-      res.status(200).send();
-    });
-  });
-
   // Add New User Group
   app.post('/api/v1/group', (req, res) => {
     db.UserGroup.create({
@@ -1238,8 +1210,6 @@ module.exports = function (app) {
     })
       .then((res2) => res2.json())
       .then((json) => {
-        console.log('===== waiver API json response ====');
-        console.log(json.waiver);
         const UserID = json.waiver.autoTag || 0;
         if (UserID > 0) {
           db.Waiver.create({
