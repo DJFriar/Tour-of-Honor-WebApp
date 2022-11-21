@@ -73,8 +73,6 @@ $(document).ready(() => {
     $.ajax(`/api/v1/riderInfo/${id}`, {
       type: 'GET',
     }).then((res) => {
-      console.log("==== user API res ====");
-      console.log(res);
       $('#EditUserID').val(res.id);
       if (res.FlagNumber > 0) {
         $('#EditFlagNumber').val(res.FlagNumber);
