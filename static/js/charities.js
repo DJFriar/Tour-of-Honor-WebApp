@@ -1,49 +1,78 @@
-$(document).ready(function() {
+$(document).ready(() => {
   $('#charitiesTable').DataTable({
-    pageLength: 25
+    ajax: {
+      url: '/api/v1/charity',
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'id' },
+      { data: 'Name' },
+      { data: 'URL' },
+      { data: 'RallyYear' },
+      { data: 'TotalDonations' },
+    ],
+    columnDefs: [
+      { targets: [0], visible: false },
+      {
+        render(data) {
+          const totalAmount = data * 25;
+          return `$${totalAmount}`;
+        },
+        targets: [4],
+      },
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend: 'excel',
+        text: 'Save to Excel',
+        title: 'TOH Donation Summary',
+        exportOptions: {
+          modifier: {
+            search: 'none',
+          },
+        },
+      },
+    ],
+    pageLength: 10,
   });
 
   // Handle Dialog Close Button
-  $(".close").on("click", function() {
-    $(".modal").css("display","none");
-  })
+  $('.close').on('click', () => {
+    $('.modal').css('display', 'none');
+  });
 
   // Handle Add New Charity Button
-  $("#addNewCharityBtn").on("click", function(e) {
+  $('#addNewCharityBtn').on('click', (e) => {
     e.preventDefault();
-    $("#charityInfoAddModal").css("display","block");
-  })
+    $('#charityInfoAddModal').css('display', 'block');
+  });
 
   // Handle Save New Charity Button
-  $("#saveNewCharityBtn").on("click", function(e) {
+  $('#saveNewCharityBtn').on('click', (e) => {
     e.preventDefault();
-    var charityInfo = {
+    const charityInfo = {
       RallyYear: 2023,
-      CharityName: $("#CharityName").val().trim(),
-      CharityURL: $("#CharityURL").val().trim(),
-    }
+      CharityName: $('#CharityName').val().trim(),
+      CharityURL: $('#CharityURL').val().trim(),
+    };
 
-    $.ajax("/api/v1/charity", {
-      type: "POST",
-      data: charityInfo
-    }).then(
-      function() { 
-        location.reload(); 
-      }
-    )
-  })
+    $.ajax('/api/v1/charity', {
+      type: 'POST',
+      data: charityInfo,
+    }).then(() => {
+      location.reload();
+    });
+  });
 
   // Handle Charity Deletion
-  $(".deleteCharityBtn").on("click", function() {
-    var CharityID = $(this).data("charityid");
+  $('.deleteCharityBtn').on('click', function () {
+    const CharityID = $(this).data('charityid');
 
-    $.ajax("/api/v1/charity/" + CharityID, {
-      type: "DELETE"
-    }).then(
-      function() {
-        location.reload();
-      }
-    );
-  })
-
-})
+    $.ajax(`/api/v1/charity/${CharityID}`, {
+      type: 'DELETE',
+    }).then(() => {
+      location.reload();
+    });
+  });
+});

@@ -12,5 +12,6 @@ ApiRouter.use('/flag', require('./v1/flag'));
 ApiRouter.use('/email', require('./v1/email'));
 ApiRouter.use('/orders', require('./v1/orders'));
 ApiRouter.use('/riders', require('./v1/riders'));
+ApiRouter.use('/charity', require('./v1/charity'));
 
 module.exports = ApiRouter;
