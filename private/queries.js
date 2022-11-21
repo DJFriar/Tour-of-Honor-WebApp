@@ -4,6 +4,8 @@ const db = require('../models');
 const { sequelize } = require('../models');
 const { logger } = require('../controllers/logger');
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 module.exports.queryUserInfo = async function queryUserInfo(email) {
   try {
     const result = await sequelize.query(
@@ -25,7 +27,7 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
 module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
       {
         replacements: [UserID],
         type: QueryTypes.SELECT,
@@ -436,6 +438,25 @@ module.exports.queryAllUsersWithFlagInfo = async function queryAllUsersWithFlagI
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryAllUsersWithFlagInfo()`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
+module.exports.queryActiveRiderInfo = async function queryActiveRiderInfo(id) {
+  let result;
+  try {
+    result = await sequelize.query(
+      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND u.id = ? AND f.RallyYear = ?',
+      {
+        replacements: [id, currentRallyYear],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryActiveRiderInfo(${id})`, {
       calledBy: 'queries.js',
     });
     throw err;
