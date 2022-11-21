@@ -952,14 +952,8 @@ module.exports = function (app) {
 
   app.get('/admin/charity-manager', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let Charities;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      Charities = await q.queryAllCharities();
-    } catch (err) {
-      logger.error('Error encountered: queryAllCharities');
     }
 
     res.locals.title = 'TOH Charity Manager';
@@ -967,7 +961,6 @@ module.exports = function (app) {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Charities,
       dt: DateTime,
     });
   });

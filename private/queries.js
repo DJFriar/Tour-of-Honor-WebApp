@@ -1003,7 +1003,12 @@ module.exports.queryOrderNumberByRider = async function queryOrderNumberByRider(
 
 module.exports.queryAllCharities = async function queryAllCharities() {
   try {
-    const result = await db.Charity.findAll({});
+    const result = await sequelize.query(
+      'SELECT c.id, c.Name, c.URL, c.RallyYear, COUNT(o.CharityChosen) AS TotalDonations FROM Charities c LEFT OUTER JOIN Orders o ON o.CharityChosen = c.id AND o.OrderNumber > 0 GROUP BY c.id',
+      {
+        type: QueryTypes.SELECT,
+      },
+    );
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryAllCharities()', { calledBy: 'queries.js' });
@@ -1114,6 +1119,23 @@ module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryTimeZoneData(${TimeZone})`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
+module.exports.queryTotalDonationsByCharity = async function queryTotalDonationsByCharity() {
+  try {
+    const result = await sequelize.query(
+      'SELECT c.Name AS CharityName, COUNT(*) AS TotalDonations FROM Orders o LEFT JOIN Charities c ON c.id = o.CharityChosen WHERE o.OrderNumber > 0 GROUP BY o.CharityChosen;',
+      {
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryTotalDonationsByCharity()`, {
       calledBy: 'queries.js',
     });
     throw err;
