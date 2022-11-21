@@ -132,10 +132,12 @@ $(document).ready(() => {
     const updateUser = {
       UserID: id,
       FlagNumber,
-      UserName: $('#EditUserName').val().trim(),
       FirstName: $('#EditFirstName').val().trim(),
       LastName: $('#EditLastName').val().trim(),
       Email: $('#EditEmail').val().trim(),
+      Address1: $('#EditAddress').val().trim(),
+      City: $('#EditCity').val().trim(),
+      State: $('#EditState').val().trim(),
       ZipCode: $('#EditZipCode').val().trim(),
       isAdmin,
     };
