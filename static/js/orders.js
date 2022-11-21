@@ -15,6 +15,17 @@ $(document).ready(() => {
       { data: 'PassFlagNumber' },
       { data: 'PassengerShirt' },
       { data: 'CharityName' },
+      { data: 'isNew' },
+    ],
+    columnDefs: [
+      { targets: [10], visible: false },
+      { render: function (data, type, row) {
+        if (row['isNew']) {
+          return '<span>' + data + ' <i class="fa-duotone fa-sparkles" style="--fa-primary-color: orange; --fa-secondary-color: orangered;"></i></span>'
+        } else {
+          return data
+        }
+      }, targets: [0] },
     ],
     dom: 'Bfrtip',
     buttons: [
