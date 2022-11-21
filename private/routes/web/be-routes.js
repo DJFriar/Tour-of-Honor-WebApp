@@ -599,15 +599,15 @@ module.exports = function (app) {
   });
 
   // Fetch a User
-  app.get('/api/v1/user/:id', (req, res) => {
+  app.get('/api/v1/riderInfo/:id', async (req, res) => {
     const { id } = req.params;
-    db.User.findOne({
-      where: {
-        id,
-      },
-    }).then((dbPost) => {
-      res.json(dbPost);
-    });
+    let riderInfo;
+    try {
+      riderInfo = await q.queryActiveRiderInfo(id);
+    } catch (err) {
+      logger.error(`Error encountered: queryActiveRiderInfo(${id}).${err}`);
+    }
+    res.json(riderInfo[0]);
   });
 
   // Find active rider by flag number
@@ -1149,17 +1149,6 @@ module.exports = function (app) {
         res.json(o.OrderNumber);
       }
     });
-  });
-
-  // Get all orders
-  app.get('/api/v1/orders', async (req, res) => {
-    let OrderDetails;
-    try {
-      OrderDetails = await q.queryAllOrdersWithDetail();
-    } catch (err) {
-      logger.error(`Error encountered: queryAllOrdersWithDetail.${err}`);
-    }
-    res.json(OrderDetails);
   });
 
   // Save New Charity
