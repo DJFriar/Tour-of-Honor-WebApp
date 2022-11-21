@@ -6,6 +6,8 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 // const isAdmin = require('../../../config/isAdmin');
 const { logger } = require('../../../controllers/logger');
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 // eslint-disable-next-line func-names
 module.exports = function (app) {
   const { baseSampleImageUrl } = app.locals;
@@ -372,14 +374,9 @@ module.exports = function (app) {
 
   app.get('/admin/rider-management', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let Users;
+    // let Users;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      Users = await q.queryAllUsers();
-    } catch (err) {
-      logger.error('Error encountered: queryAllUsers');
     }
     const sponsorData = [
       { ID: '1', FirstName: 'Stevie', LastName: 'Nicks', States: 'AZ, CA' },
@@ -390,7 +387,6 @@ module.exports = function (app) {
       activeUser,
       User: req.user,
       sponsorData,
-      Users,
       NotificationText: '',
     });
   });
