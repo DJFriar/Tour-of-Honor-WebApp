@@ -4,6 +4,8 @@ const db = require('../models');
 const { sequelize } = require('../models');
 const { logger } = require('../controllers/logger');
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 module.exports.queryUserInfo = async function queryUserInfo(email) {
   try {
     const result = await sequelize.query(
@@ -25,7 +27,7 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
 module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
       {
         replacements: [UserID],
         type: QueryTypes.SELECT,
@@ -419,6 +421,44 @@ module.exports.queryAllUsers = async function queryAllUsers(user = false) {
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryAllUsers()', { calledBy: 'queries.js' });
+    throw err;
+  }
+};
+
+module.exports.queryAllUsersWithFlagInfo = async function queryAllUsersWithFlagInfo(year) {
+  let result;
+  try {
+    result = await sequelize.query(
+      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND f.RallyYear = ?',
+      {
+        replacements: [year],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryAllUsersWithFlagInfo()`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
+module.exports.queryActiveRiderInfo = async function queryActiveRiderInfo(id) {
+  let result;
+  try {
+    result = await sequelize.query(
+      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND u.id = ? AND f.RallyYear = ?',
+      {
+        replacements: [id, currentRallyYear],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryActiveRiderInfo(${id})`, {
+      calledBy: 'queries.js',
+    });
     throw err;
   }
 };
@@ -865,12 +905,13 @@ module.exports.queryAllOrdersWithDetail = async function queryAllOrdersWithDetai
 
 module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
   try {
-    const result = await db.Order.findOne({
-      where: {
-        UserID,
-        RallyYear: Year,
+    const result = await sequelize.query(
+      "SELECT o.*, u1.FirstName AS RiderFirstName,  u1.LastName AS RiderLastName,  CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName,  CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName FROM Orders o  LEFT JOIN Users u1 ON o.UserID = u1.id  LEFT JOIN Users u2 ON o.PassUserID = u2.id  LEFT JOIN PriceTiers pt ON o.PriceTier = pt.id  LEFT JOIN Charities c ON o.CharityChosen = c.id WHERE o.UserID = ? AND o.RallyYear = ?",
+      {
+        replacements: [UserID, Year],
+        type: QueryTypes.SELECT,
       },
-    });
+    );
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryOrderInfoByRider(${UserID},${Year})`, {
@@ -879,6 +920,23 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
     throw err;
   }
 };
+
+// module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
+//   try {
+//     const result = await db.Order.findOne({
+//       where: {
+//         UserID,
+//         RallyYear: Year,
+//       },
+//     });
+//     return result;
+//   } catch (err) {
+//     logger.error(`An error was encountered in queryOrderInfoByRider(${UserID},${Year})`, {
+//       calledBy: 'queries.js',
+//     });
+//     throw err;
+//   }
+// };
 
 module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(PassUserID, Year) {
   try {

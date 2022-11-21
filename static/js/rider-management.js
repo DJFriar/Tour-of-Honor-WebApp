@@ -3,6 +3,45 @@ $(document).ready(() => {
   existingPassengerFlagNumberFound = false;
   hasPassenger = false;
   $('#usersTable').DataTable({
+    ajax: {
+      url: '/api/v1/riders',
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'id' },
+      { data: 'FlagNumber' },
+      { data: 'FirstName' },
+      { data: 'LastName' },
+      { data: 'Email' },
+      { data: 'CellNumber' },
+      { data: null, name: 'Actions' },
+    ],
+    columnDefs: [
+      { targets: [0], visible: false },
+      { render: function (data, type, row) {
+        if (data) {
+          return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fal fa-message-sms fa-lg"></i></div>'
+        } else {
+          return data
+        }
+      }, targets: [5] },
+      { render: function (data, type, row) {
+        return '<div class="editUserButton" data-uid="' + row['id'] + '"><i class="fal fa-edit fa-lg"></i> Edit Rider</div>'
+      }, targets: [6]}
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend: 'excel',
+        text: 'Save to Excel',
+        title: 'TOH Active Riders',
+        exportOptions: {
+          modifier: {
+            search: 'none',
+          },
+        },
+      },
+    ],
     pageLength: 100,
   });
   $('#sponsorsTable').DataTable();
@@ -31,17 +70,20 @@ $(document).ready(() => {
   $('#usersTable').on('click', '.editUserButton', function () {
     const id = $(this).data('uid');
     $('#userDetailEditModal').css('display', 'block');
-    $.ajax(`/api/v1/user/${id}`, {
+    $.ajax(`/api/v1/riderInfo/${id}`, {
       type: 'GET',
     }).then((res) => {
       $('#EditUserID').val(res.id);
-      $('#EditUserName').val(res.UserName);
       if (res.FlagNumber > 0) {
         $('#EditFlagNumber').val(res.FlagNumber);
       }
       $('#EditFirstName').val(res.FirstName);
       $('#EditLastName').val(res.LastName);
       $('#EditEmail').val(res.Email);
+      $('#EditCellNumber').val(res.CellNumber);
+      $('#EditAddress').val(res.Address1);
+      $('#EditCity').val(res.City);
+      $('#EditState').val(res.State);
       $('#EditZipCode').val(res.ZipCode);
       if (res.isAdmin) {
         $('#isAdmin').prop('checked', true);
@@ -90,10 +132,12 @@ $(document).ready(() => {
     const updateUser = {
       UserID: id,
       FlagNumber,
-      UserName: $('#EditUserName').val().trim(),
       FirstName: $('#EditFirstName').val().trim(),
       LastName: $('#EditLastName').val().trim(),
       Email: $('#EditEmail').val().trim(),
+      Address1: $('#EditAddress').val().trim(),
+      City: $('#EditCity').val().trim(),
+      State: $('#EditState').val().trim(),
       ZipCode: $('#EditZipCode').val().trim(),
       isAdmin,
     };

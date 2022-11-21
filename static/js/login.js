@@ -36,9 +36,9 @@ $(document).ready(() => {
       Password: password,
     })
       .then((res) => {
-        if (res.isAdmin === 1) {
+        if (res.isAdmin) {
           window.location.replace('/admin');
-        } else if (res.isActive === 0) {
+        } else if (!res.isActive) {
           window.location.replace('/registration');
         } else {
           window.location.replace('/memorials');
