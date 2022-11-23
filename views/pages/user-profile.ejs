@@ -14,6 +14,7 @@
       <% if(NotificationText) { %>
         <%- include('../partials/notice'); %>
       <% } %>
+      <!-- BEGIN: My Profile INFO Section -->
       <h5>My Profile Info</h5>
       <form class="signup uk-grid-small uk-form-stacked" uk-grid>
         <div class="uk-width-1-3@s">
@@ -82,6 +83,7 @@
           <button type="button" id="saveProfileEdits" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Update User Profile</button>
         </div>
       </form>
+      <!-- BEGIN: Bike Section -->
       <div class="toh-mt-24">
         <hr>
         <% if(RiderBikeInfo.length == 0) { %> 
@@ -123,8 +125,8 @@
             </tbody>
           </table>
         <% } %>
-        
       </div>
+      <!-- BEGIN: Submission History Section -->
       <div class="toh-mt-24">
         <hr>
         <h5>Submission History</h5>
