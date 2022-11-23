@@ -673,33 +673,6 @@ module.exports = function (app) {
     }
   });
 
-  app.get('/riders', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    let riderList;
-    let totalEarnedByRider;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      riderList = await q.queryAllRiders();
-    } catch (err) {
-      logger.error('Error encountered: queryAllRiders');
-    }
-    try {
-      totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
-    } catch (err) {
-      logger.error('Error encountered: queryEarnedMemorialsByAllRiders');
-    }
-    res.locals.title = 'TOH Rider List';
-    res.render('pages/rider-list', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      riderList,
-      totalEarnedByRider,
-    });
-  });
-
   app.get('/stats', isAuthenticated, async (req, res) => {
     let activeUser = false;
     let totalEarnedByRider;

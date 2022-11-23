@@ -1,0 +1,109 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <h1>Rider Summary for [NAME]</h1>
+    <% if(NotificationText) { %>
+      <%- include('../partials/notice'); %>
+    <% } %>
+    <main>
+      <div class="uk-child-width-expand@s toh-mt-24" uk-grid>
+        <!-- BEGIN: Left half -->
+        <div class="toh-mr-18">
+          <div class="uk-grid-small" uk-grid>
+            <table class="uk-table uk-table-small" id="completedStatesTable">
+              <thead>
+                <tr>
+                  <th class="uk-text-center">States Completed - 0</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (completedStatesList.length > 0) { %>
+                  <% completedStatesList.forEach(function(state) { %>
+                    <tr>
+                      <td>
+                        <%= state.Region %>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td>No states completed</td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- BEGIN: Right half -->
+        <div>
+          <div class="" uk-grid>
+            <table class="uk-table uk-table-small" id="earnedIBARidesTable">
+          <thead>
+            <tr>
+              <th class="uk-text-center">IBA Rides - 0</th>
+            </tr>
+            <tr>
+              <th>Type</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IBA Rider Name</td>
+              <td>Date of Ride</td>
+            </tr>
+          </tbody>
+        </table>
+          </div>
+        </div>
+      </div>
+      <!-- BEGIN: Vists List -->
+      <div class="uk-child-width-expand@s toh-mt-24" uk-grid>
+        <div class="uk-grid-small" uk-grid>
+          <table class="uk-table uk-table-small" id="earnedMemorialsTable">
+            <thead>
+              earnedCounts
+              <% earnedCounts.forEach(function(category) { %>
+                <tr>
+                  <td>
+                    <%= category.Name %> - <%= category.Earned %>
+                  </td>
+                </tr>
+              <% }) %>
+              <tr>
+                <th class="uk-text-center">States Completed - 0</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (earnedMemorialList.length > 0) { %>
+                <% earnedMemorialList.forEach(function(earnedMemorial) { %>
+                  <tr>
+                    <td>
+                      <%= earnedMemorial.Codes %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td>No Visits</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="js/rider-detail.js"></script>
+</body>
