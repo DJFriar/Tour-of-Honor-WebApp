@@ -732,24 +732,54 @@ $(document).ready(() => {
   $('#checkFlagNumberAvailability').on('click', (e) => {
     e.preventDefault();
     const requestedFlagNumber = $('#RequestedFlagNumber').val().trim();
+    console.log(`requestedFlagNumber is ${requestedFlagNumber}`);
 
-    $.ajax(`/api/v1/flag/${requestedFlagNumber}`, {
-      type: 'GET',
-    }).then((flagInfo) => {
-      if (flagInfo) {
-        $('#flagAvailabilityResponse')
-          .text(`Flag #${requestedFlagNumber} is not available.`)
-          .css('color', 'red')
-          .removeClass('hide-me');
-        $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
-      } else {
-        $('#flagAvailabilityResponse')
-          .text(`Flag #${requestedFlagNumber} is available.`)
-          .css('color', 'green')
-          .removeClass('hide-me');
-        $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
-      }
-    });
+    if (!requestedFlagNumber) {
+      $('#RequestedFlagNumber').val('');
+      $('#flagAvailabilityResponse')
+        .text('A flag number is required.')
+        .css('color', 'red')
+        .removeClass('hide-me');
+      $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    }
+
+    if (requestedFlagNumber && requestedFlagNumber < 11) {
+      $('#RequestedFlagNumber').val('');
+      $('#flagAvailabilityResponse')
+        .text('Flag numbers lower than 10 must be earned.')
+        .css('color', 'red')
+        .removeClass('hide-me');
+      $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    }
+
+    if (requestedFlagNumber > 1200) {
+      $('#RequestedFlagNumber').val('');
+      $('#flagAvailabilityResponse')
+        .text('Flag numbers must be lower than 1200.')
+        .css('color', 'red')
+        .removeClass('hide-me');
+      $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    }
+
+    if (requestedFlagNumber > 10 && requestedFlagNumber <= 1200) {
+      $.ajax(`/api/v1/flag/${requestedFlagNumber}`, {
+        type: 'GET',
+      }).then((flagInfo) => {
+        if (flagInfo) {
+          $('#flagAvailabilityResponse')
+            .text(`Flag #${requestedFlagNumber} is not available.`)
+            .css('color', 'red')
+            .removeClass('hide-me');
+          $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+        } else {
+          $('#flagAvailabilityResponse')
+            .text(`Flag #${requestedFlagNumber} is available.`)
+            .css('color', 'green')
+            .removeClass('hide-me');
+          $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
+        }
+      });
+    }
   });
 
   // Handle Save New Flag Button
@@ -776,7 +806,14 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 10) {
+    if (requestedFlagNumber || requestedFlagNumber > 1200) {
+      showToastrError('Flag numbers must be lower than 1200.');
+      $('#RequestedFlagNumber').val('');
+      $('#flagAvailabilityResponse').addClass('hide-me');
+      $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    }
+
+    if (requestedFlagNumber > 10 && requestedFlagNumber <= 1200) {
       $.ajax('/api/v1/regFlow', {
         beforeSend() {
           $('.modal').css('display', 'none');
