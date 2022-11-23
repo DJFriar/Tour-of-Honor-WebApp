@@ -27,6 +27,7 @@ WebRiderRouter.route('/').get(async (req, res) => {
     activeUser,
     User: req.user,
     NotificationText: '',
+    currentRallyYear,
     riderList,
     totalEarnedByRider,
   });
