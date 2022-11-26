@@ -1142,3 +1142,92 @@ module.exports.queryTotalDonationsByCharity = async function queryTotalDonations
     throw err;
   }
 };
+
+module.exports.queryEarnedMemorialCountByFlag = async function queryEarnedMemorialCountByFlag(
+  rallyYear,
+  flag,
+) {
+  try {
+    const result = await sequelize.query(
+      'SELECT c.Name, COUNT(*) AS Earned FROM Categories c LEFT JOIN Memorials m ON m.Category = c.id LEFT JOIN EarnedMemorialsXref emx ON emx.MemorialID = m.id WHERE emx.RallyYear = ? AND emx.FlagNumber = ? GROUP BY c.id ORDER BY c.id',
+      {
+        replacements: [rallyYear, flag],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(
+      `An error was encountered in queryEarnedMemorialCountByFlag(${rallyYear}, ${flag})`,
+      {
+        calledBy: 'queries.js',
+      },
+    );
+    throw err;
+  }
+};
+
+module.exports.queryEarnedMemorialListByFlag = async function queryEarnedMemorialListByFlag(
+  rallyYear,
+  flag,
+) {
+  try {
+    const result = await sequelize.query(
+      'SELECT m.Category AS Category, GROUP_CONCAT(m.Code ORDER BY m.Code ASC SEPARATOR ", ") AS Codes FROM Memorials m LEFT JOIN EarnedMemorialsXref emx ON emx.MemorialID = m.id WHERE emx.RallyYear = ? AND emx.FlagNumber = ? GROUP BY m.Category;',
+      {
+        replacements: [rallyYear, flag],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(
+      `An error was encountered in queryEarnedMemorialListByFlag(${rallyYear}, ${flag})`,
+      {
+        calledBy: 'queries.js',
+      },
+    );
+    throw err;
+  }
+};
+
+module.exports.queryCompletedStatesListByFlag = async function queryCompletedStatesListByFlag(
+  rallyYear,
+  flag,
+) {
+  try {
+    const result = await sequelize.query(
+      'SELECT r.Region, r.MemorialCount, CASE WHEN (COUNT(emx.id) >= r.MemorialCount) THEN "Y" ELSE "N" END AS StateEarned FROM Regions r LEFT JOIN Memorials m ON m.Region = r.Region LEFT JOIN EarnedMemorialsXref emx ON emx.MemorialID = m.id WHERE m.Category = 1 AND emx.RallyYear = ? AND emx.FlagNumber = ? GROUP BY r.Region, r.MemorialCount HAVING StateEarned = "Y";',
+      {
+        replacements: [rallyYear, flag],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(
+      `An error was encountered in queryCompletedStatesListByFlag(${rallyYear}, ${flag})`,
+      {
+        calledBy: 'queries.js',
+      },
+    );
+    throw err;
+  }
+};
+
+module.exports.queryAllFlagReservations = async function queryAllFlagReservations() {
+  try {
+    const result = await sequelize.query(
+      'SELECT rf.id, rf.FlagNumber, rf.Notes, CONCAT(u.FirstName, " ", u.LastName) AS ReservedBy, rf.createdAt FROM ReservedFlags rf INNER JOIN Users u ON rf.ReservedBy = u.id',
+      {
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryAllFlagReservations()`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};

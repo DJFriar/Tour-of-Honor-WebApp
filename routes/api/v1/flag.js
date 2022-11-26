@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 
 const db = require('../../../models');
 const { logger } = require('../../../controllers/logger');
+const q = require('../../../private/queries');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const rallyYearArray = [];
@@ -53,6 +54,36 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
     res.json(nextFlag);
   });
 });
+
+// Handle Flag Reservations
+ApiFlagRouter.route('/reservation')
+  .get(async (req, res) => {
+    let FlagReservations;
+    try {
+      FlagReservations = await q.queryAllFlagReservations();
+    } catch (err) {
+      logger.error(`Error encountered: queryAllFlagReservations.${err}`);
+    }
+    res.json(FlagReservations);
+  })
+  .post((req, res) => {
+    db.ReservedFlag.create({
+      FlagNumber: req.body.FlagNumber,
+      Notes: req.body.Notes,
+      ReservedBy: req.body.ReservedBy,
+    }).then(() => {
+      res.status(202).send();
+    });
+  })
+  .delete((req, res) => {
+    db.ReservedFlag.destroy({
+      where: {
+        FlagNumber: req.body.FlagNumber,
+      },
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
 
 // GET: Check Flag Number Validity
 ApiFlagRouter.route('/:id').get((req, res) => {
