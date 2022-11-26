@@ -23,7 +23,7 @@
           <!-- Users Tab -->
           <li id="activeRiders">
             <h5><%= currentRallyYear %> Rider List</h5>
-            <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
+            <table class="uk-table uk-table-striped uk-table-small" id="activeRidersTable">
               <thead>
                 <tr>
                   <th>id</th>
@@ -170,6 +170,10 @@
       <!-- This is the send text message modal -->
       <div id="sendTextMessageModal" class="modal">
         <%- include('../../partials/sendSMSTextModal'); %>
+      </div>
+      <!-- This is the reset rider flag number modal -->
+      <div id="resetFlagNumberModal" class="modal">
+        <%- include('../../partials/resetFlagNumberModal'); %>
       </div>
     </main>
     <footer>

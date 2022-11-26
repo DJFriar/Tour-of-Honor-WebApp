@@ -479,5 +479,8 @@ a.hidden-link:visited {
 
 .uk-navbar-item, .uk-navbar-nav>li>a, .uk-navbar-toggle {
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
+}
 
+.resetFlagSelection {
+  cursor: pointer;
 }
