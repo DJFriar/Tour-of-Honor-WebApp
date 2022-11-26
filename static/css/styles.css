@@ -251,6 +251,10 @@ a.hidden-link:visited {
   margin-bottom: 0px;
 }
 
+.toh-mt-0 {
+  margin-top: 0px;
+}
+
 .toh-mt-8 {
   margin-top: 8px;
 }
@@ -285,6 +289,10 @@ a.hidden-link:visited {
 
 .toh-mb-18 {
   margin-bottom: 18px;
+}
+
+.toh-mb-24 {
+  margin-bottom: 24px;
 }
 
 .toh-mt-24 {
