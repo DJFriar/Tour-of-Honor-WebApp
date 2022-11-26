@@ -31,41 +31,20 @@
       </div>
       <p class="toh-alert">Note that state memorials will not be visible until April 1, 2023 at 00:01 EST.</p>
       <!-- #region Memorial Table -->
-      <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
+      <table class="uk-table uk-table-striped uk-table-small" id="memorialsTable">
         <thead>
           <tr>
+            <th>id</th>
             <th>Code</th>
             <th>Category</th>
             <th>Name</th>
             <th>City</th>
             <th>State</th>
             <th>Access</th>
+            <th>Restrictions</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <% Memorials.forEach(function(memorial) { %>
-            <tr>
-              <td>
-                <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= memorial.Code %>"><%= memorial.Code %></a></span>
-              </td>
-              <td>
-                <%= memorial.CategoryName %>
-              </td>
-              <td>
-                <%= memorial.Name %>
-              </td>
-              <td>
-                <%= memorial.City %>
-              </td>
-              <td>
-                <%= memorial.State %>
-              </td>
-              <td>
-                <%= memorial.Access %>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
       </table>
       <!-- #endregion -->
     </main>

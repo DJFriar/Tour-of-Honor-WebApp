@@ -493,21 +493,14 @@ module.exports = function (app) {
 
   app.get('/memorials', async (req, res) => {
     let activeUser = false;
-    let Memorials;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      Memorials = await q.queryAllAvailableMemorials();
-    } catch (err) {
-      logger.error('Error encountered: queryAllAvailableMemorials');
     }
     res.locals.title = 'TOH Memorial List';
     res.render('pages/memorials', {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Memorials,
     });
   });
 
@@ -795,19 +788,18 @@ module.exports = function (app) {
     }
 
     try {
-      OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, 2023);
+      OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, currentRallyYear);
       OrderInfo = OrderInfoArray[0];
-      console.log('==== OrderInfo ====');
-      console.log(OrderInfo);
+      // console.log('==== OrderInfo ====');
+      // console.log(OrderInfo);
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
           const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
+          console.log(passFlagNum);
           if (passFlagNum && passFlagNum.FlagNumber > 0) {
-            OrderInfo.dataValues.PassFlagNum = passFlagNum.FlagNumber;
             OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
           } else {
-            OrderInfo.dataValues.PassFlagNum = 0;
             OrderInfo.PassFlagNum = 0;
           }
         } catch (err) {
