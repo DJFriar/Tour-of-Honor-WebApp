@@ -493,21 +493,14 @@ module.exports = function (app) {
 
   app.get('/memorials', async (req, res) => {
     let activeUser = false;
-    let Memorials;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      Memorials = await q.queryAllAvailableMemorials();
-    } catch (err) {
-      logger.error('Error encountered: queryAllAvailableMemorials');
     }
     res.locals.title = 'TOH Memorial List';
     res.render('pages/memorials', {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Memorials,
     });
   });
 

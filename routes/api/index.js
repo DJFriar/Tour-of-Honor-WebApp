@@ -8,10 +8,11 @@
 const ApiRouter = require('express').Router();
 
 ApiRouter.use('/bike', require('./v1/bike'));
-ApiRouter.use('/flag', require('./v1/flag'));
+ApiRouter.use('/charity', require('./v1/charity'));
 ApiRouter.use('/email', require('./v1/email'));
+ApiRouter.use('/flag', require('./v1/flag'));
+ApiRouter.use('/memorials', require('./v1/memorials'));
 ApiRouter.use('/orders', require('./v1/orders'));
 ApiRouter.use('/riders', require('./v1/riders'));
-ApiRouter.use('/charity', require('./v1/charity'));
 
 module.exports = ApiRouter;

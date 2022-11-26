@@ -215,7 +215,7 @@ module.exports.queryAllAvailableMemorials = async function queryAllAvailableMemo
   let result;
   try {
     result = await sequelize.query(
-      'SELECT m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.Restrictions != 12 ORDER BY m.State, m.City, m.Category',
+      'SELECT m.*, c.Name AS CategoryName, r.Name AS RestrictionName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Restrictions r ON m.Restrictions = r.id WHERE c.Active = 1 AND m.Restrictions != 12 ORDER BY m.State, m.City, m.Category',
       {
         type: QueryTypes.SELECT,
       },
