@@ -599,13 +599,13 @@ module.exports = function (app) {
   });
 
   // Fetch a User
-  app.get('/api/v1/riderInfo/:id', async (req, res) => {
-    const { id } = req.params;
+  app.get('/api/v1/riderInfo/:uid', async (req, res) => {
+    const { uid } = req.params;
     let riderInfo;
     try {
-      riderInfo = await q.queryActiveRiderInfo(id);
+      riderInfo = await q.queryUserInfoByID(uid);
     } catch (err) {
-      logger.error(`Error encountered: queryActiveRiderInfo(${id}).${err}`);
+      logger.error(`Error encountered: queryUserInfoByID(${uid}).${err}`);
     }
     res.json(riderInfo[0]);
   });

@@ -5,6 +5,7 @@ const { Op } = require('sequelize');
 
 const db = require('../../../models');
 const { logger } = require('../../../controllers/logger');
+const q = require('../../../private/queries');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const rallyYearArray = [];
@@ -35,7 +36,7 @@ ApiFlagRouter.route('/').post((req, res) => {
     });
 });
 
-// GET: Find Next Available Flag Number
+// Find Next Available Flag Number
 ApiFlagRouter.route('/nextAvailable').get((req, res) => {
   db.Flag.findAll({
     where: {
@@ -54,7 +55,61 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
   });
 });
 
-// GET: Check Flag Number Validity
+// Handle Flag Reservations
+ApiFlagRouter.route('/reservation')
+  .get(async (req, res) => {
+    let FlagReservations;
+    try {
+      FlagReservations = await q.queryAllFlagReservations();
+    } catch (err) {
+      logger.error(`Error encountered: queryAllFlagReservations.${err}`);
+    }
+    res.json(FlagReservations);
+  })
+  .post((req, res) => {
+    db.ReservedFlag.create({
+      FlagNumber: req.body.FlagNumber,
+      Notes: req.body.Notes,
+      ReservedBy: req.body.ReservedBy,
+    }).then(() => {
+      res.status(202).send();
+    });
+  })
+  .delete((req, res) => {
+    db.ReservedFlag.destroy({
+      where: {
+        FlagNumber: req.body.FlagNumber,
+      },
+    }).then(() => {
+      res.status(202).send();
+    });
+  });
+
+// Update Flag Number Assignment
+ApiFlagRouter.route('/change').put((req, res) => {
+  db.Flag.update(
+    {
+      FlagNumber: req.body.FlagNumber,
+    },
+    {
+      where: {
+        UserID: req.body.UserID,
+        RallyYear: currentRallyYear,
+      },
+    },
+  )
+    .then(() => {
+      logger.info(`UserID ${req.body.UserID} was assigned Flag Number ${req.body.FlagNumber}`, {
+        calledFrom: 'flag.js',
+      });
+      res.status(202).send();
+    })
+    .catch((err) => {
+      logger.error(`Error when saving flag number updates:${err}`, { calledFrom: 'flag.js' });
+    });
+});
+
+// GET: Fetch Flag Number details
 ApiFlagRouter.route('/:id').get((req, res) => {
   const { id } = req.params;
   db.Flag.findOne({
