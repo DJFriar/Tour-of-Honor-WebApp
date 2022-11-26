@@ -11,7 +11,7 @@
     <% } %>
     <main>
       <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-      <h1>RIDER MANAGEMENT</h1>
+      <h1>Rider Management</h1>
       <div class="admin-container" id='tabs'>
         <ul uk-tab>
           <li><a href="#activeRiders">Active Riders</a></li>
@@ -22,8 +22,8 @@
         <ul class="uk-switcher uk-margin">
           <!-- Users Tab -->
           <li id="activeRiders">
-            <h5>Rider List</h5>
-            <table class="uk-table uk-table-striped uk-table-small" id="usersTable">
+            <h5><%= currentRallyYear %> Rider List</h5>
+            <table class="uk-table uk-table-striped uk-table-small" id="activeRidersTable">
               <thead>
                 <tr>
                   <th>id</th>
@@ -170,6 +170,10 @@
       <!-- This is the send text message modal -->
       <div id="sendTextMessageModal" class="modal">
         <%- include('../../partials/sendSMSTextModal'); %>
+      </div>
+      <!-- This is the reset rider flag number modal -->
+      <div id="resetFlagNumberModal" class="modal">
+        <%- include('../../partials/resetFlagNumberModal'); %>
       </div>
     </main>
     <footer>

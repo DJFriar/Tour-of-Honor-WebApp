@@ -31,7 +31,7 @@
       <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
   <% } %>
-  <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+  <% if (OrderInfo.RequestedRiderFlagNumber && (User.FlagNumber > 0)) { %>
     <p>Your flag number choice has been confirmed. If you need to make a change, please reach out to support.</p>
   <% } %>
 </div>
