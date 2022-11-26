@@ -27,7 +27,7 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
 module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, o.id AS OrderID, CASE WHEN o.PassUserID = u.id THEN "Pass" WHEN o.UserID = u.id THEN "Rider" WHEN (ISNULL(o.PassUserID) AND ISNULL(o.UserID)) THEN NULL END AS OrderRole, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID LEFT JOIN Orders o ON ((u.id = o.UserID) OR (u.id = o.PassUserID)) WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      "SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, o.id AS OrderID, CASE WHEN o.PassUserID = u.id THEN 'Pass' WHEN o.UserID = u.id THEN 'Rider' WHEN (ISNULL(o.PassUserID) AND ISNULL(o.UserID)) THEN NULL END AS OrderRole, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID LEFT JOIN Orders o ON ((u.id = o.UserID) OR (u.id = o.PassUserID)) WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )",
       {
         replacements: [UserID],
         type: QueryTypes.SELECT,
