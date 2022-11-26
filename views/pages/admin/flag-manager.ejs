@@ -12,18 +12,66 @@
     <main>
       <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
       <h1>Flag Manager</h1>
-      <% if(NotificationText) { %>
-        <%- include('../../partials/notice'); %>
-      <% } %>
-      <div>
-        <p>This page is for various flag related tools</p>
-        <div>
-          <p>Flag Number Lookup</p>
-          <label class="uk-form-label" for="FlagNumberLookup">Flag Number</label>
-          <input class="uk-input toh-input" required id="FlagNumberLookup" type="text" maxlength="4" placeholder="####">
-          <button class="uk-button-primary button-rounded">Lookup Flag</button>
-        </div>
-      </div>
+      <div class="admin-container" id="tabs">
+        <ul uk-tab>
+          <li><a href="#flagReservations">Reservations</a></li>
+        </ul>
+
+        <ul class="uk-switcher uk-margin">
+          <!-- Flag Reservations -->
+          <li id="flagReservations">
+            <div>
+              <h3>Reserve a Flag Number</h3>
+              <p class="toh-mt-0">This tool will reserve a flag number and make it unavailable for anyone to use.</p>
+              <form class="uk-grid-small uk-form-stacked" uk-grid>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="FlagNumberToReserve">Flag Number to Reserve</label>
+                  <input class="uk-input toh-input" required id="FlagNumberToReserve" type="text" maxlength="4" placeholder="####">
+                </div>
+                <div class="uk-width-2-5@s">
+                  <label class="uk-form-label" for="FlagNumberToReserveNotes">Notes</label>
+                  <input class="uk-input toh-input" required id="FlagNumberToReserveNotes" type="text" placeholder="Notes go here">
+                </div>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="ReserveFlagNumberBtn">&nbsp;</label>
+                  <button class="uk-button uk-button-primary button-rounded" id="ReserveFlagNumberBtn" data-userid="<%= User.id %>" type="button"><span class="toh-mr-8"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>Reserve Flag</button>
+                </div>
+                <div class="uk-width-1-5@s">&nbsp;</div>
+              </form>
+            </div>
+            <hr class="toh-mt-18">
+            <div class="toh-mt-24">
+              <table class="uk-table uk-table-striped uk-table-small" id="flagReservationsTable">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>Flag #</th>
+                    <th>Notes</th>
+                    <th>Reserved By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- <div class="toh-mt-24">
+              <h3>Release a Flag Number</h3>
+              <p class="toh-mt-0">This tool will release a flag number and make it available for someone to use.</p>
+              <form class="uk-grid-small uk-form-stacked" uk-grid>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="FlagNumberToRelease">Flag Number to Release</label>
+                  <input class="uk-input toh-input" required id="FlagNumberToRelease" type="text" maxlength="4" placeholder="####">
+                </div>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="ReserveFlagNumberBtn">&nbsp;</label>
+                  <button class="uk-button uk-button-primary button-rounded" id="ReleaseFlagNumberBtn" type="button">Release Flag</button>
+                </div>
+                <div class="uk-width-3-5@s">&nbsp;</div>
+              </form>
+            </div>
+          </div> -->
+          </li>
+        </ul>
+        
     </main>
     <footer>
       <%- include('../../partials/footer'); %>
