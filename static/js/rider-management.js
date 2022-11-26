@@ -2,7 +2,7 @@ $(document).ready(() => {
   existingRiderFlagNumberFound = false;
   existingPassengerFlagNumberFound = false;
   hasPassenger = false;
-  $('#usersTable').DataTable({
+  var activeRidersTable = $('#activeRidersTable').DataTable({
     ajax: {
       url: '/api/v1/riders',
       dataSrc: '',
@@ -18,6 +18,9 @@ $(document).ready(() => {
     ],
     columnDefs: [
       { targets: [0], visible: false },
+      { render: function (data, type, row) {
+        return '<div class="resetFlagSelection" data-uid="' + row['id'] + '"><span class="toh-mr-8"><i class="fa-duotone fa-flag"></i></span>' + data + '</div>'
+      }, targets: [1] },
       { render: function (data, type, row) {
         if (data) {
           return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fa-light fa-message-sms fa-lg"></i></div>'
@@ -67,13 +70,14 @@ $(document).ready(() => {
   });
 
   // Handle Edit Rider Button
-  $('#usersTable').on('click', '.editUserButton', function () {
-    const id = $(this).data('uid');
+  $('#activeRidersTable').on('click', '.editUserButton', function () {
+    const uid = $(this).data('uid');
     $('#userDetailEditModal').css('display', 'block');
-    $.ajax(`/api/v1/riderInfo/${id}`, {
+    $.ajax(`/api/v1/riderInfo/${uid}`, {
       type: 'GET',
     }).then((res) => {
       $('#EditUserID').val(res.id);
+      $('#editUserHeading').text(`Edit ${res.FirstName} ${res.LastName} (${res.FlagNumber})`)
       if (res.FlagNumber > 0) {
         $('#EditFlagNumber').val(res.FlagNumber);
       }
@@ -92,9 +96,58 @@ $(document).ready(() => {
       }
     });
   });
+  
+
+  // Handle Reset Flag Selection Button (on Data Table)
+  $('#activeRidersTable').on('click', '.resetFlagSelection', function () {
+    const uid = $(this).data('uid');
+    $.ajax(`/api/v1/riderInfo/${uid}`, {
+      type: 'GET',
+    }).then((res) => {
+      $('#resetRiderFlagBtn').attr('data-userid', uid).attr('data-flagnumber', res.FlagNumber).attr('data-role', res.OrderRole).attr('data-oid', res.OrderID);      
+      $('#riderFlagNumber').text(res.FlagNumber);
+      $('#riderCellNumber').text(res.CellNumber);
+      $('#resetFlagNumberModal').css('display', 'block');
+    });
+  });
+
+  // Handle Reset Flag Number Button (on Warning Modal)
+  $("#resetRiderFlagBtn").on('click', function () {
+    const FlagNumber = $(this).data('flagnumber');
+    const uid = $(this).data('uid');
+    const Role = $(this).data('role');
+    const OrderID = $(this).data('oid');
+    const ResetInfo = {
+      FlagNumber,
+      UserID: uid,
+      Role,
+      OrderID
+    }
+    console.log("==== resetRiderFlagBtn was clicked ====");
+    console.log(ResetInfo);
+    $('#resetFlagNumberModal').css('display', 'none');
+
+    $.ajax('/api/v1/orders/reset', {
+      beforeSend() {
+        $('.modal').css('display', 'none');
+        $('.spinnerBox').removeClass('hide-me');
+      },
+      complete() {
+        $('.spinnerBox').addClass('hide-me');
+      },
+      type: 'POST',
+      data: ResetInfo
+    })
+      .then(() => {
+        activeRidersTable.ajax.reload();
+      })
+      .catch(() => {
+        showToastrError(`An error occured while resetting flag ${FlagNumber}.`);
+      });
+  })
 
   // Handle Text Rider Button
-  $('#usersTable').on('click', '.sendSMSTextButton', function () {
+  $('#activeRidersTable').on('click', '.sendSMSTextButton', function () {
     const id = $(this).data('uid');
     $('#sendTextMessageModal').css('display', 'block');
     $.ajax(`/api/v1/user/${id}`, {
@@ -182,7 +235,7 @@ $(document).ready(() => {
   });
 
   // Handle Send Profile Email Button
-  $('#usersTable').on('click', '.sendProfileEmailButton', function () {
+  $('#activeRidersTable').on('click', '.sendProfileEmailButton', function () {
     const id = $(this).data('uid');
     const profileData = {};
     $.ajax(`/api/v1/user/${id}`, {

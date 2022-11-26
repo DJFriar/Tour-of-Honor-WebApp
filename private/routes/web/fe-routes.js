@@ -368,7 +368,6 @@ module.exports = function (app) {
     res.render('pages/admin/flag-manager', {
       activeUser,
       User: req.user,
-      NotificationText: '',
     });
   });
 
@@ -386,8 +385,8 @@ module.exports = function (app) {
     res.render('pages/admin/rider-management', {
       activeUser,
       User: req.user,
+      currentRallyYear,
       sponsorData,
-      NotificationText: '',
     });
   });
 

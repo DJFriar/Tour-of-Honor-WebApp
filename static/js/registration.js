@@ -878,32 +878,6 @@ $(document).ready(() => {
     $('#goToSummaryBtn').prop('disabled', false);
   }
 
-  // Generate random passsword for new users
-  // const randomString = (length = 14) => Math.random().toString(16).substr(2, length);
-
-  // Check for Waiver by UserID
-  // function checkForWaiver(id) {
-  //   $.ajax('/api/v1/checkWaiverStatus', {
-  //     type: 'GET',
-  //     data: {
-  //       UserID: id,
-  //     },
-  //   })
-  //     .then(() => {
-  //       if (whoami === 'rider') {
-  //         riderReady = true;
-  //         $('#flagAssignedRider').removeClass('hide-me');
-  //       }
-  //       if (whoami === 'passenger') {
-  //         passReady = true;
-  //         $('#flagAssignedPassenger').removeClass('hide-me');
-  //       }
-  //     })
-  //     .catch(() => {
-  //       showToastrError('An error occured whle validating your waiver.');
-  //     });
-  // }
-
   // Password validation
   function validatePassword() {
     const Password = $('#PassengerPasswordForm').val().trim();
