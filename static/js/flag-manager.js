@@ -1,6 +1,6 @@
 $(document).ready(() => {
   // Reserved Flags DataTable
-  $('#flagReservationsTable').DataTable({
+  var flagReservationsTable = $('#flagReservationsTable').DataTable({
     ajax: {
       url: '/api/v1/flag/reservation',
       dataSrc: '',
@@ -16,7 +16,7 @@ $(document).ready(() => {
       { targets: [0], visible: false },
       {
         render(data, type, row) {
-          return '<div class="releaseFlagNumberBtn" data-flagnumber="' + row['FlagNumber'] + '"><i class="fa-light fa-pen-to-square fa-lg"></i> Release Flag</div>';
+          return '<div class="releaseFlagNumberBtn" data-flagnumber="' + row['FlagNumber'] + '"><span class="toh-mr-8"><i class="fa-duotone fa-flag" style="--fa-primary-color: red; --fa-secondary-color: red;"></i></span>Release Flag</div>';
         },
         targets: [4],
       },
@@ -31,8 +31,6 @@ $(document).ready(() => {
     const FlagNumber = $('#FlagNumberToReserve').val().trim();
     const Notes = $('#FlagNumberToReserveNotes').val().trim();
     const ReservedBy = $('#ReserveFlagNumberBtn').data('userid');
-    console.log('==== ReserveFlagNumberBtn ====');
-    console.log(`${FlagNumber} / ${Notes} / ${ReservedBy}`);
     const FlagReservationInfo = {
       FlagNumber,
       Notes,
@@ -42,6 +40,7 @@ $(document).ready(() => {
       type: 'POST',
       data: FlagReservationInfo,
     }).then(() => {
+      flagReservationsTable.ajax.reload();
       toastr.success(`Flag ${FlagNumber} successfully reserved.`, null, {
         closeButton: 'false',
         positionClass: 'toast-top-center',
@@ -49,14 +48,14 @@ $(document).ready(() => {
         progressBar: 'true',
         timeOut: '2500',
       });
+      $('#FlagNumberToReserve').val('');
+      $('#FlagNumberToReserveNotes').val('');
     });
   });
 
   // Handle Release Flag Number Button
   $('#flagReservationsTable').on('click', '.releaseFlagNumberBtn', function () {
     const FlagNumber = $(this).data('flagnumber');
-    console.log('==== ReleaseFlagNumberBtn ====');
-    console.log(`Releasing ${FlagNumber}`);
     const FlagReleaseInfo = {
       FlagNumber,
     };
@@ -64,6 +63,7 @@ $(document).ready(() => {
       type: 'DELETE',
       data: FlagReleaseInfo,
     }).then(() => {
+      flagReservationsTable.ajax.reload();
       toastr.success(`Flag ${FlagNumber} released successfully.`, null, {
         closeButton: 'false',
         positionClass: 'toast-top-center',
@@ -71,7 +71,6 @@ $(document).ready(() => {
         progressBar: 'true',
         timeOut: '2500',
       });
-      location.reload();
     });
   });
 });
