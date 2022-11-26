@@ -85,7 +85,7 @@ ApiFlagRouter.route('/reservation')
     });
   });
 
-// GET: Check Flag Number Validity
+// GET: Fetch Flag Number details
 ApiFlagRouter.route('/:id').get((req, res) => {
   const { id } = req.params;
   db.Flag.findOne({
