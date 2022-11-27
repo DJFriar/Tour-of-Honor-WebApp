@@ -1236,7 +1236,7 @@ module.exports.queryCompletedStatesListByFlag = async function queryCompletedSta
 module.exports.queryAllFlagReservations = async function queryAllFlagReservations() {
   try {
     const result = await sequelize.query(
-      'SELECT rf.id, rf.FlagNumber, rf.Notes, CONCAT(u.FirstName, " ", u.LastName) AS ReservedBy, rf.createdAt FROM ReservedFlags rf INNER JOIN Users u ON rf.ReservedBy = u.id',
+      "SELECT rf.id, rf.FlagNumber, rf.Notes, CONCAT(u.FirstName, ' ', u.LastName) AS ReservedBy, rf.createdAt FROM ReservedFlags rf INNER JOIN Users u ON rf.ReservedBy = u.id",
       {
         type: QueryTypes.SELECT,
       },
