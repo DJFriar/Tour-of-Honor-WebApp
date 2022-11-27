@@ -6,10 +6,10 @@ const { logger } = require('../controllers/logger');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
-module.exports.queryUserInfo = async function queryUserInfo(email) {
+module.exports.queryUserInfoByEmail = async function queryUserInfoByEmail(email) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName,IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )',
+      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? ORDER BY f.RallyYear DESC LIMIT 1',
       {
         replacements: [email],
         type: QueryTypes.SELECT,
@@ -17,7 +17,7 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
     );
     return result;
   } catch (err) {
-    logger.error(`An error was encountered in queryUserInfo(${email}`, {
+    logger.error(`An error was encountered in queryUserInfoByEmail(${email}`, {
       calledBy: 'queries.js',
     });
     throw err;
@@ -27,7 +27,7 @@ module.exports.queryUserInfo = async function queryUserInfo(email) {
 module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
   try {
     const result = await sequelize.query(
-      "SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, o.id AS OrderID, CASE WHEN o.PassUserID = u.id THEN 'Pass' WHEN o.UserID = u.id THEN 'Rider' WHEN (ISNULL(o.PassUserID) AND ISNULL(o.UserID)) THEN NULL END AS OrderRole, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID LEFT JOIN Orders o ON ((u.id = o.UserID) OR (u.id = o.PassUserID)) WHERE u.id = ? AND ( CASE WHEN f.FlagNumber > 0 THEN f.RallyYear = 2022 ELSE 1=1 END )",
+      "SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, o.id AS OrderID, CASE WHEN o.PassUserID = u.id THEN 'Pass' WHEN o.UserID = u.id THEN 'Rider' WHEN (ISNULL(o.PassUserID) AND ISNULL(o.UserID)) THEN NULL END AS OrderRole, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID LEFT JOIN Orders o ON ((u.id = o.UserID) OR (u.id = o.PassUserID)) WHERE u.id = ? ORDER BY f.RallyYear DESC LIMIT 1",
       {
         replacements: [UserID],
         type: QueryTypes.SELECT,
@@ -36,6 +36,24 @@ module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryUserInfoByID(${UserID}`, {
+      calledBy: 'queries.js',
+    });
+    throw err;
+  }
+};
+
+module.exports.queryRiderInfoByFlag = async function queryRiderInfoByFlag(FlagNumber) {
+  try {
+    const result = await sequelize.query(
+      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
+      {
+        replacements: [FlagNumber, currentRallyYear],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryRiderInfoByFlag(${FlagNumber}`, {
       calledBy: 'queries.js',
     });
     throw err;

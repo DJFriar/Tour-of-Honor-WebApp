@@ -43,7 +43,7 @@ passport.serializeUser((user, cb) => {
 });
 
 passport.deserializeUser(async (obj, cb) => {
-  const userInfo = await q.queryUserInfo(obj.Email);
+  const userInfo = await q.queryUserInfoByEmail(obj.Email);
   if (process.env.NODE_ENV === 'Development') {
     console.log('==== User Info ====');
     console.log(userInfo[0]);
