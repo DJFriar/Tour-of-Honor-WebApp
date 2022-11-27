@@ -368,6 +368,7 @@ module.exports = function (app) {
     res.render('pages/admin/flag-manager', {
       activeUser,
       User: req.user,
+      currentRallyYear,
     });
   });
 

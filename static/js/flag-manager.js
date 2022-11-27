@@ -1,4 +1,7 @@
 $(document).ready(() => {
+  let allowFlagUpdate = false;
+  let sourceFlagValid = false;
+  let destinationFlagValid = false;
   // Reserved Flags DataTable
   var flagReservationsTable = $('#flagReservationsTable').DataTable({
     ajax: {
@@ -73,4 +76,94 @@ $(document).ready(() => {
       });
     });
   });
+
+  // Lookup Rider Flag Number Info
+  $('#FlagNumberToChange').on('input paste', function () {
+    $('#flagNumberAssignedTo').addClass('hide-me');
+    const flagNumber = $(this).val();
+    if (flagNumber) {
+      $.ajax(`/api/v1/riders/flag/${flagNumber}`, {
+        type: 'GET',
+      }).then((riderInfo) => {
+        if (riderInfo.length > 0) {
+          $('#flagNumberAssignedTo')
+          .text(`${riderInfo[0].FullName}`)
+          .css('color', 'green')
+          .removeClass('hide-me');
+          $('#UpdateFlagNumberAssignmentBtn').attr('data-rid',riderInfo[0].UserID);
+          sourceFlagValid = true;
+          enableUpdateFlagBtn();
+        } else {
+          $('#flagNumberAssignedTo')
+          .text('No Flag Found!')
+          .css('color', 'red')
+          .removeClass('hide-me');
+          sourceFlagValid = false;
+          enableUpdateFlagBtn();
+        }
+      });
+    }
+  });
+
+  // Check New Flag Number Availability
+  $('#NewFlagNumber').on('input paste', function () {
+    $('#flagNumberAvailableCheck').addClass('hide-me');
+    const flagNumber = $(this).val();
+    if (flagNumber) {
+      $.ajax(`/api/v1/riders/flag/${flagNumber}`, {
+        type: 'GET',
+      }).then((riderInfo) => {
+        if (riderInfo.length > 0) {
+          $('#flagNumberAvailableCheck')
+          .text(`${riderInfo[0].FullName}`)
+          .css('color', 'red')
+          .removeClass('hide-me');
+          destinationFlagValid = false;
+          enableUpdateFlagBtn();
+        } else {
+          $('#flagNumberAvailableCheck')
+          .text('Flag Available')
+          .css('color', 'green')
+          .removeClass('hide-me');
+          destinationFlagValid = true;
+          enableUpdateFlagBtn();
+        }
+      });
+    }
+  });
+
+  // Handle Update Flag Button /flag/change PUT
+  $('#UpdateFlagNumberAssignmentBtn').on('click', function () {
+    const NewFlagNumber = $('#NewFlagNumber').val().trim();
+    const OldFlagNumber = $('#FlagNumberToChange').val().trim();
+    const UserID = $(this).data('rid');
+
+    const FlagUpdateInfo = {
+      FlagNumber: NewFlagNumber,
+      UserID,
+    };
+    $.ajax(`/api/v1/flag/change`, {
+      type: 'PUT',
+      data: FlagUpdateInfo,
+    }).then(() => {
+      toastr.success(`Flag ${OldFlagNumber} was successfully updated to ${NewFlagNumber}.`, null, {
+        closeButton: 'false',
+        positionClass: 'toast-top-center',
+        preventDuplicates: 'true',
+        progressBar: 'true',
+        timeOut: '2500',
+      });
+      $('#NewFlagNumber').val('');
+      $('#FlagNumberToChange').val('');
+    });
+  })
+
+  function enableUpdateFlagBtn() {
+    if (sourceFlagValid && destinationFlagValid) {
+      $('#UpdateFlagNumberAssignmentBtn').attr('disabled',false);
+    } else {
+      $('#UpdateFlagNumberAssignmentBtn').attr('disabled',true);
+    }
+  }
+
 });
