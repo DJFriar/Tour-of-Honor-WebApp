@@ -46,7 +46,7 @@ $(document).ready(() => {
       },
       {
         render(data, type, row) {
-          return `<a href="https://maps.google.com/maps?t=m&q=loc:${row.Latitude},${row.Longitude}"><span class=""><i class="fa-duotone fa-map-location-dot"></i></span></a>`;
+          return `<a href="https://maps.google.com/maps?t=m&q=loc:${row.Latitude},${row.Longitude}" target="_blank"><span class=""><i class="fa-duotone fa-map-location-dot"></i></span></a>`;
         },
         targets: [8],
       },
