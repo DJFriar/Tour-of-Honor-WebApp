@@ -138,7 +138,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error('Error encountered: queryTimeZoneData');
     }
-    res.locals.title = 'TOH Scored';
+    res.locals.title = 'TOH Scored v1';
     res.render('pages/scored', {
       activeUser,
       User: req.user,
@@ -146,6 +146,19 @@ module.exports = function (app) {
       Submissions,
       TimeZone,
       dt: DateTime,
+    });
+  });
+
+  app.get('/scored2/', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Scored v2';
+    res.render('pages/scored2', {
+      activeUser,
+      User: req.user,
+      NotificationText: '',
     });
   });
 
@@ -220,21 +233,15 @@ module.exports = function (app) {
 
   app.get('/admin/memorial-editor', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let categoryData;
-    let MemorialData;
-    let restrictionData;
     if (req.user) {
       activeUser = true;
     }
+    let categoryData;
+    let restrictionData;
     try {
       categoryData = await q.queryAllCategories();
     } catch (err) {
       logger.error('Error encountered: queryAllCategories');
-    }
-    try {
-      MemorialData = await q.queryAllMemorials();
-    } catch (err) {
-      logger.error('Error encountered: queryAllMemorials');
     }
     try {
       restrictionData = await q.queryAllRestrictions();
@@ -248,7 +255,6 @@ module.exports = function (app) {
       baseImageUrl,
       baseSampleImageUrl,
       categoryData,
-      MemorialData,
       restrictionData,
       NotificationText: '',
     });
@@ -791,8 +797,6 @@ module.exports = function (app) {
     try {
       OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, currentRallyYear);
       OrderInfo = OrderInfoArray[0];
-      // console.log('==== OrderInfo ====');
-      // console.log(OrderInfo);
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
