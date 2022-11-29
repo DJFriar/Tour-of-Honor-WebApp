@@ -1,0 +1,35 @@
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../partials/topnav'); %>
+    <% } %>
+    <main>
+      <h1>Scored Submissions v2</h1>
+      <p>This is an improved version of the page shows all submissions that have been Approved or Rejected. To review submissions that have not been scored, go to the <a href="/scoring">Scoring Dashboard</a>.</p>
+      <table class="uk-table uk-table-striped uk-table-small toh-mt-24" id="NewScoredTable">
+        <thead>
+          <tr>
+            <th>SubID</th>
+            <th>Rider</th>
+            <th>Memorial</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Date Received</th>
+            <th>Status</th>
+            <th>Date Updated</th>
+          </tr>
+        </thead>
+      </table>
+    </main>
+    <footer>
+      <%- include('../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="js/scored2.js"></script>
+</body>
