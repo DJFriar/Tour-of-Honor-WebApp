@@ -940,23 +940,6 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
   }
 };
 
-// module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(UserID, Year) {
-//   try {
-//     const result = await db.Order.findOne({
-//       where: {
-//         UserID,
-//         RallyYear: Year,
-//       },
-//     });
-//     return result;
-//   } catch (err) {
-//     logger.error(`An error was encountered in queryOrderInfoByRider(${UserID},${Year})`, {
-//       calledBy: 'queries.js',
-//     });
-//     throw err;
-//   }
-// };
-
 module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(PassUserID, Year) {
   try {
     const result = await db.Flag.findOne({

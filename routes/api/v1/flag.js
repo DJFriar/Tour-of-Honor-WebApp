@@ -93,13 +93,13 @@ ApiFlagRouter.route('/change').put((req, res) => {
     },
     {
       where: {
-        UserID: req.body.UserID,
+        UserID: req.body.RiderID,
         RallyYear: currentRallyYear,
       },
     },
   )
     .then(() => {
-      logger.info(`UserID ${req.body.UserID} was assigned Flag Number ${req.body.FlagNumber}`, {
+      logger.info(`UserID ${req.body.RiderID} was assigned Flag Number ${req.body.FlagNumber}`, {
         calledFrom: 'flag.js',
       });
       res.status(202).send();
