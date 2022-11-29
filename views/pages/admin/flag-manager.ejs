@@ -14,11 +14,35 @@
       <h1>Flag Manager</h1>
       <div class="admin-container" id="tabs">
         <ul uk-tab>
-          <li><a href="#flagReservations">Reservations</a></li>
           <li><a href="#flagAssignments">Assignments</a></li>
+          <li><a href="#flagReservations">Reservations</a></li>
         </ul>
 
         <ul class="uk-switcher uk-margin">
+          <!-- Flag Assignments -->
+          <li id="flagAssignments">
+            <div>
+              <h3>Change a Rider's Flag Number</h3>
+              <p class="toh-mt-0">This tool will change a rider's flag number for the current (<%= currentRallyYear %>) season only.</p>
+              <form class="uk-grid-small uk-form-stacked" uk-grid>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="FlagNumberToChange">Flag Number to Change</label>
+                  <input class="uk-input toh-input" required id="FlagNumberToChange" type="text" maxlength="4" placeholder="####">
+                  <span class="toh-ml-8 hide-me" id="flagNumberAssignedTo"></span>
+                </div>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="NewFlagNumber">New Flag Number</label>
+                  <input class="uk-input toh-input" required id="NewFlagNumber" type="text" maxlength="4" placeholder="####">
+                  <span class="toh-ml-8 hide-me" id="flagNumberAvailableCheck"></span>
+                </div>
+                <div class="uk-width-1-5@s">
+                  <label class="uk-form-label" for="UpdateFlagNumberAssignmentBtn">&nbsp;</label>
+                  <button disabled class="uk-button uk-button-primary button-rounded" id="UpdateFlagNumberAssignmentBtn" type="button"><span class="toh-mr-8"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>Update Flag</button>
+                </div>
+                <div class="uk-width-2-5@s">&nbsp;</div>
+              </form>
+            </div>
+          </li>
           <!-- Flag Reservations -->
           <li id="flagReservations">
             <div>
@@ -54,49 +78,9 @@
                 </thead>
               </table>
             </div>
-            <!-- <div class="toh-mt-24">
-              <h3>Release a Flag Number</h3>
-              <p class="toh-mt-0">This tool will release a flag number and make it available for someone to use.</p>
-              <form class="uk-grid-small uk-form-stacked" uk-grid>
-                <div class="uk-width-1-5@s">
-                  <label class="uk-form-label" for="FlagNumberToRelease">Flag Number to Release</label>
-                  <input class="uk-input toh-input" required id="FlagNumberToRelease" type="text" maxlength="4" placeholder="####">
-                </div>
-                <div class="uk-width-1-5@s">
-                  <label class="uk-form-label" for="ReserveFlagNumberBtn">&nbsp;</label>
-                  <button class="uk-button uk-button-primary button-rounded" id="ReleaseFlagNumberBtn" type="button">Release Flag</button>
-                </div>
-                <div class="uk-width-3-5@s">&nbsp;</div>
-              </form>
-            </div>
-          </div> -->
-          </li>
-          <!-- Flag Assignments -->
-          <li id="flagAssignments">
-            <div>
-              <h3>Change a Rider's Flag Number</h3>
-              <p class="toh-mt-0">This tool will change a rider's flag number for the current (<%= currentRallyYear %>) season only.</p>
-              <form class="uk-grid-small uk-form-stacked" uk-grid>
-                <div class="uk-width-1-5@s">
-                  <label class="uk-form-label" for="FlagNumberToChange">Flag Number to Change</label>
-                  <input class="uk-input toh-input" required id="FlagNumberToChange" type="text" maxlength="4" placeholder="####">
-                  <span class="toh-ml-8 hide-me" id="flagNumberAssignedTo"></span>
-                </div>
-                <div class="uk-width-1-5@s">
-                  <label class="uk-form-label" for="NewFlagNumber">New Flag Number</label>
-                  <input class="uk-input toh-input" required id="NewFlagNumber" type="text" maxlength="4" placeholder="####">
-                  <span class="toh-ml-8 hide-me" id="flagNumberAvailableCheck"></span>
-                </div>
-                <div class="uk-width-1-5@s">
-                  <label class="uk-form-label" for="UpdateFlagNumberAssignmentBtn">&nbsp;</label>
-                  <button disabled class="uk-button uk-button-primary button-rounded" id="UpdateFlagNumberAssignmentBtn" type="button"><span class="toh-mr-8"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>Update Flag</button>
-                </div>
-                <div class="uk-width-2-5@s">&nbsp;</div>
-              </form>
-            </div>
           </li>
         </ul>
-        
+
     </main>
     <footer>
       <%- include('../../partials/footer'); %>

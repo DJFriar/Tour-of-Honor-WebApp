@@ -90,7 +90,6 @@ $(document).ready(() => {
           .text(`${riderInfo[0].FullName}`)
           .css('color', 'green')
           .removeClass('hide-me');
-          $('#UpdateFlagNumberAssignmentBtn').attr('data-rid',riderInfo[0].UserID);
           sourceFlagValid = true;
           enableUpdateFlagBtn();
         } else {
@@ -136,27 +135,47 @@ $(document).ready(() => {
   $('#UpdateFlagNumberAssignmentBtn').on('click', function () {
     const NewFlagNumber = $('#NewFlagNumber').val().trim();
     const OldFlagNumber = $('#FlagNumberToChange').val().trim();
-    const UserID = $(this).data('rid');
+    const RiderID = $(this).data('rid');
 
     const FlagUpdateInfo = {
       FlagNumber: NewFlagNumber,
-      UserID,
+      RiderID: RiderID,
     };
+    const OrderUpdateInfo = {
+      NewFlagNumber,
+      RiderID,
+    };
+
     $.ajax(`/api/v1/flag/change`, {
       type: 'PUT',
       data: FlagUpdateInfo,
     }).then(() => {
-      toastr.success(`Flag ${OldFlagNumber} was successfully updated to ${NewFlagNumber}.`, null, {
+      $.ajax(`/api/v1/orders/updateFlag`, {
+        type: 'PUT',
+        data: OrderUpdateInfo,
+      }).then(() => {
+        location.reload();
+      }).catch((err) => {
+        toastr.error(`Error updating order info.`, null, {
+          closeButton: 'false',
+          positionClass: 'toast-top-center',
+          preventDuplicates: 'true',
+          progressBar: 'true',
+          timeOut: '2500',
+        });
+        console.error(`An error was encountered while updating Order info: ${err}`);
+      })
+    }).catch((err) => {
+      toastr.error(`Error updating flag numbers.`, null, {
         closeButton: 'false',
         positionClass: 'toast-top-center',
         preventDuplicates: 'true',
         progressBar: 'true',
         timeOut: '2500',
       });
-      $('#NewFlagNumber').val('');
-      $('#FlagNumberToChange').val('');
+      console.error(`An error was encountered while updating Flag ${OldFlagNumber} to ${NewFlagNumber}: ${err}`);
     });
-  })
+  });
 
   function enableUpdateFlagBtn() {
     if (sourceFlagValid && destinationFlagValid) {
