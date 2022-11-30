@@ -463,7 +463,7 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      logger.error('Error encountered when getting memorial ID.');
+      logger.error('Error encountered when getting memorial ID.', { calledFrom: 'be-routes.js' });
     }
     if (memID > 0) {
       db.EarnedMemorialsXref.create({
