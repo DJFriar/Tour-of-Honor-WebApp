@@ -18,11 +18,37 @@ ApiRiderRouter.route('/').get(async (req, res) => {
   res.json(RiderDetails);
 });
 
+ApiRiderRouter.route('/inactive').get(async (req, res) => {
+  const sqlQuery = `
+    SELECT DISTINCT
+      u.*, 
+      f.FlagNumber 
+    FROM Users u 
+      INNER JOIN Flags f ON u.id = f.UserID 
+    WHERE u.isActive = 0
+  `;
+  try {
+    const InactiveRiders = await sequelize.query(sqlQuery, {
+      replacements: [currentRallyYear],
+      type: QueryTypes.SELECT,
+    });
+    console.log('===== InactiveRiders ====');
+    console.log(InactiveRiders);
+    res.json(InactiveRiders);
+  } catch (err) {
+    logger.error(`An error was encountered getting InactiveRiders: ${err}`, {
+      calledBy: 'api/v1/riders.js',
+    });
+  }
+});
+
 // Rider Info by Flag Number
 ApiRiderRouter.route('/flag/:flagNumber').get(async (req, res) => {
   const { flagNumber } = req.params;
   const sqlQuery = `
-    SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName 
+    SELECT 
+      f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, 
+      CONCAT(u.FirstName, ' ', u.LastName) AS FullName 
     FROM Flags f 
       LEFT JOIN Users u ON u.id = f.UserID 
     WHERE f.FlagNumber = ? AND f.RallyYear = ?
