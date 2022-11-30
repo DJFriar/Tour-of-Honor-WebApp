@@ -90,6 +90,7 @@ $(document).ready(() => {
           .text(`${riderInfo[0].FullName}`)
           .css('color', 'green')
           .removeClass('hide-me');
+          $('#UpdateFlagNumberAssignmentBtn').attr('data-rid',riderInfo[0].UserID);
           sourceFlagValid = true;
           enableUpdateFlagBtn();
         } else {
