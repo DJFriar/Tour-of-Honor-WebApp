@@ -15,15 +15,35 @@
       <div class="admin-container" id='tabs'>
         <ul uk-tab>
           <li><a href="#activeRiders">Active Riders</a></li>
+          <li><a href="#inactiveRiders">Inactive Riders</a></li>
           <!-- <li><a href="#registration">Rider Registration</a></li> -->
           <!-- <li><a href="#">Sponsors</a></li> -->
         </ul>
 
         <ul class="uk-switcher uk-margin">
-          <!-- Users Tab -->
+          <!-- Active Riders Tab -->
           <li id="activeRiders">
             <h5><%= currentRallyYear %> Rider List</h5>
+            <p>An active rider is one that has completed the entire registration process (Payment, Waiver, and Flag)</p>
             <table class="uk-table uk-table-striped uk-table-small" id="activeRidersTable">
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>Flag #</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Cell Number</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+            </table>
+          </li>
+          <!-- Inactive Riders Tab -->
+          <li id="inactiveRiders">
+            <h5>Inactive Rider List</h5>
+            <p>An inactive rider is any user not marked as active for the current tour season.</p>
+            <table class="uk-table uk-table-striped uk-table-small" id="inactiveRidersTable">
               <thead>
                 <tr>
                   <th>id</th>
