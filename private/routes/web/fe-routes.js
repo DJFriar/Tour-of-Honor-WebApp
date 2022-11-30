@@ -528,17 +528,17 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (error) {
-      logger.error('Error encountered when getting memorial ID.');
+      logger.error('Error encountered when getting memorial ID.', { calledFrom: 'fe-routes.js' });
     }
     try {
       MemorialData = await q.queryMemorial(memCode);
     } catch (err) {
-      logger.error('Error encountered: queryMemorial');
+      logger.error('Error encountered: queryMemorial', { calledFrom: 'fe-routes.js' });
     }
     try {
       MemorialText = await q.queryMemorialText(memCode);
     } catch (err) {
-      logger.error('Error encountered: queryMemorialText');
+      logger.error('Error encountered: queryMemorialText', { calledFrom: 'fe-routes.js' });
     }
 
     if (req.user) {
@@ -556,7 +556,9 @@ module.exports = function (app) {
           MemorialStatus = 0;
         }
       } catch (err) {
-        logger.error('Error encountered: queryMemorialStatusByRider');
+        logger.error('Error encountered: queryMemorialStatusByRider', {
+          calledFrom: 'fe-routes.js',
+        });
       }
       try {
         SubmissionStatus = await q.querySubmissionStatusByRider(req.user.id, memCode);
@@ -564,7 +566,9 @@ module.exports = function (app) {
           isMemorialInSubmissions = true;
         }
       } catch (err) {
-        logger.error('Error encountered: querySubmissionStatusByRider');
+        logger.error('Error encountered: querySubmissionStatusByRider', {
+          calledFrom: 'fe-routes.js',
+        });
       }
       if (!isMemorialInXref && !isMemorialInSubmissions) {
         isAvailableToSubmit = true;
@@ -612,7 +616,7 @@ module.exports = function (app) {
     try {
       Categories = await q.queryAllCategories();
     } catch (err) {
-      logger.error('Error encountered: queryAllCategories');
+      logger.error('Error encountered: queryAllCategories', { calledFrom: 'fe-routes.js' });
     }
 
     const targetMemorial = [
@@ -659,7 +663,7 @@ module.exports = function (app) {
     try {
       ValidateNewRider = await q.queryNewRiderValidation(UserName);
     } catch (err) {
-      logger.error('Error encountered: queryNewRiderValidation');
+      logger.error('Error encountered: queryNewRiderValidation', { calledFrom: 'fe-routes.js' });
     }
     if (!ValidateNewRider[0]) {
       res.redirect('/welcome');
@@ -681,7 +685,9 @@ module.exports = function (app) {
     try {
       totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
     } catch (err) {
-      logger.error('Error encountered: queryEarnedMemorialsByAllRiders');
+      logger.error('Error encountered: queryEarnedMemorialsByAllRiders', {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Stats';
     res.render('pages/stats', {
