@@ -9,10 +9,10 @@ $(document).ready(() => {
       { data: 'NextStep' },
       { data: 'RiderFirstName' },
       { data: 'RiderLastName' },
-      { data: 'RiderFlagNumber' },
+      { data: 'RiderFlagNumber', type: 'num' },
       { data: 'RiderShirt' },
       { data: 'PassengerName' },
-      { data: 'PassFlagNumber' },
+      { data: 'PassFlagNumber', type: 'num'  },
       { data: 'PassengerShirt' },
       { data: 'CharityName' },
       { data: 'isNew' },
@@ -26,7 +26,7 @@ $(document).ready(() => {
           return data
         }
       }, targets: [0] },
-      { render: DataTable.render.number('', null, 0), targets: [0, 4, 7] }
+      { render: DataTable.render.number('', null, 0), targets: [0] }
     ],
     dom: 'Bfrtip',
     buttons: [
