@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const { _, concat } = require('lodash');
 const ApiFlagRouter = require('express').Router();
 const { DateTime } = require('luxon');
 const { Op } = require('sequelize');
@@ -36,7 +36,6 @@ ApiFlagRouter.route('/').post((req, res) => {
     });
 });
 
-// Find Next Available Flag Number
 ApiFlagRouter.route('/nextAvailable').get((req, res) => {
   db.Flag.findAll({
     where: {
@@ -47,11 +46,17 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
     order: [['FlagNumber', 'ASC']],
     raw: true,
   }).then((flags) => {
-    const allowedNumbers = _.range(11, 1201, 1);
-    const badNumbers = flags.map((inUse) => inUse.FlagNumber);
-    const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
-    const nextFlag = _.min(goodNumbers);
-    res.json(nextFlag);
+    const assignedFlags = flags.map((inUse) => inUse.FlagNumber);
+    db.ReservedFlag.findAll({ order: [['FlagNumber', 'ASC']], raw: true }).then(
+      (reservedNumbers) => {
+        const allowedNumbers = _.range(11, 1201, 1);
+        const reservedFlags = reservedNumbers.map((reserved) => reserved.FlagNumber);
+        const badNumbers = concat(assignedFlags, reservedFlags);
+        const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
+        const nextFlag = _.min(goodNumbers);
+        res.json(nextFlag);
+      },
+    );
   });
 });
 
