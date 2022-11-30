@@ -26,6 +26,7 @@ $(document).ready(() => {
           return data
         }
       }, targets: [0] },
+      { render: DataTable.render.number(), targets: [0, 4, 7] }
     ],
     dom: 'Bfrtip',
     buttons: [
