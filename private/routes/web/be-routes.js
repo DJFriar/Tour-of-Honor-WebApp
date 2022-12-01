@@ -871,7 +871,7 @@ module.exports = function (app) {
             },
           }).then((dbOrder) => {
             let hasPassenger = false;
-            if (dbOrder.PassUserID > 0) {
+            if (dbOrder.PassUserID && dbOrder.PassUserID > 0) {
               hasPassenger = true;
             }
             res.status(202).send({ hasPassenger });
