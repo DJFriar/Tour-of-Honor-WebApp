@@ -32,8 +32,6 @@ ApiRiderRouter.route('/inactive').get(async (req, res) => {
       replacements: [currentRallyYear],
       type: QueryTypes.SELECT,
     });
-    console.log('===== InactiveRiders ====');
-    console.log(InactiveRiders);
     res.json(InactiveRiders);
   } catch (err) {
     logger.error(`An error was encountered getting InactiveRiders: ${err}`, {
@@ -69,14 +67,15 @@ ApiRiderRouter.route('/flag/:flagNumber').get(async (req, res) => {
 
 // Rider Info by UserID
 ApiRiderRouter.route('/:uid').get(async (req, res) => {
-  const { uid } = req.params;
-  let RiderDetails;
-  try {
-    RiderDetails = await q.queryAllUsersWithFlagInfo(currentRallyYear);
-  } catch (err) {
-    logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`);
-  }
-  res.json(RiderDetails);
+  // const { uid } = req.params;
+  // let RiderDetails;
+  // try {
+  //   RiderDetails = await q.queryAllUsersWithFlagInfo(currentRallyYear);
+  // } catch (err) {
+  //   logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`);
+  // }
+  // res.json(RiderDetails);
+  res.status(405).send();
 });
 
 module.exports = ApiRiderRouter;
