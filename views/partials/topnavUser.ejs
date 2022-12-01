@@ -21,7 +21,7 @@
         <% if(User.FlagNumber) { %>
           <!-- <li><a href="/memorials">Memorials</a></li> -->
           <li>
-            <a href="#">Rally</a>
+            <a href="#">Tour Data</a>
             <div class="uk-navbar-dropdown">
               <ul class="uk-nav uk-navbar-dropdown-nav">
                 <li><a href="/memorials">Memorials</a></li>
@@ -35,7 +35,7 @@
         <% } else { %>
           <li><a href="/memorials">Memorials</a></li>
           <!-- <li>
-            <a href="#">Rally</a>
+            <a href="#">Tour Data</a>
             <div class="uk-navbar-dropdown">
               <ul class="uk-nav uk-navbar-dropdown-nav">
                 <li><a href="/memorials">Memorials</a></li>
@@ -45,7 +45,8 @@
             </div>
           </li> -->
         <% } %>
-        <li>
+        <li><a href="/riders">Riders List</a></li>
+        <!-- <li>
           <a href="#">More</a>
           <div class="uk-navbar-dropdown">
             <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -53,7 +54,7 @@
               <li><a href="/rules">Rules</a></li>
             </ul>
           </div>
-        </li>
+        </li> -->
         <li><a href="/registration">2023 Registration</a></li>
       </ul>
     </div>
@@ -97,7 +98,7 @@
       <% } %>
       <% if(User.FlagNumber) { %>
         <li class="uk-parent">
-          <a href="#">Rally</a>
+          <a href="#">Tour Data</a>
           <ul class="uk-nav-sub">
             <li><a href="/memorials">Memorials</a></li>
             <li><a href="/trophies">Trophy Statuses</a></li>
@@ -107,7 +108,7 @@
         </li>
       <% } else { %>
         <li class="uk-parent">
-          <a href="#">Rally</a>
+          <a href="#">Tour Data</a>
           <ul class="uk-nav-sub">
             <li><a href="/memorials">Memorials</a></li>
             <li><a href="/trophies">Trophy Statuses</a></li>
