@@ -866,9 +866,13 @@ module.exports = function (app) {
     if (OrderInfo.UserID > 0) {
       try {
         const RiderWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.UserID);
-        OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
+        if (RiderWaiverInfo) {
+          OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
+        }
       } catch (err) {
-        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
+        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`, {
+          calledFrom: 'fe-routes.js',
+        });
       }
     } else {
       OrderInfo.RiderWaiverID = '';
@@ -878,9 +882,13 @@ module.exports = function (app) {
     if (OrderInfo.PassUserID > 0) {
       try {
         const PassWaiverInfo = await q.queryWaiverIDByUser(OrderInfo.PassUserID);
-        OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
+        if (PassWaiverInfo) {
+          OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
+        }
       } catch (err) {
-        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`);
+        logger.error(`Error encountered: Passenger queryWaiverIDByUser${err}`, {
+          calledFrom: 'fe-routes.js',
+        });
       }
     }
 
