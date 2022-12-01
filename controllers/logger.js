@@ -1,19 +1,10 @@
 const { createLogger, format, transports } = require('winston');
-const { LogtailTransport } = require('@logtail/winston');
-const { Logtail } = require('@logtail/node');
-// require('winston-daily-rotate-file');
+// const { LogtailTransport } = require('@logtail/winston');
+// const { Logtail } = require('@logtail/node');
 
 // Logtail Setup
-// const logtailSourceID = process.env.LOGTAIL_SOURCE_ID;
-const logtailSourceToken = process.env.LOGTAIL_SOURCE_TOKEN;
-const logtail = new Logtail(logtailSourceToken);
-
-// eslint-disable-next-line no-unused-vars
-// const fileRotateTransport = new transports.DailyRotateFile({
-//   filename: 'logs/info-%DATE%.log',
-//   datePattern: 'YYYY-MM-DD',
-//   maxFiles: '14d',
-// });
+// const logtailSourceToken = process.env.LOGTAIL_SOURCE_TOKEN;
+// const logtail = new Logtail(logtailSourceToken);
 
 const logger = createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -27,7 +18,6 @@ const logger = createLogger({
   ),
   defaultMeta: { service: 'TourOfHonor-Web' },
   transports: [
-    // new LogtailTransport(logtail),
     new transports.File({ filename: 'logs/error.log', level: 'error' }),
     new transports.File({ filename: 'logs/info.log' }),
   ],
@@ -35,10 +25,10 @@ const logger = createLogger({
   rejectionHandlers: [new transports.File({ filename: 'logs/PromiseRejections.log' })],
 });
 
-// When in Production, send the app logs to Logtail
-if (process.env.NODE_ENV !== 'Development') {
-  logger.add(new LogtailTransport(logtail));
-}
+// // When in Production, send the app logs to Logtail
+// if (process.env.NODE_ENV !== 'Development') {
+//   logger.add(new LogtailTransport(logtail));
+// }
 
 // If we're not in Production then **ALSO** log to the `console`
 // with the colorized simple format.
@@ -75,10 +65,10 @@ const dblogger = createLogger({
   ],
 });
 
-// When in Production, send the DB logs to Logtail
-if (process.env.NODE_ENV !== 'Development') {
-  dblogger.add(new LogtailTransport(logtail));
-}
+// // When in Production, send the DB logs to Logtail
+// if (process.env.NODE_ENV !== 'Development') {
+//   dblogger.add(new LogtailTransport(logtail));
+// }
 
 // If we're not in Production then **ALSO** log to the `console`
 // with the colorized simple format.
