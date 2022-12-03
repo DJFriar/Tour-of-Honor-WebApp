@@ -3,20 +3,21 @@
   <h3>Flag Number Selection</h3>
   <div class="toh-mt-24">
     <form class="uk-grid-small uk-form-stacked" uk-grid>
-      <div class="uk-width-1-1@s toh-mb-18">
-        <label class="uk-form-label" for="RequestedFlagNumber">
-          <span>Flag Number Preference</span>
+      <div class="uk-width-1-1@s">
+        <label class="uk-form-label" style="display:inline; margin-bottom: 0; " for="RequestedFlagNumber">
+          <span style="vertical-align: -webkit-baseline-middle;">Flag Number Preference</span>
           <!-- <button class="uk-button uk-align-right uk-button-small uk-button-primary button-rounded toh-mb-8" id="generateRandomFlagNumber">Randomize</button> -->
           <button class="uk-button uk-align-right uk-button-small uk-button-primary button-rounded toh-mb-8" id="getNextAvailableFlagNumber">Next Lowest</button>
-      
         </label>
         <input class="uk-input toh-input" id="RequestedFlagNumber" type="text" placeholder="" required>
-        <div class="toh-mt-8">
-          <button class="uk-button uk-button-small uk-button-primary button-rounded" id="checkFlagNumberAvailability">Check Availability</button>
-          <span class="toh-ml-8 hide-me" id="flagAvailabilityResponse">Results go here</span>
-        </div>
       </div>
-      <div class="uk-width-1-1@s toh-mt-18">
+      <div class="uk-width-1-2@s uk-grid-margin" style="height: 48px">
+        <button class="uk-button uk-button-small uk-button-primary button-rounded" id="checkFlagNumberAvailability">Check Availability</button>
+      </div>
+      <div class="uk-width-1-2@s uk-grid-margin">
+        <span class="toh-ml-8 hide-me" id="flagAvailabilityResponse">Results go here. Results go here. Results go here. Results go here. Results go here. Results go here. Results go here. </span>
+      </div>
+      <div class="uk-width-1-1@s uk-grid-margin toh-mt-18">
         <div class="uk-align-right">
           <label class="uk-form-label">&nbsp;</label>
           <button class="uk-button uk-button-secondary button-rounded cancelButton" id="cancelFlagChoiceButton">Cancel</button>
