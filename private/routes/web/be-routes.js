@@ -404,6 +404,7 @@ module.exports = function (app) {
       City: req.body.City,
       State: req.body.State,
       ZipCode: req.body.ZipCode,
+      CellNumber: req.body.CellNumber,
       isAdmin: 0,
       isActive: 0,
     })
