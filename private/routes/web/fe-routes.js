@@ -784,6 +784,7 @@ module.exports = function (app) {
     let RiderBikeInfo;
     let ShirtSizeSurcharge;
     let ShirtStyleSurcharge;
+    let TimeZoneOptions;
     let TotalOrderCost;
     let WaiverName;
 
@@ -807,7 +808,6 @@ module.exports = function (app) {
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
           const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
-          console.log(passFlagNum);
           if (passFlagNum && passFlagNum.FlagNumber > 0) {
             OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
           } else {
@@ -854,6 +854,12 @@ module.exports = function (app) {
       Charities = await q.queryAllCharities();
     } catch (err) {
       logger.error(`Error encountered: queryAllCharities${err}`);
+    }
+
+    try {
+      TimeZoneOptions = await q.queryTimeZoneData();
+    } catch (err) {
+      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
     }
 
     try {
@@ -905,6 +911,7 @@ module.exports = function (app) {
       RiderBikeInfo,
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
+      TimeZoneOptions,
       TotalOrderCost,
       WaiverName,
       dt: DateTime,

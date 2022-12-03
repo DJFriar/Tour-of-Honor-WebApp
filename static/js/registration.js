@@ -17,7 +17,7 @@ $(document).ready(() => {
 
   // Handle Address Needs Updating button
   $('#addressIsCorrectNo').on('click', () => {
-    $('.modal').css('display', 'block');
+    $('#setAddressModal').css('display', 'block');
   });
 
   // Format Cell Number field into (nnn) nnn-nnnn
@@ -71,8 +71,6 @@ $(document).ready(() => {
     $('.modal').css('display', 'block');
   });
 
-  // Handle Smarty Autocomplete
-
   // Handle saveNewAddressBtn
   $('#saveNewAddressBtn').on('click', function saveNewAddressBtn(e) {
     e.preventDefault();
@@ -91,7 +89,7 @@ $(document).ready(() => {
       type: 'PUT',
       data: saveAddress,
     }).then(() => {
-      location.replace('/logout');
+      location.reload();
     });
   });
 
@@ -732,7 +730,6 @@ $(document).ready(() => {
   $('#checkFlagNumberAvailability').on('click', (e) => {
     e.preventDefault();
     const requestedFlagNumber = $('#RequestedFlagNumber').val().trim();
-    console.log(`requestedFlagNumber is ${requestedFlagNumber}`);
 
     if (!requestedFlagNumber) {
       $('#RequestedFlagNumber').val('');
