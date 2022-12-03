@@ -121,7 +121,7 @@ $(document).ready(() => {
   });
 
   // Handle Edit Rider Button
-  $('#activeRidersTable').on('click', '.editUserButton', function () {
+  $('#activeRidersTable, #inactiveRidersTable').on('click', '.editUserButton', function () {
     const uid = $(this).data('uid');
     $('#userDetailEditModal').css('display', 'block');
     $.ajax(`/api/v1/riderInfo/${uid}`, {
