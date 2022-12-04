@@ -11,7 +11,7 @@
     <% } %>
     <main>
       <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
-      <h1>Registration Orders</h1>
+      <h1>Registration Manager</h1>
       <% if(NotificationText) { %>
         <%- include('../../partials/notice'); %>
       <% } %>
@@ -19,6 +19,7 @@
       <table class="uk-table uk-table-striped uk-table-small" id="ordersTable">
         <thead>
           <tr>
+            <th>OrderID</th>
             <th>Order Number</th>
             <th>Next Step</th>
             <th>First Name</th>
