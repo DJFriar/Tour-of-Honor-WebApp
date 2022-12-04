@@ -6,18 +6,18 @@ const { logger } = require('../controllers/logger');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
-module.exports.queryUserInfoByEmail = async function queryUserInfoByEmail(email) {
+module.exports.queryUserSessionDataByID = async function queryUserSessionDataByID(id) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, u.isAdmin, u.isActive FROM Users u LEFT JOIN Flags f ON u.id = f.UserID WHERE u.Email = ? ORDER BY f.RallyYear DESC LIMIT 1',
+      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, tz.LongName AS TimeZoneLong, u.PillionFlagNumber, u.isAdmin, u.isActive FROM Users u INNER JOIN TimeZones tz ON u.TimeZone = tz.ShortName LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? ORDER BY f.RallyYear DESC LIMIT 1;',
       {
-        replacements: [email],
+        replacements: [id],
         type: QueryTypes.SELECT,
       },
     );
     return result;
   } catch (err) {
-    logger.error(`An error was encountered in queryUserInfoByEmail(${email}`, {
+    logger.error(`An error was encountered in queryUserSessionDataByID(${id}`, {
       calledBy: 'queries.js',
     });
     throw err;
@@ -1093,14 +1093,43 @@ module.exports.queryWaiversByOrderID = async function queryWaiversByOrderID(Orde
   }
 };
 
-module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone) {
+module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
+  let result;
   try {
-    const result = await db.TimeZone.findOne({
-      where: {
-        ShortName: TimeZone,
-      },
-    });
+    if (rider) {
+      result = await db.Bike.findAll({
+        raw: true,
+        where: {
+          user_id: rider,
+        },
+      });
+    } else {
+      result = await db.Bike.findAll({
+        raw: true,
+      });
+    }
     return result;
+  } catch (err) {
+    logger.error('An error was encountered in queryAllBikes()', { calledBy: 'queries.js' });
+    throw err;
+  }
+};
+
+module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone = false) {
+  let TimeZoneData;
+  try {
+    if (TimeZone) {
+      TimeZoneData = await db.TimeZone.findOne({
+        where: {
+          ShortName: TimeZone,
+        },
+      });
+    } else {
+      TimeZoneData = await db.TimeZone.findAll({
+        raw: true,
+      });
+    }
+    return TimeZoneData;
   } catch (err) {
     logger.error(`An error was encountered in queryTimeZoneData(${TimeZone})`, {
       calledBy: 'queries.js',

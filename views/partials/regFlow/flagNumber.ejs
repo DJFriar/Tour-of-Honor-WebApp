@@ -11,10 +11,27 @@
     </div>
     <div class="uk-width-1-1@s toh-mt-24">
       <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
-      <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+      <% if (OrderInfo.applyFlagSurcharge > 0) { %>
+        <% if (!OrderInfo.FlagSurchargeOrderNumber) { %>
+          <button type="button" id="goToFlagCheckoutBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Pay Custom Flag Surcharge</button>
+          <p>
+            If you have already paid for the custom flag surcharge, please click 
+            <button id="checkFlagOrderStatus" class="uk-button uk-button-link" data-orderid="<%= OrderInfo.id %>">HERE</button>
+            to confirm your order status.
+          </p>
+        <% } else { %>
+          <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
+            <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+          <% } else { %>
+            <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+          <% } %>
+        <% } %>
       <% } else { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% if (OrderInfo.RequestedRiderFlagNumber && OrderInfo.RequestedPassFlagNumber) { %>
+          <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% } else { %>
+          <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% } %>
       <% } %>
     </div>
   <% } else { %>
@@ -22,15 +39,36 @@
     <%- include('../../partials/flagSelectionRider') %>
     <div class="uk-width-1-1@s toh-mt-24">
       <label class="uk-form-label" for="goToSummaryBtn">&nbsp;</label>
-      <% if (OrderInfo.RequestedRiderFlagNumber) { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+      <% if (OrderInfo.applyFlagSurcharge > 0) { %>
+        <% if (!OrderInfo.FlagSurchargeOrderNumber) { %>
+          <button type="button" id="goToFlagCheckoutBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Pay Custom Flag Surcharge</button>
+          <p>
+            If you have already paid for the custom flag surcharge, please click 
+            <button id="checkFlagOrderStatus" class="uk-button uk-button-link" data-orderid="<%= OrderInfo.id %>">HERE</button>
+            to confirm your order status.
+          </p>
+        <% } else { %>
+          <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+            <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+          <% } else { %>
+            <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+          <% } %>
+        <% } %>
       <% } else { %>
-        <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% if (OrderInfo.RequestedRiderFlagNumber) { %>
+          <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% } else { %>
+          <button type="button" id="goToSummaryBtn" class="uk-button uk-button-primary button-rounded" disabled data-orderid="<%= OrderInfo.id %>">Continue to Summary</button>
+        <% } %>
       <% } %>
     </div>
   <% } %>
   <!-- This is the Choose New Flag Number modal -->
   <div id="chooseFlagNumberModal" class="modal">
     <%- include('../../partials/chooseFlagNumberModal'); %>
+  </div>
+  <!-- This is the Payment Warning modal -->
+  <div id="shopifyWarningModal2" class="modal">
+    <%- include('../../partials/shopifyWarningModal2'); %>
   </div>
 </div>

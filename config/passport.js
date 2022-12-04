@@ -39,11 +39,11 @@ passport.use(
 // Sequelize needs to serialize and deserialize the user
 // Just consider this part boilerplate needed to make it all work
 passport.serializeUser((user, cb) => {
-  cb(null, user);
+  cb(null, user.id);
 });
 
-passport.deserializeUser(async (obj, cb) => {
-  const userInfo = await q.queryUserInfoByEmail(obj.Email);
+passport.deserializeUser(async (id, cb) => {
+  const userInfo = await q.queryUserSessionDataByID(id);
   if (process.env.NODE_ENV === 'Development') {
     console.log('==== User Info ====');
     console.log(userInfo[0]);

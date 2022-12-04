@@ -15,7 +15,7 @@ $(document).ready(() => {
       { targets: [0], visible: false },
       {
         render(data) {
-          const totalAmount = data * 25;
+          const totalAmount = data * 30;
           return `$${totalAmount}`;
         },
         targets: [4],

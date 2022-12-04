@@ -13,6 +13,9 @@
       <% } else { %>
         <span class="dataValueBold"> solo rider</span>. Your flag number will be <span class="dataValueBold"><%= OrderInfo.RequestedRiderFlagNumber %></span>.
       <% } %>
+      <% if (OrderInfo.applyFlagSurcharge > 0) { %>
+        Your order contained <span class="dataValueBold"> <%= OrderInfo.applyFlagSurcharge %> custom <%= OrderInfo.applyFlagSurcharge > 1 ? `flags` : `flag` %></span>.
+      <% } %>
     </p><p>
       You chose to support <span class="dataValueBold"><%= OrderInfo.CharityName %></span>
       <% if (OrderInfo.ShirtStyle === 'Donation') { %>
