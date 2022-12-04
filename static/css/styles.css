@@ -148,6 +148,11 @@ a.hidden-link:visited {
   text-transform: uppercase;
 }
 
+.toh-fake-link {
+  color: #0f6ecd;
+  cursor: pointer;
+}
+
 .toh-rider-flag {
   padding: 4px 10px;
   background-color: yellow;
