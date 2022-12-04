@@ -942,8 +942,9 @@ module.exports = function (app) {
 
       // Generate the Shopify URL & ID
       const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
-      ShirtDetails.CheckoutURL = checkoutDetails.CheckoutURL;
-      logger.info(`Checkout URL Generated: ${ShirtDetails.CheckoutURL}`, {
+      const { CheckoutURL } = checkoutDetails;
+      ShirtDetails.CheckoutURL = CheckoutURL;
+      logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
         calledFrom: 'be-routes.js',
       });
       ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
@@ -959,7 +960,7 @@ module.exports = function (app) {
         },
       })
         .then(() => {
-          res.status(202).send({ checkoutURL, PriceTier, ShopifyVariantID, totalPrice });
+          res.status(202).send({ CheckoutURL, PriceTier, ShopifyVariantID, totalPrice });
         })
         .catch((err) => {
           logger.error(`Error updating order with t-shirt info: ${err}`);
@@ -1002,16 +1003,24 @@ module.exports = function (app) {
 
     /* #region  RegStep FlagInProgress */
     if (RegStep === 'FlagInProgress') {
-      logger.debug(`${RegStep} step entered.`);
+      logger.info(`${RegStep} step entered.`);
+      let ApplyFlagSurcharge = req.body.FlagSurcharge;
+      const { RequestedFlagNumber } = req.body;
       const FlagInfo = {
-        FlagNumber: req.body.RequestedFlagNumber,
+        FlagNumber: RequestedFlagNumber,
         UserID: req.body.UserID,
         RallyYear: req.body.RallyYear,
       };
       const UserInfo = {
         isActive: 1,
       };
-      const OrderInfo = {};
+      if (RequestedFlagNumber >= 1201 && RequestedFlagNumber <= 2500) {
+        // eslint-disable-next-line no-plusplus
+        ApplyFlagSurcharge++;
+      }
+      const OrderInfo = {
+        applyFlagSurcharge: ApplyFlagSurcharge,
+      };
       if (req.body.whoami === 'rider') {
         OrderInfo.RequestedRiderFlagNumber = req.body.RequestedFlagNumber;
       }
@@ -1019,45 +1028,70 @@ module.exports = function (app) {
         OrderInfo.RequestedPassFlagNumber = req.body.RequestedFlagNumber;
       }
 
+      if (ApplyFlagSurcharge > 0 && ApplyFlagSurcharge <= 2) {
+        const flagSurchargeAmt = ApplyFlagSurcharge === 2 ? 60 : 30;
+        const PriceTierObject = await q.queryTierByPrice(flagSurchargeAmt);
+        const { ShopifyVariantID } = PriceTierObject[0];
+
+        // Generate the Shopify URL & ID for the Flag Surcharge
+        const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
+        const { CheckoutURL } = checkoutDetails;
+        OrderInfo.FlagSurchargeCheckoutURL = CheckoutURL;
+        logger.info(`Flag Surcharge Checkout URL Generated: ${CheckoutURL}`, {
+          calledFrom: 'be-routes.js',
+        });
+        const { CheckoutID } = checkoutDetails;
+        OrderInfo.FlagSurchargeCheckoutID = CheckoutID;
+        logger.info(`Flag Surcharge Checkout ID Generated: ${CheckoutID}`, {
+          calledFrom: 'be-routes.js',
+        });
+      }
+
+      console.log('==== OrderInfo from be-routes.js ====');
+      console.log(OrderInfo);
+
       // Update the DB tables
       // Assign the Flag number to the rider
       db.Flag.create(FlagInfo)
         .then(() => {
-          logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`, {
-            calledFrom: 'be-routes.js',
-          });
-          // Update Order with Flag info
-          db.Order.update(OrderInfo, {
+          logger.info(
+            `Flag number ${req.body.RequestedFlagNumber} assigned to UserID ${req.body.UserID}`,
+            {
+              calledFrom: 'be-routes.js',
+            },
+          );
+          // Update User to be Active
+          db.User.update(UserInfo, {
             where: {
-              RallyYear: req.body.RallyYear,
-              id: req.body.OrderID,
+              id: req.body.UserID,
             },
           })
             .then(() => {
-              logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`, {
+              logger.info(`User ${req.body.UserID} was marked active.`, {
                 calledFrom: 'be-routes.js',
               });
-              // Update User to be Active
-              db.User.update(UserInfo, {
+              // Update Order with Flag info
+              db.Order.update(OrderInfo, {
                 where: {
-                  id: req.body.UserID,
+                  RallyYear: req.body.RallyYear,
+                  id: req.body.OrderID,
                 },
               })
                 .then(() => {
-                  logger.info(`User ${req.body.UserID} was marked active.`, {
+                  logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`, {
                     calledFrom: 'be-routes.js',
                   });
                   res.status(202).send();
                 })
                 .catch((err) => {
-                  logger.error(`Error marking User ${req.body.UserID} active: ${err}`, {
+                  logger.error(`Error updating order with FlagInProgress info: ${err}`, {
                     calledFrom: 'be-routes.js',
                   });
                   res.status(400).json(err);
                 });
             })
             .catch((err) => {
-              logger.error(`Error updating order with FlagInProgress info: ${err}`, {
+              logger.error(`Error marking User ${req.body.UserID} active: ${err}`, {
                 calledFrom: 'be-routes.js',
               });
               res.status(400).json(err);

@@ -5,6 +5,7 @@ const { logger } = require('../../../controllers/logger');
 const db = require('../../../models');
 const { sequelize } = require('../../../models');
 const q = require('../../../private/queries');
+const { checkOrderStatusByCheckoutID } = require('../../../controllers/shopify');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
@@ -33,7 +34,9 @@ ApiOrderRouter.route('/').get(async (req, res) => {
       CASE WHEN ISNULL(o.RequestedPassFlagNumber) THEN 'N/A' ELSE o.RequestedPassFlagNumber END AS PassFlagNumber, 
       pt.Price AS PriceCharged, 
       CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName, 
-      IF(ISNULL(f.id), 1, 0) AS isNew 
+      IF(ISNULL(f.id), 1, 0) AS isNew,
+      o.applyFlagSurcharge,
+      o.FlagSurchargeOrderNumber
     FROM Orders o 
       LEFT JOIN Users u1 ON o.UserID = u1.id 
       LEFT JOIN Users u2 ON o.PassUserID = u2.id 
@@ -41,6 +44,7 @@ ApiOrderRouter.route('/').get(async (req, res) => {
       LEFT JOIN Charities c ON o.CharityChosen = c.id 
       LEFT JOIN Flags f ON o.UserID = f.UserID AND f.RallyYear = ? 
     WHERE o.RallyYear = ?
+    ORDER BY o.id DESC
   `;
   try {
     const OrderDetails = await sequelize.query(sqlQuery, {
@@ -137,6 +141,58 @@ ApiOrderRouter.route('/updateFlag').put(async (req, res) => {
     },
   });
   res.status(202).send();
+});
+
+ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
+  const { oid } = req.params;
+  console.log(`==== checkFlagOrderStatus API Reached for oid: ${oid} ====`);
+  db.Order.findOne({
+    where: {
+      id: oid,
+      RallyYear: 2023,
+    },
+  }).then(async (o) => {
+    if (o.FlagSurchargeOrderNumber === null) {
+      logger.info('FlagSurchargeOrderNumber not found locally, checking Shopify...', {
+        calledFrom: 'api/v1/orders.js',
+      });
+      // Check Shopify for an Order Number
+      let flagOrderNumber;
+      try {
+        flagOrderNumber = await checkOrderStatusByCheckoutID(o.FlagSurchargeCheckoutID);
+      } catch (err) {
+        logger.warn(
+          `flagOrderNumber not found for TOH Order ${oid}. Flag order is likely not paid for yet.${err}`,
+        );
+        res.json(0);
+      }
+      // If Shopify provides us with an Order number, then add it to the DB.
+      if (flagOrderNumber) {
+        db.Order.update(
+          {
+            FlagSurchargeOrderNumber: flagOrderNumber,
+          },
+          {
+            where: {
+              id: oid,
+              RallyYear: 2023,
+            },
+          },
+        ).then(() => {
+          logger.info(`Shopify Flag Order Number updated for order ${oid}`, {
+            calledFrom: 'api/v1/orders.js',
+          });
+          res.json(flagOrderNumber);
+        });
+      }
+    }
+    if (o.FlagSurchargeOrderNumber) {
+      logger.info(`Shopify Flag Order Number found locally: ${o.FlagSurchargeOrderNumber}`, {
+        calledFrom: 'api/v1/orders.js',
+      });
+      res.json(o.FlagSurchargeOrderNumber);
+    }
+  });
 });
 
 module.exports = ApiOrderRouter;

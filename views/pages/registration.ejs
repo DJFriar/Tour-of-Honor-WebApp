@@ -49,7 +49,9 @@
             </ul>
           </div>
           <div class="hiddenData">
+            <span id="flagSurcharge" data-flagsurcharge="<%= OrderInfo.applyFlagSurcharge %>"></span>
             <span id="checkoutUrl" data-checkouturl="<%= OrderInfo.CheckoutURL %>"></span>
+            <span id="flagSurchargeCheckoutUrl" data-flagcheckouturl="<%= OrderInfo.FlagSurchargeCheckoutURL %>"></span>
             <span id="nextStepNum" data-nextstepnum="<%= OrderInfo.NextStepNum %>"></span>
           </div>
         <% } %>

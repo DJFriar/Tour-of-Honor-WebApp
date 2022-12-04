@@ -5,6 +5,8 @@ $(document).ready(() => {
   const passReady = false;
   let enableWhen = '';
   const CheckoutURL = $('#checkoutUrl').data('checkouturl');
+  const FlagSurcharge = $('#flagSurcharge').data('flagsurcharge');
+  const FlagSurchargeCheckoutURL = $('#flagSurchargeCheckoutUrl').data('flagcheckouturl');
   const nextStepNum = $('#nextStepNum').data('nextstepnum');
   for (let i = 0; i <= nextStepNum; i++) {
     $(`#RegStep${i}`).removeClass('disabled');
@@ -749,16 +751,16 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 1200) {
+    if (requestedFlagNumber > 2500) {
       $('#RequestedFlagNumber').val('');
       $('#flagAvailabilityResponse')
-        .text('Flag numbers must be lower than 1200.')
+        .text('Flag numbers must be lower than 2500.')
         .css('color', 'red')
         .removeClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 10 && requestedFlagNumber <= 1200) {
+    if (requestedFlagNumber > 10 && requestedFlagNumber <= 2500) {
       $.ajax(`/api/v1/flag/${requestedFlagNumber}`, {
         type: 'GET',
       }).then((flagInfo) => {
@@ -769,10 +771,17 @@ $(document).ready(() => {
             .removeClass('hide-me');
           $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
         } else {
-          $('#flagAvailabilityResponse')
-            .text(`Flag #${requestedFlagNumber} is available.`)
-            .css('color', 'green')
-            .removeClass('hide-me');
+          if (requestedFlagNumber >= 1201) {
+            $('#flagAvailabilityResponse')
+              .text(`Flag #${requestedFlagNumber} is available with a $30 surcharge.`)
+              .css('color', 'green')
+              .removeClass('hide-me');
+          } else {
+            $('#flagAvailabilityResponse')
+              .text(`Flag #${requestedFlagNumber} is available.`)
+              .css('color', 'green')
+              .removeClass('hide-me');
+          }
           $('#saveNewFlagNumChoiceBtn').prop('disabled', false);
         }
       });
@@ -794,6 +803,7 @@ $(document).ready(() => {
       UserID,
       OrderID,
       RequestedFlagNumber: requestedFlagNumber,
+      FlagSurcharge,
     };
 
     if (!requestedFlagNumber || requestedFlagNumber < 11) {
@@ -803,14 +813,14 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber || requestedFlagNumber > 1200) {
-      showToastrError('Flag numbers must be lower than 1200.');
+    if (requestedFlagNumber > 2500) {
+      showToastrError('Flag numbers must be lower than 2500.');
       $('#RequestedFlagNumber').val('');
       $('#flagAvailabilityResponse').addClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 10 && requestedFlagNumber <= 1200) {
+    if (requestedFlagNumber > 10 && requestedFlagNumber <= 2500) {
       $.ajax('/api/v1/regFlow', {
         beforeSend() {
           $('.modal').css('display', 'none');
@@ -829,6 +839,31 @@ $(document).ready(() => {
           showToastrError('An error occured while reserving your flag.');
         });
     }
+  });
+
+  // Handle Flag Checkout Button
+  $('#goToFlagCheckoutBtn').on('click', (e) => {
+    e.preventDefault();
+    $('#shopifyWarningModal2').css('display', 'block');
+  });
+
+  // Handle Checkout Now Button
+  $('#goToShopifyFlagPaymentBtn').on('click', () => {
+    window.open(FlagSurchargeCheckoutURL);
+    $('#shopifyWarningModal2').css('display', 'none');
+    $('#awaitingShopifyContent').removeClass('hide-me');
+  });
+
+  // Handle Verify Flag Order Status Link
+  $('#checkFlagOrderStatus').on('click', function checkFlagOrderStatus() {
+    const oid = $(this).data('orderid');
+    console.log(`==== checkFlagOrderStatus Clicked for oid: ${oid} ====`);
+
+    $.ajax(`/api/v1/orders/checkFlagOrderStatus/${oid}`, {
+      type: 'GET',
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Handle Continue to Summary Button
