@@ -194,6 +194,7 @@ module.exports = function (app) {
           NotificationText: '',
           baseImageUrl,
           baseSampleImageUrl,
+          currentRallyYear,
           Submissions,
           OtherRidersArray,
           TimeZone,
@@ -254,6 +255,7 @@ module.exports = function (app) {
       User: req.user,
       baseImageUrl,
       baseSampleImageUrl,
+      currentRallyYear,
       categoryData,
       restrictionData,
       NotificationText: '',
@@ -289,6 +291,7 @@ module.exports = function (app) {
       User: req.user,
       baseImageUrl,
       baseSampleImageUrl,
+      currentRallyYear,
       categoryData,
       MemorialData,
       restrictionData,
@@ -585,6 +588,7 @@ module.exports = function (app) {
       NotificationText: '',
       baseImageUrl,
       baseSampleImageUrl,
+      currentRallyYear,
       isAvailableToSubmit,
       MemorialData,
       MemorialStatus,
@@ -803,7 +807,7 @@ module.exports = function (app) {
 
     try {
       OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, currentRallyYear);
-      OrderInfo = OrderInfoArray[0];
+      [OrderInfo] = OrderInfoArray;
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
