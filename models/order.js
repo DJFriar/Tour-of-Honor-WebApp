@@ -68,6 +68,22 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      applyFlagSurcharge: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      FlagSurchargeCheckoutID: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      FlagSurchargeCheckoutURL: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      FlagSurchargeOrderNumber: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       uniqueKeys: {
