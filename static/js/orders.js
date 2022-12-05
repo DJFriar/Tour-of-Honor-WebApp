@@ -10,6 +10,7 @@ $(document).ready(() => {
       { data: 'NextStep' },
       { data: 'RiderFirstName' },
       { data: 'RiderLastName' },
+      { data: 'RiderEmail' },
       { data: 'RiderFlagNumber', type: 'num' },
       { data: 'RiderShirt' },
       { data: 'PassengerName' },
@@ -21,7 +22,7 @@ $(document).ready(() => {
       { data: 'FlagSurchargeOrderNumber' },
     ],
     columnDefs: [
-      { targets: [0, 11, 12, 13], visible: false },
+      { targets: [0, 12, 13, 14], visible: false },
       { render: function (data, type, row) {
         if (row['isNew']) {
           return `<span>${data}&nbsp;<i class="fa-duotone fa-sparkles" style="--fa-primary-color: orange; --fa-secondary-color: orangered;"></i></span>`
@@ -39,7 +40,7 @@ $(document).ready(() => {
         } else {
           return data
         }
-      }, targets: [5, 8] },
+      }, targets: [6, 9] },
       { render: DataTable.render.number('', null, 0), targets: [1] }
     ],
     dom: 'Bfrtip',
