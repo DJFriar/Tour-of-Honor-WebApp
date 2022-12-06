@@ -30,7 +30,7 @@
         </div>
       </div>
       <p class="toh-alert">
-        Note that state memorials will not be visible until <span id="releaseDate" data-tzf="<%= TimeZone.ZoneName %>"></span>.<br />
+        Note that state memorials will not be visible until <span id="releaseDate" data-tzf="<%= TimeZone.ZoneName ? TimeZone.ZoneName : null %>"></span>.<br />
         <span id="countdownTimer"></span>
       </p>
       <!-- #region Memorial Table -->
