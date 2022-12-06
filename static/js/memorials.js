@@ -191,4 +191,47 @@ $(document).ready(() => {
       memorialsTable.rows({ order: 'current', search: 'applied' }).data();
     }
   }
+
+  const userTZ = $('#releaseDate').data('tzf');
+  const options = {
+    timeZoneName: 'short',
+  };
+  if (userTZ) {
+    options.timeZone = userTZ;
+  }
+
+  const now = new Date(new Date().toLocaleString('en-US', options)).getTime();
+  const tzShort = new Date().toLocaleString('default', options).slice(-3);
+
+  const releaseDate = new Date('Apr 1, 2023 00:01:00 EDT');
+  const deadline = releaseDate.getTime();
+  $('#releaseDate').html(
+    releaseDate.toLocaleString('en-US', {
+      day: 'numeric',
+      hour: 'numeric',
+      month: 'long',
+      minute: 'numeric',
+      second: '2-digit',
+      timeZone: 'America/New_York',
+      timeZoneName: 'short',
+      year: 'numeric',
+    }),
+  );
+
+  const x = setInterval(() => {
+    const t = deadline - now;
+    const days = Math.floor(t / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((t % (1000 * 60)) / 1000);
+    document.getElementById(
+      'countdownTimer',
+    ).innerHTML = `T- ${days}d ${hours}h ${minutes}m ${seconds}s (Using ${tzShort})`;
+    if (t < 0) {
+      clearInterval(x);
+      document.getElementsByClassName('toh-alert').addClass('hide-me');
+    }
+  }, 1000);
+
+  // $('#userLocalTime').text(`${userDateTime} | ${releaseDateTime} | TimeLeft: ${countdown}`);
 });

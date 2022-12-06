@@ -29,7 +29,10 @@
           <button class="uk-button uk-button-secondary memorialFilterButton showK9Memorials">War Dogs/K9</button>
         </div>
       </div>
-      <p class="toh-alert">Note that state memorials will not be visible until April 1, 2023 at 00:01 EST.</p>
+      <p class="toh-alert">
+        Note that state memorials will not be visible until <span id="releaseDate" data-tzf="<%= TimeZone.ZoneName %>"></span>.<br />
+        <span id="countdownTimer"></span>
+      </p>
       <!-- #region Memorial Table -->
       <table class="uk-table uk-table-striped uk-table-small" id="memorialsTable">
         <thead>

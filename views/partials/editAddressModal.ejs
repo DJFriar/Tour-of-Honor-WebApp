@@ -31,8 +31,8 @@
         <label class="uk-form-label" for="TimeZone">Time Zone&nbsp;<span uk-tooltip="title: This will adjust the times you see on the site to the chosen time zone."><i class="fa-solid fa-circle-question"></i></span></label>
         <select class="uk-select toh-input" name="TimeZone" id="TimeZone">
           <% TimeZoneOptions.forEach(function(tz) { %>
-            <% var selected = (User.TimeZone == tz.ShortName) ? "selected" : "" %>
-            <option <%= selected %> value="<%= tz.ShortName %>">
+            <% var selected = (User.TimeZone == tz.LongName) ? "selected" : "" %>
+            <option <%= selected %> value="<%= tz.LongName %>">
               <%= tz.LongName %>
             </option>
           <% }) %>
