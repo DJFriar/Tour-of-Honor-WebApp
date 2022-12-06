@@ -1024,6 +1024,7 @@ module.exports = function (app) {
     const userid = req.query.id;
     let activeUser = false;
     let OrderInfo;
+    let OrderInfoRaw;
     let WaiverID;
     if (req.user) {
       activeUser = true;
@@ -1031,18 +1032,20 @@ module.exports = function (app) {
     try {
       WaiverID = (await q.queryWaiverIDByUser(userid)) || '';
     } catch (err) {
-      logger.error('Error encountered: queryWaiverIDByUser');
+      logger.error(`Error encountered: queryWaiverIDByUser(${userid})`);
     }
     try {
-      OrderInfo = await q.queryOrderInfoByRider(userid, 2023);
+      OrderInfoRaw = await q.queryOrderInfoByRider(userid, 2023);
     } catch (err) {
       logger.error(`Error encountered: queryOrderInfoByRider ${err}`);
     }
 
-    if (!OrderInfo || OrderInfo.length === 0) {
+    if (!OrderInfoRaw || OrderInfoRaw.length === 0) {
       OrderInfo = [];
       OrderInfo.push({ id: 0 });
       OrderInfo.push({ OrderNumber: 0 });
+    } else {
+      OrderInfo = OrderInfoRaw[0];
     }
 
     res.locals.title = 'TOH Waiver Check';
