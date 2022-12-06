@@ -193,11 +193,16 @@ $(document).ready(() => {
   }
 
   const userTZ = $('#releaseDate').data('tzf');
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: userTZ })).getTime();
+  const options = {
+    timeZoneName: 'short',
+  };
+  if (userTZ) {
+    options.timeZone = userTZ;
+  }
 
-  const tzShort = new Date()
-    .toLocaleString('default', { timeZone: userTZ, timeZoneName: 'short' })
-    .slice(-3);
+  const now = new Date(new Date().toLocaleString('en-US', options)).getTime();
+  const tzShort = new Date().toLocaleString('default', options).slice(-3);
+
   const releaseDate = new Date('Apr 1, 2023 00:01:00 EDT');
   const deadline = releaseDate.getTime();
   $('#releaseDate').html(
