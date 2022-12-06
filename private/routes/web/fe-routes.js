@@ -503,7 +503,7 @@ module.exports = function (app) {
 
   app.get('/memorials', async (req, res) => {
     let activeUser = false;
-    let TimeZoneCode = 'Eastern';
+    let TimeZoneCode = '';
     let TimeZone;
     if (req.user) {
       activeUser = true;
