@@ -503,14 +503,23 @@ module.exports = function (app) {
 
   app.get('/memorials', async (req, res) => {
     let activeUser = false;
+    let TimeZoneCode = 'Eastern';
+    let TimeZone;
     if (req.user) {
       activeUser = true;
+      TimeZoneCode = req.user.TimeZone;
+    }
+    try {
+      TimeZone = await q.queryTimeZoneData(TimeZoneCode);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
     }
     res.locals.title = 'TOH Memorial List';
     res.render('pages/memorials', {
       activeUser,
       User: req.user,
       NotificationText: '',
+      TimeZone,
     });
   });
 
@@ -733,7 +742,8 @@ module.exports = function (app) {
     let activeUser = false;
     let RiderSubmissionHistory;
     let RiderBikeInfo;
-    let TimeZone;
+    let TimeZoneOptions;
+    let UserTimeZone;
     if (req.user) {
       activeUser = true;
     }
@@ -748,9 +758,14 @@ module.exports = function (app) {
       logger.error('Error encountered: queryAllBikes');
     }
     try {
-      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+      TimeZoneOptions = await q.queryTimeZoneData();
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+    }
+    try {
+      UserTimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
     }
 
     res.locals.title = 'TOH User Profile';
@@ -760,7 +775,8 @@ module.exports = function (app) {
       NotificationText: '',
       RiderSubmissionHistory,
       RiderBikeInfo,
-      TimeZone,
+      TimeZoneOptions,
+      UserTimeZone,
       dt: DateTime,
     });
   });
