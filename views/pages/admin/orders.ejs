@@ -20,11 +20,12 @@
         <thead>
           <tr>
             <th>OrderID</th>
+            <th></th>
             <th>Order Number</th>
             <th>Next Step</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Email</th>
+            <th>Rider Email</th>
             <th>Rider Flag #</th>
             <th>Rider T-Shirt</th>
             <th>Passenger Name</th>
@@ -34,6 +35,10 @@
           </tr>
         </thead>
       </table>
+      <!-- This is the send text message modal -->
+      <div id="sendTextMessageModal" class="modal">
+        <%- include('../../partials/sendSMSTextModal'); %>
+      </div>
     </main>
     <footer>
       <%- include('../../partials/footer'); %>
