@@ -16,6 +16,7 @@
         <ul uk-tab>
           <li><a href="#activeRiders">Active Riders</a></li>
           <li><a href="#inactiveRiders">Inactive Riders</a></li>
+          <li><a href="#passengerRiderXref">Passenger/Rider Pairings</a></li>
           <!-- <li><a href="#registration">Rider Registration</a></li> -->
           <!-- <li><a href="#">Sponsors</a></li> -->
         </ul>
@@ -52,6 +53,22 @@
                   <th>Last Name</th>
                   <th>Email</th>
                   <th>Cell Number</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+            </table>
+          </li>
+          <!-- Passenger / Rider Pairings -->
+          <li id="passengerRiderXref">
+            <h5>Passenger / Rider Pairings</h5>
+            <p>This tool shows you all the passenger / rider pairings and allows you to edit or add them.<span class="uk-align-right"><button type="button" id="addNewPairingBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Pairing</button></span></p>
+            <table class="uk-table uk-table-striped uk-table-small" id="passRiderPairingsTable">
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>Rider</th>
+                  <th>Passenger</th>
+                  <th>Rally Year</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -194,6 +211,10 @@
       <!-- This is the reset rider flag number modal -->
       <div id="resetFlagNumberModal" class="modal">
         <%- include('../../partials/resetFlagNumberModal'); %>
+      </div>
+      <!-- This is the create rider passenger pairing modal -->
+      <div id="addRiderPassengerPairingModal" class="modal">
+        <%- include('../../partials/addRiderPassengerPairingModal'); %>
       </div>
     </main>
     <footer>
