@@ -75,15 +75,15 @@ ApiRiderRouter.route('/pairings')
       CONCAT(u1.FirstName, ' ', u1.LastName) AS RiderName, 
       CONCAT(u2.FirstName, ' ', u2.LastName) AS PassengerName
     FROM Passengers p
-      LEFT JOIN Flags f1 ON p.RiderFlagNumber = f1.FlagNumber
-      LEFT JOIN Flags f2 ON p.PassengerFlagNumber = f2.FlagNumber
+      LEFT JOIN Flags f1 ON p.RiderFlagNumber = f1.FlagNumber AND f1.RallyYear = ?
+      LEFT JOIN Flags f2 ON p.PassengerFlagNumber = f2.FlagNumber AND f2.RallyYear = ?
       LEFT JOIN Users u1 ON f1.UserID = u1.id
       LEFT JOIN Users u2 ON f2.UserID = u2.id
     WHERE p.RallyYear = ?;
     `;
     try {
       const passengerRiderPairings = await sequelize.query(sqlQuery, {
-        replacements: [currentRallyYear],
+        replacements: [currentRallyYear, currentRallyYear, currentRallyYear],
         type: QueryTypes.SELECT,
       });
       res.json(passengerRiderPairings);
