@@ -1,0 +1,22 @@
+<div class="modal-content uk-text-left">
+  <span class="close">&times;</span>
+  <h3>Create Rider / Passenger Pairing</h3>
+  <p class="toh-mt-0">This tool will pair a Passenger to a Rider for the (<%= currentRallyYear %>) season only.</p>
+  <form class="uk-grid-small uk-form-stacked toh-mb-24" uk-grid>
+    <div class="uk-width-1-5@s">
+      <label class="uk-form-label" for="RiderFlagNumber">Rider Flag Number</label>
+      <input class="uk-input toh-input" required id="RiderFlagNumber" type="text" maxlength="4" placeholder="####">
+      <span class="toh-ml-8 hide-me" id="riderFlagNumberAssignedTo"></span>
+    </div>
+    <div class="uk-width-1-5@s">
+      <label class="uk-form-label" for="PassengerFlagNumber">Passenger Flag Number</label>
+      <input class="uk-input toh-input" required id="PassengerFlagNumber" type="text" maxlength="4" placeholder="####">
+      <span class="toh-ml-8 hide-me" id="passengerFlagNumberAssignedTo"></span>
+    </div>
+    <div class="uk-width-1-5@s">
+      <label class="uk-form-label" for="saveNewPairingBtn">&nbsp;</label>
+      <button disabled class="uk-button uk-button-primary button-rounded" id="saveNewPairingBtn" type="button"><span class="toh-mr-8"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>Save Pairing</button>
+    </div>
+    <div class="uk-width-2-5@s">&nbsp;</div>
+  </form>
+</div>
