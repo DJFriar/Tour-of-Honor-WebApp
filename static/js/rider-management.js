@@ -94,9 +94,50 @@ $(document).ready(() => {
     pageLength: 100,
   });
 
+  var passRiderPairingsTable = $('#passRiderPairingsTable').DataTable({
+    ajax: {
+      url: '/api/v1/riders/pairings',
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'id' },
+      { data: 'RiderFlagNumber' },
+      { data: 'PassengerFlagNumber' },
+      { data: 'RallyYear' },
+      { data: null, name: 'Actions' },
+    ],
+    columnDefs: [
+      { targets: [0], visible: false },
+      { render: function (data, type, row) {
+        return `${data} (${row['RiderName']})`
+      }, targets: [1] },
+      { render: function (data, type, row) {
+        return `${data} (${row['PassengerName']})`
+      }, targets: [2] },
+      { render: function (data, type, row) {
+        return `<div class="deletePairingBtn" data-pid="${row['id']}"><i class="fa-light fa-trash-can fa-lg"></i> Delete Pairing</div>`
+      }, targets: [4] },
+    ],
+    dom: 'Bfrtip',
+    buttons: [
+      {
+        extend: 'excel',
+        text: 'Save to Excel',
+        title: 'TOH Rider / Passenger Pairings',
+        exportOptions: {
+          modifier: {
+            search: 'none',
+          },
+        },
+      },
+    ],
+    pageLength: 100,
+  });
+
   // Force tables to be full width
   $('table#activeRidersTable').css('width', '100%');
   $('table#inactiveRidersTable').css('width', '100%');
+  $('table#passRiderPairingsTable').css('width', '100%');
 
   $('#sponsorsTable').DataTable();
 
@@ -148,7 +189,6 @@ $(document).ready(() => {
     });
   });
   
-
   // Handle Reset Flag Selection Button (on Data Table)
   $('#activeRidersTable').on('click', '.resetFlagSelection', function () {
     const uid = $(this).data('uid');
@@ -197,6 +237,64 @@ $(document).ready(() => {
       });
   })
 
+  // Lookup Rider Flag Number Info
+  $('#RiderFlagNumber').on('input paste', function () {
+    $('#riderFlagNumberAssignedTo').addClass('hide-me');
+    const riderFlagNumber = $(this).val();
+    if (riderFlagNumber) {
+      $.ajax(`/api/v1/riders/flag/${riderFlagNumber}`, {
+        type: 'GET',
+      }).then((riderInfo) => {
+        if (riderInfo.length > 0) {
+          $('#riderFlagNumberAssignedTo')
+          .text(`${riderInfo[0].FullName}`)
+          .css('color', 'green')
+          .removeClass('hide-me');
+          riderFlagValid = true;
+          if (riderFlagNumber != $('#PassengerFlagNumber').val().trim()) {
+            enableSavePairingBtn();
+          }
+        } else {
+          $('#riderFlagNumberAssignedTo')
+          .text('No Flag Found!')
+          .css('color', 'red')
+          .removeClass('hide-me');
+          riderFlagValid = false;
+          enableSavePairingBtn();
+        }
+      });
+    }
+  });
+
+  // Lookup Passenger Flag Number Info
+  $('#PassengerFlagNumber').on('input paste', function () {
+    $('#passengerFlagNumberAssignedTo').addClass('hide-me');
+    const passengerFlagNumber = $(this).val();
+    if (passengerFlagNumber) {
+      $.ajax(`/api/v1/riders/flag/${passengerFlagNumber}`, {
+        type: 'GET',
+      }).then((riderInfo) => {
+        if (riderInfo.length > 0) {
+          $('#passengerFlagNumberAssignedTo')
+          .text(`${riderInfo[0].FullName}`)
+          .css('color', 'green')
+          .removeClass('hide-me');
+          passengerFlagValid = true;
+          if (passengerFlagNumber != $('#RiderFlagNumber').val().trim()) {
+            enableSavePairingBtn();
+          }
+        } else {
+          $('#passengerFlagNumberAssignedTo')
+          .text('No Flag Found!')
+          .css('color', 'red')
+          .removeClass('hide-me');
+          passengerFlagValid = false;
+          enableSavePairingBtn();
+        }
+      });
+    }
+  });
+
   // Handle Text Rider Button
   $('#activeRidersTable').on('click', '.sendSMSTextButton', function () {
     const id = $(this).data('uid');
@@ -207,6 +305,49 @@ $(document).ready(() => {
       $('#TextUserID').val(res.id);
       $('#TextCellNumber').val(res.CellNumber);
       $('#TextName').text(`${res.FirstName} ${res.LastName}`);
+    });
+  });
+
+  // Handle Add New Pairing Button
+  $('#addNewPairingBtn').on('click', function() {
+    console.log("==== add new pairing button clicked ====");
+    $('#addRiderPassengerPairingModal').css('display', 'block');
+  })
+
+  // Handle Save New Pairing Button
+  $('#saveNewPairingBtn').on('click', () => {
+    let RiderFlagNumber = 0;
+    let PassengerFlagNumber = 0;
+
+    let isAdmin = false;
+
+    if (parseInt($('#RiderFlagNumber').val(), 10) > 0) {
+      RiderFlagNumber = parseInt($('#RiderFlagNumber').val(), 10);
+    }
+    if (parseInt($('#PassengerFlagNumber').val(), 10) > 0) {
+      PassengerFlagNumber = parseInt($('#PassengerFlagNumber').val(), 10);
+    }
+
+    const newPairing = {
+      RiderFlagNumber,
+      PassengerFlagNumber,
+    };
+
+    $.ajax('/api/v1/riders/pairings', {
+      type: 'POST',
+      data: newPairing,
+    }).then(() => {
+      location.reload();
+    });
+  });
+
+  // Handle Delete Pairing Button (on Data Table)
+  $('#passRiderPairingsTable').on('click', '.deletePairingBtn', function () {
+    const pid = $(this).data('pid');
+    $.ajax(`/api/v1/riders/pairings/${pid}`, {
+      type: 'DELETE',
+    }).then((res) => {
+      location.reload();
     });
   });
 
@@ -263,7 +404,7 @@ $(document).ready(() => {
     });
   });
 
-  // Charaacter counter for Text Message box
+  // Character counter for Text Message box
   $('#textMessageContent').keyup(function () {
     countChar(this);
   });
@@ -497,6 +638,14 @@ $(document).ready(() => {
   function handleRegistrationError(err) {
     console.log(err.responseJSON.errors[0].message);
     alert(err.responseJSON.errors[0].message);
+  }
+
+  function enableSavePairingBtn() {
+    if (riderFlagValid && passengerFlagValid) {
+      $('#saveNewPairingBtn').attr('disabled',false);
+    } else {
+      $('#saveNewPairingBtn').attr('disabled',true);
+    }
   }
 
   function countChar(val) {

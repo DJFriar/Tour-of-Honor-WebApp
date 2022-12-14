@@ -490,6 +490,6 @@ a.hidden-link:visited {
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
 }
 
-.resetFlagSelection {
+.resetFlagSelection, .deletePairingBtn {
   cursor: pointer;
 }
