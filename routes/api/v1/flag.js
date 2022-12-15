@@ -12,8 +12,10 @@ const rallyYearArray = [];
 
 // Set rally year array to honor prior year flag reservations
 if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
+  console.log('==== date check passed ====');
   rallyYearArray.push(currentRallyYear - 1, currentRallyYear);
 } else {
+  console.log('==== date check failed ====');
   rallyYearArray.push(currentRallyYear);
 }
 
@@ -37,6 +39,8 @@ ApiFlagRouter.route('/').post((req, res) => {
 });
 
 ApiFlagRouter.route('/nextAvailable').get((req, res) => {
+  console.log(`==== current server time is: ${DateTime.now().toISO()}`);
+  console.log(`==== rallyYearArray set to: ${rallyYearArray}`);
   db.Flag.findAll({
     where: {
       RallyYear: {
