@@ -10,12 +10,14 @@ const q = require('../../../private/queries');
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const rallyYearArray = [];
 
+logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, { calledFrom: 'flag.js' });
+
 // Set rally year array to honor prior year flag reservations
 if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
-  console.log('==== date check passed ====');
+  logger.info('==== Prior Year Flags are: Protected ====', { calledFrom: 'flag.js' });
   rallyYearArray.push(currentRallyYear - 1, currentRallyYear);
 } else {
-  console.log('==== date check failed ====');
+  logger.info('==== Prior Year Flags are: Unprotected ====', { calledFrom: 'flag.js' });
   rallyYearArray.push(currentRallyYear);
 }
 
@@ -39,8 +41,6 @@ ApiFlagRouter.route('/').post((req, res) => {
 });
 
 ApiFlagRouter.route('/nextAvailable').get((req, res) => {
-  console.log(`==== current server time is: ${DateTime.now().toISO()}`);
-  console.log(`==== rallyYearArray set to: ${rallyYearArray}`);
   db.Flag.findAll({
     where: {
       RallyYear: {
