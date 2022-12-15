@@ -987,7 +987,7 @@ module.exports = function (app) {
       // Update Order with new step number
       db.Order.update(WaiverInfo, {
         where: {
-          RallyYear: 2023,
+          RallyYear: CurrentRallyYear,
           id: req.body.OrderID,
         },
       })
@@ -1046,9 +1046,6 @@ module.exports = function (app) {
           calledFrom: 'be-routes.js',
         });
       }
-
-      console.log('==== OrderInfo from be-routes.js ====');
-      console.log(OrderInfo);
 
       // Update the DB tables
       // Assign the Flag number to the rider
@@ -1116,10 +1113,25 @@ module.exports = function (app) {
 
       db.Order.update(FlagInfoComplete, {
         where: {
-          RallyYear: 2023,
+          RallyYear: CurrentRallyYear,
           id: req.body.OrderID,
         },
       })
+        .then(() => {
+          db.Order.findOne({
+            where: {
+              id: req.body.OrderID,
+            },
+          }).then((result) => {
+            if (result.RequestedPassFlagNumber && result.RequestedPassFlagNumber > 0) {
+              db.Passenger.create({
+                RiderFlagNumber: result.RequestedRiderFlagNumber,
+                PassengerFlagNumber: result.RequestedPassFlagNumber,
+                RallyYear: CurrentRallyYear,
+              });
+            }
+          });
+        })
         .then(() => {
           res.status(202).send();
         })
