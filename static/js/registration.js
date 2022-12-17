@@ -880,9 +880,13 @@ $(document).ready(() => {
     $.ajax('/api/v1/regFlow', {
       type: 'POST',
       data: FlagInfoCompleted,
-    }).then(() => {
-      location.reload();
-    });
+    })
+      .then(() => {
+        location.reload();
+      })
+      .catch(() => {
+        showToastrError('An error occured while loading your summary.');
+      });
   });
 
   /* #endregion */
