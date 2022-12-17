@@ -119,17 +119,27 @@ ApiFlagRouter.route('/change').put((req, res) => {
 });
 
 // GET: Fetch Flag Number details
-ApiFlagRouter.route('/:id').get((req, res) => {
-  const { id } = req.params;
-  db.Flag.findOne({
+ApiFlagRouter.route('/:flagNumber').get((req, res) => {
+  const { flagNumber } = req.params;
+  db.ReservedFlag.findOne({
     where: {
-      FlagNumber: id,
-      RallyYear: {
-        [Op.in]: rallyYearArray,
-      },
+      FlagNumber: flagNumber,
     },
-  }).then((dbPost) => {
-    res.json(dbPost);
+  }).then((flagReserved) => {
+    if (flagReserved) {
+      res.json(flagReserved);
+    } else {
+      db.Flag.findOne({
+        where: {
+          FlagNumber: flagNumber,
+          RallyYear: {
+            [Op.in]: rallyYearArray,
+          },
+        },
+      }).then((dbPost) => {
+        res.json(dbPost);
+      });
+    }
   });
 });
 
