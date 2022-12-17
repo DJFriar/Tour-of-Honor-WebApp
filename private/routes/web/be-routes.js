@@ -1128,6 +1128,10 @@ module.exports = function (app) {
                 RiderFlagNumber: result.RequestedRiderFlagNumber,
                 PassengerFlagNumber: result.RequestedPassFlagNumber,
                 RallyYear: CurrentRallyYear,
+              }).catch((err) => {
+                logger.error(`Error saving Passenger Info for Order ${req.body.OrderID}: ${err}`, {
+                  calledFrom: 'be-routes.js',
+                });
               });
             }
           });
