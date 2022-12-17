@@ -310,7 +310,6 @@ $(document).ready(() => {
 
   // Handle Add New Pairing Button
   $('#addNewPairingBtn').on('click', function() {
-    console.log("==== add new pairing button clicked ====");
     $('#addRiderPassengerPairingModal').css('display', 'block');
   })
 
@@ -337,7 +336,7 @@ $(document).ready(() => {
       type: 'POST',
       data: newPairing,
     }).then(() => {
-      location.reload();
+      passRiderPairingsTable.ajax.reload();
     });
   });
 
@@ -384,6 +383,7 @@ $(document).ready(() => {
       City: $('#EditCity').val().trim(),
       State: $('#EditState').val().trim(),
       ZipCode: $('#EditZipCode').val().trim(),
+      CellNumber: $('#EditCellNumber').val().trim(),
       isAdmin,
     };
     $.ajax('/api/v1/user/', {
