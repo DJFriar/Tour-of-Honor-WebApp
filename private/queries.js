@@ -447,7 +447,7 @@ module.exports.queryAllUsersWithFlagInfo = async function queryAllUsersWithFlagI
   let result;
   try {
     result = await sequelize.query(
-      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND f.RallyYear = ?',
+      'SELECT u.*, f.FlagNumber FROM Users u INNER JOIN Flags f ON u.id = f.UserID WHERE u.isActive = 1 AND f.RallyYear = ? ORDER BY f.FlagNumber',
       {
         replacements: [year],
         type: QueryTypes.SELECT,

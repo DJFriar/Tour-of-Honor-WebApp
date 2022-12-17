@@ -766,7 +766,7 @@ $(document).ready(() => {
       }).then((flagInfo) => {
         if (flagInfo) {
           $('#flagAvailabilityResponse')
-            .text(`Flag #${requestedFlagNumber} is not available.`)
+            .text(`Flag #${requestedFlagNumber} is unavailable.`)
             .css('color', 'red')
             .removeClass('hide-me');
           $('#saveNewFlagNumChoiceBtn').prop('disabled', true);

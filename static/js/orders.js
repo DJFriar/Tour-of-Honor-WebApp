@@ -63,6 +63,7 @@ $(document).ready(() => {
         },
       },
     ],
+    order: [[2, 'desc']],
     pageLength: 100,
   });
 

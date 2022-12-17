@@ -28,6 +28,8 @@ $(document).ready(() => {
     pageLength: 25,
   });
 
+  $('table#flagReservationsTable').css('width', '100%');
+
   // Handle Reserve Flag Number Button
   $('#ReserveFlagNumberBtn').on('click', (e) => {
     e.preventDefault(e);
@@ -155,7 +157,7 @@ $(document).ready(() => {
         type: 'PUT',
         data: OrderUpdateInfo,
       }).then(() => {
-        location.reload();
+        flagReservationsTable.ajax.reload();
       }).catch((err) => {
         toastr.error(`Error updating order info.`, null, {
           closeButton: 'false',
