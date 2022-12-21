@@ -157,7 +157,7 @@ $(document).ready(() => {
         type: 'PUT',
         data: OrderUpdateInfo,
       }).then(() => {
-        flagReservationsTable.ajax.reload();
+        location.reload();
       }).catch((err) => {
         toastr.error(`Error updating order info.`, null, {
           closeButton: 'false',
