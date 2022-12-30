@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  const userTimeZone = $('#userTZ').data('usertz');
   $('#ordersTable').DataTable({
     ajax: {
       url: '/api/v1/orders',
@@ -18,6 +19,7 @@ $(document).ready(() => {
       { data: 'PassFlagNumber' },
       { data: 'PassengerShirt' },
       { data: 'CharityName' },
+      { data: 'createdAt', type: 'date' },
       { data: 'isNew' },
       { data: 'applyFlagSurcharge' },
       { data: 'FlagSurchargeOrderNumber' },
@@ -25,7 +27,7 @@ $(document).ready(() => {
       { data: 'RiderID' },
     ],
     columnDefs: [
-      { targets: [0, 6, 13, 14, 15, 16, 17], visible: false },
+      { targets: [0, 6, 14, 15, 16, 17, 18], visible: false },
       { render: function (data, type, row) {
         const riderEmailIcon = `<span class="toh-mr-4" uk-tooltip="Click to send email to ${row['RiderEmail']}."><a href="mailto:${row['RiderEmail']}"><i class="fa-light fa-envelope"></i></a>&nbsp;</span>`;
         const riderPhoneIcon = `<span class="sendSMSTextButton toh-mr-4" uk-tooltip="Click to send text to ${row['CellNumber']}." data-uid="${row['RiderID']}"><i class="fa-light fa-message-sms"></i>&nbsp;</span>`;
@@ -49,6 +51,10 @@ $(document).ready(() => {
         response += '</span>'
         return response;
       }, targets: [1] },
+      { render: function (data, type, row) {
+        const createdDate = new Date(data);
+        return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+      }, targets: [13] },
     ],
     dom: 'Bfrtip',
     buttons: [
