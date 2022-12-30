@@ -941,6 +941,7 @@ module.exports = function (app) {
   app.get('/admin/orders', isAuthenticated, async (req, res) => {
     let activeUser = false;
     let Orders;
+    let UserTimeZone;
     if (req.user) {
       activeUser = true;
     }
@@ -950,12 +951,19 @@ module.exports = function (app) {
       logger.error('Error encountered: queryAllOrders');
     }
 
+    try {
+      UserTimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+    }
+
     res.locals.title = 'TOH Orders';
     res.render('pages/admin/orders', {
       activeUser,
       User: req.user,
       NotificationText: '',
       Orders,
+      UserTimeZone,
       dt: DateTime,
     });
   });

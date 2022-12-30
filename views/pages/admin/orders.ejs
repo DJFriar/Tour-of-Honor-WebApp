@@ -16,6 +16,7 @@
         <%- include('../../partials/notice'); %>
       <% } %>
       <div>&nbsp;</div>
+      <div id="userTZ" data-usertz="<%= UserTimeZone.ZoneName %>"></div>
       <table class="uk-table uk-table-striped uk-table-small" id="ordersTable">
         <thead>
           <tr>
@@ -32,6 +33,7 @@
             <th>Passenger Flag #</th>
             <th>Passenger Shirt</th>
             <th>Charity Name</th>
+            <th>Created On</th>
           </tr>
         </thead>
       </table>

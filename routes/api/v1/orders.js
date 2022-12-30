@@ -36,7 +36,8 @@ ApiOrderRouter.route('/').get(async (req, res) => {
       CASE WHEN o.CharityChosen = 0 THEN 'Default' ELSE c.Name END AS CharityName, 
       IF(ISNULL(f.id), 1, 0) AS isNew,
       o.applyFlagSurcharge,
-      o.FlagSurchargeOrderNumber
+      o.FlagSurchargeOrderNumber,
+      o.createdAt
     FROM Orders o 
       LEFT JOIN Users u1 ON o.UserID = u1.id 
       LEFT JOIN Users u2 ON o.PassUserID = u2.id 
