@@ -25,9 +25,13 @@ $(document).ready(() => {
       { data: 'FlagSurchargeOrderNumber' },
       { data: 'CellNumber' },
       { data: 'RiderID' },
+      { data: 'Address' },
+      { data: 'City' },
+      { data: 'State' },
+      { data: 'ZipCode' },
     ],
     columnDefs: [
-      { targets: [0, 6, 14, 15, 16, 17, 18], visible: false },
+      { targets: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22], visible: false },
       { render: function (data, type, row) {
         const riderEmailIcon = `<span class="toh-mr-4" uk-tooltip="Click to send email to ${row['RiderEmail']}."><a href="mailto:${row['RiderEmail']}"><i class="fa-light fa-envelope"></i></a>&nbsp;</span>`;
         const riderPhoneIcon = `<span class="sendSMSTextButton toh-mr-4" uk-tooltip="Click to send text to ${row['CellNumber']}." data-uid="${row['RiderID']}"><i class="fa-light fa-message-sms"></i>&nbsp;</span>`;
@@ -60,13 +64,27 @@ $(document).ready(() => {
     buttons: [
       {
         extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Orders',
+        text: 'Export to Excel',
+        title: 'TOH Registration Manager',
         exportOptions: {
+          columns: ':visible',
           modifier: {
             search: 'none',
           },
         },
+        sheetName: 'Registration Data',
+      },
+      {
+        extend: 'excel',
+        text: 'Download Paid Orders',
+        title: 'TOH Paid Orders',
+        exportOptions: {
+          columns: [7, 4, 5, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2],
+          modifier: {
+            search: 'none',
+          },
+        },
+        sheetName: 'Paid Orders',
       },
     ],
     order: [[2, 'desc']],
