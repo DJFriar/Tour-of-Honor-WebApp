@@ -29,6 +29,7 @@ ApiOrderRouter.route('/').get(async (req, res) => {
       CONCAT(o.ShirtSize, ' ',  o.ShirtStyle) AS RiderShirt, 
       CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(o.PassShirtSize, ' ', o.PassShirtStyle) END AS PassengerShirt, 
       u1.id AS RiderID, u1.FirstName AS RiderFirstName,  u1.LastName AS RiderLastName, u1.Email AS RiderEmail, u1.CellNumber,
+      u1.Address1 AS Address, u1.City, u1.State, u1.ZipCode,
       CASE WHEN ISNULL(o.RequestedRiderFlagNumber) THEN '-' ELSE o.RequestedRiderFlagNumber END AS RiderFlagNumber, 
       CASE WHEN o.PassUserID = 0 THEN 'N/A' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName, 
       CASE WHEN ISNULL(o.RequestedPassFlagNumber) THEN '-' ELSE o.RequestedPassFlagNumber END AS PassFlagNumber, 
