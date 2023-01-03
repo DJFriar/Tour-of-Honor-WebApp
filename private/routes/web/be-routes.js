@@ -20,6 +20,7 @@ const {
   checkOrderStatusByCheckoutID,
 } = require('../../../controllers/shopify');
 const twilio = require('../../../controllers/twilio');
+const { addSubscriber } = require('../../../controllers/mailchimp');
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
 // const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
@@ -395,10 +396,14 @@ module.exports = function (app) {
 
   // Handle New Signup
   app.post('/api/v1/newuser', (req, res) => {
+    const email = req.body.Email.toLowerCase();
+    const firstName = req.body.FirstName;
+    const lastName = req.body.LastName;
+
     db.User.create({
-      FirstName: req.body.FirstName,
-      LastName: req.body.LastName,
-      Email: req.body.Email.toLowerCase(),
+      FirstName: firstName,
+      LastName: lastName,
+      Email: email,
       Password: req.body.Password,
       Address1: req.body.Address1,
       City: req.body.City,
@@ -408,7 +413,16 @@ module.exports = function (app) {
       isAdmin: 0,
       isActive: 0,
     })
-      .then(() => {
+      .then(async () => {
+        // Add passenger to Mailchimp
+        try {
+          const subscribeUser = await addSubscriber(email, firstName, lastName);
+          if (subscribeUser) {
+            console.log('==== rider subscribed to mailchimp ====');
+          }
+        } catch (err) {
+          logger.error(`Error encountered: queryNextPendingSubmissions.${err}`);
+        }
         logger.info('New User Created Successfully', { calledFrom: 'be-routes.js' });
         res.status(202).send();
       })
@@ -829,6 +843,7 @@ module.exports = function (app) {
           Password: req.body.Password,
         }).then((newUser) => {
           if (newUser) {
+            // Update the Order
             db.Order.update(
               {
                 PassUserID: newUser.id,
@@ -840,7 +855,20 @@ module.exports = function (app) {
                   UserID: req.body.UserID,
                 },
               },
-            ).then(() => {
+            ).then(async () => {
+              // Add passenger to Mailchimp
+              try {
+                const subscribeUser = await addSubscriber(
+                  req.body.Email.toLowerCase(),
+                  req.body.FirstName,
+                  req.body.LastName,
+                );
+                if (subscribeUser) {
+                  console.log('==== passenger subscribed to mailchimp ====');
+                }
+              } catch (err) {
+                logger.error(`Error encountered: queryNextPendingSubmissions.${err}`);
+              }
               res.status(200).send();
             });
           }
