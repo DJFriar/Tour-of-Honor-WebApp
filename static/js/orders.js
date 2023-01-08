@@ -79,7 +79,7 @@ $(document).ready(() => {
         text: 'Download Paid Orders',
         title: 'TOH Paid Orders',
         exportOptions: {
-          columns: [7, 4, 5, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2],
+          columns: [7, 4, 5, 6, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2],
           modifier: {
             search: 'none',
           },
