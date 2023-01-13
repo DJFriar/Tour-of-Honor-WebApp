@@ -19,7 +19,7 @@ $(document).ready(() => {
       { data: 'PassFlagNumber' },
       { data: 'PassengerShirt' },
       { data: 'CharityName' },
-      { data: 'createdAt', type: 'date' },
+      { data: 'updatedAt', type: 'date' },
       { data: 'isNew' },
       { data: 'applyFlagSurcharge' },
       { data: 'FlagSurchargeOrderNumber' },
