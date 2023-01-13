@@ -64,18 +64,6 @@ $(document).ready(() => {
     buttons: [
       {
         extend: 'excel',
-        text: 'Export to Excel',
-        title: 'TOH Registration Manager',
-        exportOptions: {
-          columns: ':visible',
-          modifier: {
-            search: 'none',
-          },
-        },
-        sheetName: 'Registration Data',
-      },
-      {
-        extend: 'excel',
         text: 'Download Paid Orders',
         title: 'TOH Paid Orders',
         exportOptions: {
