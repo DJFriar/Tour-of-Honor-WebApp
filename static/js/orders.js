@@ -6,29 +6,29 @@ $(document).ready(() => {
       dataSrc: '',
     },
     columns: [
-      { data: 'id' },
-      { data: '', width: '54px' },
-      { data: 'OrderNumber' },
-      { data: 'NextStep' },
-      { data: 'RiderFirstName' },
-      { data: 'RiderLastName' },
-      { data: 'RiderEmail' },
-      { data: 'RiderFlagNumber' },
-      { data: 'RiderShirt' },
-      { data: 'PassengerName' },
-      { data: 'PassFlagNumber' },
-      { data: 'PassengerShirt' },
-      { data: 'CharityName' },
-      { data: 'updatedAt', type: 'date' },
-      { data: 'isNew' },
-      { data: 'applyFlagSurcharge' },
-      { data: 'FlagSurchargeOrderNumber' },
-      { data: 'CellNumber' },
-      { data: 'RiderID' },
-      { data: 'Address' },
-      { data: 'City' },
-      { data: 'State' },
-      { data: 'ZipCode' },
+      { data: 'id' },                           // 0
+      { data: '', width: '54px' },              // 1
+      { data: 'OrderNumber' },                  // 2
+      { data: 'NextStep' },                     // 3
+      { data: 'RiderFirstName' },               // 4
+      { data: 'RiderLastName' },                // 5
+      { data: 'RiderEmail' },                   // 6
+      { data: 'RiderFlagNumber' },              // 7
+      { data: 'RiderShirt' },                   // 8
+      { data: 'PassengerName' },                // 9
+      { data: 'PassFlagNumber' },               // 10
+      { data: 'PassengerShirt' },               // 11
+      { data: 'CharityName' },                  // 12
+      { data: 'updatedAt', type: 'date' },      // 13
+      { data: 'isNew' },                        // 14
+      { data: 'applyFlagSurcharge' },           // 15
+      { data: 'FlagSurchargeOrderNumber' },     // 16
+      { data: 'CellNumber' },                   // 17
+      { data: 'RiderID' },                      // 18
+      { data: 'Address' },                      // 19
+      { data: 'City' },                         // 20
+      { data: 'State' },                        // 21
+      { data: 'ZipCode' },                      // 22
     ],
     columnDefs: [
       { targets: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22], visible: false },
@@ -67,7 +67,7 @@ $(document).ready(() => {
         text: 'Download Paid Orders',
         title: 'TOH Paid Orders',
         exportOptions: {
-          columns: [7, 4, 5, 6, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2],
+          columns: [7, 4, 5, 6, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2, 13],
           modifier: {
             search: 'none',
           },
