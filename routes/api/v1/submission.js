@@ -5,7 +5,7 @@ const { Op, QueryTypes } = require('sequelize');
 const db = require('../../../models');
 const { logger } = require('../../../controllers/logger');
 const q = require('../../../private/queries');
-const { sequelize, Sequelize } = require('../../../models');
+const { sequelize } = require('../../../models');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
@@ -25,6 +25,18 @@ ApiSubmissionRouter.route('/').post((req, res) => {
     .catch((err) => {
       logger.error(`Error when saving flag number assignments:${err}`, { calledFrom: 'flag.js' });
     });
+});
+
+// Fetch submissions for given user ID
+ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
+  const { id } = req.params;
+  let RiderSubmissionHistory;
+  try {
+    RiderSubmissionHistory = await q.querySubmissionsByRider(id);
+  } catch (err) {
+    logger.error(`Error encountered: querySubmissionsByRider. ${err}`);
+  }
+  res.json(RiderSubmissionHistory);
 });
 
 // Get All Scored Submissions
@@ -60,7 +72,7 @@ ApiSubmissionRouter.route('/nextAvailable').get((req, res) => {
   db.Submission.findAll({
     where: {
       RallyYear: {
-        [Op.in]: rallyYearArray,
+        [Op.in]: currentRallyYear,
       },
     },
     order: [['FlagNumber', 'ASC']],
@@ -81,7 +93,7 @@ ApiSubmissionRouter.route('/:id').get((req, res) => {
     where: {
       FlagNumber: id,
       RallyYear: {
-        [Op.in]: rallyYearArray,
+        [Op.in]: currentRallyYear,
       },
     },
   }).then((dbPost) => {

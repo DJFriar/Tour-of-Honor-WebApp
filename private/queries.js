@@ -45,7 +45,7 @@ module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
 module.exports.queryRiderInfoByFlag = async function queryRiderInfoByFlag(FlagNumber) {
   try {
     const result = await sequelize.query(
-      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
+      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName, u.ZipCode, u.TimeZone FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
       {
         replacements: [FlagNumber, currentRallyYear],
         type: QueryTypes.SELECT,
@@ -170,7 +170,7 @@ module.exports.queryAllMemorialsWithUserStatus = async function queryAllMemorial
 ) {
   try {
     const result = await sequelize.query(
-      "SELECT s.Status AS 'RiderStatus',m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? ORDER BY m.State, m.City, m.Category",
+      "SELECT s.Status AS 'RiderStatus', m.*, c.Name AS CategoryName, r.Name AS RestrictionName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Restrictions r ON m.Restrictions = r.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? WHERE c.Active = 1 AND m.Restrictions != 12 ORDER BY m.State, m.City, m.Category",
       {
         replacements: [id],
         type: QueryTypes.SELECT,
