@@ -10,7 +10,6 @@ const hasValidApiKey = require('../../../middleware/authCheck');
 
 router.post('/', hasValidApiKey, async (req, res) => {
   const { flag, zipcode } = req.body;
-  // const User = await q.queryUserIDFromFlagNum(flag);
   const User = await q.queryRiderInfoByFlag(flag);
   const UserData = User[0];
   if (!UserData || UserData.ZipCode !== zipcode) {
@@ -20,7 +19,7 @@ router.post('/', hasValidApiKey, async (req, res) => {
 
   const token = jwt.sign(
     {
-      UserID: UserData.id,
+      UserID: UserData.UserID,
       FirstName: UserData.FirstName,
       LastName: UserData.LastName,
       Email: UserData.Email,
@@ -30,6 +29,7 @@ router.post('/', hasValidApiKey, async (req, res) => {
     },
     process.env.JWT_SECRET,
   );
+  console.log(`UserData: ${JSON.stringify(UserData)}`);
   return res.send(token);
 });
 
