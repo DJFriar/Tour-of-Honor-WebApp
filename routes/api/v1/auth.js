@@ -26,6 +26,7 @@ router.post('/', hasValidApiKey, async (req, res) => {
       FlagNumber: UserData.FlagNumber,
       ZipCode: UserData.ZipCode,
       PassengerFlag: UserData.PillionFlagNumber,
+      TimeZone: UserData.TimeZone,
     },
     process.env.JWT_SECRET,
   );

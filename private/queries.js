@@ -45,7 +45,7 @@ module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
 module.exports.queryRiderInfoByFlag = async function queryRiderInfoByFlag(FlagNumber) {
   try {
     const result = await sequelize.query(
-      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName, u.ZipCode, u.TimeZone FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
+      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName, u.Email, u.ZipCode, u.TimeZone FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
       {
         replacements: [FlagNumber, currentRallyYear],
         type: QueryTypes.SELECT,

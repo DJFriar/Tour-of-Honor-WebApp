@@ -1,104 +1,104 @@
-const _ = require('lodash');
-const ApiSubmissionRouter = require('express').Router();
-const { Op, QueryTypes } = require('sequelize');
+/* eslint-disable prefer-destructuring */
+const express = require('express');
 
+const router = express.Router();
+const { DateTime } = require('luxon');
+const sharp = require('sharp');
+const fileUpload = require('express-fileupload');
 const db = require('../../../models');
+const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
 const { logger } = require('../../../controllers/logger');
-const q = require('../../../private/queries');
-const { sequelize } = require('../../../models');
 
-const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+// Submit from Mobile App
+router.post('/', fileUpload(), (req, res) => {
+  const { images } = req.files;
+  const { RiderFlag } = req.body;
+  let RiderArray = [];
+  let primaryFile = {};
+  const { MemorialCode } = req.body;
+  const currentTimestamp = DateTime.now().toMillis();
+  const primaryFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-1.jpg`;
+  let optionalFilename = 'OptionalImageNotProvided.png';
 
-// POST: Create Submission
-ApiSubmissionRouter.route('/').post((req, res) => {
+  if (req.body.OtherRiders !== 'undefined' && req.body.OtherRiders !== '') {
+    const GroupRiders = req.body.OtherRiders;
+    const GroupRiderArray = GroupRiders.split(',');
+    RiderArray = RiderArray.concat(GroupRiderArray);
+  }
+
+  if (!req.files) {
+    logger.info('No files were uploaded', { calledFrom: 'submission.js' });
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // Handle the primary image
+  if (images.length > 1) {
+    primaryFile = images[0];
+  } else {
+    primaryFile = images;
+  }
+
+  try {
+    const primaryImageFileData = primaryFile.data;
+    shrinkImage(primaryFilename, primaryImageFileData);
+  } catch (err) {
+    logger.error(`Error shrinking primary image: ${err}`);
+    return res.status(500).send(err);
+  }
+
+  // Handle the optional image
+  if (images.length > 1) {
+    optionalFilename = `${RiderFlag}-${MemorialCode}-${currentTimestamp}-2.jpg`;
+    try {
+      const optionalImageFileData = images[1].data;
+      shrinkImage(optionalFilename, optionalImageFileData);
+    } catch (err) {
+      logger.error(`Error shrinking optional image: ${err}`);
+      return res.status(500).send(err);
+    }
+  }
+
+  // Save entry to the DB
   db.Submission.create({
-    FlagNumber: req.body.FlagNumber,
     UserID: req.body.UserID,
-    RallyYear: req.body.RallyYear,
-  })
-    .then(() => {
-      logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`, {
-        calledFrom: 'flag.js',
-      });
-      res.status(202).send();
-    })
-    .catch((err) => {
-      logger.error(`Error when saving flag number assignments:${err}`, { calledFrom: 'flag.js' });
-    });
-});
+    MemorialID: req.body.MemorialID,
+    PrimaryImage: primaryFilename,
+    OptionalImage: optionalFilename,
+    RiderNotes: req.body.RiderNotes,
+    OtherRiders: RiderArray.toString(),
+    Source: req.body.Source,
+    Status: 0, // 0 = Pending Approval
+  });
 
-// Fetch submissions for given user ID
-ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
-  const { id } = req.params;
-  let RiderSubmissionHistory;
-  try {
-    RiderSubmissionHistory = await q.querySubmissionsByRider(id);
-  } catch (err) {
-    logger.error(`Error encountered: querySubmissionsByRider. ${err}`);
+  // Respond back to device that all is well
+  return res.send({ result: 'success' });
+
+  // FUNCTIONS
+  async function shrinkImage(fileName, file) {
+    try {
+      await sharp(file)
+        .resize(1440, 1440, {
+          fit: sharp.fit.inside,
+          withoutEnlargement: true,
+        })
+        .withMetadata()
+        .toFormat('jpeg')
+        .jpeg()
+        .toBuffer()
+        .then((resizedImage) => uploadToS3(fileName, resizedImage));
+    } catch (err) {
+      logger.error(`shrinkImage failed. ${err}`);
+    }
   }
-  res.json(RiderSubmissionHistory);
-});
 
-// Get All Scored Submissions
-ApiSubmissionRouter.route('/scored').get(async (req, res) => {
-  const sqlQuery = `
-  SELECT DISTINCT 
-    s.id, s.Status, s.Source, s.createdAt, s.updatedAt, s.ScorerNotes, s.RiderNotes, s.OtherRiders,
-    u.FirstName, u.LastName, f.FlagNumber, 
-    m.Code, m.Region, m.Latitude, m.Longitude, m.City, m.State, 
-    c.Name AS CatName
-  FROM Submissions s 
-    INNER JOIN Flags f ON f.UserID = s.UserID
-    INNER JOIN Users u ON s.UserID = u.id
-    INNER JOIN Memorials m ON s.MemorialID = m.id	
-    INNER JOIN Categories c ON m.Category = c.id 
-  WHERE s.Status IN (1,2)
-  `;
-  try {
-    const allScoredSubmissions = await sequelize.query(sqlQuery, {
-      type: QueryTypes.SELECT,
-    });
-    res.json(allScoredSubmissions);
-  } catch (err) {
-    logger.error(`An error was encountered in allScoredSubmissions: ${err}`, {
-      calledBy: 'api/v1/submission.js',
-    });
-    throw err;
+  async function uploadToS3(fileName, file) {
+    try {
+      const s3result = await uploadRiderSubmittedImage(fileName, file);
+      logger.info(s3result, { calledFrom: 'submission.js' });
+    } catch (err) {
+      logger.error(`S3 Upload Failed: ${err}`, { calledFrom: 'submission.js' });
+    }
   }
 });
 
-// Find Next Submission to Score
-ApiSubmissionRouter.route('/nextAvailable').get((req, res) => {
-  db.Submission.findAll({
-    where: {
-      RallyYear: {
-        [Op.in]: currentRallyYear,
-      },
-    },
-    order: [['FlagNumber', 'ASC']],
-    raw: true,
-  }).then((flags) => {
-    const allowedNumbers = _.range(11, 1201, 1);
-    const badNumbers = flags.map((inUse) => inUse.FlagNumber);
-    const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
-    const nextFlag = _.min(goodNumbers);
-    res.json(nextFlag);
-  });
-});
-
-// GET: Fetch Submission details
-ApiSubmissionRouter.route('/:id').get((req, res) => {
-  const { id } = req.params;
-  db.Submission.findOne({
-    where: {
-      FlagNumber: id,
-      RallyYear: {
-        [Op.in]: currentRallyYear,
-      },
-    },
-  }).then((dbPost) => {
-    res.json(dbPost);
-  });
-});
-
-module.exports = ApiSubmissionRouter;
+module.exports = router;
