@@ -1,3 +1,10 @@
+/**
+ * routes/api/bike.js
+ *
+ * @description:: Handler file for API calls related to bikes. All routes with "/api/v1/bike" come through here.
+ *
+ */
+
 const ApiBikeRouter = require('express').Router();
 
 const db = require('../../../models');

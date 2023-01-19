@@ -1,3 +1,10 @@
+/**
+ * routes/api/submission.js
+ *
+ * @description:: Handler file for API calls related to submissions. All routes with "/api/v1/submission" come through here.
+ *
+ */
+
 /* eslint-disable prefer-destructuring */
 const express = require('express');
 

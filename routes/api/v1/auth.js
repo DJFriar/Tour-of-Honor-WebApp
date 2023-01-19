@@ -1,17 +1,48 @@
+/**
+ * routes/api/auth.js
+ *
+ * @description:: Handler file for API calls related to auth. All routes with "/api/v1/auth" come through here.
+ *
+ */
+
 require('dotenv').config();
 
-const express = require('express');
+const ApiAuthRouter = require('express').Router();
+const { QueryTypes } = require('sequelize');
 const jwt = require('jsonwebtoken');
 
-const q = require('../../../private/queries');
+const db = require('../../../models');
 const { logger } = require('../../../controllers/logger');
 const hasValidApiKey = require('../../../middleware/authCheck');
 
-const router = express.Router();
+const { sequelize } = db;
 
-router.post('/', hasValidApiKey, async (req, res) => {
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
+ApiAuthRouter.use(hasValidApiKey);
+
+ApiAuthRouter.route('/').post(async (req, res) => {
   const { flag, zipcode } = req.body;
-  const User = await q.queryRiderInfoByFlag(flag);
+  const sqlQuery = `
+    SELECT 
+      f.id, 
+      f.FlagNumber, 
+      f.UserID, 
+      u.FirstName, 
+      u.LastName, 
+      CONCAT(u.FirstName, ' ', u.LastName) AS FullName, 
+      u.Email, 
+      u.ZipCode, 
+      u.TimeZone 
+    FROM Flags f 
+      LEFT JOIN Users u ON u.id = f.UserID 
+    WHERE f.FlagNumber = ? 
+      AND f.RallyYear = ?
+  `;
+  const User = await sequelize.query(sqlQuery, {
+    replacements: [flag, currentRallyYear],
+    type: QueryTypes.SELECT,
+  });
   const UserData = User[0];
   if (!UserData || UserData.ZipCode !== zipcode) {
     logger.error(`UserData returned false: ${JSON.stringify(UserData)}`, {
@@ -37,4 +68,4 @@ router.post('/', hasValidApiKey, async (req, res) => {
   return res.send(token);
 });
 
-module.exports = router;
+module.exports = ApiAuthRouter;

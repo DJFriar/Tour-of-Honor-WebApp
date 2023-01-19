@@ -8,5 +8,3 @@ module.exports = function hasValidApiKey(req, res, next) {
   if (authHeader !== 'randomTOKENgoesHERE') return res.sendStatus(403);
   return next();
 };
-
-// exports.hasValidApiKey = hasValidApiKey;

@@ -27,17 +27,6 @@ module.exports = function (app) {
     });
   })
 
-  // Fetch combined data for a specific Memorial
-  app.get("/api/v1/memorial-data/:id", async (req, res) => {
-    const id = req.params.id
-    try {
-      var MemorialData = await q.queryMemorialData(id);
-    } catch {
-      console.log("Error encountered: queryMemorialData");
-    }
-    res.json(MemorialData);
-  })
-
   // Fetch all active Categories
   app.get("/api/v1/categories/", (req, res) => {
     db.Category.findAll({

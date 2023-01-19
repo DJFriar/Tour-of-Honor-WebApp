@@ -15,19 +15,12 @@ class TestingUser(HttpUser):
     for item_id in range(3000,3500):
       self.client.get(f"/api/v1/memorials/{item_id}", name="/memorials/:MemID (Web)")
       time.sleep(1)
-  
-  @task
-  def check_memorial_detail_web(self):
-    for item_id in range(3000,3500):
-      self.client.get(f"/api/v1/memorial-data/{item_id}", name="/memorial-data (Web)")
-      self.client.get(f"/api/v1/memorial-text/{item_id}", name="/memorial-text (Web)")
-      time.sleep(1)
 
   @task
   def check_memorial_detail_app(self):
     for item_id in range(3000,3500):
-      self.client.get(f"/api/v1/memorial/data/{item_id}", name="/memorial-data (App)")
-      self.client.get(f"/api/v1/memorial/text/{item_id}", name="/memorial-text (App)")
+      self.client.get(f"/api/v1/memorial/data/{item_id}", name="/memorial/data (App)")
+      self.client.get(f"/api/v1/memorial/text/{item_id}", name="/memorial/text (App)")
       time.sleep(1)
 
   @task

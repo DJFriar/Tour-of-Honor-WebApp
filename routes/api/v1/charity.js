@@ -1,3 +1,10 @@
+/**
+ * routes/api/charity.js
+ *
+ * @description:: Handler file for API calls related to charities. All routes with "/api/v1/charity" come through here.
+ *
+ */
+
 const ApiCharityRouter = require('express').Router();
 
 const { logger } = require('../../../controllers/logger');

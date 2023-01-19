@@ -1,3 +1,10 @@
+/**
+ * routes/api/flag.js
+ *
+ * @description:: Handler file for API calls related to flags. All routes with "/api/v1/flag" come through here.
+ *
+ */
+
 const { _, concat } = require('lodash');
 const ApiFlagRouter = require('express').Router();
 const { DateTime } = require('luxon');
