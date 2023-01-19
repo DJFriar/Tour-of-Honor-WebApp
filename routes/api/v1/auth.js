@@ -1,19 +1,22 @@
 require('dotenv').config();
 
 const express = require('express');
-
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const q = require('../../../private/queries');
+const { logger } = require('../../../controllers/logger');
 const hasValidApiKey = require('../../../middleware/authCheck');
+
+const router = express.Router();
 
 router.post('/', hasValidApiKey, async (req, res) => {
   const { flag, zipcode } = req.body;
   const User = await q.queryRiderInfoByFlag(flag);
   const UserData = User[0];
   if (!UserData || UserData.ZipCode !== zipcode) {
-    console.error(`UserData returned false: ${JSON.stringify(UserData)}`);
+    logger.error(`UserData returned false: ${JSON.stringify(UserData)}`, {
+      calledFrom: 'api/v1/auth.js',
+    });
     return res.sendStatus(400);
   }
 

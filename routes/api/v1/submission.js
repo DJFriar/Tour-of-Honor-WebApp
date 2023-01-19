@@ -27,7 +27,7 @@ router.post('/', fileUpload(), (req, res) => {
   }
 
   if (!req.files) {
-    logger.info('No files were uploaded', { calledFrom: 'submission.js' });
+    logger.info('No files were uploaded', { calledFrom: 'api/v1/submission.js' });
     return res.status(400).send('No files were uploaded.');
   }
 
@@ -42,7 +42,9 @@ router.post('/', fileUpload(), (req, res) => {
     const primaryImageFileData = primaryFile.data;
     shrinkImage(primaryFilename, primaryImageFileData);
   } catch (err) {
-    logger.error(`Error shrinking primary image: ${err}`);
+    logger.error(`Error shrinking primary image: ${err}`, {
+      calledFrom: 'api/v1/submission.js',
+    });
     return res.status(500).send(err);
   }
 
@@ -53,7 +55,9 @@ router.post('/', fileUpload(), (req, res) => {
       const optionalImageFileData = images[1].data;
       shrinkImage(optionalFilename, optionalImageFileData);
     } catch (err) {
-      logger.error(`Error shrinking optional image: ${err}`);
+      logger.error(`Error shrinking optional image: ${err}`, {
+        calledFrom: 'api/v1/submission.js',
+      });
       return res.status(500).send(err);
     }
   }
@@ -87,16 +91,18 @@ router.post('/', fileUpload(), (req, res) => {
         .toBuffer()
         .then((resizedImage) => uploadToS3(fileName, resizedImage));
     } catch (err) {
-      logger.error(`shrinkImage failed. ${err}`);
+      logger.error(`shrinkImage failed. ${err}`, {
+        calledFrom: 'api/v1/submission.js',
+      });
     }
   }
 
   async function uploadToS3(fileName, file) {
     try {
       const s3result = await uploadRiderSubmittedImage(fileName, file);
-      logger.info(s3result, { calledFrom: 'submission.js' });
+      logger.info(s3result, { calledFrom: 'api/v1/submission.js' });
     } catch (err) {
-      logger.error(`S3 Upload Failed: ${err}`, { calledFrom: 'submission.js' });
+      logger.error(`S3 Upload Failed: ${err}`, { calledFrom: 'api/v1/submission.js' });
     }
   }
 });

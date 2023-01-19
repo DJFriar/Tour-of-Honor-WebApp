@@ -10,10 +10,10 @@ ApiCharityRouter.route('/')
     try {
       CharityArray = await q.queryAllCharities();
     } catch (err) {
-      logger.error(`Error encountered: queryAllCharities.${err}`);
+      logger.error(`Error encountered: queryAllCharities.${err}`, {
+        calledFrom: 'api/v1/charity.js',
+      });
     }
-    console.log('==== CharityArray ====');
-    console.log(CharityArray);
     res.json(CharityArray);
   })
   .post((req, res) => {
@@ -23,11 +23,11 @@ ApiCharityRouter.route('/')
       URL: req.body.CharityURL,
     })
       .then((c) => {
-        logger.info(`Charity ${c.id} created.`, { calledFrom: 'api/charity.js' });
+        logger.info(`Charity ${c.id} created.`, { calledFrom: 'api/v1/charity.js' });
         res.status(200).send();
       })
       .catch((err) => {
-        logger.error(`Error creating charity: ${err}`, { calledFrom: 'api/charity.js' });
+        logger.error(`Error creating charity: ${err}`, { calledFrom: 'api/v1/charity.js' });
         res.status(401).json(err);
       });
   })
@@ -51,10 +51,10 @@ ApiCharityRouter.route('/donationCount').get(async (req, res) => {
   try {
     DonationStats = await q.queryTotalDonationsByCharity();
   } catch (err) {
-    logger.error(`Error encountered: queryTotalDonationsByCharity.${err}`);
+    logger.error(`Error encountered: queryTotalDonationsByCharity.${err}`, {
+      calledFrom: 'api/v1/charity.js',
+    });
   }
-  console.log('==== donationStats ====');
-  console.log(DonationStats);
   res.json(DonationStats);
 });
 

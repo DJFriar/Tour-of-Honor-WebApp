@@ -68,7 +68,7 @@ ApiEmailRouter.route('/resetpasswordrequest').post(async (req, res) => {
           ResetToken = data;
         })
         .catch((err) => {
-          logger.error('Error creating token');
+          logger.error('Error creating reset token', { calledFrom: 'api/v1/email.js' });
           res.status(401).json(err);
         });
     }
