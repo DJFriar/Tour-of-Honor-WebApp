@@ -7,13 +7,13 @@ class TestingUser(HttpUser):
 
   @task
   def check_users_web(self):
-      self.client.get("/api/v1/user/1", name="/user (Web)")
+      self.client.get("/api/v1/user/3", name="/user (Web)")
       time.sleep(1)
 
   @task
   def check_memorial_detail_web(self):
     for item_id in range(3000,3500):
-      self.client.get(f"/api/v1/memorials/{item_id}", name="/memorials/:id (Web)")
+      self.client.get(f"/api/v1/memorials/{item_id}", name="/memorials/:MemID (Web)")
       time.sleep(1)
   
   @task
@@ -32,5 +32,5 @@ class TestingUser(HttpUser):
 
   @task
   def check_all_memorials_app(self):
-    self.client.get("/api/v1/memorial-list", name="/memorial-list (App)")
+    self.client.get("/api/v1/memorials/status/3", name="/memorials/status/:UserID (App)")
     time.sleep(1)
