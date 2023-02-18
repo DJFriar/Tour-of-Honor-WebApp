@@ -1,8 +1,9 @@
 $(document).ready(() => {
+  const userTimeZone = $('#userTZ').data('usertz');
   // Create the New Scored Table
-  $('#NewScoredTable').DataTable({
+  $('#HistoricalScoredTable').DataTable({
     ajax: {
-      url: '/api/v1/submission/scored',
+      url: '/api/v1/submission/scored/2022',
       dataSrc: '',
     },
     columns: [
@@ -65,6 +66,13 @@ $(document).ready(() => {
         targets: [4],
       },
       {
+        render(data) {
+          const createdDate = new Date(data);
+          return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+        },
+        targets: [5],
+      },
+      {
         render(data, type, row) {
           switch (row.Status) {
             case 1:
@@ -76,6 +84,13 @@ $(document).ready(() => {
           }
         },
         targets: [6],
+      },
+      {
+        render(data) {
+          const updatedDate = new Date(data);
+          return `${updatedDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+        },
+        targets: [7],
       },
       { targets: [11, 15, 16], visible: false, Searchable: false },
       { targets: [8, 9, 10, 12, 13, 14], visible: false, Searchable: true },

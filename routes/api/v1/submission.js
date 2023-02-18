@@ -6,18 +6,20 @@
  */
 
 /* eslint-disable prefer-destructuring */
-const express = require('express');
-
-const router = express.Router();
+const ApiSubmissionRouter = require('express').Router();
+const { QueryTypes } = require('sequelize');
 const { DateTime } = require('luxon');
 const sharp = require('sharp');
 const fileUpload = require('express-fileupload');
+
 const db = require('../../../models');
 const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
 const { logger } = require('../../../controllers/logger');
 
+const { sequelize } = db;
+
 // Submit from Mobile App
-router.post('/', fileUpload(), (req, res) => {
+ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
   const { images } = req.files;
   const { RiderFlag } = req.body;
   let RiderArray = [];
@@ -114,4 +116,105 @@ router.post('/', fileUpload(), (req, res) => {
   }
 });
 
-module.exports = router;
+// Get All Pending Submissions
+ApiSubmissionRouter.route('/pending').get(async (req, res) => {
+  const sqlQuery = `
+  SELECT DISTINCT
+    s.*, 
+    u.FirstName, u.LastName, u.Email,
+    f.FlagNumber,  
+    m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, 
+    c.Name AS CatName, 
+    CASE 
+      WHEN s.Status = 0 THEN 'Pending' 
+      WHEN s.Status = 1 THEN 'Approved' 
+      WHEN s.Status = 2 THEN 'Rejected' 
+      WHEN s.Status = 3 THEN 'Held' 
+    END AS StatusText 
+  FROM Submissions s 
+    INNER JOIN Users u ON s.UserID = u.id 
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+    INNER JOIN Flags f ON f.UserID = u.id 
+  WHERE s.Status IN (0,3)
+  `;
+  try {
+    const allPendingSubmissions = await sequelize.query(sqlQuery, {
+      type: QueryTypes.SELECT,
+    });
+    res.json(allPendingSubmissions);
+  } catch (err) {
+    logger.error(`An error was encountered in allPendingSubmissions: ${err}`, {
+      calledBy: 'api/v1/submission.js',
+    });
+    throw err;
+  }
+});
+
+// Get All Held Submissions
+ApiSubmissionRouter.route('/held').get(async (req, res) => {
+  const sqlQuery = `
+  SELECT DISTINCT
+    s.*, 
+    u.FirstName, u.LastName, u.Email,
+    f.FlagNumber,  
+    m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, 
+    c.Name AS CatName, 
+    CASE 
+      WHEN s.Status = 0 THEN 'Pending' 
+      WHEN s.Status = 1 THEN 'Approved' 
+      WHEN s.Status = 2 THEN 'Rejected' 
+      WHEN s.Status = 3 THEN 'Held' 
+    END AS StatusText 
+  FROM Submissions s 
+    INNER JOIN Users u ON s.UserID = u.id 
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+    INNER JOIN Flags f ON f.UserID = u.id 
+  WHERE s.Status = 3
+  `;
+  try {
+    const allHeldSubmissions = await sequelize.query(sqlQuery, {
+      type: QueryTypes.SELECT,
+    });
+    res.json(allHeldSubmissions);
+  } catch (err) {
+    logger.error(`An error was encountered in allHeldSubmissions: ${err}`, {
+      calledBy: 'api/v1/submission.js',
+    });
+    throw err;
+  }
+});
+
+// Get All Scored Submissions
+ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
+  const scoredYear = req.params.year;
+  const sqlQuery = `
+  SELECT DISTINCT 
+    s.id, s.Status, s.Source, s.createdAt, s.updatedAt, s.ScorerNotes, s.RiderNotes, s.OtherRiders,
+    u.FirstName, u.LastName, f.FlagNumber, 
+    m.Code, m.Region, m.Latitude, m.Longitude, m.City, m.State, 
+    c.Name AS CatName
+  FROM Submissions s 
+    INNER JOIN Flags f ON f.UserID = s.UserID
+    INNER JOIN Users u ON s.UserID = u.id
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+  WHERE s.Status IN (1,2)
+    AND YEAR(s.createdAt) = ? 
+  `;
+  try {
+    const allScoredSubmissions = await sequelize.query(sqlQuery, {
+      replacements: [scoredYear],
+      type: QueryTypes.SELECT,
+    });
+    res.json(allScoredSubmissions);
+  } catch (err) {
+    logger.error(`An error was encountered in allScoredSubmissions: ${err}`, {
+      calledBy: 'api/v1/submission.js',
+    });
+    throw err;
+  }
+});
+
+module.exports = ApiSubmissionRouter;
