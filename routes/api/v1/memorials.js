@@ -14,7 +14,7 @@ const { logger } = require('../../../controllers/logger');
 
 const { sequelize } = db;
 
-ApiMemorialsRouter.use(hasValidApiKey);
+// ApiMemorialsRouter.use(hasValidApiKey);
 
 ApiMemorialsRouter.route('/').get(async (req, res) => {
   let Memorials;
@@ -31,7 +31,9 @@ ApiMemorialsRouter.route('/').get(async (req, res) => {
     ORDER BY m.State, m.City, m.Category
   `;
   try {
-    Memorials = await sequelize.query(sqlQuery);
+    Memorials = await sequelize.query(sqlQuery, {
+      type: QueryTypes.SELECT,
+    });
   } catch (err) {
     logger.error(`Error encountered getting Memorials: ${err}`, {
       calledFrom: 'api/v1/memorials.js',
