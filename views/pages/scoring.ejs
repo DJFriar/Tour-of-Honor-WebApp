@@ -12,6 +12,7 @@
     <main>
       <h1>Scoring Dashboard</h1>
       <p>This page shows all submissions that have not been scored yet. To review submissions that have already been scored, go to the <a href="/scored">Scored Submissions</a> page.</p>
+      <div id="userTZ" data-usertz="<%= TimeZone.ZoneName %>"></div>
       <div class="admin-container" id='tabs'>
         <ul uk-tab>
           <li><a href="#pending">Pending Submissions</a></li>
@@ -38,8 +39,6 @@
             <table class="uk-table uk-table-striped uk-table-small" id="PendingTable">
               <thead>
                 <tr>
-                  <th>HiddenID</th>
-                  <th>StatusID</th>
                   <th>SubID</th>
                   <th>Rider</th>
                   <th>Memorial</th>
@@ -48,54 +47,6 @@
                   <th>Date Submitted</th>
                 </tr>
               </thead>
-              <tbody>
-                <% PendingSubmissions.forEach(function(submission) { %>
-                  <tr>
-                    <td>
-                      <%= submission.id %>
-                    </td>
-                    <td>
-                      <%= submission.Status %>
-                    </td>
-                    <td>
-                      <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
-                      <% if(submission.Source == 1) { %>
-                        <i class="fa-light fa-square-question"></i>
-                      <% } %>
-                      <% if(submission.Source == 2) { %>
-                        <i class="fa-brands fa-apple"></i>
-                      <% } %>
-                      <% if(submission.Source == 3) { %>
-                        <i class="fa-brands fa-android"></i>
-                      <% } %>
-                      <% if(submission.Source == 4) { %>
-                        <i class="fa-solid fa-browser"></i>
-                      <% } %>
-                      <% if(submission.Source == 5) { %>
-                        <i class="fa-light fa-envelope"></i>
-                      <% } %>
-                      <% if(submission.Source == 6) { %>
-                        <i class="fa-brands fa-usps "></i>
-                      <% } %>
-                    </td>
-                    <td>
-                      <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fa-light fa-user-friends"></i></span> <% } %> 
-                    </td>
-                    <td>
-                      <%= submission.Code %>
-                    </td>
-                    <td>
-                      <%= submission.CatName %>
-                    </td>
-                    <td>
-                      <%= submission.City %>, <%= submission.State %>
-                    </td>
-                    <td>
-                      <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
-                    </td>
-                  </tr>
-                <% }) %>
-              </tbody>
             </table>
           </li>
           <!-- Held for Review -->
@@ -103,8 +54,6 @@
             <table class="uk-table uk-table-striped uk-table-small" id="HeldTable">
               <thead>
                 <tr>
-                  <th>HiddenID</th>
-                  <th>StatusID</th>
                   <th>SubID</th>
                   <th>Rider</th>
                   <th>Memorial</th>
@@ -113,54 +62,6 @@
                   <th>Date Submitted</th>
                 </tr>
               </thead>
-              <tbody>
-                <% PendingSubmissions.forEach(function(submission) { %>
-                  <tr>
-                    <td>
-                      <%= submission.id %>
-                    </td>
-                    <td>
-                      <%= submission.Status %>
-                    </td>
-                    <td>
-                      <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
-                      <% if(submission.Source == 1) { %>
-                        <i class="fa-light fa-square-question"></i>
-                      <% } %>
-                      <% if(submission.Source == 2) { %>
-                        <i class="fa-brands fa-apple"></i>
-                      <% } %>
-                      <% if(submission.Source == 3) { %>
-                        <i class="fa-brands fa-android"></i>
-                      <% } %>
-                      <% if(submission.Source == 4) { %>
-                        <i class="fa-solid fa-browser"></i>
-                      <% } %>
-                      <% if(submission.Source == 5) { %>
-                        <i class="fa-light fa-envelope"></i>
-                      <% } %>
-                      <% if(submission.Source == 6) { %>
-                        <i class="fa-brands fa-usps "></i>
-                      <% } %>
-                    </td>
-                    <td>
-                      <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fa-light fa-user-friends"></i></span> <% } %> 
-                    </td>
-                    <td>
-                      <%= submission.Code %>
-                    </td>
-                    <td>
-                      <%= submission.CatName %>
-                    </td>
-                    <td>
-                      <%= submission.City %>, <%= submission.State %>
-                    </td>
-                    <td>
-                      <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
-                    </td>
-                  </tr>
-                <% }) %>
-              </tbody>
             </table>
           </li>
         </ul>

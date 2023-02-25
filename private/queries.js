@@ -42,24 +42,6 @@ module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
   }
 };
 
-module.exports.queryRiderInfoByFlag = async function queryRiderInfoByFlag(FlagNumber) {
-  try {
-    const result = await sequelize.query(
-      "SELECT f.id, f.FlagNumber, f.UserID, u.FirstName, u.LastName, CONCAT(u.FirstName, ' ', u.LastName) AS FullName FROM Flags f LEFT JOIN Users u ON u.id = f.UserID WHERE f.FlagNumber = ? AND f.RallyYear = ?",
-      {
-        replacements: [FlagNumber, currentRallyYear],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in queryRiderInfoByFlag(${FlagNumber}`, {
-      calledBy: 'queries.js',
-    });
-    throw err;
-  }
-};
-
 module.exports.queryAllCategories = async function queryAllCategories() {
   try {
     const result = await db.Category.findAll({
@@ -165,44 +147,6 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
   }
 };
 
-module.exports.queryAllMemorialsWithUserStatus = async function queryAllMemorialsWithUserStatus(
-  id,
-) {
-  try {
-    const result = await sequelize.query(
-      "SELECT s.Status AS 'RiderStatus',m.*, c.Name AS CategoryName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? ORDER BY m.State, m.City, m.Category",
-      {
-        replacements: [id],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in queryAllMemorialsWithUserStatus(${id}`, {
-      calledBy: 'queries.js',
-    });
-    throw err;
-  }
-};
-
-module.exports.queryMemorialStatusByUser = async function queryMemorialStatusByUser(memId, userId) {
-  try {
-    const result = await sequelize.query(
-      'SELECT Status FROM Submissions WHERE MemorialID = ? AND UserID = ? ORDER BY updatedAt DESC LIMIT 1',
-      {
-        replacements: [memId, userId],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in queryMemorialStatusByUser(${memId}, ${userId})`, {
-      calledBy: 'queries.js',
-    });
-    throw err;
-  }
-};
-
 module.exports.queryAllMemorials = async function queryAllMemorials(id = false) {
   let result;
   try {
@@ -229,30 +173,12 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
   }
 };
 
-module.exports.queryAllAvailableMemorials = async function queryAllAvailableMemorials() {
-  let result;
-  try {
-    result = await sequelize.query(
-      'SELECT m.*, c.Name AS CategoryName, r.Name AS RestrictionName FROM Memorials m INNER JOIN Categories c ON m.Category = c.id LEFT JOIN Restrictions r ON m.Restrictions = r.id WHERE c.Active = 1 AND m.Restrictions != 12 ORDER BY m.State, m.City, m.Category',
-      {
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error('An error was encountered in queryAllAvailableMemorials()', {
-      calledBy: 'queries.js',
-    });
-    throw err;
-  }
-};
-
 module.exports.queryAllSubmissions = async function queryAllSubmissions(id = false) {
   let result;
   try {
     if (id) {
       result = await sequelize.query(
-        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, u.City AS HomeCity, u.State AS HomeState, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
         {
           replacements: [id],
           type: QueryTypes.SELECT,
@@ -357,24 +283,6 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorial(${memCode})`, {
-      calledBy: 'queries.js',
-    });
-    throw err;
-  }
-};
-
-module.exports.queryMemorialData = async function queryMemorialData(id) {
-  try {
-    const result = await sequelize.query(
-      'SELECT c.Name AS CategoryName, r.Name AS RestrictionName, m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id INNER JOIN Restrictions r ON m.Restrictions = r.id WHERE m.id = ? LIMIT 1',
-      {
-        replacements: [id],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in queryMemorialData(${id})`, {
       calledBy: 'queries.js',
     });
     throw err;
@@ -819,6 +727,24 @@ module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryBaseRiderRate()', { calledBy: 'queries.js' });
+    throw err;
+  }
+};
+
+module.exports.queryPassengerInfoByRider = async function queryPassengerInfoByRider(
+  riderFlagNumber,
+) {
+  try {
+    const result = await db.Passenger.findAll({
+      where: {
+        RiderFlagNumber: riderFlagNumber,
+      },
+    });
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryPassengerInfoByRider(${riderFlagNumber})`, {
+      calledBy: 'queries.js',
+    });
     throw err;
   }
 };

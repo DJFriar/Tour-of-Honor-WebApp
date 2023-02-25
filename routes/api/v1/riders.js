@@ -1,3 +1,10 @@
+/**
+ * routes/api/riders.js
+ *
+ * @description:: Handler file for API calls related to riders. All routes with "/api/v1/riders" come through here.
+ *
+ */
+
 const ApiRiderRouter = require('express').Router();
 const { QueryTypes } = require('sequelize');
 

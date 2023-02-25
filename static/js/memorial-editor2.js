@@ -1,124 +1,125 @@
-$(document).ready(function() {
-
+$(document).ready(() => {
   // Handle Edit Memorial Info Button
-  $("#submitMemorialCodeLookup").on("click", function(e) {
+  $('#submitMemorialCodeLookup').on('click', (e) => {
     e.preventDefault();
-    console.log("submitMemorialCodeLookup clicked");
-    var Code = $("#MemorialCodeLookup").val().trim();
+    console.log('submitMemorialCodeLookup clicked');
+    let Code = $('#MemorialCodeLookup').val().trim();
     Code = Code.toUpperCase();
-    SampleImage = "";
+    SampleImage = '';
     updatedSampleImage = false;
 
-    $.ajax("/api/v1/memorial/c/"+ Code, {
-      type: "GET",
-    }).then(
-      function(res) {
-        console.log(res);
-        if (res == undefined || res == null) {
-          $("#memorialNotFoundErrorText").toggleClass("hide-me");
-        } else if (res.Code == Code) {
-          $("#memorialInfoEditModal").css("display","block");
-          $(".uk-dropdown").removeClass("uk-open");
+    $.ajax(`/api/v1/memorial/c/${Code}`, {
+      type: 'GET',
+    }).then((res) => {
+      console.log(res);
+      if (res == undefined || res == null) {
+        $('#memorialNotFoundErrorText').toggleClass('hide-me');
+      } else if (res.Code == Code) {
+        $('#memorialInfoEditModal').css('display', 'block');
+        $('.uk-dropdown').removeClass('uk-open');
 
-          SampleImage = res.SampleImage;
+        SampleImage = res.SampleImage;
 
-          var MultiImageBool = 0
-          if (res.MultiImage) {
-            MultiImageBool = 1;
-          }
-          $("#EditMemorialID").val(res.id);
-          $("#EditMemorialCode").val(res.Code);
-          $("#EditMemorialCategory").val(res.Category);
-          $("#EditMemorialRegion").val(res.Region);
-          $("#EditMemorialName").val(res.Name);
-          $("#EditMemorialAddress1").val(res.Address1);
-          $("#EditMemorialAddress2").val(res.Address2);
-          $("#EditMemorialURL").val(res.URL);
-          $("#EditMemorialCity").val(res.City);
-          $("#EditMemorialState").val(res.State);
-          $("#EditMemorialLatitude").val(res.Latitude);
-          $("#EditMemorialLongitude").val(res.Longitude);
-          $("#EditMemorialRestrictions").val(res.Restrictions);
-          $("#EditMultiImage").val(MultiImageBool);
-          $("#EditSampleImageName").val(res.SampleImage);
-          $(".sampleImagePlaceholder").attr("src", baseSampleImageUrl + res.SampleImage);
-          $("#EditSampleImageFile").attr("src", baseSampleImageUrl + res.SampleImage);
-          $("#EditMemorialAccess").val(res.Access);
-        } 
-        
+        let MultiImageBool = 0;
+        if (res.MultiImage) {
+          MultiImageBool = 1;
+        }
+        $('#EditMemorialID').val(res.id);
+        $('#EditMemorialCode').val(res.Code);
+        $('#EditMemorialCategory').val(res.Category);
+        $('#EditMemorialRegion').val(res.Region);
+        $('#EditMemorialName').val(res.Name);
+        $('#EditMemorialAddress1').val(res.Address1);
+        $('#EditMemorialAddress2').val(res.Address2);
+        $('#EditMemorialURL').val(res.URL);
+        $('#EditMemorialCity').val(res.City);
+        $('#EditMemorialState').val(res.State);
+        $('#EditMemorialLatitude').val(res.Latitude);
+        $('#EditMemorialLongitude').val(res.Longitude);
+        $('#EditMemorialRestrictions').val(res.Restrictions);
+        $('#EditMultiImage').val(MultiImageBool);
+        $('#EditSampleImageName').val(res.SampleImage);
+        $('.sampleImagePlaceholder').attr('src', baseSampleImageUrl + res.SampleImage);
+        $('#EditSampleImageFile').attr('src', baseSampleImageUrl + res.SampleImage);
+        $('#EditMemorialAccess').val(res.Access);
       }
-    )
-  })
+    });
+  });
 
   // Handle submitMemorialTextEdit button
-  $("#submitMemorialTextEdit").on("click", function(e) {
+  $('#submitMemorialTextEdit').on('click', (e) => {
     e.preventDefault();
-    var MemCode = $("#MemorialCodeLookup").val().trim();
+    let MemCode = $('#MemorialCodeLookup').val().trim();
     MemCode = MemCode.toUpperCase();
-    $(location).attr("href", "/admin/memorial-text/" + MemCode);
-  })
+    $(location).attr('href', `/admin/memorial-text/${MemCode}`);
+  });
 
   // Handle add new memorial toggle
-  $(".addMemorialButton").on("click", function(e) {
+  $('.addMemorialButton').on('click', (e) => {
     e.preventDefault();
-    $("#editMemorialInfo").toggleClass("hide-me");
-    $(".memorialBtnDiv").toggleClass("hide-me");
+    $('#editMemorialInfo').toggleClass('hide-me');
+    $('.memorialBtnDiv').toggleClass('hide-me');
   });
 
   // Handle Image Needed checkbox
-  $("#ImageNeeded").change(function() {
+  $('#ImageNeeded').change(function () {
     if (this.checked) {
-      $("#SampleImage").val("imageNeeded.png");
+      $('#SampleImage').val('imageNeeded.png');
     } else {
-      $("#SampleImage").val("");
+      $('#SampleImage').val('');
     }
   });
-  $("#EditImageNeeded").change(function() {
+  $('#EditImageNeeded').change(function () {
     if (this.checked) {
-      $("#EditSampleImageName").val("imageNeeded.png");
-      $(".sampleImagePlaceholder").attr("data-src", "/images/imageNeeded.png");
+      $('#EditSampleImageName').val('imageNeeded.png');
+      $('.sampleImagePlaceholder').attr('data-src', '/images/imageNeeded.png');
     } else {
-      $(".sampleImagePlaceholder").attr("data-src", baseSampleImageUrl + SampleImage);
-      $("#EditSampleImageName").val(SampleImage);
+      $('.sampleImagePlaceholder').attr('data-src', baseSampleImageUrl + SampleImage);
+      $('#EditSampleImageName').val(SampleImage);
     }
   });
 
   // Handle sample image upload
-  let handleSampleImageFile = function (fileInput) {
+  const handleSampleImageFile = function (fileInput) {
     if (fileInput.files) {
-      let reader = new FileReader();
+      const reader = new FileReader();
       reader.onload = function (event) {
         updatedSampleImage = true;
-        $(".sampleImagePlaceholder")
-          .attr("data-src", event.target.result)
+        $('.sampleImagePlaceholder').attr('data-src', event.target.result);
       };
       reader.readAsDataURL(fileInput.files[0]);
     }
   };
-  $("#sampleImageFile").on("change", function () {
-    handleSampleImageFile(this, "label#inputSampleImageLabel");
+  $('#sampleImageFile').on('change', function () {
+    handleSampleImageFile(this, 'label#inputSampleImageLabel');
   });
 
   // Handle Delete Memorial Button
-  $(".deleteMemorialBtn").on("click", function() {
-    var id = $(this).data("uid");
-    $.ajax("/api/v1/memorial/" + id, {
-      type: "DELETE"
-    }).then(
-      function() {
-        location.reload();
-      }
-    );
+  $('.deleteMemorialBtn').on('click', function () {
+    const id = $(this).data('uid');
+    $.ajax(`/api/v1/memorial/${id}`, {
+      type: 'DELETE',
+    }).then(() => {
+      location.reload();
+    });
+  });
+
+  // Create Handle GPX Button
+  $('#createGPXButton').on('click', () => {
+    $.ajax(`/api/v1/gpx/`, {
+      type: 'GET',
+    }).then(() => {
+      location.reload();
+    });
   });
 
   // Handle Dialog Close Button
-  $(".close").on("click", function() {
-    $(".modal").css("display","none");
-  })
+  $('.close').on('click', () => {
+    $('.modal').css('display', 'none');
+  });
 
   // Handle Dialog Cancel Button
-  $(".cancelButton").on("click", function() {
-    $(".modal").css("display","none");
-  })
-
+  $('.cancelButton').on('click', () => {
+    $('.modal').css('display', 'none');
+  });
 });

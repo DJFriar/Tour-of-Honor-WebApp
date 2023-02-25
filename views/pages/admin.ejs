@@ -10,22 +10,42 @@
       <%- include('../partials/topnav'); %>
     <% } %>
     <main>
-      <h1>Rally Admin Tool</h1>
+      <h1>TOH Admin Portal</h1>
+      <p>The tools below are for use by TOH Admins to perform various back office tasks.</p>
       <div class="content" style="font-size: 18px;">
-        &nbsp;<br />
         <% if(NotificationText) { %>
           <%- include('../partials/notice'); %>
         <% } %>
-        <a href="/admin/alt-entry">Alternate Entries</a><br />
-        <a href="/admin/charity-manager">Charity Manager</a><br />
-        <a href="/admin/flag-manager">Flag Manager</a><br />
-        <a href="/admin/group-management">Group Management</a><br />
-        <a href="/admin/memorial-editor2">Memorial Editor</a><br />
-        <a href="/admin/orders">Registration Manager</a><br />
-        <a href="/admin/rider-management">Rider Management</a><br />
-        <a href="/admin/site-config">Site Config</a><br />
-        <a href="/admin/trophy-editor">Trophy & Awards Editor</a><br />
-        <br />
+        <div class="uk-flex-around" uk-grid>
+          <div>
+            <h3>Event</h3>
+            <a href="/admin/orders" uk-tooltip="This is where all the registration orders are tracked.">Registration Manager</a><br />
+            <a href="/admin/charity-manager">Charity Manager</a><br />
+            <a href="/admin/trophy-editor">Trophy & Awards Editor</a><br />
+          </div>
+          <div>
+            <h3>Memorial</h3>
+            <a href="/admin/memorial-editor2">Memorial Editor (FAST)</a><br />
+            <a href="/admin/memorial-editor" uk-tooltip="If you have to use this one, let me know why.">Old Memorial Editor (SLOW)</a><br />
+          </div>
+          <div>
+            <h3>Rider</h3>
+            <a href="/admin/flag-manager">Flag Manager</a><br />
+            <a href="/admin/rider-management">Rider Management</a><br />
+          </div>
+          <div>
+            <h3>Portal</h3>
+            <a href="/admin/group-management" uk-tooltip="This will be used for an upcoming group security feature.">Group Management</a><br />
+            <a href="/admin/site-config" uk-tooltip="Master settings for the site like rally year, etc.">Site Config</a><br />
+          </div>
+          <div>
+            <h3>Scoring</h3>
+            <a href="/scoring" uk-tooltip="Use this to score the current season">Scoring Dashboard</a><br />
+            <a href="/admin/alt-entry" uk-tooltip="Use this to grant credit for a memorial to a rider that didn't use the portal or mobile app.">Alternate Entries</a><br />
+            <a href="/scored" uk-tooltip="Scored submissions from the current season only.">Scored Submissions</a><br />
+            <a href="/scored-prior" uk-tooltip="Scored submissions from everything prior to the current season.">Prior Submissions</a><br />
+          </div>
+        </div>
       </div>
     </main>
     <footer>

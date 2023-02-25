@@ -58,6 +58,10 @@ module.exports = function (sequelize, DataTypes) {
     URL: {
       type: DataTypes.STRING,
     },
+    Sponsor: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   return Memorial;

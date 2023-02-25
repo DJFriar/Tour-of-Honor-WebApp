@@ -10,27 +10,12 @@
       <%- include('../partials/topnav'); %>
     <% } %>
     <main>
-      <h1>Scored Submissions v1</h1>
-      <p>This page shows all submissions that have been Approved or Rejected. To review submissions that have not been scored, go to the <a href="/scoring">Scoring Dashboard</a>.</p>
-      <div>
-        <div class="uk-align-center uk-text-center submissionFilterButtons">
-          <button class="uk-button uk-button-primary submissionFilterButton showAllSubmissions" uk-tooltip="All Memorials">All</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showTOHSubmissions" uk-tooltip="State Memorials">TOH</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton show911Submissions" uk-tooltip="9/11">911</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showDBSubmissions" uk-tooltip="Doughboys">DB</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showGSFSubmissions" uk-tooltip="Gold Star Family">GSF</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showHueySubmissions" uk-tooltip="Hueys">Huey</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showK9Submissions" uk-tooltip="WarDogs/K9">K9</button>
-          <button class="uk-button uk-button-secondary submissionFilterButton showMadonnaSubmissions" uk-tooltip="Madonna Trail">MTr</button>
-          <button class="uk-button uk-button-secondary memorialFilterButton showSOLMemorials" uk-tooltip="Statue of Liberty">SOL</button>
-          <button class="uk-button uk-button-secondary memorialFilterButton showCemeteryMemorials" uk-tooltip="Cemeteries">VC</button>
-        </div>
-      </div>
-      <table class="uk-table uk-table-striped uk-table-small toh-mb-24" id="ScoredTable">
+      <h1>Scored Submissions</h1>
+      This is an improved version of the page shows all submissions that have been Approved or Rejected. To review submissions that have not been scored, go to the <a href="/scoring">Scoring Dashboard</a>. You can also view the previous year's submissions on the <a href="/scored-prior">Prior Submissions</a> page.</p>
+      <div id="userTZ" data-usertz="<%= TimeZone.ZoneName %>"></div>
+      <table class="uk-table uk-table-striped uk-table-small toh-mt-24" id="scoredTable">
         <thead>
           <tr>
-            <th>HiddenID</th>
-            <th>Updated MS</th>
             <th>SubID</th>
             <th>Rider</th>
             <th>Memorial</th>
@@ -41,64 +26,6 @@
             <th>Date Updated</th>
           </tr>
         </thead>
-        <tbody>
-          <% Submissions.forEach(function(submission) { %>
-            <% if(submission.Status > 0 && submission.Status < 3) { %> 
-              <tr>
-                <td>
-                  <%= submission.id %>
-                </td>
-                <td>
-                  <%= dt.fromJSDate(submission.updatedAt).toMillis(); %>
-                </td>
-                <td>
-                  <a href="/submission/<%= submission.id %>"><%= submission.id %></a>
-                  <% if(submission.Source == 1) { %>
-                    <i class="fa-light fa-square-question"></i>
-                  <% } %>
-                  <% if(submission.Source == 2) { %>
-                    <i class="fa-brands fa-apple"></i>
-                  <% } %>
-                  <% if(submission.Source == 3) { %>
-                    <i class="fa-brands fa-android"></i>
-                  <% } %>
-                  <% if(submission.Source == 4) { %>
-                    <i class="fa-solid fa-browser"></i>
-                  <% } %>
-                  <% if(submission.Source == 5) { %>
-                    <i class="fa-light fa-envelope"></i>
-                  <% } %>
-                  <% if(submission.Source == 6) { %>
-                    <i class="fa-brands fa-usps "></i>
-                  <% } %>
-                </td>
-                <td>
-                  <%= submission.FlagNumber %> (<%= submission.FirstName %> <%= submission.LastName %>)&nbsp;<% if(submission.OtherRiders && submission.OtherRiders != 0) { %> <span><i class="fa-light fa-user-friends"></i></span> <% } %> 
-                </td>
-                <td>
-                  <%= submission.Code %>
-                </td>
-                <td>
-                  <%= submission.CatName %>
-                </td>
-                <td>
-                  <%= submission.City %>, <%= submission.State %>
-                </td>
-                <td>
-                  <%= dt.fromJSDate(submission.createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
-                </td>
-                <td>
-                  <% if(submission.Status == 1) { %> <span><i class="fa-solid fa-shield-check" color="green"></i></span> <% } %> 
-                  <% if(submission.Status == 2) { %> <span><i class="fa-solid fa-shield-exclamation" color="red"></i></span> <% } %> 
-                  &nbsp;<%= submission.StatusText %>
-                </td>
-                <td>
-                  <%= dt.fromJSDate(submission.updatedAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
-                </td>
-              </tr>
-            <% } %>
-          <% }) %>
-        </tbody>
       </table>
     </main>
     <footer>
