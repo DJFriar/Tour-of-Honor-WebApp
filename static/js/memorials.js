@@ -207,8 +207,6 @@ $(document).ready(() => {
     const now = new Date(new Date().toLocaleString('en-US', options)).getTime();
     const tzShort = new Date().toLocaleString('default', options).slice(-3);
     const t = deadline - now;
-    console.log('==== timer ====');
-    console.log(`t = ${t}`);
     const days = Math.floor(t / (1000 * 60 * 60 * 24));
     const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));

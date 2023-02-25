@@ -1,3 +1,10 @@
+/**
+ * routes/api/orders.js
+ *
+ * @description:: Handler file for API calls related to orders. All routes with "/api/v1/orders" come through here.
+ *
+ */
+
 const ApiOrderRouter = require('express').Router();
 const { QueryTypes } = require('sequelize');
 

@@ -1,3 +1,10 @@
+/**
+ * routes/api/flag.js
+ *
+ * @description:: Handler file for API calls related to flags. All routes with "/api/v1/flag" come through here.
+ *
+ */
+
 const { _, concat } = require('lodash');
 const ApiFlagRouter = require('express').Router();
 const { DateTime } = require('luxon');
@@ -10,14 +17,16 @@ const q = require('../../../private/queries');
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const rallyYearArray = [];
 
-logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, { calledFrom: 'flag.js' });
+logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, {
+  calledFrom: 'api/v1/flag.js',
+});
 
 // Set rally year array to honor prior year flag reservations
 if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
-  logger.info('==== Prior Year Flags are: Protected ====', { calledFrom: 'flag.js' });
+  logger.info('==== Prior Year Flags are: Protected ====', { calledFrom: 'api/v1/flag.js' });
   rallyYearArray.push(currentRallyYear - 1, currentRallyYear);
 } else {
-  logger.info('==== Prior Year Flags are: Unprotected ====', { calledFrom: 'flag.js' });
+  logger.info('==== Prior Year Flags are: Unprotected ====', { calledFrom: 'api/v1/flag.js' });
   rallyYearArray.push(currentRallyYear);
 }
 
@@ -31,12 +40,14 @@ ApiFlagRouter.route('/').post((req, res) => {
   })
     .then(() => {
       logger.info(`Flag number ${req.body.FlagNumber} assigned to UserID ${req.body.UserID}`, {
-        calledFrom: 'flag.js',
+        calledFrom: 'api/v1/flag.js',
       });
       res.status(202).send();
     })
     .catch((err) => {
-      logger.error(`Error when saving flag number assignments:${err}`, { calledFrom: 'flag.js' });
+      logger.error(`Error when saving flag number assignments:${err}`, {
+        calledFrom: 'api/v1/flag.js',
+      });
     });
 });
 
@@ -109,12 +120,14 @@ ApiFlagRouter.route('/change').put((req, res) => {
   )
     .then(() => {
       logger.info(`UserID ${req.body.RiderID} was assigned Flag Number ${req.body.FlagNumber}`, {
-        calledFrom: 'flag.js',
+        calledFrom: 'api/v1/flag.js',
       });
       res.status(202).send();
     })
     .catch((err) => {
-      logger.error(`Error when saving flag number updates:${err}`, { calledFrom: 'flag.js' });
+      logger.error(`Error when saving flag number updates:${err}`, {
+        calledFrom: 'api/v1/flag.js',
+      });
     });
 });
 

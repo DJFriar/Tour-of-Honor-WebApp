@@ -12,14 +12,13 @@
               <ul class="uk-nav uk-navbar-dropdown-nav">
                 <li><a href="/admin">Admin Tools</a></li>
                 <li><a href="/scoring">Scoring Dashboard</a></li>
-                <li><a href="/scored">Scored Submissions 1</a></li>
-                <li><a href="/scored2">Scored Submissions 2</a></li>
+                <li><a href="/scored">Scored Submissions</a></li>
+                <li><a href="/scored-prior">Prior Submissions</a></li>
               </ul>
             </div>
           </li>
         <% } %>
         <% if(User.FlagNumber) { %>
-          <!-- <li><a href="/memorials">Memorials</a></li> -->
           <li>
             <a href="#">Tour Data</a>
             <div class="uk-navbar-dropdown">
@@ -27,7 +26,6 @@
                 <li><a href="/memorials">Memorials</a></li>
                 <li><a href="/trophies">Trophy Statuses</a></li>
                 <!-- <li><a href="/livefeed">Live Feed</a></li>
-                <li><a href="/riders">Rider List</a></li>
                 <li><a href="/stats">Stats</a></li> -->
               </ul>
             </div>
@@ -40,7 +38,6 @@
               <ul class="uk-nav uk-navbar-dropdown-nav">
                 <li><a href="/memorials">Memorials</a></li>
                 <li><a href="/livefeed">Live Feed</a></li>
-                <li><a href="/riders">Rider List</a></li>
               </ul>
             </div>
           </li> -->
@@ -93,6 +90,8 @@
           <ul class="uk-nav-sub">
             <li><a href="/admin">Admin Tools</a></li>
             <li><a href="/scoring">Scoring Dashboard</a></li>
+            <li><a href="/scored">Scored Submissions</a></li>
+            <li><a href="/scored-prior">Prior Submissions</a></li>
           </ul>
         </li>
       <% } %>

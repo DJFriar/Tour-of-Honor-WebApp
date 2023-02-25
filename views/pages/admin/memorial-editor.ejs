@@ -120,45 +120,17 @@
       <table class="uk-table uk-table-striped uk-table-small" id="memorialTable">
         <thead>
           <tr>
-            <th>Memorial Code</th>
-            <th>Memorial Name</th>
+            <th>id</th>
+            <th>Code</th>
+            <th>Category</th>
+            <th>Name</th>
             <th>City</th>
             <th>State</th>
             <th>Access</th>
+            <th>Restrictions</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <% MemorialData.forEach(function(memorial) { %>
-            <tr>
-              <td>
-                <%= memorial.Code %>
-              </td>
-              <td>
-                <%= memorial.Name %>
-              </td>
-              <td>
-                <%= memorial.City %>
-              </td>
-              <td>
-                <%= memorial.State %>
-              </td>
-              <td>
-                <%= memorial.Access %>
-              </td>
-              <td>
-                <div class="uk-inline">
-                  <button class="uk-button uk-button-default" type="button">Actions</button>
-                  <div class="memorialActionDropdown" uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true; mode: click">
-                    <button class="uk-button uk-button-link toh-mb-8" type="button"><span class="editMemorialInfoBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Info</span></button>
-                    <a href="/admin/memorial-text/<%- memorial.Code %>"><span class="editMemorialTextLink toh-mb-8 uk-button uk-button-link" data-uid="<%- memorial.id %>"><i class="fa-light fa-pen-to-square"></i> Edit Memorial Text</span></a>
-                    <button class="uk-button uk-button-link" type="button"><span class="deleteMemorialBtn" data-uid="<%- memorial.id %>"><i class="fa-light fa-trash-can"></i> Delete Memorial</span></button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
       </table>
       <!-- #endregion -->
       <!-- This is the Memorial Info edit modal -->

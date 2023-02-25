@@ -95,15 +95,9 @@ module.exports = function (app) {
 
   app.get('/scoring/', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let PendingSubmissions;
     let TimeZone;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      PendingSubmissions = await q.queryPendingSubmissions();
-    } catch (err) {
-      logger.error(`Error encountered: queryPendingSubmissions:${err}`);
     }
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
@@ -115,50 +109,47 @@ module.exports = function (app) {
       activeUser,
       User: req.user,
       NotificationText: '',
-      PendingSubmissions,
       TimeZone,
-      dt: DateTime,
     });
   });
 
   app.get('/scored/', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let Submissions;
     let TimeZone;
     if (req.user) {
       activeUser = true;
-    }
-    try {
-      Submissions = await q.queryScoredSubmissions();
-    } catch (err) {
-      logger.error(`Error encountered: queryScoredSubmissions:${err}`);
     }
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
       logger.error('Error encountered: queryTimeZoneData');
     }
-    res.locals.title = 'TOH Scored v1';
+    res.locals.title = 'TOH Scored 2023';
     res.render('pages/scored', {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Submissions,
       TimeZone,
-      dt: DateTime,
     });
   });
 
-  app.get('/scored2/', isAuthenticated, async (req, res) => {
+  app.get('/scored-prior/', isAuthenticated, async (req, res) => {
     let activeUser = false;
+    let TimeZone;
     if (req.user) {
       activeUser = true;
     }
-    res.locals.title = 'TOH Scored v2';
-    res.render('pages/scored2', {
+    try {
+      TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
+    } catch (err) {
+      logger.error('Error encountered: queryTimeZoneData');
+    }
+    res.locals.title = 'TOH Scored 2022';
+    res.render('pages/scored-prior', {
       activeUser,
       User: req.user,
       NotificationText: '',
+      TimeZone,
     });
   });
 
@@ -740,22 +731,28 @@ module.exports = function (app) {
 
   app.get('/user-profile', isAuthenticated, async (req, res) => {
     let activeUser = false;
-    let RiderSubmissionHistory;
+    let PassengerInfo;
     let RiderBikeInfo;
+    let RiderSubmissionHistory;
     let TimeZoneOptions;
     let UserTimeZone;
     if (req.user) {
       activeUser = true;
     }
     try {
-      RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
+      PassengerInfo = await q.queryPassengerInfoByRider(req.user.FlagNumber);
     } catch (err) {
-      logger.error('Error encountered: querySubmissionsByRider');
+      logger.error('Error encountered: queryPassengerInfoByRider');
     }
     try {
       RiderBikeInfo = await q.queryAllBikes(req.user.id);
     } catch (err) {
       logger.error('Error encountered: queryAllBikes');
+    }
+    try {
+      RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
+    } catch (err) {
+      logger.error('Error encountered: querySubmissionsByRider');
     }
     try {
       TimeZoneOptions = await q.queryTimeZoneData();
@@ -773,6 +770,7 @@ module.exports = function (app) {
       activeUser,
       User: req.user,
       NotificationText: '',
+      PassengerInfo,
       RiderSubmissionHistory,
       RiderBikeInfo,
       TimeZoneOptions,
