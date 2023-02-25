@@ -116,6 +116,41 @@ ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
   }
 });
 
+// Fetch submissions for given user ID
+ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
+  const userId = req.params.id;
+  const sqlQuery = `
+  SELECT 
+    s.id, s.UserId, s.MemorialID, s.Status AS 'StatusID', 
+    CASE s.Status 
+      WHEN 1 THEN 'Approved' 
+      WHEN 2 THEN 'Rejected' 
+      WHEN 3 THEN 'In Review' 
+      ELSE 'Pending' 
+    END Status, 
+    s.ScorerNotes, s.RiderNotes, s.createdAt, 
+    m.Code, m.Name, 
+    c.Name AS Category 
+  FROM Submissions s 
+    LEFT JOIN Memorials m ON m.id = s.MemorialID 
+    LEFT JOIN Categories c ON c.id = m.Category 
+  WHERE s.UserID = ? 
+  ORDER BY s.createdAt DESC
+  `;
+  try {
+    const pendingSubmissionsForUser = await sequelize.query(sqlQuery, {
+      replacements: [userId],
+      type: QueryTypes.SELECT,
+    });
+    res.json(pendingSubmissionsForUser);
+  } catch (err) {
+    logger.error(`An error was encountered in pendingSubmissionsForUser: ${err}`, {
+      calledBy: 'api/v1/submission.js',
+    });
+    throw err;
+  }
+});
+
 // Get All Pending Submissions
 ApiSubmissionRouter.route('/pending').get(async (req, res) => {
   const sqlQuery = `
