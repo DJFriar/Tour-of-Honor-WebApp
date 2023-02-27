@@ -135,6 +135,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
     LEFT JOIN Memorials m ON m.id = s.MemorialID 
     LEFT JOIN Categories c ON c.id = m.Category 
   WHERE s.UserID = ? 
+    AND s.createdAt > '2023-01-01' 
   ORDER BY s.createdAt DESC
   `;
   try {
