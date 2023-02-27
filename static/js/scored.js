@@ -28,22 +28,25 @@ $(document).ready(() => {
     columnDefs: [
       {
         render(data, type, row) {
-          switch (row.Source) {
-            case 1:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-square-question"></i></a>`;
-            case 2:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-apple"></i></a>`;
-            case 3:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-android"></i></a>`;
-            case 4:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-solid fa-browser"></i></a>`;
-            case 5:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-envelope"></i></a>`;
-            case 6:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-usps"></i></a>`;
-            default:
-              return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-square-question"></i></a>`;
+          if (type === 'display') {
+            switch (row.Source) {
+              case 1:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-square-question"></i></a>`;
+              case 2:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-apple"></i></a>`;
+              case 3:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-android"></i></a>`;
+              case 4:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-solid fa-browser"></i></a>`;
+              case 5:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-envelope"></i></a>`;
+              case 6:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-brands fa-usps"></i></a>`;
+              default:
+                return `<a href="/submission/${data}" target="_blank">${data}&nbsp;<i class="fa-light fa-square-question"></i></a>`;
+            }
           }
+          return data;
         },
         targets: [0],
       },
