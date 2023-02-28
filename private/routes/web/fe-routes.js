@@ -1051,6 +1051,7 @@ module.exports = function (app) {
       OrderInfo.push({ id: 0 });
       OrderInfo.push({ OrderNumber: 0 });
     } else {
+      // eslint-disable-next-line prefer-destructuring
       OrderInfo = OrderInfoRaw[0];
     }
 
