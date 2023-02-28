@@ -2,6 +2,7 @@ $(document).ready(() => {
   // Handle Edit Memorial Info Button
   $('#submitMemorialCodeLookup').on('click', (e) => {
     e.preventDefault();
+    const tohApiKey = localStorage.getItem('tohApiKey');
     console.log('submitMemorialCodeLookup clicked');
     let Code = $('#MemorialCodeLookup').val().trim();
     Code = Code.toUpperCase();
@@ -9,6 +10,9 @@ $(document).ready(() => {
     updatedSampleImage = false;
 
     $.ajax(`/api/v1/memorial/c/${Code}`, {
+      headers: {
+        Authorization: tohApiKey,
+      },
       type: 'GET',
     }).then((res) => {
       console.log(res);
