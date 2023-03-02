@@ -23,7 +23,7 @@ const twilio = require('../../../controllers/twilio');
 const { addSubscriber } = require('../../../controllers/mailchimp');
 
 const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
-// const OrderingRallyYear = process.env.ORDERING_RALLY_YEAR;
+const serverApiKey = process.env.TOH_API_KEY;
 
 // eslint-disable-next-line func-names
 module.exports = function (app) {
@@ -391,6 +391,7 @@ module.exports = function (app) {
       id: req.user.id,
       isAdmin: req.user.isAdmin,
       isActive: req.user.isActive,
+      apiKey: serverApiKey,
     });
   });
 
