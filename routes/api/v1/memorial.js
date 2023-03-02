@@ -16,10 +16,38 @@ const { sequelize } = db;
 
 ApiMemorialRouter.use(hasValidApiKey);
 
-// Fetch combined data for a specific Memorial
+// Fetch combined data for a specific Memorial by Code
+ApiMemorialRouter.route('/data/c/:code').get(async (req, res) => {
+  const { code } = req.params;
+  let MemorialDataByCode;
+  const sqlQuery = `
+    SELECT 
+      c.Name AS CategoryName, 
+      r.Name AS RestrictionName, 
+      m.* 
+    FROM Memorials m 
+      INNER JOIN Categories c ON m.Category = c.id 
+      INNER JOIN Restrictions r ON m.Restrictions = r.id 
+    WHERE m.Code = ? 
+    LIMIT 1
+  `;
+  try {
+    MemorialDataByCode = await sequelize.query(sqlQuery, {
+      replacements: [code],
+      type: QueryTypes.SELECT,
+    });
+  } catch (err) {
+    logger.error(`Error encountered getting MemorialDataByCode: ${err}`, {
+      calledFrom: 'api/v1/memorial.js',
+    });
+  }
+  res.json(MemorialDataByCode);
+});
+
+// Fetch combined data for a specific Memorial by ID
 ApiMemorialRouter.route('/data/:id').get(async (req, res) => {
   const { id } = req.params;
-  let MemorialData;
+  let MemorialDataByID;
   const sqlQuery = `
     SELECT 
       c.Name AS CategoryName, 
@@ -32,16 +60,16 @@ ApiMemorialRouter.route('/data/:id').get(async (req, res) => {
     LIMIT 1
   `;
   try {
-    MemorialData = await sequelize.query(sqlQuery, {
+    MemorialDataByID = await sequelize.query(sqlQuery, {
       replacements: [id],
       type: QueryTypes.SELECT,
     });
   } catch (err) {
-    logger.error(`Error encountered getting MemorialData: ${err}`, {
+    logger.error(`Error encountered getting MemorialDataByID: ${err}`, {
       calledFrom: 'api/v1/memorial.js',
     });
   }
-  res.json(MemorialData);
+  res.json(MemorialDataByID);
 });
 
 // Fetch a Memorial Text Entry

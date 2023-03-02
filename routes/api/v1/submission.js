@@ -135,6 +135,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
     LEFT JOIN Memorials m ON m.id = s.MemorialID 
     LEFT JOIN Categories c ON c.id = m.Category 
   WHERE s.UserID = ? 
+    AND s.createdAt > '2023-01-01' 
   ORDER BY s.createdAt DESC
   `;
   try {
@@ -171,7 +172,7 @@ ApiSubmissionRouter.route('/pending').get(async (req, res) => {
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
     INNER JOIN Flags f ON f.UserID = u.id 
-  WHERE s.Status IN (0,3)
+  WHERE s.Status = 0
   `;
   try {
     const allPendingSubmissions = await sequelize.query(sqlQuery, {

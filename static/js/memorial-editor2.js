@@ -2,19 +2,21 @@ $(document).ready(() => {
   // Handle Edit Memorial Info Button
   $('#submitMemorialCodeLookup').on('click', (e) => {
     e.preventDefault();
-    console.log('submitMemorialCodeLookup clicked');
+    const tohApiKey = localStorage.getItem('tohApiKey');
     let Code = $('#MemorialCodeLookup').val().trim();
     Code = Code.toUpperCase();
     SampleImage = '';
     updatedSampleImage = false;
 
     $.ajax(`/api/v1/memorial/c/${Code}`, {
+      headers: {
+        Authorization: tohApiKey,
+      },
       type: 'GET',
     }).then((res) => {
-      console.log(res);
-      if (res == undefined || res == null) {
+      if (res === undefined || res == null) {
         $('#memorialNotFoundErrorText').toggleClass('hide-me');
-      } else if (res.Code == Code) {
+      } else if (res.Code === Code) {
         $('#memorialInfoEditModal').css('display', 'block');
         $('.uk-dropdown').removeClass('uk-open');
 
