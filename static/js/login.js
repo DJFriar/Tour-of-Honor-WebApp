@@ -36,7 +36,7 @@ $(document).ready(() => {
       Password: password,
     })
       .then((res) => {
-        localStorage.setItem('tohApiKey', res.serverApiKey);
+        localStorage.setItem('tohApiKey', res.apiKey);
         if (res.isAdmin) {
           window.location.replace('/admin');
         } else if (!res.isActive) {
