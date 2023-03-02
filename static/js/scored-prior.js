@@ -6,6 +6,7 @@ $(document).ready(() => {
       url: '/api/v1/submission/scored/2022',
       dataSrc: '',
     },
+    deferRender: true,
     columns: [
       { data: 'id' },
       { data: null, name: 'Rider' },
