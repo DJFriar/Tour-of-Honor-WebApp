@@ -3,7 +3,6 @@ $(document).ready(() => {
   $('#submitMemorialCodeLookup').on('click', (e) => {
     e.preventDefault();
     const tohApiKey = localStorage.getItem('tohApiKey');
-    console.log('submitMemorialCodeLookup clicked');
     let Code = $('#MemorialCodeLookup').val().trim();
     Code = Code.toUpperCase();
     SampleImage = '';
@@ -15,10 +14,9 @@ $(document).ready(() => {
       },
       type: 'GET',
     }).then((res) => {
-      console.log(res);
-      if (res == undefined || res == null) {
+      if (res === undefined || res == null) {
         $('#memorialNotFoundErrorText').toggleClass('hide-me');
-      } else if (res.Code == Code) {
+      } else if (res.Code === Code) {
         $('#memorialInfoEditModal').css('display', 'block');
         $('.uk-dropdown').removeClass('uk-open');
 
