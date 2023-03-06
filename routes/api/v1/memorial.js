@@ -91,9 +91,11 @@ ApiMemorialRouter.route('/status/:memid/:userid').get(async (req, res) => {
   const userId = req.params.userid;
   let MemorialStatus;
   const sqlQuery = `
-    SELECT Status 
+    SELECT Status, ScorerNotes 
     FROM Submissions 
-    WHERE MemorialID = ? AND UserID = ? 
+    WHERE MemorialID = ? 
+      AND UserID = ? 
+      AND createdAt > '2023-01-01'
     ORDER BY updatedAt DESC 
     LIMIT 1
   `;
@@ -111,6 +113,7 @@ ApiMemorialRouter.route('/status/:memid/:userid').get(async (req, res) => {
     MemorialStatus = [
       {
         Status: 9,
+        ScorerNotes: '',
       },
     ];
   }
