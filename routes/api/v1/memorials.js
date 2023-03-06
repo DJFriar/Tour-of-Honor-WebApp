@@ -55,7 +55,7 @@ ApiMemorialsRouter.route('/status/:id').get(async (req, res) => {
     FROM Memorials m 
       INNER JOIN Categories c ON m.Category = c.id 
       LEFT JOIN Restrictions r ON m.Restrictions = r.id 
-      LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? 
+      LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? AND s.createdAt > '2023-01-01'
     WHERE c.Active = 1 
       AND m.Restrictions != 12 
     ORDER BY m.State, m.City, m.Category
