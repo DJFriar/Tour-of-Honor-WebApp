@@ -36,7 +36,7 @@ ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
   }
 
   if (!req.files) {
-    logger.info('No files were uploaded', { calledFrom: 'api/v1/submission.js' });
+    logger.error('No files were uploaded', { calledFrom: 'api/v1/submission.js' });
     return res.status(400).send('No files were uploaded.');
   }
 
@@ -72,16 +72,23 @@ ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
   }
 
   // Save entry to the DB
-  db.Submission.create({
-    UserID: req.body.UserID,
-    MemorialID: req.body.MemorialID,
-    PrimaryImage: primaryFilename,
-    OptionalImage: optionalFilename,
-    RiderNotes: req.body.RiderNotes,
-    OtherRiders: RiderArray.toString(),
-    Source: req.body.Source,
-    Status: 0, // 0 = Pending Approval
-  });
+  try {
+    db.Submission.create({
+      UserID: req.body.UserID,
+      MemorialID: req.body.MemorialID,
+      PrimaryImage: primaryFilename,
+      OptionalImage: optionalFilename,
+      RiderNotes: req.body.RiderNotes,
+      OtherRiders: RiderArray.toString(),
+      Source: req.body.Source,
+      Status: 0, // 0 = Pending Approval
+    });
+  } catch (err) {
+    logger.error(`Error creating Submission in database: ${err}`, {
+      calledFrom: 'api/v1/submission.js',
+    });
+    return res.status(500).send(err);
+  }
 
   // Respond back to device that all is well
   return res.send({ result: 'success' });
