@@ -20,8 +20,6 @@
   },
   "homepage": "https://github.com/DJFriar/Tour-of-Honor-WebApp#readme",
   "dependencies": {
-    "@logtail/node": "^0.1.12",
-    "@logtail/winston": "^0.1.13",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@shopify/buy-button-js": "^2.2.1",
     "aws-sdk": "^2.1166.0",
