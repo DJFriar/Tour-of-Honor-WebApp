@@ -1,8 +1,26 @@
 const { createLogger, format, transports } = require('winston');
+require('winston-daily-rotate-file');
 
-const errorFilter = format((info, opts) => (info.level === 'error' ? info : false));
+const appLogRotateTransport = new transports.DailyRotateFile({
+  filename: `logs/app-%DATE%.log`,
+  datePattern: 'YYYY-MM-DD',
+  maxFiles: '14d',
+  maxSize: '45k',
+});
 
-const infoFilter = format((info, opts) => (info.level === 'info' ? info : false));
+const dbLogRotateTransport = new transports.DailyRotateFile({
+  filename: `logs/db-%DATE%.log`,
+  datePattern: 'YYYY-MM-DD',
+  maxFiles: '14d',
+  maxSize: '45k',
+});
+
+const exceptionLogRotateTransport = new transports.DailyRotateFile({
+  filename: `logs/exceptions-%DATE%.log`,
+  datePattern: 'YYYY-MM-DD',
+  maxFiles: '14d',
+  maxSize: '45k',
+});
 
 const logger = createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -15,31 +33,9 @@ const logger = createLogger({
     format.json(),
   ),
   defaultMeta: { service: 'TourOfHonor-Web' },
-  transports: [
-    new transports.File({
-      filename: 'logs/error.log',
-      level: 'error',
-      format: format.combine(
-        errorFilter(),
-        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        format.errors({ stack: true }),
-        format.splat(),
-        format.json(),
-      ),
-    }),
-    new transports.File({
-      filename: 'logs/info.log',
-      level: 'info',
-      format: format.combine(
-        infoFilter(),
-        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        format.splat(),
-        format.json(),
-      ),
-    }),
-  ],
-  exceptionHandlers: [new transports.File({ filename: 'logs/UncaughtExceptions.log' })],
-  rejectionHandlers: [new transports.File({ filename: 'logs/PromiseRejections.log' })],
+  transports: [appLogRotateTransport],
+  exceptionHandlers: [exceptionLogRotateTransport],
+  rejectionHandlers: [exceptionLogRotateTransport],
 });
 
 // If we're not in Production then **ALSO** log to the `console`
@@ -71,10 +67,7 @@ const dblogger = createLogger({
     format.json(),
   ),
   defaultMeta: { service: 'TourOfHonor-DB' },
-  transports: [
-    new transports.File({ filename: 'logs/db-error.log', level: 'error' }),
-    new transports.File({ filename: 'logs/db-info.log' }),
-  ],
+  transports: [dbLogRotateTransport],
 });
 
 // If we're not in Production then **ALSO** log to the `console`
