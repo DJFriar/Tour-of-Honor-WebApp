@@ -17,6 +17,7 @@ const { uploadRiderSubmittedImage } = require('../../../controllers/s3');
 const { logger } = require('../../../controllers/logger');
 
 const { sequelize } = db;
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
 // Submit from Mobile App
 ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
@@ -178,7 +179,7 @@ ApiSubmissionRouter.route('/pending').get(async (req, res) => {
     INNER JOIN Users u ON s.UserID = u.id 
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
-    INNER JOIN Flags f ON f.UserID = u.id 
+    INNER JOIN Flags f ON f.UserID = u.id AND f.RallyYear = ${currentRallyYear}
   WHERE s.Status = 0
   `;
   try {
@@ -213,7 +214,7 @@ ApiSubmissionRouter.route('/held').get(async (req, res) => {
     INNER JOIN Users u ON s.UserID = u.id 
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
-    INNER JOIN Flags f ON f.UserID = u.id 
+    INNER JOIN Flags f ON f.UserID = u.id AND f.RallyYear = ${currentRallyYear}
   WHERE s.Status = 3
   `;
   try {
