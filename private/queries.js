@@ -682,8 +682,9 @@ module.exports.queryRegionList = async function queryRegionList() {
 module.exports.queryTrophiesList = async function queryTrophiesList() {
   try {
     const result = await sequelize.query(
-      'SELECT r.Region, t.PlaceNum, t.FlagNumbers FROM Trophies t LEFT JOIN Regions r ON t.RegionID = r.id',
+      'SELECT r.Region, t.PlaceNum, t.FlagNumbers FROM Trophies t LEFT JOIN Regions r ON t.RegionID = r.id WHERE t.RallyYear = ?',
       {
+        replacements: [currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
