@@ -697,8 +697,9 @@ module.exports.queryTrophiesList = async function queryTrophiesList() {
 module.exports.queryAwardList = async function queryAwardList() {
   try {
     const result = await sequelize.query(
-      'SELECT a.id, a.Name, a.RideDate, a.FlagNumber, u.FirstName, u.LastName FROM Awards a LEFT JOIN Users u ON a.FlagNumber = u.FlagNumber',
+      'SELECT DISTINCT	a.id, a.Name, a.RideDate, a.FlagNumber, f.UserID, u.FirstName, u.LastName FROM Awards a INNER JOIN Flags f ON a.FlagNumber = f.FlagNumber AND f.RallyYear = ?	INNER JOIN Users u ON f.UserID = u.id WHERE a.RallyYear = ? ORDER BY a.id',
       {
+        replacements: [currentRallyYear, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
