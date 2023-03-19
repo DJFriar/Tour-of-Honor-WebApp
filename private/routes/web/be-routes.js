@@ -681,6 +681,7 @@ module.exports = function (app) {
         where: {
           RegionID: req.body.RegionID,
           PlaceNum: req.body.TrophyPlace,
+          RallyYear: CurrentRallyYear,
         },
       },
     );
