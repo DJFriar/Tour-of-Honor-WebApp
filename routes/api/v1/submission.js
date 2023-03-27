@@ -240,7 +240,7 @@ ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
     m.Code, m.Region, m.Latitude, m.Longitude, m.City, m.State, 
     c.Name AS CatName
   FROM Submissions s 
-    INNER JOIN Flags f ON f.UserID = s.UserID
+    INNER JOIN Flags f ON f.UserID = s.UserID AND f.RallyYear = ${currentRallyYear}
     INNER JOIN Users u ON s.UserID = u.id
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
