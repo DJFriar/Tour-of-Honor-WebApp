@@ -274,10 +274,10 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
   }
 };
 
-module.exports.queryMemorial = async function queryMemorial(memCode) {
+module.exports.queryMemorial = async function queryMemorial(memId) {
   try {
-    const result = await sequelize.query('SELECT * FROM Memorials WHERE Code = ?', {
-      replacements: [memCode],
+    const result = await sequelize.query('SELECT * FROM Memorials WHERE id = ?', {
+      replacements: [memId],
       type: QueryTypes.SELECT,
     });
     return result;
@@ -289,12 +289,12 @@ module.exports.queryMemorial = async function queryMemorial(memCode) {
   }
 };
 
-module.exports.queryMemorialText = async function queryMemorialText(memCode) {
+module.exports.queryMemorialText = async function queryMemorialText(memId) {
   try {
     const result = await sequelize.query(
-      'SELECT m.Code, mt.* FROM Memorials m INNER JOIN MemorialMeta mt ON m.id = mt.MemorialID WHERE m.Code = ? ORDER BY Heading',
+      'SELECT * FROM MemorialMeta WHERE MemorialID = ? ORDER BY Heading',
       {
-        replacements: [memCode],
+        replacements: [memId],
         type: QueryTypes.SELECT,
       },
     );
@@ -576,8 +576,8 @@ module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemor
 
 module.exports.queryMemorialIDbyMemCode = async function queryMemorialIDbyMemCode(memCode) {
   try {
-    const result = await sequelize.query('SELECT id from Memorials WHERE Code = ? LIMIT 1', {
-      replacements: [memCode],
+    const result = await sequelize.query('SELECT id from Memorials WHERE Code = ? AND RallyYear = ? LIMIT 1', {
+      replacements: [memCode, currentRallyYear],
       type: QueryTypes.SELECT,
     });
     return result;

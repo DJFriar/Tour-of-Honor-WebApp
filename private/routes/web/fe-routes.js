@@ -534,12 +534,12 @@ module.exports = function (app) {
       logger.error('Error encountered when getting memorial ID.', { calledFrom: 'fe-routes.js' });
     }
     try {
-      MemorialData = await q.queryMemorial(memCode);
+      MemorialData = await q.queryMemorial(memID);
     } catch (err) {
       logger.error('Error encountered: queryMemorial', { calledFrom: 'fe-routes.js' });
     }
     try {
-      MemorialText = await q.queryMemorialText(memCode);
+      MemorialText = await q.queryMemorialText(memID);
     } catch (err) {
       logger.error('Error encountered: queryMemorialText', { calledFrom: 'fe-routes.js' });
     }
