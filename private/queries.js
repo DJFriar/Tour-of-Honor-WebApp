@@ -276,7 +276,7 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
 
 module.exports.queryMemorial = async function queryMemorial(memId) {
   try {
-    const result = await sequelize.query('SELECT * FROM Memorials WHERE id = ?', {
+    const result = await sequelize.query('SELECT m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.id = ?', {
       replacements: [memId],
       type: QueryTypes.SELECT,
     });
