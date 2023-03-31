@@ -178,7 +178,7 @@ module.exports.queryAllSubmissions = async function queryAllSubmissions(id = fal
   try {
     if (id) {
       result = await sequelize.query(
-        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, u.City AS HomeCity, u.State AS HomeState, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID AND f.RallyYear = ? INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, u.City AS HomeCity, u.State AS HomeState, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.Sponsor, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID AND f.RallyYear = ? INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
         {
           replacements: [currentRallyYear, id],
           type: QueryTypes.SELECT,
@@ -186,7 +186,7 @@ module.exports.queryAllSubmissions = async function queryAllSubmissions(id = fal
       );
     } else {
       result = await sequelize.query(
-        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id",
+        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.Sponsor, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Flags f ON f.UserID = s.UserID INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id",
         {
           type: QueryTypes.SELECT,
         },
@@ -232,7 +232,7 @@ module.exports.queryPendingSubmissionsWithDetails =
     let result;
     try {
       result = await sequelize.query(
-        "SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
+        "SELECT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.Sponsor, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (0,3)",
         {
           type: QueryTypes.SELECT,
         },
@@ -251,7 +251,7 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
   try {
     if (id) {
       result = await sequelize.query(
-        "SELECT DISTINCT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
+        "SELECT DISTINCT s.*, u.FirstName, u.LastName, u.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.Sponsor, m.SampleImage, m.Access, CASE m.Restrictions WHEN 1 THEN 'None' WHEN 2 THEN 'Military Base' WHEN 3 THEN 'Museum' WHEN 4 THEN 'Cemetery' WHEN 5 THEN 'Park' WHEN 6 THEN 'Airport' WHEN 7 THEN 'School' WHEN 8 THEN 'Office' WHEN 9 THEN 'Private Property' WHEN 10 THEN 'Fairgrounds' WHEN 11 THEN 'Construction'	WHEN 12 THEN 'Unavailable' WHEN 13 THEN 'Other' WHEN 14 THEN 'See Related Link' END AS 'Restrictions', CASE m.MultiImage WHEN 0 THEN 'No' WHEN 1 THEN 'Yes' END AS MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE s.id = ?",
         {
           replacements: [id],
           type: QueryTypes.SELECT,
@@ -259,7 +259,7 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
       );
     } else {
       result = await sequelize.query(
-        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id LEFT JOIN Flags f ON f.UserID = s.UserID INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (1,2)",
+        "SELECT DISTINCT s.*, u.FirstName, u.LastName, f.FlagNumber, u.Email, m.Name, m.Code, m.Category, c.Name AS CatName, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.Sponsor, m.MultiImage, CASE WHEN s.Status = 0 THEN 'Pending' WHEN s.Status = 1 THEN 'Approved' WHEN s.Status = 2 THEN 'Rejected' WHEN s.Status = 3 THEN 'Held' END AS StatusText FROM Submissions s INNER JOIN Users u ON s.UserID = u.id LEFT JOIN Flags f ON f.UserID = s.UserID INNER JOIN Memorials m ON s.MemorialID = m.id	INNER JOIN Categories c ON m.Category = c.id WHERE s.Status IN (1,2)",
         {
           type: QueryTypes.SELECT,
         },
@@ -276,13 +276,16 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
 
 module.exports.queryMemorial = async function queryMemorial(memId) {
   try {
-    const result = await sequelize.query('SELECT m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.id = ?', {
-      replacements: [memId],
-      type: QueryTypes.SELECT,
-    });
+    const result = await sequelize.query(
+      'SELECT m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE c.Active = 1 AND m.id = ?',
+      {
+        replacements: [memId],
+        type: QueryTypes.SELECT,
+      },
+    );
     return result;
   } catch (err) {
-    logger.error(`An error was encountered in queryMemorial(${memCode})`, {
+    logger.error(`An error was encountered in queryMemorial(${memId})`, {
       calledBy: 'queries.js',
     });
     throw err;
@@ -300,7 +303,7 @@ module.exports.queryMemorialText = async function queryMemorialText(memId) {
     );
     return result;
   } catch (err) {
-    logger.error(`An error was encountered in queryMemorialText(${memCode})`, {
+    logger.error(`An error was encountered in queryMemorialText(${memId})`, {
       calledBy: 'queries.js',
     });
     throw err;
@@ -576,10 +579,13 @@ module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemor
 
 module.exports.queryMemorialIDbyMemCode = async function queryMemorialIDbyMemCode(memCode) {
   try {
-    const result = await sequelize.query('SELECT id from Memorials WHERE Code = ? AND RallyYear = ? LIMIT 1', {
-      replacements: [memCode, currentRallyYear],
-      type: QueryTypes.SELECT,
-    });
+    const result = await sequelize.query(
+      'SELECT id from Memorials WHERE Code = ? AND RallyYear = ? LIMIT 1',
+      {
+        replacements: [memCode, currentRallyYear],
+        type: QueryTypes.SELECT,
+      },
+    );
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorialIDbyMemCode(${memCode})`, {
