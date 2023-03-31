@@ -110,6 +110,10 @@
               <p class="toh-miniHeader">Related Link</p>
               <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a>
             <% } %>
+            <% if(MemorialData[0].Sponsor) { %>
+              <p class="toh-miniHeader">Sponsored By</p>
+              <%= MemorialData[0].Sponsor %>
+            <% } %>
           </div>
           <hr>
           <div id="memorialMetadata">
