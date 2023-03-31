@@ -293,18 +293,25 @@ module.exports = function (app) {
   app.get('/admin/memorial-text/:memCode', isAuthenticated, async (req, res) => {
     const { memCode } = req.params;
     let activeUser = false;
+    let MemID;
     let MemorialData;
     let MemorialText;
     if (req.user) {
       activeUser = true;
     }
     try {
-      MemorialData = await q.queryMemorial(memCode);
+      const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
+      MemID = memIDResponse[0].id;
+    } catch (err) {
+      logger.error('Error encountered: queryMemorialIDbyMemCode');
+    }
+    try {
+      MemorialData = await q.queryMemorial(MemID);
     } catch (err) {
       logger.error('Error encountered: queryMemorial');
     }
     try {
-      MemorialText = await q.queryMemorialText(memCode);
+      MemorialText = await q.queryMemorialText(MemID);
     } catch (err) {
       logger.error('Error encountered: queryMemorialText');
     }

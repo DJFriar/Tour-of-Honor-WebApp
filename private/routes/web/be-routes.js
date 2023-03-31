@@ -168,6 +168,7 @@ module.exports = function (app) {
     db.Memorial.findOne({
       where: {
         Code: code,
+        RallyYear: CurrentRallyYear,
       },
     }).then((dbPost) => {
       res.json(dbPost);
