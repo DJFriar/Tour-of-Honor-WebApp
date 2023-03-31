@@ -48,17 +48,18 @@ ApiMemorialsRouter.route('/status/:id').get(async (req, res) => {
   const { id } = req.params;
   let MemorialList;
   const sqlQuery = `
-    SELECT 
-      s.Status AS 'RiderStatus', 
-      m.*, 
-      c.Name AS CategoryName, 
-      r.Name AS RestrictionName 
-    FROM Memorials m 
-      INNER JOIN Categories c ON m.Category = c.id 
-      LEFT JOIN Restrictions r ON m.Restrictions = r.id 
-      LEFT JOIN Submissions s ON m.id = s.MemorialID AND s.UserID = ? AND s.createdAt > '2023-01-01'
-    WHERE c.Active = 1 
-      AND m.Restrictions != 12 
+    SELECT
+      s.Status AS 'RiderStatus',
+      m.*,
+      c.Name AS CategoryName,
+      r.Name AS RestrictionName
+    FROM Memorials m
+      INNER JOIN Categories c ON m.Category = c.id
+      LEFT JOIN Restrictions r ON m.Restrictions = r.id
+      LEFT JOIN (SELECT s.* FROM Submissions s INNER JOIN (SELECT Id, row_number() OVER(PARTITION BY MemorialId, UserId ORDER BY createdAt DESC) iRow FROM Submissions WHERE UserID = ? AND createdAt > '2023-01-01') s2 ON s2.Id = s.Id AND iRow = 1 WHERE s.createdAt > '2023-01-01') s ON m.id = s.MemorialID
+    WHERE c.Active = 1
+      AND m.RallyYear = 2023
+      AND m.Restrictions != 12
     ORDER BY m.State, m.City, m.Category
   `;
   try {
