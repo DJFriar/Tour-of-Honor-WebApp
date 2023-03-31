@@ -94,36 +94,39 @@
               </dt>
               <dd>
                 <div style="margin-bottom: 8">
-                  <%= Submissions[0].Name %> <br />
-                  <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
-                  <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
+                  <span class="toh-miniHeader">Name</span>: <%= Submissions[0].Name %> <br />
+                  <span class="toh-miniHeader">Location</span>: <%= Submissions[0].City %>, <%= Submissions[0].State %> <br />
+                  <% if (Submissions[0].Sponsor) { %> 
+                    <span class="toh-miniHeader">Sponsor</span>: <%= Submissions[0].Sponsor %> <br /> 
+                  <% } %>
+                  <span class="toh-miniHeader">Coordinates</span>: <a href="https://www.google.com/maps/@<%= Submissions[0].Latitude %>,<%= Submissions[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= Submissions[0].Latitude %>, <%= Submissions[0].Longitude %></a>
                 </div>
-                Access: <%= Submissions[0].Access %> <br />
-                MultiImage: <%= Submissions[0].MultiImage %> <br />
-                Restrictions: <%= Submissions[0].Restrictions %>
+                <span class="toh-miniHeader">Access</span>: <%= Submissions[0].Access %> <br />
+                <span class="toh-miniHeader">MultiImage</span>: <%= Submissions[0].MultiImage %> <br />
+                <span class="toh-miniHeader">Restrictions</span>: <%= Submissions[0].Restrictions %>
               </dd>
               <dt>
                 Submission Info<br/>
               </dt>
               <dd>
-                Date: <%= dt.fromJSDate(Submissions[0].createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %> <br />
+                <span class="toh-miniHeader">Date</span>: <%= dt.fromJSDate(Submissions[0].createdAt).setZone(TimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %> <br />
                 <% if(Submissions[0].Source == 1) { %>
-                  Source: <i class="fa-light fa-square-question"></i> Unknown
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-light fa-square-question"></i> Unknown
                 <% } %>
                 <% if(Submissions[0].Source == 2) { %>
-                  Source: <i class="fa-brands fa-apple"></i> iPhone App
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-brands fa-apple"></i> iPhone App
                 <% } %>
                 <% if(Submissions[0].Source == 3) { %>
-                  Source: <i class="fa-brands fa-android"></i> Android App
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-brands fa-android"></i> Android App
                 <% } %>
                 <% if(Submissions[0].Source == 4) { %>
-                  Source: <i class="fa-solid fa-browser"></i> Web Portal
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-solid fa-browser"></i> Web Portal
                 <% } %>
                 <% if(Submissions[0].Source == 5) { %>
-                  Source: <i class="fa-light fa-envelope"></i> Email
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-light fa-envelope"></i> Email
                 <% } %>
                 <% if(Submissions[0].Source == 6) { %>
-                  Source: <i class="fa-brands fa-usps "></i> Snail Mail
+                  <span class="toh-miniHeader">Source</span>: <i class="fa-brands fa-usps "></i> Snail Mail
                 <% } %>
               </dd>
               <% if(Submissions[0].RiderNotes) { %> 
@@ -148,13 +151,13 @@
                 <% } %>
               </dt>
               <dd>
-                <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
+                <span class="toh-miniHeader">Name</span>: <%= Submissions[0].FirstName %> <%= Submissions[0].LastName %>
               </dd>
               <dd>
-                <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
+                <span class="toh-miniHeader">Email</span>: <a href="mailto:<%= Submissions[0].Email %>?subject=(<%= Submissions[0].Code %>) A message from the TOH Scoring Team"><%= Submissions[0].Email %></a>
               </dd>
               <dd>
-                <%= Submissions[0].HomeCity %>, <%= Submissions[0].HomeState %>
+                <span class="toh-miniHeader">Home Town</span>: <%= Submissions[0].HomeCity %>, <%= Submissions[0].HomeState %>
               </dd>
               <dd>
                 <input type="hidden" id="SubmissionMemorialID" name="SubmissionMemorialID" value="<%= Submissions[0].MemorialID %>">

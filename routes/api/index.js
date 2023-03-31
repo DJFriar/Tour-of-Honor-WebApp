@@ -7,6 +7,7 @@
 
 const ApiRouter = require('express').Router();
 
+ApiRouter.use('/admin', require('./v1/admin'));
 ApiRouter.use('/auth', require('./v1/auth'));
 ApiRouter.use('/bike', require('./v1/bike'));
 ApiRouter.use('/charity', require('./v1/charity'));

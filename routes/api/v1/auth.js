@@ -44,7 +44,8 @@ ApiAuthRouter.route('/').post(async (req, res) => {
     type: QueryTypes.SELECT,
   });
   const UserData = User[0];
-  if (!UserData || UserData.ZipCode !== zipcode) {
+  const storedZipCode = UserData.ZipCode.slice(0, 5);
+  if (!UserData || storedZipCode !== zipcode) {
     logger.error(`UserData returned false: ${JSON.stringify(UserData)}`, {
       calledFrom: 'api/v1/auth.js',
     });
