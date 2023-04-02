@@ -154,7 +154,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
     res.json(pendingSubmissionsForUser);
   } catch (err) {
     logger.error(`An error was encountered in pendingSubmissionsForUser: ${err}`, {
-      calledBy: 'api/v1/submission.js',
+      calledFrom: 'api/v1/submission.js',
     });
     throw err;
   }
@@ -189,7 +189,7 @@ ApiSubmissionRouter.route('/pending').get(async (req, res) => {
     res.json(allPendingSubmissions);
   } catch (err) {
     logger.error(`An error was encountered in allPendingSubmissions: ${err}`, {
-      calledBy: 'api/v1/submission.js',
+      calledFrom: 'api/v1/submission.js',
     });
     throw err;
   }
@@ -224,7 +224,7 @@ ApiSubmissionRouter.route('/held').get(async (req, res) => {
     res.json(allHeldSubmissions);
   } catch (err) {
     logger.error(`An error was encountered in allHeldSubmissions: ${err}`, {
-      calledBy: 'api/v1/submission.js',
+      calledFrom: 'api/v1/submission.js',
     });
     throw err;
   }
@@ -255,7 +255,7 @@ ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
     res.json(allScoredSubmissions);
   } catch (err) {
     logger.error(`An error was encountered in allScoredSubmissions: ${err}`, {
-      calledBy: 'api/v1/submission.js',
+      calledFrom: 'api/v1/submission.js',
     });
     throw err;
   }
