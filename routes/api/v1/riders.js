@@ -21,7 +21,9 @@ ApiRiderRouter.route('/').get(async (req, res) => {
   try {
     RiderDetails = await q.queryAllUsersWithFlagInfo(currentRallyYear);
   } catch (err) {
-    logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`);
+    logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`, {
+      calledFrom: 'api/v1/riders.js',
+    });
   }
   res.json(RiderDetails);
 });
@@ -133,7 +135,7 @@ ApiRiderRouter.route('/:uid').get(async (req, res) => {
   // try {
   //   RiderDetails = await q.queryAllUsersWithFlagInfo(currentRallyYear);
   // } catch (err) {
-  //   logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`);
+  //   logger.error(`Error encountered: queryAllUsersWithFlagInfo.${err}`, { calledFrom: 'api/v1/riders.js' });
   // }
   // res.json(RiderDetails);
   res.status(405).send();

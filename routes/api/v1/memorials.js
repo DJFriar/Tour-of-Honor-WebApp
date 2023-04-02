@@ -9,7 +9,7 @@ const ApiMemorialsRouter = require('express').Router();
 const { QueryTypes } = require('sequelize');
 
 const db = require('../../../models');
-const hasValidApiKey = require('../../../middleware/authCheck');
+// const hasValidApiKey = require('../../../middleware/authCheck');
 const { logger } = require('../../../controllers/logger');
 
 const { sequelize } = db;

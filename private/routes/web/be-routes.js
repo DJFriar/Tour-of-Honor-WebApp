@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 const ejs = require('ejs');
 const _ = require('lodash');
@@ -289,12 +290,12 @@ module.exports = function (app) {
           UserID: x.id,
           RallyYear: CurrentRallyYear,
         }).then((y) => {
-          logger.info('User Created Successfully', { calledFrom: 'be-routes.js' });
+          logger.debug('User Created Successfully', { calledFrom: 'be-routes.js' });
           res.status(202).json(y);
         });
       })
       .catch((err) => {
-        logger.error(`Signup API Error Encountered${err}`);
+        logger.error(`Signup API Error Encountered${err}`, { calledFrom: 'be-routes.js' });
         res.status(401).json(err);
       });
   });
@@ -327,7 +328,9 @@ module.exports = function (app) {
       );
       res.send('Welcome Email Sent');
     } catch (err) {
-      logger.error(`An error occured while sending the welcome email: ${err}`);
+      logger.error(`An error occured while sending the welcome email: ${err}`, {
+        calledFrom: 'be-routes.js',
+      });
       res.send('An error occurred while sending welcome email.');
     }
   });
@@ -353,7 +356,9 @@ module.exports = function (app) {
       res.send('Portal Email Sent');
     } catch (err) {
       res.send('An error occurred while sending portal email.');
-      logger.error(err);
+      logger.error(`An error occured while sending the portal email: ${err}`, {
+        calledFrom: 'be-routes.js',
+      });
     }
   });
 
@@ -374,11 +379,13 @@ module.exports = function (app) {
       },
     )
       .then(() => {
-        logger.info('User Onboarded Successfully', { calledFrom: 'be-routes.js' });
+        logger.info(`User Onboarded Successfully`, { calledFrom: 'be-routes.js' });
         res.status(200).send();
       })
       .catch((err) => {
-        logger.error(`Rider Onboarding Error Encountered: ${err}`);
+        logger.error(`Rider Onboarding Error Encountered: ${err}`, {
+          calledFrom: 'be-routes.js',
+        });
         res.status(401).json(err);
       });
   });
@@ -423,13 +430,17 @@ module.exports = function (app) {
             console.log('==== rider subscribed to mailchimp ====');
           }
         } catch (err) {
-          logger.error(`Error encountered: queryNextPendingSubmissions.${err}`);
+          logger.error(`Error encountered when subscribing user to mailchimp.${err}`, {
+            calledFrom: 'be-routes.js',
+          });
         }
-        logger.info('New User Created Successfully', { calledFrom: 'be-routes.js' });
+        logger.info(`New User Created Successfully`, { calledFrom: 'be-routes.js' });
         res.status(202).send();
       })
       .catch((err) => {
-        logger.error(`Signup API Error Encountered${err}`);
+        logger.error(`Signup API Error Encountered${err}`, {
+          calledFrom: 'be-routes.js',
+        });
         res.status(401).json(err);
       });
   });
@@ -636,7 +647,9 @@ module.exports = function (app) {
     try {
       riderInfo = await q.queryUserInfoByID(uid);
     } catch (err) {
-      logger.error(`Error encountered: queryUserInfoByID(${uid}).${err}`);
+      logger.error(`Error encountere when fetching queryUserInfoByID(${uid}).${err}`, {
+        calledFrom: 'be-routes.js',
+      });
     }
     res.json(riderInfo[0]);
   });
@@ -681,7 +694,9 @@ module.exports = function (app) {
     try {
       NextPendingSubmission = await q.queryNextPendingSubmissions(category);
     } catch (err) {
-      logger.error(`Error encountered: queryNextPendingSubmissions.${err}`);
+      logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
+        calledFrom: 'be-routes.js',
+      });
     }
     res.json(NextPendingSubmission);
   });
@@ -755,7 +770,9 @@ module.exports = function (app) {
           res.status(200).send();
         })
         .catch((err) => {
-          logger.error(`Error creating order: ${err}`);
+          logger.error(`Error creating order: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -779,7 +796,9 @@ module.exports = function (app) {
           res.status(200).send();
         })
         .catch((err) => {
-          logger.error(`Error updating order with bike info: ${err}`);
+          logger.error(`Error updating order with bike info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -804,7 +823,9 @@ module.exports = function (app) {
           res.status(200).send();
         })
         .catch((err) => {
-          logger.error(`Error updating order with no passenger info: ${err}`);
+          logger.error(`Error updating order with no passenger info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -831,7 +852,9 @@ module.exports = function (app) {
           res.status(200).send();
         })
         .catch((err) => {
-          logger.error(`Error updating order with passenger info: ${err}`);
+          logger.error(`Error updating order with passenger info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -884,7 +907,9 @@ module.exports = function (app) {
                   console.log('==== passenger subscribed to mailchimp ====');
                 }
               } catch (err) {
-                logger.error(`Error encountered: queryNextPendingSubmissions.${err}`);
+                logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
+                  calledFrom: 'be-routes.js',
+                });
               }
               res.status(200).send();
             });
@@ -924,7 +949,9 @@ module.exports = function (app) {
           });
         })
         .catch((err) => {
-          logger.error(`Error updating order with charity info: ${err}`);
+          logger.error(`Error updating order with charity info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -1008,7 +1035,9 @@ module.exports = function (app) {
           res.status(202).send({ CheckoutURL, PriceTier, ShopifyVariantID, totalPrice });
         })
         .catch((err) => {
-          logger.error(`Error updating order with t-shirt info: ${err}`);
+          logger.error(`Error updating order with t-shirt info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -1040,7 +1069,9 @@ module.exports = function (app) {
           res.status(202).send();
         })
         .catch((err) => {
-          logger.error(`Error updating order with Waiver info: ${err}`);
+          logger.error(`Error updating order with Waiver info: ${err}`, {
+            calledFrom: 'be-routes.js',
+          });
           res.status(401).json(err);
         });
     }
@@ -1204,7 +1235,7 @@ module.exports = function (app) {
       },
     }).then(async (o) => {
       if (o.OrderNumber === null) {
-        logger.info('OrderNumber not found locally, checking Shopify...', {
+        logger.info(`OrderNumber not found locally, checking Shopify...`, {
           calledFrom: 'be-routes.js',
         });
         // Check Shopify for an Order Number
@@ -1300,7 +1331,7 @@ module.exports = function (app) {
 
     let RiderID = 0;
 
-    logger.info('Waiver Webhook Response', req.body, { calledFrom: 'be-routes.js' });
+    logger.info(`Waiver Webhook Response: ${req.body}`, { calledFrom: 'be-routes.js' });
 
     fetch(smartWaiverURL, {
       method: 'get',
@@ -1314,6 +1345,9 @@ module.exports = function (app) {
         } catch (err) {
           logger.error(
             `No user found when fetching from SmartWaiver. Response was: ${json} | ${err}`,
+            {
+              calledFrom: 'be-routes.js',
+            },
           );
         }
       });
@@ -1333,7 +1367,9 @@ module.exports = function (app) {
         });
         res.status(200).send();
       } else {
-        logger.error('UserID not found in SmartWaiver response.');
+        logger.error(`UserID ${rider} was not found in SmartWaiver response.`, {
+          calledFrom: 'be-routes.js',
+        });
       }
     }
 
@@ -1361,7 +1397,9 @@ module.exports = function (app) {
     try {
       twilio.sendSMSMessage(destNumber, messageText);
     } catch (err) {
-      logger.error('Error in sendSMS API call.');
+      logger.error('Error in twilio.sendSMSMessage API call.', {
+        calledFrom: 'be-routes.js',
+      });
     }
 
     res.status(200).send();
