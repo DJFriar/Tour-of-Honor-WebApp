@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === 'Development') {
 }
 
 const dblogger = createLogger({
-  level: 'info',
+  level: 'warn',
   format: format.combine(
     format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss',
