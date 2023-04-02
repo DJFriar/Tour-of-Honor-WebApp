@@ -193,7 +193,7 @@ module.exports = function (app) {
         });
       }
     } catch (err) {
-      logger.error(`queryAllSubmissions failed for id ${id}`, { calledBy: 'fe-routes.js' });
+      logger.error(`queryAllSubmissions failed for id ${id}`, { calledFrom: 'fe-routes.js' });
     }
   });
 

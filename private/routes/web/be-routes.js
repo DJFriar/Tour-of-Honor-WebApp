@@ -511,6 +511,12 @@ module.exports = function (app) {
         FlagNumber: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
         RallyYear: CurrentRallyYear,
+      }).catch((err) => {
+        logger.error(
+          `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
+          { calledFrom: 'be-routes.js' },
+        );
+        res.status(401).json(err);
       });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
@@ -520,6 +526,14 @@ module.exports = function (app) {
             FlagNumber: rider,
             MemorialID: req.body.SubmittedMemorialID,
             RallyYear: CurrentRallyYear,
+          }).catch((err) => {
+            logger.error(
+              `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+              {
+                calledFrom: 'be-routes.js',
+              },
+            );
+            res.status(401).json(err);
           });
         });
       }

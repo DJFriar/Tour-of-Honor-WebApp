@@ -6,7 +6,7 @@ const db = require('../../../models');
 const q = require('../../queries');
 const { logger } = require('../../../controllers/logger');
 
-const rallyYear = process.env.CURRENT_RALLY_YEAR;
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
 router.get('/', async (req, res) => {
   let ScoringData;
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     ScoringData = await q.queryPendingSubmissionsWithDetails();
   } catch (err) {
     logger.error('Error encountered: queryPendingSubmissionsWithDetails', {
-      calledBy: 'scoring.js',
+      calledFrom: 'scoring.js',
     });
   }
   res.json(ScoringData);
@@ -27,7 +27,7 @@ router.get('/data/:id', async (req, res) => {
   try {
     ScoringDetailData = await q.queryPendingSubmissions(id);
   } catch (err) {
-    logger.error('Error encountered: queryPendingSubmissions', { calledBy: 'scoring.js' });
+    logger.error('Error encountered: queryPendingSubmissions', { calledFrom: 'scoring.js' });
   }
   res.json(ScoringDetailData);
 });
@@ -39,7 +39,7 @@ router.get('/status/:id', async (req, res) => {
   try {
     ScoringStatus = await q.querySubmissionStatusBySubID(id);
   } catch (err) {
-    logger.error('Error encountered: querySubmissionStatusBySubID', { calledBy: 'scoring.js' });
+    logger.error('Error encountered: querySubmissionStatusBySubID', { calledFrom: 'scoring.js' });
   }
   res.json(ScoringStatus);
 });
@@ -63,7 +63,13 @@ router.post('/', (req, res) => {
     db.EarnedMemorialsXref.create({
       FlagNumber: req.body.FlagNumber,
       MemorialID: req.body.MemorialID,
-      RallyYear: rallyYear,
+      RallyYear: currentRallyYear,
+    }).catch((err) => {
+      logger.error(
+        `Failed to create EarnedMemorialsXref entry for Rider ${req.body.FlagNumber}:${err}`,
+        { calledFrom: 'scoring.js' },
+      );
+      res.status(401).json(err);
     });
     // If there are additional participants on the submission then credit them, too.
     if (req.body.OtherRiders) {
@@ -72,7 +78,13 @@ router.post('/', (req, res) => {
         db.EarnedMemorialsXref.create({
           FlagNumber: rider,
           MemorialID: req.body.MemorialID,
-          RallyYear: rallyYear,
+          RallyYear: currentRallyYear,
+        }).catch((err) => {
+          logger.error(
+            `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+            { calledFrom: 'scoring.js' },
+          );
+          res.status(401).json(err);
         });
       });
     }
