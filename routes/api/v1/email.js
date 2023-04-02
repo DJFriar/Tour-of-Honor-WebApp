@@ -85,7 +85,7 @@ ApiEmailRouter.route('/resetpasswordrequest').post(async (req, res) => {
       res.status(200).send();
     });
   } catch (err) {
-    logger.error(err);
+    logger.error(`Error in /resetpassword route.${err}`, { calledFrom: 'api/v1/email.js' });
     res.status(401).json(err);
   }
 });

@@ -13,7 +13,7 @@ WebRulesRouter.route('/').get(async (req, res) => {
   try {
     Rules = await q.queryAllRules();
   } catch (err) {
-    logger.error('Error encountered - queryAllRules: ', err);
+    logger.error(`Error encountered: queryAllRules(). ${err}`, { calledFrom: 'rules.js' });
   }
 
   res.locals.title = 'TOH Rules';

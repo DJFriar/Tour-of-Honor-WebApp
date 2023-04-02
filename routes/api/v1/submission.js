@@ -117,7 +117,7 @@ ApiSubmissionRouter.route('/').post(fileUpload(), (req, res) => {
   async function uploadToS3(fileName, file) {
     try {
       const s3result = await uploadRiderSubmittedImage(fileName, file);
-      logger.info(s3result, { calledFrom: 'api/v1/submission.js' });
+      logger.debug(s3result, { calledFrom: 'api/v1/submission.js' });
     } catch (err) {
       logger.error(`S3 Upload Failed: ${err}`, { calledFrom: 'api/v1/submission.js' });
     }

@@ -15,12 +15,16 @@ WebRiderRouter.route('/').get(async (req, res) => {
   try {
     riderList = await q.queryAllUsersWithFlagInfo(currentRallyYear);
   } catch (err) {
-    logger.error(`Error encountered: queryAllUsersWithFlagInfo(${currentRallyYear})`);
+    logger.error(`Error encountered: queryAllUsersWithFlagInfo(${currentRallyYear}).${err}`, {
+      calledFrom: 'riders.js',
+    });
   }
   try {
     totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
   } catch (err) {
-    logger.error('Error encountered: queryEarnedMemorialsByAllRiders');
+    logger.error(`Error encountered: queryEarnedMemorialsByAllRiders().${err}`, {
+      calledFrom: 'riders.js',
+    });
   }
   res.locals.title = 'TOH Rider List';
   res.render('pages/rider-list', {
@@ -48,17 +52,32 @@ WebRiderRouter.route('/:flag').get(async (req, res) => {
   try {
     earnedCounts = await q.queryEarnedMemorialCountByFlag(rallyYear, flagNumber);
   } catch (err) {
-    logger.error(`Error encountered: queryEarnedMemorialCountByFlag(${rallyYear}, ${flagNumber})`);
+    logger.error(
+      `Error encountered: queryEarnedMemorialCountByFlag(${rallyYear}, ${flagNumber}).${err}`,
+      {
+        calledFrom: 'riders.js',
+      },
+    );
   }
   try {
     earnedMemorialList = await q.queryEarnedMemorialListByFlag(rallyYear, flagNumber);
   } catch (err) {
-    logger.error(`Error encountered: queryEarnedMemorialListByFlag(${rallyYear}, ${flagNumber})`);
+    logger.error(
+      `Error encountered: queryEarnedMemorialListByFlag(${rallyYear}, ${flagNumber}).${err}`,
+      {
+        calledFrom: 'riders.js',
+      },
+    );
   }
   try {
     completedStatesList = await q.queryCompletedStatesListByFlag(rallyYear, flagNumber);
   } catch (err) {
-    logger.error(`Error encountered: queryCompletedStatesListByFlag(${rallyYear}, ${flagNumber})`);
+    logger.error(
+      `Error encountered: queryCompletedStatesListByFlag(${rallyYear}, ${flagNumber}).${err}`,
+      {
+        calledFrom: 'riders.js',
+      },
+    );
   }
 
   res.locals.title = 'TOH Rider Details';

@@ -28,9 +28,9 @@ const sendEmail = async (email, subject, text) => {
       subject,
       html: text,
     });
-    logger.info('Email sent successfully', { calledFrom: 'sendEmail.js' });
-  } catch (error) {
-    logger.error(error, 'email not sent');
+    logger.info(`Email sent successfully`, { calledFrom: 'sendEmail.js' });
+  } catch (err) {
+    logger.error(`Error when sending email.${err}`, { calledFrom: 'sendEmail.js' });
   }
 };
 
