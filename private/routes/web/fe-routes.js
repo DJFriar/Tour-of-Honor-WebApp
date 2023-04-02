@@ -174,7 +174,7 @@ module.exports = function (app) {
     try {
       const Submissions = await q.queryAllSubmissions(id);
       if (Submissions.length === 0) {
-        res.redirect('/error');
+        res.redirect('/scoring');
       } else {
         OtherFlags = Submissions[0].OtherRiders;
         OtherRidersArray = OtherFlags.split(',');
