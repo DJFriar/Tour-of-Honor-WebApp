@@ -290,7 +290,7 @@ module.exports = function (app) {
           UserID: x.id,
           RallyYear: CurrentRallyYear,
         }).then((y) => {
-          logger.debug('User Created Successfully', { calledFrom: 'be-routes.js' });
+          logger.debug(`User Created Successfully`, { calledFrom: 'be-routes.js' });
           res.status(202).json(y);
         });
       })
@@ -986,7 +986,7 @@ module.exports = function (app) {
       logger.debug(`Subtotal = $${totalPrice}`);
 
       if (ShirtStylesToSurcharge.includes(ShirtStyle)) {
-        logger.debug('Adding Rider Style Surcharge');
+        logger.debug(`Adding Rider Style Surcharge`);
         totalPrice += ShirtStyleSurcharge;
         logger.debug(`Subtotal = $${totalPrice}`);
       }
