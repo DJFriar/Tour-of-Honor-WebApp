@@ -63,7 +63,7 @@ ApiOrderRouter.route('/').get(async (req, res) => {
     res.json(OrderDetails);
   } catch (err) {
     logger.error(`Error encountered getting OrderDetails: ${err}`, {
-      calledBy: 'api/v1/orders.js',
+      calledFrom: 'api/v1/orders.js',
     });
   }
 });
@@ -90,7 +90,7 @@ ApiOrderRouter.route('/user/:uid').get(async (req, res) => {
     res.json(orderInfoByRider);
   } catch (err) {
     logger.error(`An error was encountered in orderInfoByRider with uid: ${uid}`, {
-      calledBy: 'api/v1/orders.js',
+      calledFrom: 'api/v1/orders.js',
     });
     throw err;
   }
@@ -100,7 +100,7 @@ ApiOrderRouter.route('/user/:uid').get(async (req, res) => {
 ApiOrderRouter.route('/reset').post(async (req, res) => {
   const bodyJSON = JSON.stringify(req.body);
   logger.info(`Flag Reset was performed with the following info: ${bodyJSON}`, {
-    calledBy: 'api/v1/orders.js',
+    calledFrom: 'api/v1/orders.js',
   });
   const OrderUpdateInfo = {
     NextStepNum: 7,
@@ -134,7 +134,7 @@ ApiOrderRouter.route('/updateFlag').put(async (req, res) => {
     oid = riderInfo[0].OrderID;
   } catch (err) {
     logger.error(`Error encountered: queryUserInfoByID(${uid}).${err}`, {
-      calledBy: 'api/v1/orders.js',
+      calledFrom: 'api/v1/orders.js',
     });
   }
   const OrderUpdateInfo = {};

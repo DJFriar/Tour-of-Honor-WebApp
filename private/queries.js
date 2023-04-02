@@ -18,7 +18,7 @@ module.exports.queryUserSessionDataByID = async function queryUserSessionDataByI
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryUserSessionDataByID(${id}`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -36,7 +36,7 @@ module.exports.queryUserInfoByID = async function queryUserInfoByID(UserID) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryUserInfoByID(${UserID}`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -51,7 +51,7 @@ module.exports.queryAllCategories = async function queryAllCategories() {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllCategories()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllCategories()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -63,7 +63,9 @@ module.exports.queryAllRestrictions = async function queryAllRestrictions() {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllRestrictions()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllRestrictions()', {
+      calledFrom: 'queries.js',
+    });
     throw err;
   }
 };
@@ -79,7 +81,7 @@ module.exports.queryTokenValidity = async function queryTokenValidity(id, token)
     );
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryTokenValidity()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryTokenValidity()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -93,7 +95,7 @@ module.exports.queryNewRiderValidation = async function queryNewRiderValidation(
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryNewRiderValidation(${username})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -108,7 +110,7 @@ module.exports.queryUserRights = async function queryUserRights(user) {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryUserRights()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryUserRights()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -123,7 +125,7 @@ module.exports.queryFindUserByEmail = async function queryFindUserByEmail(email)
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryFindUserByEmail(${email})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -141,7 +143,7 @@ module.exports.queryUserIDFromFlagNum = async function queryUserIDFromFlagNum(fl
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryUserIDFromFlagNum(${flag})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -168,7 +170,7 @@ module.exports.queryAllMemorials = async function queryAllMemorials(id = false) 
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllMemorials()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllMemorials()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -194,7 +196,7 @@ module.exports.queryAllSubmissions = async function queryAllSubmissions(id = fal
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllSubmissions()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllSubmissions()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -221,7 +223,7 @@ module.exports.queryPendingSubmissions = async function queryPendingSubmissions(
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryPendingSubmissions()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -240,7 +242,7 @@ module.exports.queryPendingSubmissionsWithDetails =
       return result;
     } catch (err) {
       logger.error('An error was encountered in queryPendingSubmissionsWithDetails()', {
-        calledBy: 'queries.js',
+        calledFrom: 'queries.js',
       });
       throw err;
     }
@@ -268,7 +270,7 @@ module.exports.queryScoredSubmissions = async function queryScoredSubmissions(id
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryScoredSubmissions()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -286,7 +288,7 @@ module.exports.queryMemorial = async function queryMemorial(memId) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorial(${memId})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -304,7 +306,7 @@ module.exports.queryMemorialText = async function queryMemorialText(memId) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorialText(${memId})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -327,7 +329,7 @@ module.exports.queryAllRiders = async function queryAllRiders(rider = false) {
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllRiders()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllRiders()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -349,7 +351,7 @@ module.exports.queryAllUsers = async function queryAllUsers(user = false) {
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllUsers()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllUsers()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -367,7 +369,7 @@ module.exports.queryAllUsersWithFlagInfo = async function queryAllUsersWithFlagI
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryAllUsersWithFlagInfo()`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -386,7 +388,7 @@ module.exports.queryActiveRiderInfo = async function queryActiveRiderInfo(id) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryActiveRiderInfo(${id})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -409,7 +411,7 @@ module.exports.queryAllScorers = async function queryAllScorers(sponsor = false)
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllScorers()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllScorers()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -431,7 +433,7 @@ module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllBikes()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllBikes()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -448,7 +450,7 @@ module.exports.queryBikesByRider = async function queryBikesByRider(rider) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryBikesByRider(${rider})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -473,7 +475,7 @@ module.exports.queryNextPendingSubmissions = async function queryNextPendingSubm
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryNextPendingSubmissions(${category})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -505,7 +507,7 @@ module.exports.querySkipPendingSubmission = async function querySkipPendingSubmi
     return result;
   } catch (err) {
     logger.error(`An error was encountered in querySkipPendingSubmission(${category}, ${id})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -522,7 +524,7 @@ module.exports.queryPendingBonusDetail = async function queryPendingBonusDetail(
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryPendingBonusDetail(${id})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -539,7 +541,7 @@ module.exports.queryPendingRiderInfo = async function queryPendingRiderInfo(ride
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryPendingRiderInfo(${rider})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -556,7 +558,7 @@ module.exports.queryPendingBikeInfo = async function queryPendingBikeInfo(rider)
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryPendingBikeInfo(${rider})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -571,7 +573,7 @@ module.exports.queryEarnedMemorialsByAllRiders = async function queryEarnedMemor
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryEarnedMemorialsByAllRiders()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -589,7 +591,7 @@ module.exports.queryMemorialIDbyMemCode = async function queryMemorialIDbyMemCod
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorialIDbyMemCode(${memCode})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -610,7 +612,7 @@ module.exports.queryMemorialStatusByRider = async function queryMemorialStatusBy
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorialStatusByRider(${rider}, ${memCode})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -631,7 +633,7 @@ module.exports.querySubmissionStatusByRider = async function querySubmissionStat
     return result;
   } catch (err) {
     logger.error(`An error was encountered in querySubmissionStatusByRider(${rider}, ${memCode})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -649,7 +651,7 @@ module.exports.querySubmissionStatusBySubID = async function querySubmissionStat
     return result;
   } catch (err) {
     logger.error(`An error was encountered in querySubmissionStatusBySubID(${id})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -667,7 +669,7 @@ module.exports.querySubmissionsByRider = async function querySubmissionsByRider(
     return result;
   } catch (err) {
     logger.error(`An error was encountered in querySubmissionsByRider(${rider})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -680,7 +682,7 @@ module.exports.queryRegionList = async function queryRegionList() {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryRegionList()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryRegionList()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -696,7 +698,7 @@ module.exports.queryTrophiesList = async function queryTrophiesList() {
     );
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryTrophiesList()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryTrophiesList()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -712,7 +714,7 @@ module.exports.queryAwardList = async function queryAwardList() {
     );
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAwardList()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAwardList()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -722,7 +724,7 @@ module.exports.queryAwardNamesList = async function queryAwardNamesList() {
     const result = await db.AwardName.findAll({});
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAwardNamesList()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAwardNamesList()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -734,7 +736,7 @@ module.exports.queryBaseRiderRate = async function queryBaseRiderRate() {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryBaseRiderRate()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryBaseRiderRate()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -751,7 +753,7 @@ module.exports.queryPassengerInfoByRider = async function queryPassengerInfoByRi
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryPassengerInfoByRider(${riderFlagNumber})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -768,7 +770,7 @@ module.exports.queryPassengerSurcharge = async function queryPassengerSurcharge(
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryPassengerSurcharge()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -785,7 +787,7 @@ module.exports.queryShirtSizeSurcharge = async function queryShirtSizeSurcharge(
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryShirtSizeSurcharge()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -802,7 +804,7 @@ module.exports.queryShirtStyleSurcharge = async function queryShirtStyleSurcharg
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryShirtStyleSurcharge()', {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -820,7 +822,7 @@ module.exports.queryTierByPrice = async function queryTierByPrice(price) {
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryTierByPrice(${price})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -833,7 +835,7 @@ module.exports.queryAllOrders = async function queryAllOrders() {
     });
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllOrders()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllOrders()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -850,7 +852,7 @@ module.exports.queryOrderInfoByRider = async function queryOrderInfoByRider(User
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryOrderInfoByRider(${UserID},${Year})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -868,7 +870,7 @@ module.exports.queryFlagNumFromUserID = async function queryFlagNumFromUserID(Pa
   } catch (err) {
     logger.error(`queryOrderInfoByRider:${err}`);
     logger.error(`An error was encountered in queryFlagNumFromUserID(${PassUserID}, ${Year})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -883,7 +885,7 @@ module.exports.queryNextOrderStepByID = async function queryNextOrderStepByID(Us
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryNextOrderStepByID(${UserID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -898,7 +900,7 @@ module.exports.queryCheckoutURLByRider = async function queryCheckoutURLByRider(
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryCheckoutURLByRider(${UserID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -913,7 +915,7 @@ module.exports.queryOrderNumberByRider = async function queryOrderNumberByRider(
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryOrderNumberByRider(${UserID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -929,7 +931,7 @@ module.exports.queryAllCharities = async function queryAllCharities() {
     );
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllCharities()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllCharities()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -947,7 +949,7 @@ module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostBy
   } catch (err) {
     logger.error(`queryTotalOrderCostByRider:${err}`);
     logger.error(`An error was encountered in queryTotalOrderCostByRider(${UserID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -958,7 +960,7 @@ module.exports.queryAllGroups = async function queryAllGroups() {
     const result = await db.UserGroup.findAll({});
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllGroups()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllGroups()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -968,7 +970,7 @@ module.exports.queryAllConfigs = async function queryAllConfigs() {
     const result = await db.Config.findAll({});
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllConfigs()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllConfigs()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -978,7 +980,7 @@ module.exports.queryAllFAQs = async function queryAllFAQs() {
     const result = await db.Faq.findAll({});
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllFAQs()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllFAQs()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -988,7 +990,7 @@ module.exports.queryAllRules = async function queryAllRules() {
     const result = await db.Rule.findAll({});
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllRules()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllRules()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -1003,7 +1005,7 @@ module.exports.queryWaiverIDByUser = async function queryWaiverIDByUser(UserID) 
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryWaiverIDByUser(${UserID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -1021,7 +1023,7 @@ module.exports.queryWaiversByOrderID = async function queryWaiversByOrderID(Orde
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryWaiversByOrderID(${OrderID})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -1044,7 +1046,7 @@ module.exports.queryAllBikes = async function queryAllBikes(rider = false) {
     }
     return result;
   } catch (err) {
-    logger.error('An error was encountered in queryAllBikes()', { calledBy: 'queries.js' });
+    logger.error('An error was encountered in queryAllBikes()', { calledFrom: 'queries.js' });
     throw err;
   }
 };
@@ -1066,7 +1068,7 @@ module.exports.queryTimeZoneData = async function queryTimeZoneData(TimeZone = f
     return TimeZoneData;
   } catch (err) {
     logger.error(`An error was encountered in queryTimeZoneData(${TimeZone})`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -1083,7 +1085,7 @@ module.exports.queryTotalDonationsByCharity = async function queryTotalDonations
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryTotalDonationsByCharity()`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }
@@ -1106,7 +1108,7 @@ module.exports.queryEarnedMemorialCountByFlag = async function queryEarnedMemori
     logger.error(
       `An error was encountered in queryEarnedMemorialCountByFlag(${rallyYear}, ${flag})`,
       {
-        calledBy: 'queries.js',
+        calledFrom: 'queries.js',
       },
     );
     throw err;
@@ -1130,7 +1132,7 @@ module.exports.queryEarnedMemorialListByFlag = async function queryEarnedMemoria
     logger.error(
       `An error was encountered in queryEarnedMemorialListByFlag(${rallyYear}, ${flag})`,
       {
-        calledBy: 'queries.js',
+        calledFrom: 'queries.js',
       },
     );
     throw err;
@@ -1154,7 +1156,7 @@ module.exports.queryCompletedStatesListByFlag = async function queryCompletedSta
     logger.error(
       `An error was encountered in queryCompletedStatesListByFlag(${rallyYear}, ${flag})`,
       {
-        calledBy: 'queries.js',
+        calledFrom: 'queries.js',
       },
     );
     throw err;
@@ -1172,7 +1174,7 @@ module.exports.queryAllFlagReservations = async function queryAllFlagReservation
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryAllFlagReservations()`, {
-      calledBy: 'queries.js',
+      calledFrom: 'queries.js',
     });
     throw err;
   }

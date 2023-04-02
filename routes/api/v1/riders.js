@@ -43,7 +43,7 @@ ApiRiderRouter.route('/inactive').get(async (req, res) => {
     res.json(InactiveRiders);
   } catch (err) {
     logger.error(`An error was encountered getting InactiveRiders: ${err}`, {
-      calledBy: 'api/v1/riders.js',
+      calledFrom: 'api/v1/riders.js',
     });
   }
 });
@@ -67,7 +67,7 @@ ApiRiderRouter.route('/flag/:flagNumber').get(async (req, res) => {
     res.json(riderInfoByFlagNumber);
   } catch (err) {
     logger.error(`An error was encountered in riderInfoByFlagNumber for Flag #${flagNumber}`, {
-      calledBy: 'api/v1/riders.js',
+      calledFrom: 'api/v1/riders.js',
     });
     throw err;
   }
@@ -96,7 +96,7 @@ ApiRiderRouter.route('/pairings')
       res.json(passengerRiderPairings);
     } catch (err) {
       logger.error(`An error was encountered in passengerRiderPairings`, {
-        calledBy: 'api/v1/riders.js',
+        calledFrom: 'api/v1/riders.js',
       });
       throw err;
     }
