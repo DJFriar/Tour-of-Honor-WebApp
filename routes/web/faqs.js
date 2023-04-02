@@ -13,7 +13,7 @@ WebFaqRouter.route('/').get(async (req, res) => {
   try {
     Faqs = await q.queryAllFAQs();
   } catch (err) {
-    logger.error('Error encountered - queryAllFAQs: ', err);
+    logger.error(`Error encountered: queryAllFAQs().${err}`, { calledFrom: 'faqs.js' });
   }
 
   res.locals.title = 'TOH FAQs';

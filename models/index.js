@@ -29,12 +29,12 @@ Object.keys(db).forEach((modelName) => {
 sequelize
   .authenticate()
   .then(() => {
-    dblogger.info('DB connection has been established successfully.', {
+    dblogger.info(`DB connection has been established successfully.`, {
       calledFrom: 'models/index.js',
     });
   })
   .catch(() => {
-    dblogger.error('Unable to connect to the DB: ', { calledFrom: 'models/index.js' });
+    dblogger.error(`Unable to connect to the DB.`, { calledFrom: 'models/index.js' });
   });
 
 db.sequelize = sequelize;

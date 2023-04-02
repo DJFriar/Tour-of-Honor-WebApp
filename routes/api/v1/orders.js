@@ -154,7 +154,6 @@ ApiOrderRouter.route('/updateFlag').put(async (req, res) => {
 
 ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
   const { oid } = req.params;
-  console.log(`==== checkFlagOrderStatus API Reached for oid: ${oid} ====`);
   db.Order.findOne({
     where: {
       id: oid,
@@ -162,7 +161,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
     },
   }).then(async (o) => {
     if (o.FlagSurchargeOrderNumber === null) {
-      logger.info('FlagSurchargeOrderNumber not found locally, checking Shopify...', {
+      logger.info(`FlagSurchargeOrderNumber not found locally, checking Shopify...`, {
         calledFrom: 'api/v1/orders.js',
       });
       // Check Shopify for an Order Number

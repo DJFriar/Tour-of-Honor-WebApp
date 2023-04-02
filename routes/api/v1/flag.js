@@ -23,16 +23,16 @@ logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, {
 
 // Set rally year array to honor prior year flag reservations
 if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
-  logger.info('==== Prior Year Flags are: Protected ====', { calledFrom: 'api/v1/flag.js' });
+  logger.debug(`==== Prior Year Flags are: Protected ====`, { calledFrom: 'api/v1/flag.js' });
   rallyYearArray.push(currentRallyYear - 1, currentRallyYear);
 } else {
-  logger.info('==== Prior Year Flags are: Unprotected ====', { calledFrom: 'api/v1/flag.js' });
+  logger.debug(`==== Prior Year Flags are: Unprotected ====`, { calledFrom: 'api/v1/flag.js' });
   rallyYearArray.push(currentRallyYear);
 }
 
 // POST: Flag assignment
 ApiFlagRouter.route('/').post((req, res) => {
-  logger.debug('FlagPostAPI entered');
+  logger.debug(`FlagPostAPI entered`);
   db.Flag.create({
     FlagNumber: req.body.FlagNumber,
     UserID: req.body.UserID,
@@ -82,7 +82,9 @@ ApiFlagRouter.route('/reservation')
     try {
       FlagReservations = await q.queryAllFlagReservations();
     } catch (err) {
-      logger.error(`Error encountered: queryAllFlagReservations.${err}`);
+      logger.error(`Error encountered: queryAllFlagReservations.${err}`, {
+        calledFrom: 'api/v1/flag.js',
+      });
     }
     res.json(FlagReservations);
   })

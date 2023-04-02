@@ -102,7 +102,7 @@ module.exports = function (app) {
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Scoring Dashboard';
     res.render('pages/scoring', {
@@ -122,7 +122,7 @@ module.exports = function (app) {
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Scored 2023';
     res.render('pages/scored', {
@@ -142,7 +142,7 @@ module.exports = function (app) {
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Scored 2022';
     res.render('pages/scored-prior', {
@@ -169,7 +169,7 @@ module.exports = function (app) {
     try {
       TimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error(`Error encountered: queryTimeZoneData().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       const Submissions = await q.queryAllSubmissions(id);
@@ -193,7 +193,9 @@ module.exports = function (app) {
         });
       }
     } catch (err) {
-      logger.error(`queryAllSubmissions failed for id ${id}`, { calledFrom: 'fe-routes.js' });
+      logger.error(`queryAllSubmissions failed for id ${id}.${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
   });
 
@@ -233,12 +235,16 @@ module.exports = function (app) {
     try {
       categoryData = await q.queryAllCategories();
     } catch (err) {
-      logger.error('Error encountered: queryAllCategories');
+      logger.error(`Error encountered: queryAllCategories().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       restrictionData = await q.queryAllRestrictions();
     } catch (err) {
-      logger.error('Error encountered: queryAllRestrictions');
+      logger.error(`Error encountered: queryAllRestrictions().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Memorial Editor OLD';
     res.render('pages/admin/memorial-editor', {
@@ -264,17 +270,21 @@ module.exports = function (app) {
     try {
       categoryData = await q.queryAllCategories();
     } catch (err) {
-      logger.error('Error encountered: queryAllCategories');
+      logger.error(`Error encountered: queryAllCategories().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       MemorialData = await q.queryAllMemorials();
     } catch (err) {
-      logger.error('Error encountered: queryAllMemorials');
+      logger.error(`Error encountered: queryAllMemorials().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       restrictionData = await q.queryAllRestrictions();
     } catch (err) {
-      logger.error('Error encountered: queryAllRestrictions');
+      logger.error(`Error encountered: queryAllRestrictions().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Memorial Editor';
     res.render('pages/admin/memorial-editor2', {
@@ -303,17 +313,23 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       MemID = memIDResponse[0].id;
     } catch (err) {
-      logger.error('Error encountered: queryMemorialIDbyMemCode');
+      logger.error(`Error encountered: queryMemorialIDbyMemCode(${memCode}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       MemorialData = await q.queryMemorial(MemID);
     } catch (err) {
-      logger.error('Error encountered: queryMemorial');
+      logger.error(`Error encountered: queryMemorial(${MemID}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       MemorialText = await q.queryMemorialText(MemID);
     } catch (err) {
-      logger.error('Error encountered: queryMemorialText');
+      logger.error(`Error encountered: queryMemorialText(${MemID}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Memorial Text';
     res.render('pages/admin/memorial-text', {
@@ -337,22 +353,24 @@ module.exports = function (app) {
     try {
       Regions = await q.queryRegionList();
     } catch (err) {
-      logger.error('Error encountered: queryRegionList');
+      logger.error(`Error encountered: queryRegionList().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       TrophyList = await q.queryTrophiesList();
     } catch (err) {
-      logger.error('Error encountered: queryTrophiesList');
+      logger.error(`Error encountered: queryTrophiesList().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       AwardNames = await q.queryAwardNamesList();
     } catch (err) {
-      logger.error('Error encountered: queryAwardNamesList');
+      logger.error(`Error encountered: queryAwardNamesList().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       Awards = await q.queryAwardList();
     } catch (err) {
-      logger.error('Error encountered: queryAwardList');
+      logger.error(`Error encountered: queryAwardList().${err}`, { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Trophy Editor';
     res.render('pages/admin/trophy-editor', {
@@ -407,7 +425,7 @@ module.exports = function (app) {
     try {
       Groups = await q.queryAllGroups();
     } catch (err) {
-      logger.error('Error encountered: queryAllGroups');
+      logger.error(`Error encountered: queryAllGroups().${err}`, { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Group Manager';
     res.render('pages/admin/group-management', {
@@ -454,7 +472,9 @@ module.exports = function (app) {
     try {
       TokenValidity = await q.queryTokenValidity(UserID, Token);
     } catch (err) {
-      logger.error('Error encountered: queryTokenValidity');
+      logger.error(`Error encountered: queryTokenValidity(${UserID}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Forgot Password';
     res.render('pages/forgot-password', {
@@ -492,7 +512,7 @@ module.exports = function (app) {
   app.get('/logout', (req, res, next) => {
     req.logout((err) => {
       if (err) {
-        logger.error('Error while logging out.');
+        logger.error(`Error while logging out.${err}`, { calledFrom: 'fe-routes.js' });
         return next(err);
       }
       res.redirect('/');
@@ -510,7 +530,9 @@ module.exports = function (app) {
     try {
       TimeZone = await q.queryTimeZoneData(TimeZoneCode);
     } catch (err) {
-      logger.error('Error encountered: queryTimeZoneData');
+      logger.error(`Error encountered: queryTimeZoneData(${TimeZoneCode}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Memorial List';
     res.render('pages/memorials', {
@@ -537,18 +559,24 @@ module.exports = function (app) {
     try {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
-    } catch (error) {
-      logger.error('Error encountered when getting memorial ID.', { calledFrom: 'fe-routes.js' });
+    } catch (err) {
+      logger.error(`Error encountered when getting memorial ID.${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       MemorialData = await q.queryMemorial(memID);
     } catch (err) {
-      logger.error('Error encountered: queryMemorial', { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryMemorial(${memID}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       MemorialText = await q.queryMemorialText(memID);
     } catch (err) {
-      logger.error('Error encountered: queryMemorialText', { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryMemorialText(${memID}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     if (req.user) {
@@ -566,7 +594,7 @@ module.exports = function (app) {
           MemorialStatus = 0;
         }
       } catch (err) {
-        logger.error('Error encountered: queryMemorialStatusByRider', {
+        logger.error(`Error encountered: queryMemorialStatusByRider().${err}`, {
           calledFrom: 'fe-routes.js',
         });
       }
@@ -576,7 +604,7 @@ module.exports = function (app) {
           isMemorialInSubmissions = true;
         }
       } catch (err) {
-        logger.error('Error encountered: querySubmissionStatusByRider', {
+        logger.error(`Error encountered: querySubmissionStatusByRider().${err}`, {
           calledFrom: 'fe-routes.js',
         });
       }
@@ -627,7 +655,9 @@ module.exports = function (app) {
     try {
       Categories = await q.queryAllCategories();
     } catch (err) {
-      logger.error('Error encountered: queryAllCategories', { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryAllCategories().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     const targetMemorial = [
@@ -674,7 +704,9 @@ module.exports = function (app) {
     try {
       ValidateNewRider = await q.queryNewRiderValidation(UserName);
     } catch (err) {
-      logger.error('Error encountered: queryNewRiderValidation', { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryNewRiderValidation().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     if (!ValidateNewRider[0]) {
       res.redirect('/welcome');
@@ -696,7 +728,7 @@ module.exports = function (app) {
     try {
       totalEarnedByRider = await q.queryEarnedMemorialsByAllRiders();
     } catch (err) {
-      logger.error('Error encountered: queryEarnedMemorialsByAllRiders', {
+      logger.error(`Error encountered: queryEarnedMemorialsByAllRiders().${err}`, {
         calledFrom: 'fe-routes.js',
       });
     }
@@ -719,12 +751,12 @@ module.exports = function (app) {
     try {
       Regions = await q.queryRegionList();
     } catch (err) {
-      logger.error('Error encountered: queryRegionList');
+      logger.error(`Error encountered: queryRegionList().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       TrophyList = await q.queryTrophiesList();
     } catch (err) {
-      logger.error('Error encountered: queryTrophiesList');
+      logger.error(`Error encountered: queryTrophiesList().${err}`, { calledFrom: 'fe-routes.js' });
     }
     res.locals.title = 'TOH Trophy List';
     res.render('pages/trophies', {
@@ -749,27 +781,35 @@ module.exports = function (app) {
     try {
       PassengerInfo = await q.queryPassengerInfoByRider(req.user.FlagNumber);
     } catch (err) {
-      logger.error('Error encountered: queryPassengerInfoByRider');
+      logger.error(`Error encountered: queryPassengerInfoByRider().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       RiderBikeInfo = await q.queryAllBikes(req.user.id);
     } catch (err) {
-      logger.error('Error encountered: queryAllBikes');
+      logger.error(`Error encountered: queryAllBikes().${err}`, { calledFrom: 'fe-routes.js' });
     }
     try {
       RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
     } catch (err) {
-      logger.error('Error encountered: querySubmissionsByRider');
+      logger.error(`Error encountered: querySubmissionsByRider().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       TimeZoneOptions = await q.queryTimeZoneData();
     } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       UserTimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     res.locals.title = 'TOH User Profile';
@@ -839,11 +879,15 @@ module.exports = function (app) {
             OrderInfo.PassFlagNum = 0;
           }
         } catch (err) {
-          logger.error(`Error encountered: queryFlagNumFromUserID ${err}`);
+          logger.error(`Error encountered: queryFlagNumFromUserID().${err}`, {
+            calledFrom: 'fe-routes.js',
+          });
         }
       }
     } catch (err) {
-      logger.error(`Error encountered: queryOrderInfoByRider ${err}`);
+      logger.error(`Error encountered: queryOrderInfoByRider().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     if (!OrderInfo || OrderInfo.length === 0) {
@@ -855,7 +899,9 @@ module.exports = function (app) {
     try {
       TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
     } catch (err) {
-      logger.error(`Error encountered: queryTotalOrderCostByRider ${err}`);
+      logger.error(`Error encountered: queryTotalOrderCostByRider().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     if (!TotalOrderCost || TotalOrderCost.length === 0) {
       TotalOrderCost = [];
@@ -872,25 +918,29 @@ module.exports = function (app) {
       const ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
     } catch (err) {
-      logger.error(`Error encountered while gathering pricing info.${err}`);
+      logger.error(`Error encountered while gathering pricing info.${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {
       Charities = await q.queryAllCharities();
     } catch (err) {
-      logger.error(`Error encountered: queryAllCharities${err}`);
+      logger.error(`Error encountered: queryAllCharities().${err}`, { calledFrom: 'fe-routes.js' });
     }
 
     try {
       TimeZoneOptions = await q.queryTimeZoneData();
     } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {
       RiderBikeInfo = await q.queryBikesByRider(req.user.id);
     } catch (err) {
-      logger.error(`Error encountered: queryBikesByRider${err}`);
+      logger.error(`Error encountered: queryBikesByRider().${err}`, { calledFrom: 'fe-routes.js' });
     }
 
     // Check for Rider Waiver info
@@ -901,7 +951,7 @@ module.exports = function (app) {
           OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
         }
       } catch (err) {
-        logger.error(`Error encountered: Rider queryWaiverIDByUser${err}`, {
+        logger.error(`Error encountered: Rider queryWaiverIDByUser().${err}`, {
           calledFrom: 'fe-routes.js',
         });
       }
@@ -917,7 +967,7 @@ module.exports = function (app) {
           OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
         }
       } catch (err) {
-        logger.error(`Error encountered: Passenger queryWaiverIDByUser${err}`, {
+        logger.error(`Error encountered: Passenger queryWaiverIDByUser().${err}`, {
           calledFrom: 'fe-routes.js',
         });
       }
@@ -953,13 +1003,15 @@ module.exports = function (app) {
     try {
       Orders = await q.queryAllOrders();
     } catch (err) {
-      logger.error('Error encountered: queryAllOrders');
+      logger.error(`Error encountered: queryAllOrders().${err}`, { calledFrom: 'fe-routes.js' });
     }
 
     try {
       UserTimeZone = await q.queryTimeZoneData(req.user.TimeZone);
     } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData(): ${err}`);
+      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     res.locals.title = 'TOH Orders';
@@ -997,7 +1049,7 @@ module.exports = function (app) {
     try {
       Configs = await q.queryAllConfigs();
     } catch (err) {
-      logger.error('Error encountered: queryAllConfigs');
+      logger.error(`Error encountered: queryAllConfigs()`);
     }
 
     res.locals.title = 'TOH Site Config';
@@ -1020,7 +1072,9 @@ module.exports = function (app) {
     try {
       WaiverID = (await q.queryWaiverIDByUser(userid)) || '';
     } catch (err) {
-      logger.error('Error encountered: queryWaiverIDByUser');
+      logger.error(`Error encountered: queryWaiverIDByUser(${userid}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     res.locals.title = 'TOH Waiver Check';
     res.render('pages/waiver-check', {
@@ -1045,12 +1099,16 @@ module.exports = function (app) {
     try {
       WaiverID = (await q.queryWaiverIDByUser(userid)) || '';
     } catch (err) {
-      logger.error(`Error encountered: queryWaiverIDByUser(${userid})`);
+      logger.error(`Error encountered: queryWaiverIDByUser(${userid}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
     try {
       OrderInfoRaw = await q.queryOrderInfoByRider(userid, 2023);
     } catch (err) {
-      logger.error(`Error encountered: queryOrderInfoByRider ${err}`);
+      logger.error(`Error encountered: queryOrderInfoByRider(${userid}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     if (!OrderInfoRaw || OrderInfoRaw.length === 0) {
