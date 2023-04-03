@@ -522,7 +522,7 @@ module.exports = function (app) {
         `Submission ${req.body.SubmissionID} updated with Status ${req.body.Status}. ScorerNotes: ${req.body.ScorerNotes}`,
         { calledFrom: 'be-routes.js' },
       );
-      if (req.body.Status === 1) {
+      if (req.body.Status === '1') {
         logger.info(`${req.body.SubmissionID} has Status ${req.body.SubmissionID}`, {
           calledFrom: 'be-routes.js',
         });
