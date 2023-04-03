@@ -505,7 +505,7 @@ module.exports = function (app) {
 
   // Update submissions
   app.put('/handle-submission', (req, res) => {
-    logger.info(`handle-submission was reached.`, { calledFrom: 'be-routes.js' });
+    logger.info(`handle-submission was provided: ${req.body}`, { calledFrom: 'be-routes.js' });
     // Update the submission record to mark it as scored
     db.Submission.update(
       {
@@ -523,6 +523,9 @@ module.exports = function (app) {
     });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if (req.body.Status === 1) {
+      logger.info(`${req.body.SubmissionID} has Status ${req.body.SubmissionID}`, {
+        calledFrom: 'be-routes.js',
+      });
       // Grant credit to the submitter
       db.EarnedMemorialsXref.create({
         FlagNumber: req.body.SubmittedFlagNumber,
@@ -544,6 +547,12 @@ module.exports = function (app) {
         });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
+        logger.info(
+          `${req.body.SubmissionID} has multiple riders: ${req.body.SubmittedOtherRiders}`,
+          {
+            calledFrom: 'be-routes.js',
+          },
+        );
         const RiderFlagArray = req.body.SubmittedOtherRiders.split(',');
         RiderFlagArray.forEach((rider) => {
           db.EarnedMemorialsXref.create({
