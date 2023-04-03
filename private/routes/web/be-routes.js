@@ -505,7 +505,9 @@ module.exports = function (app) {
 
   // Update submissions
   app.put('/handle-submission', (req, res) => {
-    logger.info(`handle-submission was provided: ${req.body}`, { calledFrom: 'be-routes.js' });
+    logger.info(`handle-submission was provided: ${JSON.stringify(req.body)}`, {
+      calledFrom: 'be-routes.js',
+    });
     // Update the submission record to mark it as scored
     db.Submission.update(
       {
