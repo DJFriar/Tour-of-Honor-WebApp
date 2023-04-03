@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 $(document).ready(() => {
   let selectedFilter = 'All';
   selectedFilter = localStorage.getItem('categoryFilter');
@@ -87,7 +88,7 @@ $(document).ready(() => {
     $.ajax(`/api/v1/submission/${category}`, {
       type: 'GET',
     }).then((res) => {
-      console.log(`Going to submission ${res[0].id}`);
+      // eslint-disable-next-line no-restricted-globals
       location.assign(`/submission/${res[0].id}`);
     });
   }
