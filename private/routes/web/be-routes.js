@@ -23,7 +23,7 @@ const {
 const twilio = require('../../../controllers/twilio');
 const { addSubscriber } = require('../../../controllers/mailchimp');
 
-const CurrentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const serverApiKey = process.env.TOH_API_KEY;
 
 // eslint-disable-next-line func-names
@@ -75,7 +75,7 @@ module.exports = function (app) {
   app.get('/api/v1/randomAvailableFlag', (req, res) => {
     db.Flag.findAll({
       where: {
-        RallyYear: CurrentRallyYear,
+        RallyYear: currentRallyYear,
       },
       raw: true,
     }).then((flags) => {
@@ -121,7 +121,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: CurrentRallyYear,
+      RallyYear: currentRallyYear,
     }).then(() => {
       res.redirect('/admin/memorial-editor');
     });
@@ -145,7 +145,7 @@ module.exports = function (app) {
       MultiImage: req.body.MultiImage,
       SampleImage: req.body.SampleImage,
       Restrictions: req.body.MemorialRestrictions,
-      RallyYear: CurrentRallyYear,
+      RallyYear: currentRallyYear,
     }).then(() => {
       res.redirect('/admin/memorial-editor2');
     });
@@ -169,7 +169,7 @@ module.exports = function (app) {
     db.Memorial.findOne({
       where: {
         Code: code,
-        RallyYear: CurrentRallyYear,
+        RallyYear: currentRallyYear,
       },
     }).then((dbPost) => {
       res.json(dbPost);
@@ -288,7 +288,7 @@ module.exports = function (app) {
         db.Flag.create({
           FlagNumber: req.body.FlagNumber,
           UserID: x.id,
-          RallyYear: CurrentRallyYear,
+          RallyYear: currentRallyYear,
         }).then((y) => {
           logger.debug(`User Created Successfully`, { calledFrom: 'be-routes.js' });
           res.status(202).json(y);
@@ -497,7 +497,7 @@ module.exports = function (app) {
       db.EarnedMemorialsXref.create({
         FlagNumber: req.body.FlagNumber,
         MemorialID: memID,
-        RallyYear: CurrentRallyYear,
+        RallyYear: currentRallyYear,
       });
     }
     res.send('success');
@@ -505,6 +505,7 @@ module.exports = function (app) {
 
   // Update submissions
   app.put('/handle-submission', (req, res) => {
+    logger.info(`handle-submission was reached.`, { calledFrom: 'be-routes.js' });
     // Update the submission record to mark it as scored
     db.Submission.update(
       {
@@ -514,21 +515,33 @@ module.exports = function (app) {
       {
         where: { id: req.body.SubmissionID },
       },
-    );
+    ).then(() => {
+      logger.info(
+        `Submission ${req.body.SubmissionID} updated with Status ${req.body.Status}. ScorerNotes: ${req.body.ScorerNotes}`,
+        { calledFrom: 'be-routes.js' },
+      );
+    });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
     if (req.body.Status === 1) {
       // Grant credit to the submitter
       db.EarnedMemorialsXref.create({
         FlagNumber: req.body.SubmittedFlagNumber,
         MemorialID: req.body.SubmittedMemorialID,
-        RallyYear: CurrentRallyYear,
-      }).catch((err) => {
-        logger.error(
-          `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
-          { calledFrom: 'be-routes.js' },
-        );
-        res.status(401).json(err);
-      });
+        RallyYear: currentRallyYear,
+      })
+        .then(() => {
+          logger.info(
+            `Submission ${req.body.SubmissionID} granted rider ${req.body.SubmittedFlagNumber} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
+            { calledFrom: 'be-routes.js' },
+          );
+        })
+        .catch((err) => {
+          logger.error(
+            `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
+            { calledFrom: 'be-routes.js' },
+          );
+          res.status(401).json(err);
+        });
       // If there are additional participents on the submission then credit them, too.
       if (req.body.SubmittedOtherRiders) {
         const RiderFlagArray = req.body.SubmittedOtherRiders.split(',');
@@ -536,16 +549,23 @@ module.exports = function (app) {
           db.EarnedMemorialsXref.create({
             FlagNumber: rider,
             MemorialID: req.body.SubmittedMemorialID,
-            RallyYear: CurrentRallyYear,
-          }).catch((err) => {
-            logger.error(
-              `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
-              {
-                calledFrom: 'be-routes.js',
-              },
-            );
-            res.status(401).json(err);
-          });
+            RallyYear: currentRallyYear,
+          })
+            .then(() => {
+              logger.info(
+                `Submission ${req.body.SubmissionID} granted other rider ${rider} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
+                { calledFrom: 'be-routes.js' },
+              );
+            })
+            .catch((err) => {
+              logger.error(
+                `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+                {
+                  calledFrom: 'be-routes.js',
+                },
+              );
+              res.status(401).json(err);
+            });
         });
       }
     }
@@ -660,7 +680,7 @@ module.exports = function (app) {
     db.Flag.findOne({
       where: {
         FlagNumber: flag,
-        RallyYear: CurrentRallyYear,
+        RallyYear: currentRallyYear,
       },
     }).then((dbPost) => {
       res.json(dbPost);
@@ -711,7 +731,7 @@ module.exports = function (app) {
         where: {
           RegionID: req.body.RegionID,
           PlaceNum: req.body.TrophyPlace,
-          RallyYear: CurrentRallyYear,
+          RallyYear: currentRallyYear,
         },
       },
     );
@@ -724,7 +744,7 @@ module.exports = function (app) {
       FlagNumber: req.body.FlagNumber,
       Name: req.body.AwardName,
       RideDate: req.body.AwardDate,
-      RallyYear: CurrentRallyYear,
+      RallyYear: currentRallyYear,
     });
     res.send('success');
   });
@@ -1061,7 +1081,7 @@ module.exports = function (app) {
       // Update Order with new step number
       db.Order.update(WaiverInfo, {
         where: {
-          RallyYear: CurrentRallyYear,
+          RallyYear: currentRallyYear,
           id: req.body.OrderID,
         },
       })
@@ -1189,7 +1209,7 @@ module.exports = function (app) {
 
       db.Order.update(FlagInfoComplete, {
         where: {
-          RallyYear: CurrentRallyYear,
+          RallyYear: currentRallyYear,
           id: req.body.OrderID,
         },
       })
@@ -1203,7 +1223,7 @@ module.exports = function (app) {
               db.Passenger.create({
                 RiderFlagNumber: result.RequestedRiderFlagNumber,
                 PassengerFlagNumber: result.RequestedPassFlagNumber,
-                RallyYear: CurrentRallyYear,
+                RallyYear: currentRallyYear,
               }).catch((err) => {
                 logger.error(`Error saving Passenger Info for Order ${req.body.OrderID}: ${err}`, {
                   calledFrom: 'be-routes.js',
@@ -1357,12 +1377,12 @@ module.exports = function (app) {
         await db.Waiver.findOrCreate({
           where: {
             UserID: rider,
-            RallyYear: CurrentRallyYear,
+            RallyYear: currentRallyYear,
           },
           defaults: {
             UserID: rider,
             WaiverID: waiverID,
-            RallyYear: CurrentRallyYear,
+            RallyYear: currentRallyYear,
           },
         });
         res.status(200).send();
@@ -1382,7 +1402,7 @@ module.exports = function (app) {
     db.Waiver.findOne({
       where: {
         UserID: waiverID,
-        RallyYear: CurrentRallyYear,
+        RallyYear: currentRallyYear,
       },
     }).then((waiverData) => {
       res.json(waiverData);
