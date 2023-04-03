@@ -522,64 +522,64 @@ module.exports = function (app) {
         `Submission ${req.body.SubmissionID} updated with Status ${req.body.Status}. ScorerNotes: ${req.body.ScorerNotes}`,
         { calledFrom: 'be-routes.js' },
       );
+      if (req.body.Status === 1) {
+        logger.info(`${req.body.SubmissionID} has Status ${req.body.SubmissionID}`, {
+          calledFrom: 'be-routes.js',
+        });
+        // Grant credit to the submitter
+        db.EarnedMemorialsXref.create({
+          FlagNumber: req.body.SubmittedFlagNumber,
+          MemorialID: req.body.SubmittedMemorialID,
+          RallyYear: currentRallyYear,
+        })
+          .then(() => {
+            logger.info(
+              `Submission ${req.body.SubmissionID} granted rider ${req.body.SubmittedFlagNumber} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
+              { calledFrom: 'be-routes.js' },
+            );
+          })
+          .catch((err) => {
+            logger.error(
+              `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
+              { calledFrom: 'be-routes.js' },
+            );
+            res.status(401).json(err);
+          });
+        // If there are additional participents on the submission then credit them, too.
+        if (req.body.SubmittedOtherRiders) {
+          logger.info(
+            `${req.body.SubmissionID} has multiple riders: ${req.body.SubmittedOtherRiders}`,
+            {
+              calledFrom: 'be-routes.js',
+            },
+          );
+          const RiderFlagArray = req.body.SubmittedOtherRiders.split(',');
+          RiderFlagArray.forEach((rider) => {
+            db.EarnedMemorialsXref.create({
+              FlagNumber: rider,
+              MemorialID: req.body.SubmittedMemorialID,
+              RallyYear: currentRallyYear,
+            })
+              .then(() => {
+                logger.info(
+                  `Submission ${req.body.SubmissionID} granted other rider ${rider} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
+                  { calledFrom: 'be-routes.js' },
+                );
+              })
+              .catch((err) => {
+                logger.error(
+                  `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+                  {
+                    calledFrom: 'be-routes.js',
+                  },
+                );
+                res.status(401).json(err);
+              });
+          });
+        }
+      }
     });
     // If it was approved, add a record to the EarnedMemorialsXref table to mark it as earned for the appropriate people.
-    if (req.body.Status === 1) {
-      logger.info(`${req.body.SubmissionID} has Status ${req.body.SubmissionID}`, {
-        calledFrom: 'be-routes.js',
-      });
-      // Grant credit to the submitter
-      db.EarnedMemorialsXref.create({
-        FlagNumber: req.body.SubmittedFlagNumber,
-        MemorialID: req.body.SubmittedMemorialID,
-        RallyYear: currentRallyYear,
-      })
-        .then(() => {
-          logger.info(
-            `Submission ${req.body.SubmissionID} granted rider ${req.body.SubmittedFlagNumber} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
-            { calledFrom: 'be-routes.js' },
-          );
-        })
-        .catch((err) => {
-          logger.error(
-            `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
-            { calledFrom: 'be-routes.js' },
-          );
-          res.status(401).json(err);
-        });
-      // If there are additional participents on the submission then credit them, too.
-      if (req.body.SubmittedOtherRiders) {
-        logger.info(
-          `${req.body.SubmissionID} has multiple riders: ${req.body.SubmittedOtherRiders}`,
-          {
-            calledFrom: 'be-routes.js',
-          },
-        );
-        const RiderFlagArray = req.body.SubmittedOtherRiders.split(',');
-        RiderFlagArray.forEach((rider) => {
-          db.EarnedMemorialsXref.create({
-            FlagNumber: rider,
-            MemorialID: req.body.SubmittedMemorialID,
-            RallyYear: currentRallyYear,
-          })
-            .then(() => {
-              logger.info(
-                `Submission ${req.body.SubmissionID} granted other rider ${rider} credit for ${req.body.SubmittedMemorialID} in ${currentRallyYear}.`,
-                { calledFrom: 'be-routes.js' },
-              );
-            })
-            .catch((err) => {
-              logger.error(
-                `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
-                {
-                  calledFrom: 'be-routes.js',
-                },
-              );
-              res.status(401).json(err);
-            });
-        });
-      }
-    }
     res.send('success');
   });
 
