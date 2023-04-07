@@ -657,24 +657,6 @@ module.exports.querySubmissionStatusBySubID = async function querySubmissionStat
   }
 };
 
-module.exports.querySubmissionsByRider = async function querySubmissionsByRider(rider) {
-  try {
-    const result = await sequelize.query(
-      "SELECT s.id, s.UserId, s.MemorialID, s.Status AS 'StatusID', CASE s.Status WHEN 1 THEN 'Approved' WHEN 2 THEN 'Rejected' WHEN 3 THEN 'In Review' ELSE 'Pending' END Status, s.ScorerNotes, s.RiderNotes, s.createdAt, m.Code, m.Name, c.Name AS Category FROM Submissions s LEFT JOIN Memorials m ON m.id = s.MemorialID LEFT JOIN Categories c ON c.id = m.Category WHERE s.UserID = ? ORDER BY s.createdAt DESC",
-      {
-        replacements: [rider],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in querySubmissionsByRider(${rider})`, {
-      calledFrom: 'queries.js',
-    });
-    throw err;
-  }
-};
-
 module.exports.queryRegionList = async function queryRegionList() {
   try {
     const result = await sequelize.query('SELECT id, Region FROM Regions ORDER BY Region', {

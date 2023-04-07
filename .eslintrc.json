@@ -15,11 +15,12 @@
     "prettier/prettier": ["error"],
     "default-case-last": "error",
     "default-param-last": ["error"],
-    "func-names": ["error", "always"],
+    "func-names": "off",
     "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
     "no-use-before-define": ["error", "nofunc"],
     "no-useless-call": "error",
     "prefer-exponentiation-operator": "error",
-    "prefer-regex-literals": "error"
+    "prefer-regex-literals": "error",
+    "no-restricted-globals": "off"
   }
 }

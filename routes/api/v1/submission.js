@@ -136,7 +136,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
       WHEN 3 THEN 'In Review' 
       ELSE 'Pending' 
     END Status, 
-    s.ScorerNotes, s.RiderNotes, s.createdAt, 
+    s.ScorerNotes, s.RiderNotes, s.createdAt, s.Source,
     m.Code, m.Name, 
     c.Name AS Category 
   FROM Submissions s 
