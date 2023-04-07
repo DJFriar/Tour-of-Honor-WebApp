@@ -772,7 +772,6 @@ module.exports = function (app) {
     let activeUser = false;
     let PassengerInfo;
     let RiderBikeInfo;
-    let RiderSubmissionHistory;
     let TimeZoneOptions;
     let UserTimeZone;
     if (req.user) {
@@ -789,13 +788,6 @@ module.exports = function (app) {
       RiderBikeInfo = await q.queryAllBikes(req.user.id);
     } catch (err) {
       logger.error(`Error encountered: queryAllBikes().${err}`, { calledFrom: 'fe-routes.js' });
-    }
-    try {
-      RiderSubmissionHistory = await q.querySubmissionsByRider(req.user.id);
-    } catch (err) {
-      logger.error(`Error encountered: querySubmissionsByRider().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
     }
     try {
       TimeZoneOptions = await q.queryTimeZoneData();
@@ -818,7 +810,6 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: '',
       PassengerInfo,
-      RiderSubmissionHistory,
       RiderBikeInfo,
       TimeZoneOptions,
       UserTimeZone,
