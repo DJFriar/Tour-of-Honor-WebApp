@@ -135,50 +135,15 @@
         <table class="uk-table uk-table-striped uk-table-small" id="riderSubmissionHistory">
           <thead>
             <tr>
+              <th>SubID</th>
               <th>Code</th>
+              <th>Name</th>
               <th>Category</th>
               <th>Status</th>
               <th>Date Submitted</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <% RiderSubmissionHistory.forEach(function(riderSubmission) { %>
-              <tr>
-                <td>
-                  <span style="font-family: 'Source Code Pro', monospace;"><a href="/memorial/<%= riderSubmission.Code %>"><%= riderSubmission.Code %></a></span>
-                </td>
-                <td>
-                  <%= riderSubmission.Category %>
-                </td>
-                <td>
-                  <% if(riderSubmission.StatusID == 0) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-light fa-clock"></i>&nbsp;<%= riderSubmission.Status %></span>
-                  <% } %>
-                  <% if(riderSubmission.StatusID == 1) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-shield-check" color="green"></i>&nbsp;<%= riderSubmission.Status %></span>
-                  <% } %>
-                  <% if(riderSubmission.StatusID == 2) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-shield-exclamation" color="red"></i>&nbsp;<%= riderSubmission.Status %></span>
-                  <% } %>
-                  <% if(riderSubmission.StatusID == 3) { %> 
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>"><i class="fa-solid fa-pause" color="orange"></i>&nbsp;<%= riderSubmission.Status %></span>
-                  <% } %>
-                  <% if(riderSubmission.ScorerNotes) { %>
-                    <span uk-tooltip="<%= riderSubmission.ScorerNotes %>">&nbsp;<i class="fa-light fa-message-lines"></i></span>
-                  <% } %>
-                </td>
-                <td>
-                  <%= dt.fromJSDate(riderSubmission.createdAt).setZone(UserTimeZone.ZoneName).toFormat('LLL d, yyyy @ h:mm a ZZZZ'); %>
-                </td>
-                <td>
-                  <% if(riderSubmission.StatusID == 0) { %> 
-                    <span class="deleteSubmissionButton clickable" uk-tooltip="Delete Submission" data-uid="<%- riderSubmission.id %>"><i class="fa-light fa-trash-can"></i></span>&nbsp;
-                  <% } %>
-                </td>
-              </tr>
-            <% }) %>
-          </tbody>
         </table>
       </div>
       <!-- This is the Add New Bike Info modal -->
@@ -189,6 +154,7 @@
       <div id="bikeInfoEditModal" class="modal">
         <%- include('../partials/bikeInfoEditModal'); %>
       </div>
+      <div id="userTZ" data-usertz="<%= UserTimeZone.ZoneName %>"></div>
     </main>
     <footer>
       <%- include('../partials/footer'); %>

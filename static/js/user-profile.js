@@ -1,6 +1,105 @@
+/* eslint-disable prettier/prettier */
 $(document).ready(() => {
+  const userID = $('#saveProfileEdits').data('userid');
+  const userTimeZone = $('#userTZ').data('usertz');
+  const messageIcon = '&nbsp;<i class="fa-light fa-message-lines"></i>';
   $('#riderSubmissionHistory').DataTable({
-    order: [[3, 'desc']],
+    ajax: {
+      url: `/api/v1/submission/byUser/${userID}`,
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'id' },                         // 0
+      { data: 'Code' },                       // 1
+      { data: 'Name' },                       // 2
+      { data: 'Category' },                   // 3
+      { data: 'StatusID' },                   // 4
+      { data: 'createdAt' },                  // 5
+      { data: null, Name: 'Actions' },        // 6
+      { data: 'ScorerNotes' },                // 7
+      { data: 'Status' },                     // 8
+      { data: 'Source' },                     // 9
+    ],
+    columnDefs: [
+      {
+        render(data, type, row) {
+          if (type === 'display') {
+            switch (row.Source) {
+              case 1:
+                return `<i class="fa-light fa-square-question"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              case 2:
+                return `<i class="fa-brands fa-apple"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              case 3:
+                return `<i class="fa-brands fa-android"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              case 4:
+                return `<i class="fa-solid fa-browser"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              case 5:
+                return `<i class="fa-light fa-envelope"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              case 6:
+                return `<i class="fa-brands fa-usps"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+              default:
+                return `<i class="fa-light fa-square-question"></i>&nbsp;<a href="/memorial/${data}" target="_blank">${data}</a>`;
+            }
+          }
+          return data;
+        },
+        targets: [1],
+      },
+      {
+        render(data, type, row) {
+          switch (data) {
+            case 0:
+              return `<span uk-tooltip="${
+                row.ScorerNotes
+              }"><i class="fa-light fa-clock"></i>&nbsp;${row.Status}${
+                row.ScorerNotes ? messageIcon : ''
+              }</span>`;
+            case 1:
+              return `<span uk-tooltip="${
+                row.ScorerNotes
+              }"><i class="fa-solid fa-shield-check" color="green"></i>&nbsp;${row.Status}${
+                row.ScorerNotes ? messageIcon : ''
+              }</span>`;
+            case 2:
+              return `<span uk-tooltip="${
+                row.ScorerNotes
+              }"><i class="fa-solid fa-shield-exclamation" color="red"></i>&nbsp;${row.Status}${
+                row.ScorerNotes ? messageIcon : ''
+              }</span>`;
+            case 3:
+              return `<span uk-tooltip="${
+                row.ScorerNotes
+              }"><i class="fa-solid fa-pause" color="orange"></i>&nbsp;${row.Status}${
+                row.ScorerNotes ? messageIcon : ''
+              }</span>`;
+            default:
+              return `[ERROR]`;
+          }
+        },
+        targets: [4],
+      },
+      {
+        render(data, type) {
+          if (type === 'display') {
+            const createdDate = new Date(data);
+            return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+          }
+          return data;
+        },
+        targets: [5],
+      },
+      {
+        render(data, type, row) {
+          if (row.StatusID === 0) {
+            return `<span class='deleteSubmissionButton clickable' uk-tooltip="Delete Submission" data-uid='${row.id}'><i class="fa-light fa-trash-can"></i></span>&nbsp;`;
+          }
+          return '';
+        },
+        targets: [6],
+      },
+      { targets: [0, 7, 8, 9], visible: false, Searchable: false },
+    ],
+    order: [[5, 'desc']],
     pageLength: 25,
   });
 
