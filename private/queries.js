@@ -603,9 +603,9 @@ module.exports.queryMemorialStatusByRider = async function queryMemorialStatusBy
 ) {
   try {
     const result = await sequelize.query(
-      'SELECT id FROM EarnedMemorialsXref WHERE FlagNumber = ? AND MemorialID = ?',
+      'SELECT id FROM EarnedMemorialsXref WHERE FlagNumber = ? AND MemorialID = ? AND RallyYear = ?',
       {
-        replacements: [rider, memCode],
+        replacements: [rider, memCode, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
