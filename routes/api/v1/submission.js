@@ -162,6 +162,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
 
 // Get All Pending Submissions
 ApiSubmissionRouter.route('/pendingHeld').get(async (req, res) => {
+  logger.info(`/submission/pendingHeld route was hit`);
   const sqlQuery = `
   SELECT DISTINCT
     s.*, 
