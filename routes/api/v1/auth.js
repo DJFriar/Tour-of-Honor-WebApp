@@ -12,10 +12,10 @@ const { QueryTypes } = require('sequelize');
 const jwt = require('jsonwebtoken');
 
 const db = require('../../../models');
-const { logger } = require('../../../controllers/logger');
-const hasValidApiKey = require('../../../middleware/authCheck');
 
 const { sequelize } = db;
+const { logger } = require('../../../controllers/logger');
+const hasValidApiKey = require('../../../middleware/authCheck');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
@@ -23,6 +23,7 @@ ApiAuthRouter.use(hasValidApiKey);
 
 ApiAuthRouter.route('/').post(async (req, res) => {
   const { flag, zipcode } = req.body;
+  let storedZipCode = '00000';
   const sqlQuery = `
     SELECT 
       f.id, 
@@ -44,11 +45,20 @@ ApiAuthRouter.route('/').post(async (req, res) => {
     type: QueryTypes.SELECT,
   });
   const UserData = User[0];
-  const storedZipCode = UserData.ZipCode.slice(0, 5);
-  if (!UserData || storedZipCode !== zipcode) {
-    logger.error(`UserData returned false: ${JSON.stringify(UserData)}`, {
+  if (!UserData || UserData === undefined) {
+    logger.error(`No rider found with Flag ${flag}.`, {
       calledFrom: 'api/v1/auth.js',
     });
+    return res.sendStatus(400);
+  }
+  if (UserData) storedZipCode = UserData.ZipCode.slice(0, 5);
+  if (storedZipCode !== zipcode) {
+    logger.error(
+      `The provided zip code (${zipcode}) doesn't match the zip code on record for Flag ${flag}`,
+      {
+        calledFrom: 'api/v1/auth.js',
+      },
+    );
     return res.sendStatus(400);
   }
 
@@ -65,7 +75,10 @@ ApiAuthRouter.route('/').post(async (req, res) => {
     },
     process.env.JWT_SECRET,
   );
-  console.log(`UserData: ${JSON.stringify(UserData)}`);
+  if (!process.env.ID_PROD) {
+    // eslint-disable-next-line no-console
+    console.log(`UserData: ${JSON.stringify(UserData)}`);
+  }
   return res.send(token);
 });
 

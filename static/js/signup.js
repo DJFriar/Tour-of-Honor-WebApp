@@ -44,7 +44,7 @@ $(document).ready(() => {
       Password: $('#Password').val().trim(),
       Address1: $('#Address1').val().trim(),
       City: $('#City').val().trim(),
-      State: $('#State').val().trim(),
+      State: $('#State').val().trim().toUpperCase(),
       ZipCode: $('#ZipCode').val().trim(),
       CellNumber: $('#CellNumber').val().trim(),
     };

@@ -161,7 +161,8 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
 });
 
 // Get All Pending Submissions
-ApiSubmissionRouter.route('/pending').get(async (req, res) => {
+ApiSubmissionRouter.route('/pendingHeld').get(async (req, res) => {
+  logger.info(`/submission/pendingHeld route was hit`);
   const sqlQuery = `
   SELECT DISTINCT
     s.*, 
@@ -169,18 +170,18 @@ ApiSubmissionRouter.route('/pending').get(async (req, res) => {
     f.FlagNumber,  
     m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, 
     c.Name AS CatName, 
-    CASE 
-      WHEN s.Status = 0 THEN 'Pending' 
-      WHEN s.Status = 1 THEN 'Approved' 
-      WHEN s.Status = 2 THEN 'Rejected' 
-      WHEN s.Status = 3 THEN 'Held' 
+    CASE s.Status
+      WHEN 0 THEN 'Pending' 
+      WHEN 1 THEN 'Approved' 
+      WHEN 2 THEN 'Rejected' 
+      WHEN 3 THEN 'Held' 
     END AS StatusText 
   FROM Submissions s 
     INNER JOIN Users u ON s.UserID = u.id 
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
     INNER JOIN Flags f ON f.UserID = u.id AND f.RallyYear = ${currentRallyYear}
-  WHERE s.Status = 0
+  WHERE s.Status IN (0,3)
   `;
   try {
     const allPendingSubmissions = await sequelize.query(sqlQuery, {
@@ -195,7 +196,42 @@ ApiSubmissionRouter.route('/pending').get(async (req, res) => {
   }
 });
 
-// Get All Held Submissions
+// Get Only Pending Submissions
+ApiSubmissionRouter.route('/pending').get(async (req, res) => {
+  const sqlQuery = `
+  SELECT DISTINCT
+    s.*, 
+    u.FirstName, u.LastName, u.Email,
+    f.FlagNumber,  
+    m.Name, m.Code, m.Category, m.Region, m.Latitude, m.Longitude, m.City, m.State, m.SampleImage, m.Access, m.MultiImage, 
+    c.Name AS CatName, 
+    CASE s.Status
+      WHEN 0 THEN 'Pending' 
+      WHEN 1 THEN 'Approved' 
+      WHEN 2 THEN 'Rejected' 
+      WHEN 3 THEN 'Held' 
+    END AS StatusText 
+  FROM Submissions s 
+    INNER JOIN Users u ON s.UserID = u.id 
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+    INNER JOIN Flags f ON f.UserID = u.id AND f.RallyYear = ${currentRallyYear}
+  WHERE s.Status = 0
+  `;
+  try {
+    const onlyPendingSubmissions = await sequelize.query(sqlQuery, {
+      type: QueryTypes.SELECT,
+    });
+    res.json(onlyPendingSubmissions);
+  } catch (err) {
+    logger.error(`An error was encountered in onlyPendingSubmissions: ${err}`, {
+      calledFrom: 'api/v1/submission.js',
+    });
+    throw err;
+  }
+});
+
+// Get Only Held Submissions
 ApiSubmissionRouter.route('/held').get(async (req, res) => {
   const sqlQuery = `
   SELECT DISTINCT
@@ -218,12 +254,12 @@ ApiSubmissionRouter.route('/held').get(async (req, res) => {
   WHERE s.Status = 3
   `;
   try {
-    const allHeldSubmissions = await sequelize.query(sqlQuery, {
+    const onlyHeldSubmissions = await sequelize.query(sqlQuery, {
       type: QueryTypes.SELECT,
     });
-    res.json(allHeldSubmissions);
+    res.json(onlyHeldSubmissions);
   } catch (err) {
-    logger.error(`An error was encountered in allHeldSubmissions: ${err}`, {
+    logger.error(`An error was encountered in onlyHeldSubmissions: ${err}`, {
       calledFrom: 'api/v1/submission.js',
     });
     throw err;
