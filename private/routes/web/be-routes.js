@@ -540,10 +540,10 @@ module.exports = function (app) {
           })
           .catch((err) => {
             logger.error(
-              `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}:${err}`,
+              `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}: ${err}`,
               { calledFrom: 'be-routes.js' },
             );
-            res.status(401).json(err);
+            // res.status(401).json(err);
           });
         // If there are additional participents on the submission then credit them, too.
         if (req.body.SubmittedOtherRiders) {
@@ -568,12 +568,12 @@ module.exports = function (app) {
               })
               .catch((err) => {
                 logger.error(
-                  `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+                  `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}: ${err}`,
                   {
                     calledFrom: 'be-routes.js',
                   },
                 );
-                res.status(401).json(err);
+                // res.status(401).json(err);
               });
           });
         }
