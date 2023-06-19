@@ -75,7 +75,10 @@ ApiAuthRouter.route('/').post(async (req, res) => {
     },
     process.env.JWT_SECRET,
   );
-  console.log(`UserData: ${JSON.stringify(UserData)}`);
+  if (!process.env.ID_PROD) {
+    // eslint-disable-next-line no-console
+    console.log(`UserData: ${JSON.stringify(UserData)}`);
+  }
   return res.send(token);
 });
 
