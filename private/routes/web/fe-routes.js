@@ -344,7 +344,6 @@ module.exports = function (app) {
   app.get('/admin/trophy-editor', isAuthenticated, async (req, res) => {
     let activeUser = false;
     let AwardNames;
-    let Awards;
     let Regions;
     let TrophyList;
     if (req.user) {
@@ -367,17 +366,11 @@ module.exports = function (app) {
         calledFrom: 'fe-routes.js',
       });
     }
-    try {
-      Awards = await q.queryAwardList();
-    } catch (err) {
-      logger.error(`Error encountered: queryAwardList().${err}`, { calledFrom: 'fe-routes.js' });
-    }
     res.locals.title = 'TOH Trophy Editor';
     res.render('pages/admin/trophy-editor', {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Awards,
       AwardNames,
       Regions,
       TrophyList,
@@ -1120,6 +1113,30 @@ module.exports = function (app) {
       OrderInfo,
       UserID: userid,
       WaiverID,
+    });
+  });
+
+  app.get('/awards', async (req, res) => {
+    let activeUser = false;
+    let TimeZoneCode = '';
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
+      TimeZoneCode = req.user.TimeZone;
+    }
+    try {
+      TimeZone = await q.queryTimeZoneData(TimeZoneCode);
+    } catch (err) {
+      logger.error(`Error encountered: queryTimeZoneData(${TimeZoneCode}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
+    }
+    res.locals.title = 'TOH Awards List';
+    res.render('pages/awards', {
+      activeUser,
+      User: req.user,
+      NotificationText: '',
+      TimeZone,
     });
   });
 

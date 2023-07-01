@@ -104,33 +104,19 @@
             <br />
             <h6>Earned Awards</h6>
             <!-- #region Awards Table -->
-            <table class="uk-table uk-table-striped uk-table-small" id="awardTable">
+            <table class="uk-table uk-table-striped uk-table-small" id="awardTable" style="width: 100%;">
               <thead>
                 <tr>
-                  <th>UserID</th>
-                  <th>Award</th>
+                  <th>ID</th>
+                  <th>Rider</th>
+                  <th>Flag Number</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Award Earned</th>
                   <th>Date Earned</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <% Awards.forEach(function(award) { %>
-                  <tr>
-                    <td>
-                      <%= award.FirstName %> <%= award.LastName %> (<%= award.FlagNumber %>)
-                    </td>
-                    <td>
-                      <%= award.Name %>
-                    </td>
-                    <td>
-                      <%= award.RideDate %>
-                    </td>
-                    <td>
-                      <div class="deleteAwardButton" data-uid="<%- award.id %>"><i class="fa-light fa-trash-can fa-lg"></i></div>
-                    </td>
-                  </tr>
-                <% }) %>
-              </tbody>
             </table>
             <!-- #endregion -->
           </li>

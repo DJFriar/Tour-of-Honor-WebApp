@@ -192,45 +192,45 @@ $(document).ready(() => {
     }
   }
 
-  const userTZ = $('#releaseDate').data('tzf');
-  const options = {
-    timeZoneName: 'short',
-  };
-  if (userTZ) {
-    options.timeZone = userTZ;
-  }
+  // const userTZ = $('#releaseDate').data('tzf');
+  // const options = {
+  //   timeZoneName: 'short',
+  // };
+  // if (userTZ) {
+  //   options.timeZone = userTZ;
+  // }
 
-  const releaseDate = new Date('Apr 1, 2023 00:01:00 EDT');
-  const deadline = releaseDate.getTime();
+  // const releaseDate = new Date('Apr 1, 2023 00:01:00 EDT');
+  // const deadline = releaseDate.getTime();
 
-  const x = setInterval(() => {
-    const now = new Date(new Date().toLocaleString('en-US', options)).getTime();
-    const tzShort = new Date().toLocaleString('default', options).slice(-3);
-    const t = deadline - now;
-    const days = Math.floor(t / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((t % (1000 * 60)) / 1000);
-    document.getElementById(
-      'countdownTimer',
-    ).innerHTML = `T- ${days}d ${hours}h ${minutes}m ${seconds}s (Using ${tzShort})`;
-    if (t < 0) {
-      clearInterval(x);
-    }
-  }, 1000);
+  // const x = setInterval(() => {
+  //   const now = new Date(new Date().toLocaleString('en-US', options)).getTime();
+  //   const tzShort = new Date().toLocaleString('default', options).slice(-3);
+  //   const t = deadline - now;
+  //   const days = Math.floor(t / (1000 * 60 * 60 * 24));
+  //   const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  //   const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+  //   const seconds = Math.floor((t % (1000 * 60)) / 1000);
+  //   document.getElementById(
+  //     'countdownTimer',
+  //   ).innerHTML = `T- ${days}d ${hours}h ${minutes}m ${seconds}s (Using ${tzShort})`;
+  //   if (t < 0) {
+  //     clearInterval(x);
+  //   }
+  // }, 1000);
 
-  $('#releaseDate').html(
-    releaseDate.toLocaleString('en-US', {
-      day: 'numeric',
-      hour: 'numeric',
-      month: 'long',
-      minute: 'numeric',
-      second: '2-digit',
-      timeZone: 'America/New_York',
-      timeZoneName: 'short',
-      year: 'numeric',
-    }),
-  );
+  // $('#releaseDate').html(
+  //   releaseDate.toLocaleString('en-US', {
+  //     day: 'numeric',
+  //     hour: 'numeric',
+  //     month: 'long',
+  //     minute: 'numeric',
+  //     second: '2-digit',
+  //     timeZone: 'America/New_York',
+  //     timeZoneName: 'short',
+  //     year: 'numeric',
+  //   }),
+  // );
 
   // $('#userLocalTime').text(`${userDateTime} | ${releaseDateTime} | TimeLeft: ${countdown}`);
 });
