@@ -344,7 +344,6 @@ module.exports = function (app) {
   app.get('/admin/trophy-editor', isAuthenticated, async (req, res) => {
     let activeUser = false;
     let AwardNames;
-    let Awards;
     let Regions;
     let TrophyList;
     if (req.user) {
@@ -367,17 +366,11 @@ module.exports = function (app) {
         calledFrom: 'fe-routes.js',
       });
     }
-    try {
-      Awards = await q.queryAwardList();
-    } catch (err) {
-      logger.error(`Error encountered: queryAwardList().${err}`, { calledFrom: 'fe-routes.js' });
-    }
     res.locals.title = 'TOH Trophy Editor';
     res.render('pages/admin/trophy-editor', {
       activeUser,
       User: req.user,
       NotificationText: '',
-      Awards,
       AwardNames,
       Regions,
       TrophyList,
