@@ -10,8 +10,10 @@ $(document).ready(() => {
     if (scorerNotes.length >= 5) {
       $('.rejectButton').removeAttr('disabled');
       $('#rejectButtonSpan').removeAttr('uk-tooltip');
+      $('.skipButton').removeAttr('disabled');
     } else {
       $('.rejectButton').attr('disabled', 'disabled');
+      $('.skipButton').attr('disabled', 'disabled');
     }
   });
 

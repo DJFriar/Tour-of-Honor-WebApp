@@ -69,8 +69,8 @@
                   <i class="fa-solid fa-thumbs-down"></i>&nbsp; Reject
                 </button>
               </span>
-              <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
-                <button class="uk-button uk-button-primary skipButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
+              <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue. Requires a note above explaining why it needs review.">
+                <button class="uk-button uk-button-primary skipButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
                   <i class="fa-solid fa-forward"></i>&nbsp; Skip
                 </button>
               </span>
