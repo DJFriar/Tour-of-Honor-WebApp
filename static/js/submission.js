@@ -38,7 +38,7 @@ $(document).ready(() => {
     $.ajax('/handle-submission', {
       type: 'PUT',
       data: submissionInfo,
-    }).then(goToNextPendingSubmission(selectedFilter));
+    }).then(goToNextPendingSubmission(selectedFilter, subID));
   });
 
   // Handle Skip Button
@@ -54,7 +54,7 @@ $(document).ready(() => {
     $.ajax('/handle-submission', {
       type: 'PUT',
       data: submissionInfo,
-    }).then(goToNextPendingSubmission(selectedFilter));
+    }).then(goToNextPendingSubmission(selectedFilter, subID));
   });
 
   // Handle Reject Button
@@ -70,7 +70,7 @@ $(document).ready(() => {
     $.ajax('/handle-submission', {
       type: 'PUT',
       data: submissionInfo,
-    }).then(goToNextPendingSubmission(selectedFilter));
+    }).then(goToNextPendingSubmission(selectedFilter, subID));
   });
 
   // Handle POTM Button
@@ -86,23 +86,16 @@ $(document).ready(() => {
     });
   });
 
-  function goToNextPendingSubmission(category) {
-    $.ajax(`/api/v1/submission/${category}`, {
+  function goToNextPendingSubmission(category, subID) {
+    $.ajax(`/api/v1/submission/${encodeURIComponent(category)}/${subID}`, {
       type: 'GET',
     }).then((res) => {
       // eslint-disable-next-line no-restricted-globals
-      location.assign(`/submission/${res[0].id}`);
+      if (res[0].id === 0) {
+        location.assign(`/scoring`);
+      } else {
+        location.assign(`/submission/${res[0].id}`);
+      }
     });
   }
-
-  // function skipPendingSubmission(category, subID) {
-  //   $.ajax("/api/v1/skipsubmission/" + category + "/" + subID, {
-  //     type: "GET"
-  //   }).then(
-  //     function(res) {
-  //       console.log("Skipped " + subID + ". Going to submission " + res[0].id)
-  //       location.assign("/submission/" + res[0].id);
-  //     }
-  //   )
-  // }
 });

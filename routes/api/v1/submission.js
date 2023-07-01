@@ -297,4 +297,47 @@ ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
   }
 });
 
+// Fetch Next Submission ID
+ApiSubmissionRouter.route('/:category/:sid').get(async (req, res) => {
+  const category = req.params.category.toLowerCase();
+  const submissionID = req.params.sid;
+  const sqlQueryAll = `SELECT id FROM Submissions WHERE Status = 0 AND id > ? ORDER BY id ASC LIMIT 1`;
+  const sqlQuery = `
+    SELECT s.id 
+    FROM Submissions s 
+      INNER JOIN Memorials m ON s.MemorialID = m.id 
+      INNER JOIN Categories c ON m.Category = c.id 
+    WHERE c.Name = ?
+      AND s.Status = 0 
+      AND s.id > ?
+    ORDER BY s.id ASC 
+    LIMIT 1
+  `;
+  try {
+    const NextPendingSubmission =
+      category === 'all'
+        ? await sequelize.query(sqlQueryAll, {
+            replacements: [submissionID],
+            type: QueryTypes.SELECT,
+          })
+        : await sequelize.query(sqlQuery, {
+            replacements: [category, submissionID],
+            type: QueryTypes.SELECT,
+          });
+    console.log(
+      `=== Category = ${category} / sqlQuery = ${category === 'all' ? sqlQueryAll : sqlQuery} ===`,
+    );
+    console.log(`=== NextPendingSubmission from SQL is`, NextPendingSubmission);
+    if (NextPendingSubmission.length > 0) {
+      res.json(NextPendingSubmission);
+    } else {
+      res.send([{ id: 0 }]);
+    }
+  } catch (err) {
+    logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
+      calledFrom: 'be-routes.js',
+    });
+  }
+});
+
 module.exports = ApiSubmissionRouter;
