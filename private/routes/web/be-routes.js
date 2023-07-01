@@ -545,7 +545,7 @@ module.exports = function (app) {
             );
             // res.status(401).json(err);
           });
-        // If there are additional participents on the submission then credit them, too.
+        // If there are additional participants on the submission then credit them, too.
         if (req.body.SubmittedOtherRiders) {
           logger.info(
             `${req.body.SubmissionID} has multiple riders: ${req.body.SubmittedOtherRiders}`,
@@ -718,20 +718,6 @@ module.exports = function (app) {
     });
   });
 
-  // Fetch Next Submission ID
-  app.get('/api/v1/submission/:category', async (req, res) => {
-    const category = req.params.category.toLowerCase();
-    let NextPendingSubmission;
-    try {
-      NextPendingSubmission = await q.queryNextPendingSubmissions(category);
-    } catch (err) {
-      logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
-        calledFrom: 'be-routes.js',
-      });
-    }
-    res.json(NextPendingSubmission);
-  });
-
   // Handle Trophy Awards
   app.put('/api/v1/award-trophy', async (req, res) => {
     db.Trophy.update(
@@ -758,18 +744,6 @@ module.exports = function (app) {
       RallyYear: currentRallyYear,
     });
     res.send('success');
-  });
-
-  // Delete an Award
-  app.delete('/api/v1/award-iba/:id', (req, res) => {
-    const { id } = req.params;
-    db.Award.destroy({
-      where: {
-        id,
-      },
-    }).then(() => {
-      res.status(202).send();
-    });
   });
 
   // Lookup Orders by RiderID

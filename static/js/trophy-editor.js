@@ -86,7 +86,7 @@ $(document).ready(() => {
   // Handle Delete Award Button
   $('#awardTable').on('click', '.deleteAwardButton', function () {
     const id = $(this).data('uid');
-    $.ajax(`/api/v1/award-iba/${id}`, {
+    $.ajax(`/api/v1/admin/award-iba/${id}`, {
       type: 'DELETE',
     }).then(() => {
       location.reload();

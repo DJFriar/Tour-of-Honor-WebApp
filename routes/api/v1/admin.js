@@ -61,4 +61,16 @@ AdminAuthRouter.route('/iba-awards').get(async (req, res) => {
   }
 });
 
+// Delete an Award
+AdminAuthRouter.route('/award-iba/:id').delete(async (req, res) => {
+  const { id } = req.params;
+  db.Award.destroy({
+    where: {
+      id,
+    },
+  }).then(() => {
+    res.status(202).send();
+  });
+});
+
 module.exports = AdminAuthRouter;
