@@ -48,11 +48,20 @@
           </div>
           <div class="uk-width-1-3">
             <div class="uk-text-center toh-mb-18" id="otherButtons">
-              <span id="potmButtonSpan" uk-tooltip="Send this submission to POTM Wrangler.">
-                <button class="uk-button uk-button-primary potmButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
-                  <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
-                </button>
-              </span>
+              <% if(Submissions[0].potmCandidate == 0) { %>
+                <span id="potmButtonSpan" uk-tooltip="Send this submission to PotM Wrangler.">
+                  <button class="uk-button uk-button-primary potmButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
+                    <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
+                  </button>
+                </span>
+              <% } %>
+              <% if(Submissions[0].potmCandidate == 1) { %>
+                <span id="potmButtonSpan" uk-tooltip="This submission has already been recommended for PotM.">
+                  <button class="uk-button uk-button-primary potmButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
+                    <i class="fa-solid fa-image"></i>&nbsp; POTM Candidate
+                  </button>
+                </span>
+              <% } %>
             </div>
             <div class="scorerNotesSection toh-mb-18">
               <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>

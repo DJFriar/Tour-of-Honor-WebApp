@@ -83,6 +83,8 @@ $(document).ready(() => {
     $.ajax('/api/v1/email/potmSubmission', {
       type: 'PUT',
       data: potmInfo,
+    }).then(() => {
+      $('.potmButton').attr('disabled', 'disabled');
     });
   });
 

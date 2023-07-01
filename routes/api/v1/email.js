@@ -32,18 +32,25 @@ ApiEmailRouter.route('/potmSubmission').put(async (req, res) => {
   const emailBody = await ejs.renderFile('./views/emails/emailPOTMSuggestion.ejs', {
     URL: SubmissionLink,
   });
-  db.Submission.findOne({
-    where: {
-      id: SubID,
+  db.Submission.update(
+    {
+      potmCandidate: 1,
     },
-  }).then(async (submission) => {
-    RiderNum = submission.PrimaryImage.substring(0, 3);
-    await sendEmail(
-      // 'potm@tourofhonor.com',
-      'tommy.craft@icloud.com',
-      `TOH POTM Portal Submission: ${RiderNum} / ${SubID}`,
-      emailBody,
-    );
+    {
+      where: { id: SubID },
+    },
+  ).then(() => {
+    db.Submission.findOne({
+      where: { id: SubID },
+    }).then(async (submission) => {
+      RiderNum = submission.PrimaryImage.substring(0, 3);
+      await sendEmail(
+        // 'potm@tourofhonor.com',
+        'tommy.craft@icloud.com',
+        `TOH POTM Portal Submission: ${RiderNum} / ${SubID}`,
+        emailBody,
+      );
+    });
   });
   res.send('POTM Suggestion has been sent.');
 });
