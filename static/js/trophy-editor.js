@@ -1,7 +1,48 @@
 $(document).ready(() => {
+  const userTimeZone = $('#userTZ').data('usertz');
   $('#awardTable').DataTable({
-    // "order": [[ 3, "desc" ]],
-    pageLength: 25,
+    ajax: {
+      url: '/api/v1/admin/iba-awards',
+      dataSrc: '',
+    },
+    columns: [
+      { data: 'id' },
+      { data: null, name: 'Rider' },
+      { data: 'FlagNumber' },
+      { data: 'FirstName' },
+      { data: 'LastName' },
+      { data: 'Name' },
+      { data: 'RideDate' },
+      { data: '', name: 'Actions' },
+    ],
+    columnDefs: [
+      { targets: [0], visible: false },
+      {
+        render(data, type, row) {
+          return `${row.FlagNumber} (${row.FirstName} ${row.LastName})`;
+        },
+        targets: [1],
+      },
+      { targets: [2, 3, 4], visible: false, Searchable: true },
+      {
+        render(data) {
+          const createdDate = new Date(data);
+          return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+        },
+        targets: [6],
+      },
+      {
+        render(data, type, row) {
+          const deleteAwardIcon = `<span class="deleteAwardButton toh-mr-4" uk-tooltip="Click to delete this award." data-uid="${row.id}"><i class="fa-light fa-trash-can fa-lg"></i>&nbsp;</span>`;
+          const actions = `<span style="white-space:nowrap;">${deleteAwardIcon}</span>`;
+          return actions;
+        },
+        targets: [7],
+      },
+    ],
+    lengthChange: false,
+    order: [[0, 'asc']],
+    pageLength: 100,
   });
 
   // Handle Trophies
@@ -43,7 +84,7 @@ $(document).ready(() => {
   });
 
   // Handle Delete Award Button
-  $('.deleteAwardButton').on('click', function () {
+  $('#awardTable').on('click', '.deleteAwardButton', function () {
     const id = $(this).data('uid');
     $.ajax(`/api/v1/award-iba/${id}`, {
       type: 'DELETE',

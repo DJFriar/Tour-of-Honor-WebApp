@@ -13,14 +13,10 @@ const { logger } = require('../../../controllers/logger');
 
 const { sequelize } = db;
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 AdminAuthRouter.route('/startSeason').post(async (req, res) => {
   const sqlQuery = `UPDATE Categories SET Active = 1 WHERE id = 1`;
-
-  try {
-
-  } catch {
-
-  }
   await sequelize
     .query(sqlQuery, {
       type: QueryTypes.UPDATE,
@@ -37,6 +33,32 @@ AdminAuthRouter.route('/startSeason').post(async (req, res) => {
       });
       res.status(400).send();
     });
+});
+
+AdminAuthRouter.route('/iba-awards').get(async (req, res) => {
+  const sqlQuery = `
+    SELECT DISTINCT	
+      a.id, a.Name, a.RideDate, a.FlagNumber, 
+      f.UserID, 
+      u.FirstName, u.LastName 
+    FROM Awards a 
+      INNER JOIN Flags f ON a.FlagNumber = f.FlagNumber 
+        AND f.RallyYear = ?	
+      INNER JOIN Users u ON f.UserID = u.id 
+    WHERE a.RallyYear = ? 
+    ORDER BY a.id
+  `;
+  try {
+    const ibaAwards = await sequelize.query(sqlQuery, {
+      replacements: [currentRallyYear, currentRallyYear],
+      type: QueryTypes.SELECT,
+    });
+    res.json(ibaAwards);
+  } catch (err) {
+    logger.error(`Error encountered getting OrderDetails: ${err}`, {
+      calledFrom: 'api/v1/orders.js',
+    });
+  }
 });
 
 module.exports = AdminAuthRouter;

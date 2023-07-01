@@ -1123,6 +1123,30 @@ module.exports = function (app) {
     });
   });
 
+  app.get('/awards', async (req, res) => {
+    let activeUser = false;
+    let TimeZoneCode = '';
+    let TimeZone;
+    if (req.user) {
+      activeUser = true;
+      TimeZoneCode = req.user.TimeZone;
+    }
+    try {
+      TimeZone = await q.queryTimeZoneData(TimeZoneCode);
+    } catch (err) {
+      logger.error(`Error encountered: queryTimeZoneData(${TimeZoneCode}).${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
+    }
+    res.locals.title = 'TOH Awards List';
+    res.render('pages/awards', {
+      activeUser,
+      User: req.user,
+      NotificationText: '',
+      TimeZone,
+    });
+  });
+
   // #endregion
   // ===============================================================================
 };
