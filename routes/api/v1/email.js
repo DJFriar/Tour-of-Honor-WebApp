@@ -45,8 +45,7 @@ ApiEmailRouter.route('/potmSubmission').put(async (req, res) => {
     }).then(async (submission) => {
       RiderNum = submission.PrimaryImage.substring(0, 3);
       await sendEmail(
-        // 'potm@tourofhonor.com',
-        'tommy.craft@icloud.com',
+        'potm@tourofhonor.com',
         `TOH POTM Portal Submission: ${RiderNum} / ${SubID}`,
         emailBody,
       );
