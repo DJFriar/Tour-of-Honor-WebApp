@@ -456,31 +456,6 @@ module.exports.queryBikesByRider = async function queryBikesByRider(rider) {
   }
 };
 
-module.exports.queryNextPendingSubmissions = async function queryNextPendingSubmissions(category) {
-  let result;
-  try {
-    if (category === 'all') {
-      result = await sequelize.query('SELECT id FROM Submissions WHERE Status = 0 LIMIT 1', {
-        type: QueryTypes.SELECT,
-      });
-    } else {
-      result = await sequelize.query(
-        'SELECT s.id FROM Submissions s INNER JOIN Memorials m ON s.MemorialID = m.id INNER JOIN Categories c ON m.Category = c.id WHERE c.Name = ? AND s.Status = 0 ORDER BY s.id ASC LIMIT 1',
-        {
-          replacements: [category],
-          type: QueryTypes.SELECT,
-        },
-      );
-    }
-    return result;
-  } catch (err) {
-    logger.error(`An error was encountered in queryNextPendingSubmissions(${category})`, {
-      calledFrom: 'queries.js',
-    });
-    throw err;
-  }
-};
-
 module.exports.querySkipPendingSubmission = async function querySkipPendingSubmission(
   category,
   id,
@@ -681,22 +656,6 @@ module.exports.queryTrophiesList = async function queryTrophiesList() {
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryTrophiesList()', { calledFrom: 'queries.js' });
-    throw err;
-  }
-};
-
-module.exports.queryAwardList = async function queryAwardList() {
-  try {
-    const result = await sequelize.query(
-      'SELECT DISTINCT	a.id, a.Name, a.RideDate, a.FlagNumber, f.UserID, u.FirstName, u.LastName FROM Awards a INNER JOIN Flags f ON a.FlagNumber = f.FlagNumber AND f.RallyYear = ?	INNER JOIN Users u ON f.UserID = u.id WHERE a.RallyYear = ? ORDER BY a.id',
-      {
-        replacements: [currentRallyYear, currentRallyYear],
-        type: QueryTypes.SELECT,
-      },
-    );
-    return result;
-  } catch (err) {
-    logger.error('An error was encountered in queryAwardList()', { calledFrom: 'queries.js' });
     throw err;
   }
 };

@@ -38,6 +38,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 1,
     },
+    potmCandidate: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
   });
 
   return Submission;

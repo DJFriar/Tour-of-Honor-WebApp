@@ -27,15 +27,30 @@ ApiEmailRouter.route('/:email').get((req, res) => {
 
 ApiEmailRouter.route('/potmSubmission').put(async (req, res) => {
   const SubID = req.body.SubmissionID;
+  let RiderNum = 0;
   const SubmissionLink = `${process.env.BASE_URL}/submission/${SubID}/`;
   const emailBody = await ejs.renderFile('./views/emails/emailPOTMSuggestion.ejs', {
     URL: SubmissionLink,
   });
-  await sendEmail(
-    'potm@tourofhonor.com',
-    'Tour of Honor Scoring Team - POTM Suggestion',
-    emailBody,
-  );
+  db.Submission.update(
+    {
+      potmCandidate: 1,
+    },
+    {
+      where: { id: SubID },
+    },
+  ).then(() => {
+    db.Submission.findOne({
+      where: { id: SubID },
+    }).then(async (submission) => {
+      RiderNum = submission.PrimaryImage.substring(0, 3);
+      await sendEmail(
+        'potm@tourofhonor.com',
+        `TOH POTM Portal Submission: ${RiderNum} / ${SubID}`,
+        emailBody,
+      );
+    });
+  });
   res.send('POTM Suggestion has been sent.');
 });
 
