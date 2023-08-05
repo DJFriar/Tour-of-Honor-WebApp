@@ -13,6 +13,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    make_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     Model: {
       type: DataTypes.STRING,
       allowNull: false,

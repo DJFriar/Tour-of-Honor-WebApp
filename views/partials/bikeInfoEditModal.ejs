@@ -10,11 +10,18 @@
       </div>
       <div class="uk-width-1-3@s">
         <label class="uk-form-label" for="EditBikeMake">Bike Make</label>
-        <input class="uk-input toh-input" id="EditBikeMake" type="text" placeholder="">
+        <select required class="uk-select toh-input" name="EditBikeMake" id="EditBikeMake">
+          <% BikeMakes.forEach(function(bikeMake) { %> 
+            <option value="<%= bikeMake.id %>">
+              <%= bikeMake.Name %>
+            </option>
+          <% }) %>
+        </select>
       </div>
       <div class="uk-width-1-3@s">
         <label class="uk-form-label" for="EditBikeModel">Bike Model</label>
         <input class="uk-input toh-input" id="EditBikeModel" type="text" placeholder="">
+        <span class="characterCount">Characters remaining: 25</span>
       </div>
       <div class="uk-width-1-1@s toh-mt-18">
         <div class="uk-align-right">

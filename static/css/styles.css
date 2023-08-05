@@ -43,7 +43,6 @@ hr {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  /* font-family: 'Raleway', Helvetica, Arial, sans-serif; */
   font-family: 'Exo 2', Helvetica, Arial, sans-serif;
 }
 
@@ -163,7 +162,6 @@ a.hidden-link:visited {
 }
 
 .toh-rider-flag-sm {
-  /* padding: 2px 4px; */
   background-color: yellow;
   color:#000;
   border: black 1px solid;
@@ -310,6 +308,14 @@ a.hidden-link:visited {
 
 .toh-mt-24 {
   margin-top: 24px;
+}
+
+.toh-mb-36 {
+  margin-bottom: 36px;
+}
+
+.toh-mt-36 {
+  margin-top: 36px;
 }
 
 .modal {

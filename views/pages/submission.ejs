@@ -63,14 +63,14 @@
                 </span>
               <% } %>
             </div>
-            <div class="scorerNotesSection toh-mb-18">
-              <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
+            <div class="scorerNotesSection toh-mb-36">
+              <label class="uk-form-label" for="scorerNotes">Scorer Notes <span class="copyToClipboard toh-ml-8"><i class="fa-light fa-copy fa-lg"></i></span></label>
               <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
                 <textarea class="uk-textarea toh-input" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
               <% } else { %>
                 <textarea class="uk-textarea toh-input" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
               <% } %>
-              
+              <span class="characterCount">Characters remaining: 350</span>
             </div>
             <div class="uk-text-center toh-mb-18" id="approvalButtons">
               <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">
@@ -78,8 +78,8 @@
                   <i class="fa-solid fa-thumbs-down"></i>&nbsp; Reject
                 </button>
               </span>
-              <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue. Requires a note above explaining why it needs review.">
-                <button class="uk-button uk-button-primary skipButton button-rounded" disabled data-submissionid="<%= Submissions[0].id %>">
+              <span id="skipButtonSpan" uk-tooltip="Skipping will move the submission to the review queue.">
+                <button class="uk-button uk-button-primary skipButton button-rounded" data-submissionid="<%= Submissions[0].id %>">
                   <i class="fa-solid fa-forward"></i>&nbsp; Skip
                 </button>
               </span>

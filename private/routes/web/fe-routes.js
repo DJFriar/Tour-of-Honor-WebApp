@@ -763,6 +763,7 @@ module.exports = function (app) {
 
   app.get('/user-profile', isAuthenticated, async (req, res) => {
     let activeUser = false;
+    let BikeMakes;
     let PassengerInfo;
     let RiderBikeInfo;
     let TimeZoneOptions;
@@ -796,12 +797,20 @@ module.exports = function (app) {
         calledFrom: 'fe-routes.js',
       });
     }
+    try {
+      BikeMakes = await q.queryBikeMakesList();
+    } catch (err) {
+      logger.error(`Error encountered: queryBikeMakesList().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
+    }
 
     res.locals.title = 'TOH User Profile';
     res.render('pages/user-profile', {
       activeUser,
       User: req.user,
       NotificationText: '',
+      BikeMakes,
       PassengerInfo,
       RiderBikeInfo,
       TimeZoneOptions,
@@ -1005,6 +1014,21 @@ module.exports = function (app) {
       NotificationText: '',
       Orders,
       UserTimeZone,
+      dt: DateTime,
+    });
+  });
+
+  app.get('/admin/bike-manager', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+
+    res.locals.title = 'TOH Bike Manager';
+    res.render('pages/admin/bike-manager', {
+      activeUser,
+      User: req.user,
+      NotificationText: '',
       dt: DateTime,
     });
   });
