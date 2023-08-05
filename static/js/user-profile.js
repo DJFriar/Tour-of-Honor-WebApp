@@ -198,6 +198,11 @@ $(document).ready(() => {
     $('#bikeInfoAddModal').css('display', 'block');
   });
 
+  // Character counter for Bike Model box
+  $('#BikeModel, #EditBikeModel').keyup(function () {
+    countChar(this);
+  });
+
   // Handle Save New Bike Button
   $('#saveNewBikeInfoBtn').on('click', function () {
     const UserID = $(this).data('userid');
@@ -230,6 +235,7 @@ $(document).ready(() => {
       $('#EditBikeYear').val(res.Year);
       $('#EditBikeMake').val(res.Make);
       $('#EditBikeModel').val(res.Model);
+      $('.characterCount').text(`Characters remaining: ${25 - res.Model.length}`);
     });
   });
 
@@ -275,4 +281,16 @@ $(document).ready(() => {
   $('.close').on('click', () => {
     $('.modal').css('display', 'none');
   });
+
+  function countChar(val) {
+    const len = val.value.length;
+    if (len >= 25) {
+      // eslint-disable-next-line no-param-reassign
+      val.value = val.value.substring(0, 25);
+      $('.characterCount').text('Characters remaining: 0');
+    } else {
+      const remainder = 25 - len;
+      $('.characterCount').text(`Characters remaining: ${remainder}`);
+    }
+  }
 });

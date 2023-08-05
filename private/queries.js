@@ -926,6 +926,16 @@ module.exports.queryAllFAQs = async function queryAllFAQs() {
   }
 };
 
+module.exports.queryBikeMakesList = async function queryBikeMakesList() {
+  try {
+    const result = await db.BikeMake.findAll({});
+    return result;
+  } catch (err) {
+    logger.error('An error was encountered in queryBikeMakesList()', { calledFrom: 'queries.js' });
+    throw err;
+  }
+};
+
 module.exports.queryAllRules = async function queryAllRules() {
   try {
     const result = await db.Rule.findAll({});
