@@ -63,14 +63,14 @@
                 </span>
               <% } %>
             </div>
-            <div class="scorerNotesSection toh-mb-18">
+            <div class="scorerNotesSection toh-mb-36">
               <label class="uk-form-label" for="scorerNotes">Scorer Notes</label>
               <% if(Submissions[0].Status == 0 || Submissions[0].Status == 3) { %>
                 <textarea class="uk-textarea toh-input" id="scorerNotes" rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
               <% } else { %>
                 <textarea class="uk-textarea toh-input" id="scorerNotes" disabled rows="4" placeholder="<%= Submissions[0].ScorerNotes %>" value="<%= Submissions[0].ScorerNotes %>"></textarea>
               <% } %>
-              
+              <span class="characterCount">Characters remaining: 350</span>
             </div>
             <div class="uk-text-center toh-mb-18" id="approvalButtons">
               <span id="rejectButtonSpan" uk-tooltip="You must insert a note above before rejecting.">

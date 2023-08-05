@@ -17,6 +17,11 @@ $(document).ready(() => {
     }
   });
 
+  // Character counter for Scorer Notes
+  $('#scorerNotes').keyup(function () {
+    countChar(this);
+  });
+
   // Handle Approve Button
   $('.approveButton').on('click', function () {
     const subID = $(this).data('submissionid');
@@ -99,5 +104,17 @@ $(document).ready(() => {
         location.assign(`/submission/${res[0].id}`);
       }
     });
+  }
+
+  function countChar(val) {
+    const len = val.value.length;
+    if (len >= 350) {
+      // eslint-disable-next-line no-param-reassign
+      val.value = val.value.substring(0, 350);
+      $('.characterCount').text('Characters remaining: 0');
+    } else {
+      const remainder = 350 - len;
+      $('.characterCount').text(`Characters remaining: ${remainder}`);
+    }
   }
 });
