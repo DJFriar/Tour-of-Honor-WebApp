@@ -10,11 +10,31 @@ $(document).ready(() => {
     if (scorerNotes.length >= 5) {
       $('.rejectButton').removeAttr('disabled');
       $('#rejectButtonSpan').removeAttr('uk-tooltip');
-      $('.skipButton').removeAttr('disabled');
     } else {
       $('.rejectButton').attr('disabled', 'disabled');
-      $('.skipButton').attr('disabled', 'disabled');
     }
+  });
+
+  // Character counter for Scorer Notes
+  $('#scorerNotes').keyup(function () {
+    countChar(this);
+  });
+
+  // Handle Copy to Clipboard button
+  $('.copyToClipboard').on('click', () => {
+    // Grab the text field
+    const copyText = document.getElementById('scorerNotes');
+    // Get just the placeholder text
+    const clipboardText = copyText.placeholder;
+    // Make a fake textbox with the data we want as a value
+    const clipboard = document.createElement('textarea');
+    clipboard.style.height = 0;
+    clipboard.style.width = 0;
+    clipboard.value = clipboardText;
+    document.body.appendChild(clipboard);
+    // Select the new textbox and copy it to the clipboard
+    clipboard.select();
+    document.execCommand('copy');
   });
 
   // Handle Approve Button
@@ -99,5 +119,17 @@ $(document).ready(() => {
         location.assign(`/submission/${res[0].id}`);
       }
     });
+  }
+
+  function countChar(val) {
+    const len = val.value.length;
+    if (len >= 350) {
+      // eslint-disable-next-line no-param-reassign
+      val.value = val.value.substring(0, 350);
+      $('.characterCount').text('Characters remaining: 0');
+    } else {
+      const remainder = 350 - len;
+      $('.characterCount').text(`Characters remaining: ${remainder}`);
+    }
   }
 });

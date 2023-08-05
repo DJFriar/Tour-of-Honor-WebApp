@@ -16,29 +16,58 @@ ApiBikeRouter.route('/')
     });
   })
   .post((req, res) => {
-    db.Bike.create({
-      user_id: req.body.UserID,
-      Year: req.body.BikeYear,
-      Make: req.body.BikeMake,
-      Model: req.body.BikeModel,
-    }).then(() => {
-      res.status(202).send();
+    db.BikeMake.findOne({ where: { id: req.body.BikeMake } }).then((bikeMake) => {
+      db.Bike.create({
+        user_id: req.body.UserID,
+        Year: req.body.BikeYear,
+        Make: bikeMake.Name,
+        make_id: req.body.BikeMake,
+        Model: req.body.BikeModel,
+      }).then(() => {
+        res.status(202).send();
+      });
     });
   })
   .put((req, res) => {
-    db.Bike.update(
-      {
-        Year: req.body.BikeYear,
-        Make: req.body.BikeMake,
-        Model: req.body.BikeModel,
-      },
-      {
-        where: { id: req.body.BikeID },
-      },
-    ).then(() => {
+    db.BikeMake.findOne({ where: { id: req.body.BikeMake } }).then((bikeMake) => {
+      db.Bike.update(
+        {
+          Year: req.body.BikeYear,
+          Make: bikeMake.Name,
+          make_id: req.body.BikeMake,
+          Model: req.body.BikeModel,
+        },
+        {
+          where: { id: req.body.BikeID },
+        },
+      ).then(() => {
+        res.status(202).send();
+      });
+    });
+  });
+
+ApiBikeRouter.route('/make')
+  .get((req, res) => {
+    db.BikeMake.findAll({}).then((bikeMakeArray) => {
+      res.json(bikeMakeArray);
+    });
+  })
+  .post((req, res) => {
+    db.BikeMake.create({
+      Name: req.body.BikeMakeName,
+    }).then(() => {
       res.status(202).send();
     });
   });
+
+ApiBikeRouter.route('/make/:id').delete((req, res) => {
+  const { id } = req.params;
+  db.BikeMake.destroy({
+    where: { id },
+  }).then(() => {
+    res.status(202).send();
+  });
+});
 
 ApiBikeRouter.route('/:id')
   .get((req, res) => {

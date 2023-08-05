@@ -1,0 +1,19 @@
+<div class="modal-content-mini">
+  <span class="close">&times;</span>
+  <h3>Add New Bike Make</h3>
+  <div class="toh-mt-24">
+    <form class="uk-grid-small uk-form-stacked" uk-grid>
+      <div class="uk-width-1-1@s toh-mb-18">
+        <label class="uk-form-label" for="BikeMakeName">Make Name</label>
+        <input class="uk-input toh-input" id="BikeMakeName" type="text" placeholder="">
+      </div>
+      <div class="uk-width-1-1@s toh-mt-18">
+        <div class="uk-align-right">
+          <label class="uk-form-label">&nbsp;</label>
+          <button class="uk-button uk-button-secondary button-rounded cancelButton" id="cancelAddBikeMakeButton">Cancel</button>
+          <button class="uk-button uk-button-primary button-rounded toh-ml-8" id="saveNewBikeMakeBtn" data-userid="<%= User.id %>">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
