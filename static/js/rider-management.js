@@ -214,8 +214,6 @@ $(document).ready(() => {
       Role,
       OrderID
     }
-    console.log("==== resetRiderFlagBtn was clicked ====");
-    console.log(ResetInfo);
     $('#resetFlagNumberModal').css('display', 'none');
 
     $.ajax('/api/v1/orders/reset', {
@@ -571,12 +569,6 @@ $(document).ready(() => {
         alert("Passenger's Last Name is required.");
         return;
       }
-
-      // Make sure that passenger email isn't blank.
-      // if (!welcomeEmailInfo.PassengerEmail) {
-      //   alert("Passenger's Email address is required.");
-      //   return;
-      // }
 
       // Make sure that passenger flag isn't blank.
       if (!welcomeEmailInfo.PassengerFlagNumber) {
