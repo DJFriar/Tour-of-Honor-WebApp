@@ -20,6 +20,23 @@ $(document).ready(() => {
     countChar(this);
   });
 
+  // Handle Copy to Clipboard button
+  $('.copyToClipboard').on('click', () => {
+    // Grab the text field
+    const copyText = document.getElementById('scorerNotes');
+    // Get just the placeholder text
+    const clipboardText = copyText.placeholder;
+    // Make a fake textbox with the data we want as a value
+    const clipboard = document.createElement('textarea');
+    clipboard.style.height = 0;
+    clipboard.style.width = 0;
+    clipboard.value = clipboardText;
+    document.body.appendChild(clipboard);
+    // Select the new textbox and copy it to the clipboard
+    clipboard.select();
+    document.execCommand('copy');
+  });
+
   // Handle Approve Button
   $('.approveButton').on('click', function () {
     const subID = $(this).data('submissionid');
