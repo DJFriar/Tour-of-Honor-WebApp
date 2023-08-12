@@ -66,7 +66,7 @@ router.post('/', (req, res) => {
       RallyYear: currentRallyYear,
     }).catch((err) => {
       logger.error(
-        `Failed to create EarnedMemorialsXref entry for Rider ${req.body.FlagNumber}:${err}`,
+        `Failed to create EarnedMemorialsXref entry for Rider # ${req.body.FlagNumber}:${err}`,
         { calledFrom: 'scoring.js' },
       );
       res.status(401).json(err);
@@ -81,7 +81,7 @@ router.post('/', (req, res) => {
           RallyYear: currentRallyYear,
         }).catch((err) => {
           logger.error(
-            `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}:${err}`,
+            `Failed to create EarnedMemorialsXref entry for OtherRider # ${rider}:${err}`,
             { calledFrom: 'scoring.js' },
           );
           res.status(401).json(err);
