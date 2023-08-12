@@ -553,7 +553,7 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      logger.error(`Error encountered when getting memorial ID.${err}`, {
+      logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
         calledFrom: 'fe-routes.js',
       });
     }

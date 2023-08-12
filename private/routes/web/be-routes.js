@@ -491,7 +491,10 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      logger.error('Error encountered when getting memorial ID.', { calledFrom: 'be-routes.js' });
+      logger.error(
+        `Error encountered when getting memorial ID for ${memCode} via Alternate Entry Tool.`,
+        { calledFrom: 'be-routes.js' },
+      );
     }
     if (memID > 0) {
       db.EarnedMemorialsXref.create({
@@ -523,9 +526,6 @@ module.exports = function (app) {
         { calledFrom: 'be-routes.js' },
       );
       if (req.body.Status === '1') {
-        logger.info(`${req.body.SubmissionID} has Status ${req.body.SubmissionID}`, {
-          calledFrom: 'be-routes.js',
-        });
         // Grant credit to the submitter
         db.EarnedMemorialsXref.create({
           FlagNumber: req.body.SubmittedFlagNumber,
@@ -540,7 +540,7 @@ module.exports = function (app) {
           })
           .catch((err) => {
             logger.error(
-              `Failed to create EarnedMemorialsXref entry for Rider ${req.body.SubmittedFlagNumber}: ${err}`,
+              `Failed to create EarnedMemorialsXref entry for Rider # ${req.body.SubmittedFlagNumber}: ${err}`,
               { calledFrom: 'be-routes.js' },
             );
             // res.status(401).json(err);
@@ -568,7 +568,7 @@ module.exports = function (app) {
               })
               .catch((err) => {
                 logger.error(
-                  `Failed to create EarnedMemorialsXref entry for OtherRider ${rider}: ${err}`,
+                  `Failed to create EarnedMemorialsXref entry for OtherRider # ${rider}: ${err}`,
                   {
                     calledFrom: 'be-routes.js',
                   },
