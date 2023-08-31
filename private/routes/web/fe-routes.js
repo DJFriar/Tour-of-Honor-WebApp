@@ -52,16 +52,16 @@ module.exports = function (app) {
     {
       StepIndex: 5,
       Title: 'Step 6',
-      Subtitle: 'Payment',
+      Subtitle: 'Waiver',
       StepNumber: 6,
-      Partial: 'payment',
+      Partial: 'waiver',
     },
     {
       StepIndex: 6,
       Title: 'Step 7',
-      Subtitle: 'Waiver',
+      Subtitle: 'Payment',
       StepNumber: 7,
-      Partial: 'waiver',
+      Partial: 'payment',
     },
     {
       StepIndex: 7,
@@ -835,6 +835,7 @@ module.exports = function (app) {
   app.get('/registration', async (req, res) => {
     let activeUser = false;
     let BaseRiderRate;
+    let BikeMakes;
     let Charities;
     let OrderInfo;
     let OrderInfoArray = [];
@@ -899,6 +900,14 @@ module.exports = function (app) {
     if (!TotalOrderCost || TotalOrderCost.length === 0) {
       TotalOrderCost = [];
       TotalOrderCost.push({ Price: 0 });
+    }
+
+    try {
+      BikeMakes = await q.queryBikeMakesList();
+    } catch (err) {
+      logger.error(`Error encountered: queryBikeMakesList().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {
@@ -972,6 +981,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: '',
       BaseRiderRate,
+      BikeMakes,
       Charities,
       OrderInfo,
       OrderSteps: orderSteps,

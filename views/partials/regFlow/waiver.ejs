@@ -25,13 +25,13 @@
   <div class="uk-width-1-1@s toh-mt-18">
     <% if (OrderInfo.PassUserID > 0) { %>
       <% if (OrderInfo.PassengerWaiverID && OrderInfo.RiderWaiverID) { %>
-        <label class="uk-form-label" for="continueToFlagNumberBtn2">&nbsp;</label>
-        <button type="button" id="continueToFlagNumberBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumber" data-orderid="<%= OrderInfo.id %>">Continue to Flag Number Selection</button>
+        <label class="uk-form-label" for="continueToPaymentBtn2">&nbsp;</label>
+        <button type="button" id="continueToPaymentBtn2" class="uk-button uk-button-primary button-rounded goToPaymentStep" data-orderid="<%= OrderInfo.id %>">Continue to Payment</button>
       <% } %>
     <% } %>
     <% if ((!OrderInfo.PassUserID || OrderInfo.PassUserID == 0) && OrderInfo.RiderWaiverID) { %>
-      <label class="uk-form-label" for="continueToFlagNumberBtn1">&nbsp;</label>
-      <button type="button" id="continueToFlagNumberBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumber" data-orderid="<%= OrderInfo.id %>">Continue to Flag Number Selection</button>
+      <label class="uk-form-label" for="continueToPaymentBtn1">&nbsp;</label>
+      <button type="button" id="continueToPaymentBtn1" class="uk-button uk-button-primary button-rounded goToPaymentStep" data-orderid="<%= OrderInfo.id %>">Continue to Payment</button>
     <% } %>
   </div>
 </div>

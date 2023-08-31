@@ -535,8 +535,42 @@ $(document).ready(() => {
 
   /* #endregion */
 
+  // *************************
+  // ** Waiver Info Tab (5) **
+  // *************************
+  /* #region  Waiver Info Tab */
+
+  // Handle Waiver Button
+  $('.signWaiverButton').on('click', function signWaiverButton(e) {
+    e.preventDefault();
+    const UserID = $(this).data('userid');
+    const WaiverName = $(this).data('waivername');
+    const waiverURL = `https://waiver.smartwaiver.com/v/${WaiverName}/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
+    window.open(waiverURL);
+  });
+
+  // Handle Continue to Flag Number bUtton
+  $('.goToPaymentStep').on('click', function goToPaymentStep(e) {
+    e.preventDefault();
+    const OrderID = $(this).data('orderid');
+
+    const WaiverInfo = {
+      RegStep: 'Waiver',
+      OrderID,
+      NextStepNum: 6,
+    };
+    $.ajax('/api/v1/regFlow', {
+      type: 'POST',
+      data: WaiverInfo,
+    }).then(() => {
+      location.replace('/registration');
+    });
+  });
+
+  /* #endregion */
+
   // **************************
-  // ** Payment Info Tab (5) **
+  // ** Payment Info Tab (6) **
   // **************************
   /* #region  Payment Info Tab */
 
@@ -572,15 +606,15 @@ $(document).ready(() => {
     });
   });
 
-  $('.goToWaiverButton').on('click', function goToWaiverButton() {
+  $('.goToFlagNumberButton').on('click', function goToFlagNumberButton() {
     const UserID = $(this).data('userid');
 
     $.ajax(`/api/v1/checkOrderStatus/${UserID}`, {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
-        $('#RegStep6').removeClass('disabled');
-        UIkit.switcher('#registrationSwitcher').show(6);
+        $('#RegStep7').removeClass('disabled');
+        UIkit.switcher('#registrationSwitcher').show(7);
       } else {
         $('#awaitingShopifyContent').addClass('hide-me');
         $('#orderNumberMissing').removeClass('hide-me');
@@ -594,45 +628,11 @@ $(document).ready(() => {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
-        $('#RegStep6').removeClass('disabled');
-        UIkit.switcher('#registrationSwitcher').show(6);
+        $('#RegStep7').removeClass('disabled');
+        UIkit.switcher('#registrationSwitcher').show(7);
       } else {
         showToastrError('Unable to confirm payment.');
       }
-    });
-  });
-
-  /* #endregion */
-
-  // *************************
-  // ** Waiver Info Tab (6) **
-  // *************************
-  /* #region  Waiver Info Tab */
-
-  // Handle Waiver Button
-  $('.signWaiverButton').on('click', function signWaiverButton(e) {
-    e.preventDefault();
-    const UserID = $(this).data('userid');
-    const WaiverName = $(this).data('waivername');
-    const waiverURL = `https://waiver.smartwaiver.com/v/${WaiverName}/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
-    window.open(waiverURL);
-  });
-
-  // Handle Continue to Flag Number bUtton
-  $('.goToFlagNumber').on('click', function goToFlagNumber(e) {
-    e.preventDefault();
-    const OrderID = $(this).data('orderid');
-
-    const WaiverInfo = {
-      RegStep: 'Waiver',
-      OrderID,
-      NextStepNum: 7,
-    };
-    $.ajax('/api/v1/regFlow', {
-      type: 'POST',
-      data: WaiverInfo,
-    }).then(() => {
-      location.replace('/registration');
     });
   });
 
