@@ -26,4 +26,4 @@ There are two mobile apps as well, one intended for the [riders](https://github.
 
 ## Credits
 
-This tool was created and developed by ambitiousNerds.
+This tool was created and developed by Tommy Craft.
