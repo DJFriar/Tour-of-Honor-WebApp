@@ -300,6 +300,22 @@ module.exports = function (app) {
     });
   });
 
+  app.get('/admin/photo-rules', isAuthenticated, async (req, res) => {
+    let activeUser = false;
+    if (req.user) {
+      activeUser = true;
+    }
+    res.locals.title = 'TOH Photo Requirements Editor';
+    res.render('pages/admin/photo-rules', {
+      activeUser,
+      User: req.user,
+      baseImageUrl,
+      baseSampleImageUrl,
+      currentRallyYear,
+      NotificationText: '',
+    });
+  });
+
   app.get('/admin/memorial-text/:memCode', isAuthenticated, async (req, res) => {
     const { memCode } = req.params;
     let activeUser = false;

@@ -17,6 +17,7 @@ ApiRouter.use('/gpx', require('./v1/gpx'));
 ApiRouter.use('/memorial', require('./v1/memorial'));
 ApiRouter.use('/memorials', require('./v1/memorials'));
 ApiRouter.use('/orders', require('./v1/orders'));
+ApiRouter.use('/photoRule', require('./v1/photoRule'));
 ApiRouter.use('/regFlow', require('./v1/regFlow'));
 ApiRouter.use('/riders', require('./v1/riders'));
 ApiRouter.use('/submission', require('./v1/submission'));
