@@ -835,6 +835,7 @@ module.exports = function (app) {
   app.get('/registration', async (req, res) => {
     let activeUser = false;
     let BaseRiderRate;
+    let BikeMakes;
     let Charities;
     let OrderInfo;
     let OrderInfoArray = [];
@@ -857,6 +858,14 @@ module.exports = function (app) {
       WaiverName = `toh${process.env.CURRENT_RALLY_YEAR}prod`;
     } else {
       WaiverName = `toh${process.env.CURRENT_RALLY_YEAR}test`;
+    }
+
+    try {
+      BikeMakes = await q.queryBikeMakesList();
+    } catch (err) {
+      logger.error(`Error encountered: queryBikeMakesList().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {
@@ -972,6 +981,7 @@ module.exports = function (app) {
       User: req.user,
       NotificationText: '',
       BaseRiderRate,
+      BikeMakes,
       Charities,
       OrderInfo,
       OrderSteps: orderSteps,
