@@ -80,19 +80,6 @@ module.exports = function (app) {
     res.redirect('/login');
   });
 
-  app.get('/admin', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    if (req.user) {
-      activeUser = true;
-    }
-    res.locals.title = 'TOH Admin Home';
-    res.render('pages/admin', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-    });
-  });
-
   app.get('/scoring/', isAuthenticated, async (req, res) => {
     let activeUser = false;
     let TimeZone;
@@ -212,19 +199,6 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/admin/alt-entry', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    if (req.user) {
-      activeUser = true;
-    }
-    res.locals.title = 'TOH Alt Entry';
-    res.render('pages/admin/alt-entry', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-    });
-  });
-
   app.get('/admin/memorial-editor', isAuthenticated, async (req, res) => {
     let activeUser = false;
     if (req.user) {
@@ -312,135 +286,6 @@ module.exports = function (app) {
       baseImageUrl,
       baseSampleImageUrl,
       currentRallyYear,
-      NotificationText: '',
-    });
-  });
-
-  app.get('/admin/memorial-text/:memCode', isAuthenticated, async (req, res) => {
-    const { memCode } = req.params;
-    let activeUser = false;
-    let MemID;
-    let MemorialData;
-    let MemorialText;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
-      MemID = memIDResponse[0].id;
-    } catch (err) {
-      logger.error(`Error encountered: queryMemorialIDbyMemCode(${memCode}).${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
-    }
-    try {
-      MemorialData = await q.queryMemorial(MemID);
-    } catch (err) {
-      logger.error(`Error encountered: queryMemorial(${MemID}).${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
-    }
-    try {
-      MemorialText = await q.queryMemorialText(MemID);
-    } catch (err) {
-      logger.error(`Error encountered: queryMemorialText(${MemID}).${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
-    }
-    res.locals.title = 'TOH Memorial Text';
-    res.render('pages/admin/memorial-text', {
-      activeUser,
-      User: req.user,
-      MemorialData,
-      MemorialText,
-      NotificationText: '',
-    });
-  });
-
-  app.get('/admin/trophy-editor', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    let AwardNames;
-    let Regions;
-    let TrophyList;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      Regions = await q.queryRegionList();
-    } catch (err) {
-      logger.error(`Error encountered: queryRegionList().${err}`, { calledFrom: 'fe-routes.js' });
-    }
-    try {
-      TrophyList = await q.queryTrophiesList();
-    } catch (err) {
-      logger.error(`Error encountered: queryTrophiesList().${err}`, { calledFrom: 'fe-routes.js' });
-    }
-    try {
-      AwardNames = await q.queryAwardNamesList();
-    } catch (err) {
-      logger.error(`Error encountered: queryAwardNamesList().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
-    }
-    res.locals.title = 'TOH Trophy Editor';
-    res.render('pages/admin/trophy-editor', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      AwardNames,
-      Regions,
-      TrophyList,
-    });
-  });
-
-  app.get('/admin/flag-manager', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    if (req.user) {
-      activeUser = true;
-    }
-    res.locals.title = 'TOH Flag Manager';
-    res.render('pages/admin/flag-manager', {
-      activeUser,
-      User: req.user,
-      currentRallyYear,
-    });
-  });
-
-  app.get('/admin/rider-management', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    // let Users;
-    if (req.user) {
-      activeUser = true;
-    }
-    const sponsorData = [
-      { ID: '1', FirstName: 'Stevie', LastName: 'Nicks', States: 'AZ, CA' },
-      { ID: '2', FirstName: 'Billy', LastName: 'Gibbons', States: 'TX' },
-    ];
-    res.locals.title = 'TOH Rider Manager';
-    res.render('pages/admin/rider-management', {
-      activeUser,
-      User: req.user,
-      currentRallyYear,
-      sponsorData,
-    });
-  });
-
-  app.get('/admin/group-management', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    let Groups;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      Groups = await q.queryAllGroups();
-    } catch (err) {
-      logger.error(`Error encountered: queryAllGroups().${err}`, { calledFrom: 'fe-routes.js' });
-    }
-    res.locals.title = 'TOH Group Manager';
-    res.render('pages/admin/group-management', {
-      activeUser,
-      User: req.user,
-      Groups,
       NotificationText: '',
     });
   });
@@ -1008,90 +853,6 @@ module.exports = function (app) {
       TimeZoneOptions,
       TotalOrderCost,
       WaiverName,
-      dt: DateTime,
-    });
-  });
-
-  app.get('/admin/orders', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    let Orders;
-    let UserTimeZone;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      Orders = await q.queryAllOrders();
-    } catch (err) {
-      logger.error(`Error encountered: queryAllOrders().${err}`, { calledFrom: 'fe-routes.js' });
-    }
-
-    try {
-      UserTimeZone = await q.queryTimeZoneData(req.user.TimeZone);
-    } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
-    }
-
-    res.locals.title = 'TOH Orders';
-    res.render('pages/admin/orders', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      Orders,
-      UserTimeZone,
-      dt: DateTime,
-    });
-  });
-
-  app.get('/admin/bike-manager', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    if (req.user) {
-      activeUser = true;
-    }
-
-    res.locals.title = 'TOH Bike Manager';
-    res.render('pages/admin/bike-manager', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      dt: DateTime,
-    });
-  });
-
-  app.get('/admin/charity-manager', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    if (req.user) {
-      activeUser = true;
-    }
-
-    res.locals.title = 'TOH Charity Manager';
-    res.render('pages/admin/charity-manager', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      dt: DateTime,
-    });
-  });
-
-  app.get('/admin/site-config', isAuthenticated, async (req, res) => {
-    let activeUser = false;
-    let Configs;
-    if (req.user) {
-      activeUser = true;
-    }
-    try {
-      Configs = await q.queryAllConfigs();
-    } catch (err) {
-      logger.error(`Error encountered: queryAllConfigs()`);
-    }
-
-    res.locals.title = 'TOH Site Config';
-    res.render('pages/admin/site-config', {
-      activeUser,
-      User: req.user,
-      NotificationText: '',
-      Configs,
       dt: DateTime,
     });
   });
