@@ -1,3 +1,10 @@
+/**
+ * routes/web/riders.js
+ *
+ * @description:: Route file for the Riders section of the Web (front-end) sub-application. All routes with "/riders" come through here.
+ *
+ */
+
 const WebRiderRouter = require('express').Router();
 
 const { logger } = require('../../controllers/logger');

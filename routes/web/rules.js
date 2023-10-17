@@ -1,3 +1,10 @@
+/**
+ * routes/web/rules.js
+ *
+ * @description:: Route file for the Rules section of the Web (front-end) sub-application. All routes with "/rules" come through here.
+ *
+ */
+
 const WebRulesRouter = require('express').Router();
 
 const { logger } = require('../../controllers/logger');
