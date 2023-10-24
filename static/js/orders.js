@@ -75,7 +75,7 @@ $(document).ready(() => {
         sheetName: 'Paid Orders',
       },
     ],
-    order: [[2, 'desc']],
+    order: [[13, 'desc']],
     pageLength: 100,
   });
 
