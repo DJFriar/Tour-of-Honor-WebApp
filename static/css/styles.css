@@ -499,3 +499,9 @@ a.hidden-link:visited {
 .resetFlagSelection, .deletePairingBtn, .deletePhotoRuleBtn, .editPhotoRuleBtn {
   cursor: pointer;
 }
+
+.form-section {
+  font-size: 1.35em;
+  font-weight: 600;
+  text-transform: uppercase;
+}

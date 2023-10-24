@@ -1,0 +1,164 @@
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Manual Rider Registration Tool</h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <p>This tool is used to manually register a rider for the Tour of Honor.</p>
+      <div class="uk-container">
+        <form class="signup uk-grid-small uk-form-stacked" uk-grid>
+          <div class="uk-width-1-1@s form-section">
+            Rider Info<br />
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="FirstName">First Name</label>
+            <input class="uk-input toh-input" required id="FirstName" type="text" placeholder="Firstname"></input>
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="LastName">Last Name</label>
+            <input class="uk-input toh-input" required id="LastName" type="text" placeholder="Lastname"></input>
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="CellNumber">Cell Number&nbsp;<span uk-tooltip="We only use this for emergency communications. We do NOT advertise via phone/text."><i class="fa-solid fa-circle-question"></i></span></label>
+            <input class="uk-input toh-input" required id="CellNumber" type="tel">
+          </div>
+          <div class="uk-width-1-1@s">
+            &nbsp;
+            <label class="uk-form-label" for="Address1">Street Address</label>
+            <input class="uk-input toh-input" required id="Address1" type="text" placeholder="Address1"></input>
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="City">City</label>
+            <input class="uk-input toh-input" required id="City" type="text" placeholder="City"></input>
+          </div>
+          <div class="uk-width-1-4@s">
+            <label class="uk-form-label" for="State">State</label>
+            <input class="uk-input toh-input" required id="State" type="text" placeholder="State" maxlength="2"></input>
+          </div>
+          <div class="uk-width-1-4@s">
+            <label class="uk-form-label" for="ZipCode">Zip Code</label>
+            <input class="uk-input toh-input" required id="ZipCode" type="text" placeholder="Zip Code"></input>
+          </div>
+          <div class="uk-width-1-2@s">
+            &nbsp;
+            <label class="uk-form-label" for="Email">Email</label>
+            <input class="uk-input toh-input" required id="Email" type="email" placeholder="someone@domain.com" autocomplete="username"></input>
+          </div>
+          <div class="uk-width-1-2@s">
+            &nbsp;
+            <label class="uk-form-label" for="EmailConfirm">Confirm Email <span class="labelValidationStatusFailed hide-me" id="emailValidationStatus">Emails do not match. Please try again.</span></label>
+            <input class="uk-input toh-input" required id="EmailConfirm" type="email" placeholder="someone@domain.com" autocomplete="username"></input>
+          </div>
+          <div class="uk-width-1-2@s">
+            <label class="uk-form-label" for="Password">Password</label>
+            <input class="uk-input toh-input" required id="Password" type="password" placeholder="************" autocomplete="new-password"></input>
+          </div>
+          <div class="uk-width-1-2@s toh-mb-18">
+            <label class="uk-form-label" for="PasswordConfirm">Confirm Password <span class="labelValidationStatusFailed hide-me" id="passwordValidationStatus"></span></label>
+            <input class="uk-input toh-input" required id="PasswordConfirm" type="password" placeholder="************" autocomplete="new-password"></input>
+          </div>
+
+          <div class="uk-width-1-1@s form-section">
+            Bike Info<br />
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="BikeYear">Bike Year</label>
+            <input class="uk-input toh-input" id="BikeYear" type="text" placeholder="">
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="BikeMake">Bike Make</label>
+            <select required class="uk-select toh-input" name="BikeMake" id="BikeMake">
+              <% BikeMakes.forEach(function(bikeMake) { %> 
+                <option value="<%= bikeMake.id %>">
+                  <%= bikeMake.Name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="uk-width-1-3@s">
+            <label class="uk-form-label" for="BikeModel">Bike Model</label>
+            <input class="uk-input toh-input" id="BikeModel" type="text" placeholder="">
+            <span class="characterCount">Characters remaining: 25</span>
+          </div>
+
+          <div class="uk-width-1-1@s form-section">
+            Charity Choice<br />
+          </div>
+          <div class="uk-width-1-2@s toh-mb-18">
+            <label class="uk-form-label uk-text-left" for="CharityChoice">I'd like to support:</label>
+            <select class="uk-select toh-input" required name="CharityChoice" id="CharityChoice">
+              <option disabled selected value>
+                -- Select a Charity --
+              </option>
+              <% Charities.forEach(function(charity) { %>
+                <option value="<%= charity.id %>">
+                  <%= charity.Name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- <div class="uk-width-1-1@s form-section toh-mt-24">
+            T-Shirt Choice<br />
+          </div>
+          <div id="riderShirtSection" class="uk-width-1-1@s toh-mb-18">
+            <div uk-grid>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="RiderShirtStyle">Rider Shirt Style</label>
+                <select required class="uk-select toh-input" name="RiderShirtStyle" id="RiderShirtStyle">
+                  <option selected value="Donation">No Shirt (proceeds donated to charity)</option>
+                  <option value="Short-Sleeved">Short-Sleeved</option>
+                  <option value="Long-Sleeved">Long-Sleeved</option>
+                  <option value="Ladies V-Neck">Women's V-Neck</option>
+                </select>
+              </div>
+              <div class="uk-width-1-2@s">
+                <label class="uk-form-label" for="RiderShirtSize">Rider Shirt Size</label>
+                <select required disabled class="uk-select toh-input" name="RiderShirtSize" id="RiderShirtSize">
+                  <option select value="NA" id="RiderSizeNA">N/A</option>
+                  <option value="SM" id="RiderSizeSM">SM</option>
+                  <option value="MD" id="RiderSizeMD">MD</option>
+                  <option value="LG" id="RiderSizeLG">LG</option>
+                  <option value="XL" id="RiderSizeXL">XL</option>
+                  <option value="2X" id="RiderSize2X">2X</option>
+                  <option value="3X" id="RiderSize3X">3X</option>
+                  <option value="4X" id="RiderSize4X">4X</option>
+                  <option value="5X" id="RiderSize5X">5X</option>
+                </select>
+                <label class="uk-form-label" for="RiderShirtSize">V-Neck is not available in 4x or 5x.</label>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="uk-width-1-1@s form-section">
+            Flag Number<br />
+          </div>
+          <div class="uk-width-1-4@s">
+            <label class="uk-form-label" for="FlagNumber">Flag Number</label>
+            <input class="uk-input toh-input" required id="FlagNumber" type="text" maxlength="4" placeholder="####">
+            <span class="toh-ml-8 hide-me" id="flagNumberAvailableCheck"></span>
+          </div>
+
+          <div class="uk-width-1-1@s uk-text-center">
+            <label class="uk-form-label" for="registerRiderBtn">&nbsp;</label>
+            <button disabled type="button" id="registerRiderBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Register Rider</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="/js/manual-registration.js"></script>
+</body>

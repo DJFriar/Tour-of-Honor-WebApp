@@ -108,6 +108,38 @@ WebAdminRouter.route('/group-management').get(async (req, res) => {
   });
 });
 
+WebAdminRouter.route('/manual-registration').get(async (req, res) => {
+  let activeUser = false;
+  let BikeMakes;
+  let Charities;
+
+  try {
+    BikeMakes = await q.queryBikeMakesList();
+  } catch (err) {
+    logger.error(`Error encountered: queryBikeMakesList().${err}`, {
+      calledFrom: 'fe-routes.js',
+    });
+  }
+
+  try {
+    Charities = await q.queryAllCharities();
+  } catch (err) {
+    logger.error(`Error encountered: queryAllCharities().${err}`, { calledFrom: 'fe-routes.js' });
+  }
+
+  if (req.user) {
+    activeUser = true;
+  }
+  res.locals.title = 'TOH Manual Registration';
+  res.render('pages/admin/manual-registration', {
+    activeUser,
+    User: req.user,
+    NotificationText: '',
+    BikeMakes,
+    Charities,
+  });
+});
+
 WebAdminRouter.route('/memorial-text/:memCode').get(async (req, res) => {
   const { memCode } = req.params;
   let activeUser = false;
