@@ -1,0 +1,57 @@
+<head>
+  <%- include('../../partials/head'); %>
+</head>
+<body>
+  <div class="pageWrapper">
+    <% if(activeUser) { %>
+      <%- include('../../partials/topnavUser'); %>
+    <% } else { %>
+      <%- include('../../partials/topnav'); %>
+    <% } %>
+    <main>
+      <a href="/admin" class="no-link-underline"><button type="button" class="uk-button uk-button-link backToAdminBtn"><i class="fa-solid fa-arrow-left"></i> Back to Admin Dashboard</button></a>
+      <h1>Photo Requirements Editor</h1>
+      <% if(NotificationText) { %>
+        <%- include('../../partials/notice'); %>
+      <% } %>
+      <p>This tool is used to create and edit photo requirements.</p>
+      <div>
+        <h3>Create New Photo Rule</h3>
+        <p class="toh-mt-0"></p>
+        <form class="uk-grid-small uk-form-stacked" uk-grid>
+          <div class="uk-width-1-5@s">
+            <label class="uk-form-label" for="PhotoRuleName">Photo Rule Name</label>
+            <input class="uk-input toh-input" required id="PhotoRuleName" type="text" placeholder="Rule Name">
+          </div>
+          <div class="uk-width-2-5@s">
+            <label class="uk-form-label" for="PhotoRuleText">Photo Rule Text</label>
+            <input class="uk-input toh-input" required id="PhotoRuleText" type="text" placeholder="Rule text goes here">
+          </div>
+          <div class="uk-width-1-5@s">
+            <label class="uk-form-label" for="SaveNewPhotoRuleBtn">&nbsp;</label>
+            <button class="uk-button uk-button-primary button-rounded" id="SaveNewPhotoRuleBtn" data-userid="<%= User.id %>" type="button">Save New Photo Rule</button>
+          </div>
+          <div class="uk-width-1-5@s">&nbsp;</div>
+        </form>
+      </div>
+      <hr class="toh-mt-18">
+      <div class="toh-mt-24">
+        <h3>Photo Rules</h3>
+        <table class="uk-table uk-table-striped uk-table-small" id="photoRulesTable">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Rule Name</th>
+              <th>Rule Text</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </main>
+    <footer>
+      <%- include('../../partials/footer'); %>
+    </footer>
+  </div>
+  <script type="text/javascript" src="/js/photo-rules.js"></script>
+</body>

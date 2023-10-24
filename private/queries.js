@@ -928,7 +928,9 @@ module.exports.queryAllFAQs = async function queryAllFAQs() {
 
 module.exports.queryBikeMakesList = async function queryBikeMakesList() {
   try {
-    const result = await db.BikeMake.findAll({});
+    const result = await db.BikeMake.findAll({
+      order: [['Name', 'ASC']],
+    });
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryBikeMakesList()', { calledFrom: 'queries.js' });
