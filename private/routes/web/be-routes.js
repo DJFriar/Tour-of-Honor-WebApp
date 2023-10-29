@@ -764,7 +764,7 @@ module.exports = function (app) {
     db.Order.findOne({
       where: {
         UserID: id,
-        RallyYear: 2023,
+        RallyYear: 2024,
       },
     }).then(async (o) => {
       if (o.OrderNumber === null) {
@@ -790,7 +790,7 @@ module.exports = function (app) {
             },
             {
               where: {
-                RallyYear: 2023,
+                RallyYear: 2024,
                 UserID: id,
               },
             },

@@ -54,7 +54,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2023,
+          RallyYear: 2024,
           UserID: req.body.UserID,
         },
       },
@@ -81,7 +81,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2023,
+          RallyYear: 2024,
           UserID: req.body.UserID,
         },
       },
@@ -109,7 +109,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2023,
+          RallyYear: 2024,
           UserID: req.body.UserID,
         },
       },
@@ -158,7 +158,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
             },
             {
               where: {
-                RallyYear: 2023,
+                RallyYear: 2024,
                 UserID: req.body.UserID,
               },
             },
@@ -196,7 +196,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2023,
+          RallyYear: 2024,
           UserID: req.body.UserID,
         },
       },
@@ -204,7 +204,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       .then(() => {
         db.Order.findOne({
           where: {
-            RallyYear: 2023,
+            RallyYear: 2024,
             UserID: req.body.UserID,
           },
         }).then((dbOrder) => {
@@ -224,7 +224,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Shirts (5) */
+  /* #region  RegStep Shirts (X) */
   if (RegStep === 'Shirts') {
     logger.debug(`${RegStep} step entered.`);
     logger.debug(`Shirt info provided:${req.body}`);
@@ -294,7 +294,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     // Update Order with the shirt details
     db.Order.update(ShirtDetails, {
       where: {
-        RallyYear: 2023,
+        RallyYear: 2024,
         UserID: req.body.UserID,
       },
     })
@@ -310,7 +310,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Waiver (6) */
+  /* #region  RegStep Waiver (5) */
   if (RegStep === 'Waiver') {
     logger.debug(`${RegStep} step entered.`);
 
@@ -337,14 +337,14 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Payment (7) */
+  /* #region  RegStep Payment (6) */
   if (RegStep === 'Payment') {
     logger.debug(`${RegStep} step entered.`);
     res.send('success');
   }
   /* #endregion */
 
-  /* #region  RegStep FlagInProgress (8) */
+  /* #region  RegStep FlagInProgress (7) */
   if (RegStep === 'FlagInProgress') {
     logger.info(`${RegStep} step entered.`);
     let ApplyFlagSurcharge = req.body.FlagSurcharge;
@@ -446,7 +446,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep FlagComplete (8) */
+  /* #region  RegStep FlagComplete (7) */
   if (RegStep === 'FlagComplete') {
     logger.debug(`${RegStep} step entered.`);
 

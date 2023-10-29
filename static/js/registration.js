@@ -55,7 +55,7 @@ $(document).ready(() => {
     const UserID = $(this).data('userid');
     const orderInfo = {
       RegStep: 'Rider',
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       NextStepNum: 1,
     };
@@ -424,80 +424,6 @@ $(document).ready(() => {
   // ****************************
   /* #region  T-Shirt Choice Tab */
 
-  // Update shirt size dropown options when Rider's shirt is selected.
-  $('#RiderShirtStyle').change(() => {
-    const selection = $('#RiderShirtStyle').val();
-
-    if (selection !== 'Donation') {
-      $('#RiderSizeNA').remove();
-      $('#RiderShirtSize').prop('disabled', false);
-      $('#RiderSizeXL').prop('selected', true);
-    }
-
-    if (selection === 'Donation') {
-      if ($("#RiderShirtSize option[value='NA']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('NA').attr('id', 'RiderSizeNA').prop('selected', true).html('N/A'),
-        );
-      }
-      $('#RiderShirtSize').prop('disabled', true);
-    }
-
-    if (selection === 'Ladies V-Neck') {
-      $('#RiderSizeLG').prop('selected', true);
-      $('#RiderSize4X').remove();
-      $('#RiderSize5X').remove();
-    } else {
-      if ($("#RiderShirtSize option[value='4X']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('4X').attr('id', 'RiderSize4X').html('4X (+$3)'),
-        );
-      }
-      if ($("#RiderShirtSize option[value='5X']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('5X').attr('id', 'RiderSize5X').html('5X (+$3)'),
-        );
-      }
-    }
-  });
-
-  // Update shirt size dropown options when Passenger's shirt is selected.
-  $('#PassengerShirtStyle').change(() => {
-    const selection = $('#PassengerShirtStyle').val();
-
-    if (selection !== 'Donation') {
-      $('#PassSizeNA').remove();
-      $('#PassengerShirtSize').prop('disabled', false);
-      $('#PassSizeXL').prop('selected', true);
-    }
-
-    if (selection === 'Donation') {
-      if ($("#PassengerShirtSize option[value='NA']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('NA').attr('id', 'PassSizeNA').prop('selected', true).html('N/A'),
-        );
-      }
-      $('#PassengerShirtSize').prop('disabled', true);
-    }
-
-    if (selection === 'Ladies V-Neck') {
-      $('#PassSizeLG').prop('selected', true);
-      $('#PassSize4X').remove();
-      $('#PassSize5X').remove();
-    } else {
-      if ($("#PassengerShirtSize option[value='4X']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('4X').attr('id', 'PassSize4X').html('4X (+$3)'),
-        );
-      }
-      if ($("#PassengerShirtSize option[value='5X']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('5X').attr('id', 'PassSize5X').html('5X (+$3)'),
-        );
-      }
-    }
-  });
-
   // Handle Save T-Shirt Choices Button
   $('#saveTshirtInfo').on('click', function saveTshirtInfo(e) {
     e.preventDefault();
@@ -536,7 +462,7 @@ $(document).ready(() => {
   /* #endregion */
 
   // *************************
-  // ** Waiver Info Tab (5) **
+  // ** Waiver Info Tab (4) **
   // *************************
   /* #region  Waiver Info Tab */
 
@@ -549,7 +475,7 @@ $(document).ready(() => {
     window.open(waiverURL);
   });
 
-  // Handle Continue to Flag Number bUtton
+  // Handle Continue to Flag Number Button
   $('.goToPaymentStep').on('click', function goToPaymentStep(e) {
     e.preventDefault();
     const OrderID = $(this).data('orderid');
@@ -557,7 +483,7 @@ $(document).ready(() => {
     const WaiverInfo = {
       RegStep: 'Waiver',
       OrderID,
-      NextStepNum: 6,
+      NextStepNum: 5,
     };
     $.ajax('/api/v1/regFlow', {
       type: 'POST',
@@ -570,7 +496,7 @@ $(document).ready(() => {
   /* #endregion */
 
   // **************************
-  // ** Payment Info Tab (6) **
+  // ** Payment Info Tab (5) **
   // **************************
   /* #region  Payment Info Tab */
 
@@ -639,7 +565,7 @@ $(document).ready(() => {
   /* #endregion */
 
   // ******************************
-  // ** Flag Number Info Tab (7) **
+  // ** Flag Number Info Tab (6) **
   // ******************************
   /* #region  Flag Number Info Tab */
 
@@ -656,7 +582,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       OrderID,
       RequestedFlagNumber: ExistingFlagNum,
@@ -799,7 +725,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       OrderID,
       RequestedFlagNumber: requestedFlagNumber,

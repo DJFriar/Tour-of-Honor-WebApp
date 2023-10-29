@@ -157,7 +157,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
   db.Order.findOne({
     where: {
       id: oid,
-      RallyYear: 2023,
+      RallyYear: 2024,
     },
   }).then(async (o) => {
     if (o.FlagSurchargeOrderNumber === null) {
@@ -183,7 +183,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
           {
             where: {
               id: oid,
-              RallyYear: 2023,
+              RallyYear: 2024,
             },
           },
         ).then(() => {
