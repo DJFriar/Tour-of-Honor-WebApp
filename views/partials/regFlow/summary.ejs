@@ -18,22 +18,10 @@
       <% } %>
     </p><p>
       You chose to support <span class="dataValueBold"><%= OrderInfo.CharityName %></span>
-      <% if (OrderInfo.ShirtStyle === 'Donation') { %>
-        and in lieu of a T-Shirt, opted to donate that value to charity.
-      <% } else { %>
-        and will be getting a <span class="dataValueBold"><%= OrderInfo.ShirtSize %> <%= OrderInfo.ShirtStyle %> T-Shirt</span>.
-      <% } %>
-      <% if (OrderInfo.PassShirtStyle && OrderInfo.PassShirtStyle === 'Donation') { %>
-        You <% if (OrderInfo.ShirtStyle === 'Donation') { %> also <% } %>opted to donate the value of your passenger's T-Shirt to charity.
-      <% } %>
-      <% if (OrderInfo.PassShirtStyle && OrderInfo.PassShirtStyle !== 'Donation') { %>
-        Your passenger will be getting a <span class="dataValueBold"><%= OrderInfo.PassShirtSize %> <%= OrderInfo.PassShirtStyle %> T-Shirt</span>.
-      <% } %>
     </p>
     <h5>Additional Items</h5>
     <p>
-      If you wish to order additional shirts, you can order them by clicking View Product buttons below. If you order before February 1st they will come with your registration packet. For other items in the Tour 
-      of Honor store, you can check them out <a href="https://shop.tourofhonor.com" target="_blank">here</a>.
+      If you wish to order T-shirts, you can order them in the <a href="https://shop.tourofhonor.com" target="_blank">Tour of Honor store</a>.
     </p>
     <div class="uk-flex-center toh-mt-18" uk-grid>
       <div class="uk-width-1-4@s">
