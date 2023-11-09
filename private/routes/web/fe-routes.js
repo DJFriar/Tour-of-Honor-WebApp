@@ -491,9 +491,9 @@ module.exports = function (app) {
   });
 
   // Enable this to put the site in maintence mode
-  // app.get("/login", async (req,res) => {
-  //   res.redirect('/disabled');
-  // });
+  app.get("/login", async (req,res) => {
+    res.redirect('/disabled');
+  });
 
   app.get('/login', async (req, res) => {
     res.locals.title = 'TOH Login';
