@@ -420,7 +420,7 @@ $(document).ready(() => {
   /* #endregion */
 
   // ****************************
-  // ** T-Shirt Choice Tab (4) **
+  // ** T-Shirt Choice Tab (X) **
   // ****************************
   /* #region  T-Shirt Choice Tab */
 
@@ -475,7 +475,7 @@ $(document).ready(() => {
     window.open(waiverURL);
   });
 
-  // Handle Continue to Flag Number Button
+  // Handle Continue to Payment Button
   $('.goToPaymentStep').on('click', function goToPaymentStep(e) {
     e.preventDefault();
     const OrderID = $(this).data('orderid');

@@ -25,7 +25,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   const { RegStep } = req.body;
   logger.debug(`regFlow called with step: ${RegStep}`);
 
-  /* #region  RegStep Rider (1) */
+  /* #region  RegStep Rider (0) */
   if (RegStep === 'Rider') {
     logger.debug(`${RegStep} step entered.`);
     db.Order.create({
@@ -45,7 +45,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Bike (2) */
+  /* #region  RegStep Bike (1) */
   if (RegStep === 'Bike') {
     logger.debug(`${RegStep} step entered.`);
     db.Order.update(
@@ -71,7 +71,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep NoPassenger (3) */
+  /* #region  RegStep NoPassenger (2) */
   if (RegStep === 'NoPassenger') {
     logger.debug(`${RegStep} step entered.`);
     db.Order.update(
@@ -98,7 +98,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep ExistingPassenger (3) */
+  /* #region  RegStep ExistingPassenger (2) */
   if (RegStep === 'ExistingPassenger') {
     // let hasPassenger;
     logger.debug(`${RegStep} step entered.`);
@@ -127,7 +127,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep NewPassenger (3) */
+  /* #region  RegStep NewPassenger (2) */
   if (RegStep === 'NewPassenger') {
     logger.debug(`${RegStep} step entered.`);
 
@@ -186,7 +186,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Charity (4) */
+  /* #region  RegStep Charity (3) */
   if (RegStep === 'Charity') {
     logger.debug(`${RegStep} step entered.`);
     db.Order.update(
@@ -310,15 +310,42 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Waiver (5) */
+  /* #region  RegStep Waiver (4) */
   if (RegStep === 'Waiver') {
     logger.debug(`${RegStep} step entered.`);
 
+    const BaseRiderRateObject = await q.queryBaseRiderRate();
+    const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price, 10);
+    const PassengerSurchargeObject = await q.queryPassengerSurcharge();
+    const PassengerSurcharge = parseInt(PassengerSurchargeObject[0].iValue, 10);
+    let totalPrice = BaseRiderRate;
+
+    if (req.body.hasPass === 'true') {
+      totalPrice += PassengerSurcharge;
+    }
+
     const WaiverInfo = {
-      NextStepNum: 6,
+      NextStepNum: 5,
     };
 
-    // Update Order with new step number
+    const PriceTierObject = await q.queryTierByPrice(totalPrice);
+    const PriceTier = parseInt(PriceTierObject[0].Tier, 10);
+    const { ShopifyVariantID } = PriceTierObject[0];
+    WaiverInfo.PriceTier = PriceTier;
+
+    // Generate the Shopify URL & ID
+    const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
+    const { CheckoutURL } = checkoutDetails;
+    WaiverInfo.CheckoutURL = CheckoutURL;
+    logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
+      calledFrom: 'be-routes.js',
+    });
+    WaiverInfo.CheckoutID = checkoutDetails.CheckoutID;
+    logger.info(`Checkout ID Generated: ${WaiverInfo.CheckoutID}`, {
+      calledFrom: 'be-routes.js',
+    });
+
+    // Update Order with WaiverInfo
     db.Order.update(WaiverInfo, {
       where: {
         RallyYear: currentRallyYear,
@@ -326,7 +353,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
     })
       .then(() => {
-        res.status(202).send();
+        res.status(202).send({ CheckoutURL, PriceTier, ShopifyVariantID, totalPrice });
       })
       .catch((err) => {
         logger.error(`Error updating order with Waiver info: ${err}`, {
@@ -337,14 +364,14 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Payment (6) */
+  /* #region  RegStep Payment (5) */
   if (RegStep === 'Payment') {
     logger.debug(`${RegStep} step entered.`);
     res.send('success');
   }
   /* #endregion */
 
-  /* #region  RegStep FlagInProgress (7) */
+  /* #region  RegStep FlagInProgress (6) */
   if (RegStep === 'FlagInProgress') {
     logger.info(`${RegStep} step entered.`);
     let ApplyFlagSurcharge = req.body.FlagSurcharge;
@@ -446,7 +473,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep FlagComplete (7) */
+  /* #region  RegStep FlagComplete (6) */
   if (RegStep === 'FlagComplete') {
     logger.debug(`${RegStep} step entered.`);
 

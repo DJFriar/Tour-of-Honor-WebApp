@@ -1,15 +1,8 @@
 $(document).ready(() => {
   const userid = $('#UserID').val().trim();
   const activeUser = $('#activeUser').val().trim();
-  const orderNumber = $('#OrderNumber').val().trim();
 
   checkAttempt = 1;
-
-  if (orderNumber === '0') {
-    setTimeout(() => {
-      location.replace('/registration');
-    }, 3000);
-  }
 
   // Check for Waiver by UserID
   function checkForWaiver(id) {
