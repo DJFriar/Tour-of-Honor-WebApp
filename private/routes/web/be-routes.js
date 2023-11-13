@@ -786,7 +786,7 @@ module.exports = function (app) {
           db.Order.update(
             {
               OrderNumber: orderNumber,
-              NextStepNum: 7,
+              NextStepNum: 6,
             },
             {
               where: {
