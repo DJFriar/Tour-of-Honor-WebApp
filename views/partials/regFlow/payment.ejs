@@ -1,8 +1,8 @@
 <div>
-  <h2 class="toh-mb-18">Payment</h2>
   <div class="uk-align-center uk-text-center">
 
     <% if (!OrderInfo.OrderNumber) { %>
+    <h2 class="toh-mb-18">Payment</h2>
       <div id="shopifyPaymentContainer">
         <div class="uk-width-1-1@s uk-text-center">
           <p>
@@ -25,6 +25,7 @@
     <% } %>
 
     <% if (OrderInfo.OrderNumber) { %>
+    <h2 class="toh-mb-18">Payment Complete</h2>
       <p>Thank you for your order. Please click the button below to continue registering.</p>
       <label class="uk-form-label" for="goToWaiverBtn1">&nbsp;</label>
       <button type="button" id="goToWaiverBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
