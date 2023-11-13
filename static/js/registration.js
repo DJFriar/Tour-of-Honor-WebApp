@@ -540,7 +540,7 @@ $(document).ready(() => {
     }).then((res) => {
       if (res > 0) {
         $('#RegStep7').removeClass('disabled');
-        UIkit.switcher('#registrationSwitcher').show(7);
+        UIkit.switcher('#registrationSwitcher').show(6);
       } else {
         $('#awaitingShopifyContent').addClass('hide-me');
         $('#orderNumberMissing').removeClass('hide-me');
@@ -555,7 +555,7 @@ $(document).ready(() => {
     }).then((res) => {
       if (res > 0) {
         $('#RegStep7').removeClass('disabled');
-        UIkit.switcher('#registrationSwitcher').show(7);
+        UIkit.switcher('#registrationSwitcher').show(6);
       } else {
         showToastrError('Unable to confirm payment.');
       }
