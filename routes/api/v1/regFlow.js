@@ -318,10 +318,12 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price, 10);
     const PassengerSurchargeObject = await q.queryPassengerSurcharge();
     const PassengerSurcharge = parseInt(PassengerSurchargeObject[0].iValue, 10);
-    let totalPrice = BaseRiderRate;
+    let totalPrice;
 
     if (req.body.hasPass === 'true') {
-      totalPrice += PassengerSurcharge;
+      totalPrice = BaseRiderRate + PassengerSurcharge;
+    } else {
+      totalPrice = BaseRiderRate;
     }
 
     const WaiverInfo = {
