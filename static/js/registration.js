@@ -428,7 +428,6 @@ $(document).ready(() => {
   $('#saveTshirtInfo').on('click', function saveTshirtInfo(e) {
     e.preventDefault();
     const UserID = $(this).data('userid');
-    const submittedPassID = $(this).data('passid');
 
     const ShirtOrderInfo = {
       RegStep: 'Shirts',
@@ -479,12 +478,19 @@ $(document).ready(() => {
   $('.goToPaymentStep').on('click', function goToPaymentStep(e) {
     e.preventDefault();
     const OrderID = $(this).data('orderid');
+    const submittedPassID = $(this).data('passid');
 
     const WaiverInfo = {
       RegStep: 'Waiver',
       OrderID,
+      hasPass: false,
       NextStepNum: 5,
     };
+
+    if (submittedPassID > 0) {
+      WaiverInfo.hasPass = true;
+    }
+
     $.ajax('/api/v1/regFlow', {
       type: 'POST',
       data: WaiverInfo,
@@ -699,7 +705,7 @@ $(document).ready(() => {
         } else {
           if (requestedFlagNumber >= 1201) {
             $('#flagAvailabilityResponse')
-              .text(`Flag #${requestedFlagNumber} is available with a $30 surcharge.`)
+              .text(`Flag #${requestedFlagNumber} is available with a $25 surcharge.`)
               .css('color', 'green')
               .removeClass('hide-me');
           } else {
