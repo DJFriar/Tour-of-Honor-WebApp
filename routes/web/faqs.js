@@ -1,3 +1,10 @@
+/**
+ * routes/web/faqs.js
+ *
+ * @description:: Route file for the FAQ section of the Web (front-end) sub-application. All routes with "/faqs" come through here.
+ *
+ */
+
 const WebFaqRouter = require('express').Router();
 
 const { logger } = require('../../controllers/logger');

@@ -55,7 +55,7 @@ $(document).ready(() => {
     const UserID = $(this).data('userid');
     const orderInfo = {
       RegStep: 'Rider',
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       NextStepNum: 1,
     };
@@ -420,89 +420,14 @@ $(document).ready(() => {
   /* #endregion */
 
   // ****************************
-  // ** T-Shirt Choice Tab (4) **
+  // ** T-Shirt Choice Tab (X) **
   // ****************************
   /* #region  T-Shirt Choice Tab */
-
-  // Update shirt size dropown options when Rider's shirt is selected.
-  $('#RiderShirtStyle').change(() => {
-    const selection = $('#RiderShirtStyle').val();
-
-    if (selection !== 'Donation') {
-      $('#RiderSizeNA').remove();
-      $('#RiderShirtSize').prop('disabled', false);
-      $('#RiderSizeXL').prop('selected', true);
-    }
-
-    if (selection === 'Donation') {
-      if ($("#RiderShirtSize option[value='NA']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('NA').attr('id', 'RiderSizeNA').prop('selected', true).html('N/A'),
-        );
-      }
-      $('#RiderShirtSize').prop('disabled', true);
-    }
-
-    if (selection === 'Ladies V-Neck') {
-      $('#RiderSizeLG').prop('selected', true);
-      $('#RiderSize4X').remove();
-      $('#RiderSize5X').remove();
-    } else {
-      if ($("#RiderShirtSize option[value='4X']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('4X').attr('id', 'RiderSize4X').html('4X (+$3)'),
-        );
-      }
-      if ($("#RiderShirtSize option[value='5X']").length === 0) {
-        $('#RiderShirtSize').append(
-          $('<option />').val('5X').attr('id', 'RiderSize5X').html('5X (+$3)'),
-        );
-      }
-    }
-  });
-
-  // Update shirt size dropown options when Passenger's shirt is selected.
-  $('#PassengerShirtStyle').change(() => {
-    const selection = $('#PassengerShirtStyle').val();
-
-    if (selection !== 'Donation') {
-      $('#PassSizeNA').remove();
-      $('#PassengerShirtSize').prop('disabled', false);
-      $('#PassSizeXL').prop('selected', true);
-    }
-
-    if (selection === 'Donation') {
-      if ($("#PassengerShirtSize option[value='NA']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('NA').attr('id', 'PassSizeNA').prop('selected', true).html('N/A'),
-        );
-      }
-      $('#PassengerShirtSize').prop('disabled', true);
-    }
-
-    if (selection === 'Ladies V-Neck') {
-      $('#PassSizeLG').prop('selected', true);
-      $('#PassSize4X').remove();
-      $('#PassSize5X').remove();
-    } else {
-      if ($("#PassengerShirtSize option[value='4X']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('4X').attr('id', 'PassSize4X').html('4X (+$3)'),
-        );
-      }
-      if ($("#PassengerShirtSize option[value='5X']").length === 0) {
-        $('#PassengerShirtSize').append(
-          $('<option />').val('5X').attr('id', 'PassSize5X').html('5X (+$3)'),
-        );
-      }
-    }
-  });
 
   // Handle Save T-Shirt Choices Button
   $('#saveTshirtInfo').on('click', function saveTshirtInfo(e) {
     e.preventDefault();
     const UserID = $(this).data('userid');
-    const submittedPassID = $(this).data('passid');
 
     const ShirtOrderInfo = {
       RegStep: 'Shirts',
@@ -528,6 +453,47 @@ $(document).ready(() => {
       },
       type: 'POST',
       data: ShirtOrderInfo,
+    }).then(() => {
+      location.replace('/registration');
+    });
+  });
+
+  /* #endregion */
+
+  // *************************
+  // ** Waiver Info Tab (4) **
+  // *************************
+  /* #region  Waiver Info Tab */
+
+  // Handle Waiver Button
+  $('.signWaiverButton').on('click', function signWaiverButton(e) {
+    e.preventDefault();
+    const UserID = $(this).data('userid');
+    const WaiverName = $(this).data('waivername');
+    const waiverURL = `https://waiver.smartwaiver.com/v/${WaiverName}/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
+    window.open(waiverURL);
+  });
+
+  // Handle Continue to Payment Button
+  $('.goToPaymentStep').on('click', function goToPaymentStep(e) {
+    e.preventDefault();
+    const OrderID = $(this).data('orderid');
+    const submittedPassID = $(this).data('passid');
+
+    const WaiverInfo = {
+      RegStep: 'Waiver',
+      OrderID,
+      hasPass: false,
+      NextStepNum: 5,
+    };
+
+    if (submittedPassID > 0) {
+      WaiverInfo.hasPass = true;
+    }
+
+    $.ajax('/api/v1/regFlow', {
+      type: 'POST',
+      data: WaiverInfo,
     }).then(() => {
       location.replace('/registration');
     });
@@ -572,14 +538,14 @@ $(document).ready(() => {
     });
   });
 
-  $('.goToWaiverButton').on('click', function goToWaiverButton() {
+  $('.goToFlagNumberButton').on('click', function goToFlagNumberButton() {
     const UserID = $(this).data('userid');
 
     $.ajax(`/api/v1/checkOrderStatus/${UserID}`, {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
-        $('#RegStep6').removeClass('disabled');
+        $('#RegStep7').removeClass('disabled');
         UIkit.switcher('#registrationSwitcher').show(6);
       } else {
         $('#awaitingShopifyContent').addClass('hide-me');
@@ -594,7 +560,7 @@ $(document).ready(() => {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
-        $('#RegStep6').removeClass('disabled');
+        $('#RegStep7').removeClass('disabled');
         UIkit.switcher('#registrationSwitcher').show(6);
       } else {
         showToastrError('Unable to confirm payment.');
@@ -604,42 +570,8 @@ $(document).ready(() => {
 
   /* #endregion */
 
-  // *************************
-  // ** Waiver Info Tab (6) **
-  // *************************
-  /* #region  Waiver Info Tab */
-
-  // Handle Waiver Button
-  $('.signWaiverButton').on('click', function signWaiverButton(e) {
-    e.preventDefault();
-    const UserID = $(this).data('userid');
-    const WaiverName = $(this).data('waivername');
-    const waiverURL = `https://waiver.smartwaiver.com/v/${WaiverName}/?auto_anyoneelseneedtosign=0&auto_tag=${UserID}`;
-    window.open(waiverURL);
-  });
-
-  // Handle Continue to Flag Number bUtton
-  $('.goToFlagNumber').on('click', function goToFlagNumber(e) {
-    e.preventDefault();
-    const OrderID = $(this).data('orderid');
-
-    const WaiverInfo = {
-      RegStep: 'Waiver',
-      OrderID,
-      NextStepNum: 7,
-    };
-    $.ajax('/api/v1/regFlow', {
-      type: 'POST',
-      data: WaiverInfo,
-    }).then(() => {
-      location.replace('/registration');
-    });
-  });
-
-  /* #endregion */
-
   // ******************************
-  // ** Flag Number Info Tab (7) **
+  // ** Flag Number Info Tab (6) **
   // ******************************
   /* #region  Flag Number Info Tab */
 
@@ -656,7 +588,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       OrderID,
       RequestedFlagNumber: ExistingFlagNum,
@@ -773,7 +705,7 @@ $(document).ready(() => {
         } else {
           if (requestedFlagNumber >= 1201) {
             $('#flagAvailabilityResponse')
-              .text(`Flag #${requestedFlagNumber} is available with a $30 surcharge.`)
+              .text(`Flag #${requestedFlagNumber} is available with a $25 surcharge.`)
               .css('color', 'green')
               .removeClass('hide-me');
           } else {
@@ -799,7 +731,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2023,
+      RallyYear: 2024,
       UserID,
       OrderID,
       RequestedFlagNumber: requestedFlagNumber,

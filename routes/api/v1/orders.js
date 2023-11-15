@@ -25,10 +25,9 @@ ApiOrderRouter.route('/').get(async (req, res) => {
         WHEN o.NextStepNum = 1 THEN 'Bike Info'
         WHEN o.NextStepNum = 2 THEN 'Passenger Info' 
         WHEN o.NextStepNum = 3 THEN 'Charity Choice' 
-        WHEN o.NextStepNum = 4 THEN 'T-Shirt Choice' 
+        WHEN o.NextStepNum = 4 THEN 'Waiver' 
         WHEN o.NextStepNum = 5 THEN 'Payment' 
-        WHEN o.NextStepNum = 6 THEN 'Waiver' 
-        WHEN o.NextStepNum = 7 THEN 'Flag Number' 
+        WHEN o.NextStepNum = 6 THEN 'Flag Number' 
         WHEN o.NextStepNum = 8 THEN 'Completed' 
       END AS NextStep,  
       o.RallyYear,  
@@ -103,7 +102,7 @@ ApiOrderRouter.route('/reset').post(async (req, res) => {
     calledFrom: 'api/v1/orders.js',
   });
   const OrderUpdateInfo = {
-    NextStepNum: 7,
+    NextStepNum: 6,
   };
   if (req.body.Role === 'Pass') {
     OrderUpdateInfo.RequestedPassFlagNumber = null;
@@ -157,7 +156,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
   db.Order.findOne({
     where: {
       id: oid,
-      RallyYear: 2023,
+      RallyYear: 2024,
     },
   }).then(async (o) => {
     if (o.FlagSurchargeOrderNumber === null) {
@@ -183,7 +182,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
           {
             where: {
               id: oid,
-              RallyYear: 2023,
+              RallyYear: 2024,
             },
           },
         ).then(() => {

@@ -880,9 +880,9 @@ module.exports.queryAllCharities = async function queryAllCharities() {
 module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostByRider(UserID) {
   try {
     const result = await sequelize.query(
-      'SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ?)',
+      'SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ? AND RallyYear = ?)',
       {
-        replacements: [UserID],
+        replacements: [UserID, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
@@ -928,7 +928,9 @@ module.exports.queryAllFAQs = async function queryAllFAQs() {
 
 module.exports.queryBikeMakesList = async function queryBikeMakesList() {
   try {
-    const result = await db.BikeMake.findAll({});
+    const result = await db.BikeMake.findAll({
+      order: [['Name', 'ASC']],
+    });
     return result;
   } catch (err) {
     logger.error('An error was encountered in queryBikeMakesList()', { calledFrom: 'queries.js' });

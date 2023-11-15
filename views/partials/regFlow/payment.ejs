@@ -1,8 +1,8 @@
 <div>
-  <h2 class="toh-mb-18">Payment</h2>
   <div class="uk-align-center uk-text-center">
 
     <% if (!OrderInfo.OrderNumber) { %>
+    <h2 class="toh-mb-18">Payment</h2>
       <div id="shopifyPaymentContainer">
         <div class="uk-width-1-1@s uk-text-center">
           <p>
@@ -25,15 +25,16 @@
     <% } %>
 
     <% if (OrderInfo.OrderNumber) { %>
+    <h2 class="toh-mb-18">Payment Complete</h2>
       <p>Thank you for your order. Please click the button below to continue registering.</p>
       <label class="uk-form-label" for="goToWaiverBtn1">&nbsp;</label>
-      <button type="button" id="goToWaiverBtn1" class="uk-button uk-button-primary button-rounded goToWaiverButton" data-userid="<%= User.id %>">Continue to Waiver</button>
+      <button type="button" id="goToWaiverBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
     <% } %>
 
     <div id="awaitingShopifyContent" class="uk-width-1-1@s uk-text-center hide-me">
-      <p>Shopify Checkout has opened in another tab or window. <br/>Once you have completed payment, please come back here and click "Continue to Waiver" below to proceed with your registration.</p>
+      <p>Shopify Checkout has opened in another tab or window. <br/>Once you have completed payment, please come back here and click "Continue to Flag Number Selection" below to proceed with your registration.</p>
       <label class="uk-form-label" for="goToWaiverBtn2">&nbsp;</label>
-      <button type="button" id="goToWaiverBtn2" class="uk-button uk-button-primary button-rounded goToWaiverButton" data-userid="<%= User.id %>">Continue to Waiver</button>
+      <button type="button" id="goToWaiverBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
       <p>If you do not see another tab or accidentally closed it out before paying, you may click the button below to re-open it. <br />Note that if you have a pop-up blocker on, you may need to disable it for our site.</p>
       <label class="uk-form-label" for="goToPayment2">&nbsp;</label>
       <button type="button" id="goToPayment2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
@@ -41,11 +42,11 @@
 
     <div id="orderNumberMissing" class="uk-width-1-1@s uk-text-center hide-me">
       <p>
-        Our records do not show a successful payment yet. If you just paid, please wait 2-3 minutes and then click Continue to Waiver again.<br /> 
+        Our records do not show a successful payment yet. If you just paid, please wait 2-3 minutes and then click Continue to Flag Number Selection again.<br /> 
         If you have not paid yet, you may click the Continue to Payment button to complete your purchase.
       </p>
       <label class="uk-form-label" for="goToWaiver2">&nbsp;</label>
-      <button type="button" id="goToWaiver2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Waiver</button>
+      <button type="button" id="goToWaiver2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
       <label class="uk-form-label" for="goToPayment3">&nbsp;</label>
       <button type="button" id="goToPayment3" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
     </div>
