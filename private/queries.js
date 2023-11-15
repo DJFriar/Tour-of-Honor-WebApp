@@ -880,9 +880,9 @@ module.exports.queryAllCharities = async function queryAllCharities() {
 module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostByRider(UserID) {
   try {
     const result = await sequelize.query(
-      'SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ?)',
+      'SELECT Price FROM PriceTiers WHERE Tier = (SELECT PriceTier FROM Orders WHERE UserID = ? AND RallyYear = ?)',
       {
-        replacements: [UserID],
+        replacements: [UserID, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
