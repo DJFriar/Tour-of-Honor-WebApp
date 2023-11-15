@@ -705,7 +705,7 @@ module.exports = function (app) {
     db.Flag.findOne({
       where: {
         FlagNumber: flag,
-        RallyYear: 2022,
+        RallyYear: 2023,
       },
     }).then((flagInfo) => {
       db.User.findOne({
