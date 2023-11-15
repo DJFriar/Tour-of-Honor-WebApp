@@ -953,6 +953,7 @@ module.exports.queryWaiverIDByUser = async function queryWaiverIDByUser(UserID) 
     const result = await db.Waiver.findOne({
       where: {
         UserID,
+        RallyYear: currentRallyYear,
       },
     });
     return result;
@@ -967,9 +968,9 @@ module.exports.queryWaiverIDByUser = async function queryWaiverIDByUser(UserID) 
 module.exports.queryWaiversByOrderID = async function queryWaiversByOrderID(OrderID) {
   try {
     const result = await sequelize.query(
-      'SELECT w.* FROM Orders o LEFT JOIN Waivers w ON ((o.UserID = w.UserID) OR (o.PassUserID = w.UserID)) WHERE o.id = ?',
+      'SELECT w.* FROM Orders o LEFT JOIN Waivers w ON ((o.UserID = w.UserID) OR (o.PassUserID = w.UserID)) WHERE o.id = ? AND w.RallyYear = ?',
       {
-        replacements: [OrderID],
+        replacements: [OrderID, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
