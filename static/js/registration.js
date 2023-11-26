@@ -705,7 +705,7 @@ $(document).ready(() => {
         } else {
           if (requestedFlagNumber >= 1201) {
             $('#flagAvailabilityResponse')
-              .text(`Flag #${requestedFlagNumber} is available with a $25 surcharge.`)
+              .text(`Flag #${requestedFlagNumber} is available with a $20 surcharge.`)
               .css('color', 'green')
               .removeClass('hide-me');
           } else {
