@@ -16,6 +16,8 @@ const { sequelize } = db;
 
 // ApiMemorialsRouter.use(hasValidApiKey);
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 ApiMemorialsRouter.route('/').get(async (req, res) => {
   let Memorials;
   const sqlQuery = `
@@ -26,7 +28,7 @@ ApiMemorialsRouter.route('/').get(async (req, res) => {
     FROM Memorials m 
       INNER JOIN Categories c ON m.Category = c.id 
       LEFT JOIN Restrictions r ON m.Restrictions = r.id 
-    WHERE m.RallyYear = 2023
+    WHERE m.RallyYear = ${currentRallyYear}
       AND c.Active = 1 
       AND m.Restrictions != 12 
     ORDER BY m.State, m.City, m.Category
@@ -58,7 +60,7 @@ ApiMemorialsRouter.route('/status/:id').get(async (req, res) => {
       LEFT JOIN Restrictions r ON m.Restrictions = r.id
       LEFT JOIN (SELECT s.* FROM Submissions s INNER JOIN (SELECT Id, row_number() OVER(PARTITION BY MemorialId, UserId ORDER BY createdAt DESC) iRow FROM Submissions WHERE UserID = ? AND createdAt > '2023-01-01') s2 ON s2.Id = s.Id AND iRow = 1 WHERE s.createdAt > '2023-01-01') s ON m.id = s.MemorialID
     WHERE c.Active = 1
-      AND m.RallyYear = 2023
+      AND m.RallyYear = ${currentRallyYear}
       AND m.Restrictions != 12
     ORDER BY m.State, m.City, m.Category
   `;
