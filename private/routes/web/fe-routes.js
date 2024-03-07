@@ -111,7 +111,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
-    res.locals.title = 'TOH Scored 2023';
+    res.locals.title = `TOH Scored ${currentRallyYear}`;
     res.render('pages/scored', {
       activeUser,
       User: req.user,
@@ -131,7 +131,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
-    res.locals.title = 'TOH Scored 2022';
+    res.locals.title = 'TOH Scored 2023';
     res.render('pages/scored-prior', {
       activeUser,
       User: req.user,
@@ -907,7 +907,7 @@ module.exports = function (app) {
       });
     }
     try {
-      OrderInfoRaw = await q.queryOrderInfoByRider(userid, 2023);
+      OrderInfoRaw = await q.queryOrderInfoByRider(userid, currentRallyYear);
     } catch (err) {
       logger.error(`Error encountered: queryOrderInfoByRider(${userid}).${err}`, {
         calledFrom: 'fe-routes.js',
