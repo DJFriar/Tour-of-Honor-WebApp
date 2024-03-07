@@ -1,5 +1,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
+
+/**
+ * static/js/registration.js
+ *
+ * @description:: Support file for Registration process.
+ *
+ */
+
+// LINK - views/pages/registration.ejs
+
 $(document).ready(() => {
   const riderReady = false;
   const passReady = false;
@@ -575,6 +585,8 @@ $(document).ready(() => {
   // ******************************
   /* #region  Flag Number Info Tab */
 
+  // LINK - views/partials/regFlow/flagNumber.ejs
+
   // Handle Keep Existing Flag Yes button
   $('.keepExistingFlagNum').on('click', function keepExistingFlagNum(e) {
     e.preventDefault();
@@ -582,7 +594,6 @@ $(document).ready(() => {
     const UserID = $(this).data('userid');
     const OrderID = $(this).data('orderid');
     const whoami = $(this).data('whoami');
-    // const enableWhen = $(this).data('enablewhen');
     const ExistingFlagNum = $(this).data('existingflagnumber');
 
     const OrderUpdateInfo = {
