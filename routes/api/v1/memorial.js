@@ -85,7 +85,7 @@ ApiMemorialRouter.route('/text/:id').get((req, res) => {
   });
 });
 
-// Fetch status of memorial for a given user
+// Fetch status of a given memorial for a given user
 ApiMemorialRouter.route('/status/:memid/:userid').get(async (req, res) => {
   const memId = req.params.memid;
   const userId = req.params.userid;
@@ -95,7 +95,7 @@ ApiMemorialRouter.route('/status/:memid/:userid').get(async (req, res) => {
     FROM Submissions 
     WHERE MemorialID = ? 
       AND UserID = ? 
-      AND createdAt > '2023-01-01'
+      AND createdAt > '2024-01-01'
     ORDER BY updatedAt DESC 
     LIMIT 1
   `;

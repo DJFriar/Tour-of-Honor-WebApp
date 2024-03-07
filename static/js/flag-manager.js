@@ -1,3 +1,10 @@
+/**
+ * static/js/flag-manager.js
+ *
+ * @description:: Support file for Admin -> Flag Manager.
+ *
+ */
+
 $(document).ready(() => {
   let allowFlagUpdate = false;
   let sourceFlagValid = false;
