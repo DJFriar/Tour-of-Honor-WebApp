@@ -14,6 +14,8 @@ const { logger } = require('../../../controllers/logger');
 
 const { sequelize } = db;
 
+const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+
 ApiMemorialRouter.use(hasValidApiKey);
 
 // Fetch combined data for a specific Memorial by Code
@@ -95,13 +97,13 @@ ApiMemorialRouter.route('/status/:memid/:userid').get(async (req, res) => {
     FROM Submissions 
     WHERE MemorialID = ? 
       AND UserID = ? 
-      AND createdAt > '2024-01-01'
+      AND YEAR(createdAt) = ?
     ORDER BY updatedAt DESC 
     LIMIT 1
   `;
   try {
     MemorialStatus = await sequelize.query(sqlQuery, {
-      replacements: [memId, userId],
+      replacements: [memId, userId, currentRallyYear],
       type: QueryTypes.SELECT,
     });
   } catch (err) {
