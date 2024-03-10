@@ -58,7 +58,7 @@ ApiMemorialsRouter.route('/status/:id').get(async (req, res) => {
     FROM Memorials m
       INNER JOIN Categories c ON m.Category = c.id
       LEFT JOIN Restrictions r ON m.Restrictions = r.id
-      LEFT JOIN (SELECT s.* FROM Submissions s INNER JOIN (SELECT Id, row_number() OVER(PARTITION BY MemorialId, UserId ORDER BY createdAt DESC) iRow FROM Submissions WHERE UserID = ? AND createdAt > '2023-01-01') s2 ON s2.Id = s.Id AND iRow = 1 WHERE s.createdAt > '2023-01-01') s ON m.id = s.MemorialID
+      LEFT JOIN (SELECT s.* FROM Submissions s INNER JOIN (SELECT Id, row_number() OVER(PARTITION BY MemorialId, UserId ORDER BY createdAt DESC) iRow FROM Submissions WHERE UserID = ? AND YEAR(createdAt) = ${currentRallyYear}) s2 ON s2.Id = s.Id AND iRow = 1 WHERE YEAR(s.createdAt) = ${currentRallyYear}) s ON m.id = s.MemorialID
     WHERE c.Active = 1
       AND m.RallyYear = ${currentRallyYear}
       AND m.Restrictions != 12
