@@ -599,9 +599,9 @@ module.exports.querySubmissionStatusByRider = async function querySubmissionStat
 ) {
   try {
     const result = await sequelize.query(
-      "SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNumber FROM Flags WHERE UserID = ? AND RallyYear = ?), OtherRiders)) AND s.createdAt > '2023-03-31' ORDER BY s.updatedAt DESC LIMIT 1",
+      'SELECT s.Status FROM Submissions s LEFT JOIN Memorials m ON s.MemorialID = m.id WHERE m.Code = ? AND (s.UserID = ? OR FIND_IN_SET((SELECT FlagNumber FROM Flags WHERE UserID = ? AND RallyYear = ?), OtherRiders)) AND YEAR(s.createdAt) = ? ORDER BY s.updatedAt DESC LIMIT 1',
       {
-        replacements: [memCode, rider, rider, currentRallyYear],
+        replacements: [memCode, rider, rider, currentRallyYear, currentRallyYear],
         type: QueryTypes.SELECT,
       },
     );
