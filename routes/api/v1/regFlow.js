@@ -475,6 +475,77 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
+  /* #region  RegStep FlagAssignment (6) */
+  if (RegStep === 'FlagAssignment') {
+    logger.debug(`${RegStep} step entered.`);
+    const { assignedFlagNumber, OrderID, RallyYear, UserID } = req.body;
+
+    const FlagInfo = {
+      FlagNumber: assignedFlagNumber,
+      UserID,
+      RallyYear,
+    };
+    const UserInfo = {
+      isActive: 1,
+    };
+    const OrderInfo = {
+      NextStepNum: 8,
+      RequestedRiderFlagNumber: assignedFlagNumber,
+    };
+
+    // Update the DB tables
+    // Assign the Flag number to the rider
+    db.Flag.create(FlagInfo)
+      .then(() => {
+        logger.info(`Flag number ${assignedFlagNumber} assigned by admins to UserID ${UserID}`, {
+          calledFrom: 'be-routes.js',
+        });
+        // Update User to be Active
+        db.User.update(UserInfo, {
+          where: {
+            id: UserID,
+          },
+        })
+          .then(() => {
+            logger.info(`User ${UserID} was marked active.`, {
+              calledFrom: 'be-routes.js',
+            });
+            // Update Order with Flag info
+            db.Order.update(OrderInfo, {
+              where: {
+                RallyYear,
+                id: OrderID,
+              },
+            })
+              .then(() => {
+                logger.info(`Order ${OrderID} was updated with assigned FlagInfo.`, {
+                  calledFrom: 'be-routes.js',
+                });
+                res.status(202).send();
+              })
+              .catch((err) => {
+                logger.error(`Error updating order with FlagAssigned info: ${err}`, {
+                  calledFrom: 'be-routes.js',
+                });
+                res.status(400).json(err);
+              });
+          })
+          .catch((err) => {
+            logger.error(`Error marking User ${UserID} active: ${err}`, {
+              calledFrom: 'be-routes.js',
+            });
+            res.status(400).json(err);
+          });
+      })
+      .catch((err) => {
+        logger.error(`Error when saving flag number assignments:${err}`, {
+          calledFrom: 'be-routes.js',
+        });
+        res.status(400).json(err);
+      });
+  }
+  /* #endregion */
+
   /* #region  RegStep FlagComplete (6) */
   if (RegStep === 'FlagComplete') {
     logger.debug(`${RegStep} step entered.`);
