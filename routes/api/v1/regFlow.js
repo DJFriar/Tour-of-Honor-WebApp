@@ -373,6 +373,36 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
+  /* #region  RegStep Fix Missing Payment (5) */
+  if (RegStep === 'PaymentFix') {
+    logger.debug(`${RegStep} step entered.`);
+    const { OrderID, OrderNumber } = req.body;
+    const OrderInfo = {
+      id: OrderID,
+      OrderNumber,
+      NextStepNum: 6,
+    };
+    db.Order.update(OrderInfo, {
+      where: {
+        id: OrderID,
+      },
+    })
+      .then(() => {
+        logger.info(`Order ${OrderNumber} was added to ${OrderID}.`, {
+          calledFrom: 'be-routes.js',
+        });
+        res.status(202).send();
+      })
+      .catch((err) => {
+        logger.error(`Error updating order with PaymentFix info: ${err}`, {
+          calledFrom: 'be-routes.js',
+        });
+        res.status(400).json(err);
+      });
+    res.send('success');
+  }
+  /* #endregion */
+
   /* #region  RegStep FlagInProgress (6) */
   if (RegStep === 'FlagInProgress') {
     logger.info(`${RegStep} step entered.`);
