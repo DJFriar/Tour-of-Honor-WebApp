@@ -56,6 +56,9 @@ $(document).ready(() => {
         return response;
       }, targets: [1] },
       { render: function (data, type, row) {
+        if (row['NextStep'] === 'Payment') {
+          return `<span class="fixMissingOrderBtn" uk-tooltip="Add Missing Order #" data-orderid="${row['id']}">${data}</span>`
+        }
         if (row['NextStep'] === 'Flag Number') {
           return `<span class="assignFlagNumberBtn" uk-tooltip="Assign Flag #" data-orderid="${row['id']}" data-userid="${row['RiderID']}">${data}</span>`
         }
@@ -83,6 +86,51 @@ $(document).ready(() => {
     ],
     order: [[13, 'desc']],
     pageLength: 100,
+  });
+
+  // Handle Add Missing Order Number Button to Open Modal
+  $('#ordersTable').on('click', '.fixMissingOrderBtn', function () {
+    const fixingOrderID = $(this).data('orderid');
+    $('#fixMissingOrderNumberModal').css('display', 'block');
+    $('#saveMissingOrderNumberBtn').data('orderid',fixingOrderID);
+  });
+
+  // Handle Save Order Number Button
+  $('#saveMissingOrderNumberBtn').on('click', function () {
+    const AssignedUserID = $(this).data('userid');
+    const AssignedOrderID = $(this).data('orderid');
+    const OrderNumber = $('#missingOrderNumber').val().trim();
+    const OrderInfo = {
+      RegStep: 'PaymentFix',
+      OrderID: AssignedOrderID,
+      OrderNumber: OrderNumber,
+    };
+
+    if (!OrderNumber) {
+      showToastrError('An order number is required.');
+      $('#missingOrderNumber').val('');
+      // $('#saveMissingOrderNumberBtn').prop('disabled', true);
+    }
+
+    if (OrderNumber && OrderNumber > 1) {
+      $.ajax('/api/v1/regFlow', {
+        beforeSend() {
+          $('.modal').css('display', 'none');
+          $('.spinnerBox').removeClass('hide-me');
+        },
+        complete() {
+          $('.spinnerBox').addClass('hide-me');
+        },
+        type: 'POST',
+        data: OrderInfo,
+      })
+        .then(() => {
+          location.reload();
+        })
+        .catch(() => {
+          showToastrError('An error occured while updating this order.');
+        });
+    }
   });
 
   // Handle Flag Surcharge Check
