@@ -3,7 +3,7 @@ $(document).ready(() => {
   // Create the New Scored Table
   $('#HistoricalScoredTable').DataTable({
     ajax: {
-      url: '/api/v1/submission/scored/2022',
+      url: '/api/v1/submission/scored/2023',
       dataSrc: '',
     },
     deferRender: true,
