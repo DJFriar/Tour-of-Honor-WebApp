@@ -108,9 +108,9 @@ $(document).ready(() => {
   /* #endregion */
 
   // ***********************
-  // ** Bike Info Tab (1) **
+  // ** Vehicle Info Tab (1) **
   // ***********************
-  /* #region  Bike Info Tab */
+  /* #region  Vehicle Info Tab */
 
   // Handle Add New Bike Button
   $('#addNewBikeBtn').on('click', (e) => {
@@ -135,6 +135,37 @@ $(document).ready(() => {
       data: bikeInfo,
     }).then(() => {
       location.reload();
+    });
+  });
+
+  // Handle Save New Auto Button
+  $('#saveNewAutoBtn').on('click', function saveNewAutoBtn(e) {
+    e.preventDefault();
+    const UserID = $(this).data('userid');
+    const automobileInfo = {
+      UserID,
+      BikeYear: '0000',
+      BikeMake: '99',
+      BikeModel: 'Automobile',
+    };
+
+    $.ajax('/api/v1/bike', {
+      type: 'POST',
+      data: automobileInfo,
+    }).then(() => {
+      const AutoInfo = {
+        RegStep: 'Bike',
+        UserID,
+        NextStepNum: 2,
+      };
+
+      $.ajax('/api/v1/regFlow', {
+        type: 'POST',
+        data: AutoInfo,
+      }).then(() => {
+        $('#RegStep2').removeClass('disabled');
+        UIkit.switcher('#registrationSwitcher').show(2);
+      });
     });
   });
 
