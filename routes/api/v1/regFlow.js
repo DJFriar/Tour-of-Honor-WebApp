@@ -45,7 +45,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   }
   /* #endregion */
 
-  /* #region  RegStep Bike (1) */
+  /* #region  RegStep Vehicle (1) */
   if (RegStep === 'Bike') {
     logger.debug(`${RegStep} step entered.`);
     db.Order.update(
@@ -54,7 +54,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2024,
+          RallyYear: currentRallyYear,
           UserID: req.body.UserID,
         },
       },
