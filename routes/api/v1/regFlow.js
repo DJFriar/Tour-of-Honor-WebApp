@@ -416,7 +416,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     const UserInfo = {
       isActive: 1,
     };
-    if (RequestedFlagNumber >= 1201 && RequestedFlagNumber <= 2500) {
+    if (RequestedFlagNumber >= 1201 && RequestedFlagNumber < 3000) {
       // eslint-disable-next-line no-plusplus
       ApplyFlagSurcharge++;
     }
