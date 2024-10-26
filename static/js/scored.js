@@ -109,6 +109,7 @@ $(document).ready(() => {
       },
     ],
     pageLength: 50,
+    serverSide: true,
   });
 });
 
