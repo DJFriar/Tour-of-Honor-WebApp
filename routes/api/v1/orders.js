@@ -151,12 +151,13 @@ ApiOrderRouter.route('/updateFlag').put(async (req, res) => {
   res.status(202).send();
 });
 
+// Check Flag Surcharge status on an Order
 ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
   const { oid } = req.params;
   db.Order.findOne({
     where: {
       id: oid,
-      RallyYear: 2024,
+      RallyYear: currentRallyYear,
     },
   }).then(async (o) => {
     if (o.FlagSurchargeOrderNumber === null) {
@@ -182,7 +183,7 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
           {
             where: {
               id: oid,
-              RallyYear: 2024,
+              RallyYear: currentRallyYear,
             },
           },
         ).then(() => {
@@ -198,6 +199,59 @@ ApiOrderRouter.route('/checkFlagOrderStatus/:oid').get(async (req, res) => {
         calledFrom: 'api/v1/orders.js',
       });
       res.json(o.FlagSurchargeOrderNumber);
+    }
+  });
+});
+
+// Check Order payment status by User ID
+ApiOrderRouter.route('/checkOrderStatus/:id').get(async (req, res) => {
+  const { id } = req.params;
+  db.Order.findOne({
+    where: {
+      UserID: id,
+      RallyYear: currentRallyYear,
+    },
+  }).then(async (o) => {
+    if (o.OrderNumber === null) {
+      logger.info(`OrderNumber not found locally, checking Shopify...`, {
+        calledFrom: 'api/v1/orders.js',
+      });
+      // Check Shopify for an Order Number
+      let orderNumber;
+      try {
+        orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
+      } catch (err) {
+        logger.warn(
+          `orderNumber not found for TOH Order ${o.id}. Order is likely not paid for yet.${err}`,
+        );
+        res.json(0);
+      }
+      // If Shopify provides us with an Order number, then add it to the DB.
+      if (orderNumber) {
+        db.Order.update(
+          {
+            OrderNumber: orderNumber,
+            NextStepNum: 6,
+          },
+          {
+            where: {
+              RallyYear: currentRallyYear,
+              UserID: id,
+            },
+          },
+        ).then(() => {
+          logger.info(`Shopify Order Number updated for rider ${id}`, {
+            calledFrom: 'api/v1/orders.js',
+          });
+          res.json(orderNumber);
+        });
+      }
+    }
+    if (o.OrderNumber) {
+      logger.info(`Shopify Order Number found locally: ${o.OrderNumber}`, {
+        calledFrom: 'api/v1/orders.js',
+      });
+      res.json(o.OrderNumber);
     }
   });
 });
