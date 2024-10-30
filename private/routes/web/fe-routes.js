@@ -24,9 +24,9 @@ module.exports = function (app) {
     {
       StepIndex: 1,
       Title: 'Step 2',
-      Subtitle: 'Bike Info',
+      Subtitle: 'Vehicle Info',
       StepNumber: 2,
-      Partial: 'bikeInfo',
+      Partial: 'vehicleInfo',
     },
     {
       StepIndex: 2,

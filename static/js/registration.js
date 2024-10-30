@@ -27,6 +27,8 @@ $(document).ready(() => {
   // ************************
   /* #region  Rider Info Tab */
 
+  // LINK - views/partials/regFlow/riderInfo.ejs
+
   // Handle Address Needs Updating button
   $('#addressIsCorrectNo').on('click', () => {
     $('#setAddressModal').css('display', 'block');
@@ -108,9 +110,11 @@ $(document).ready(() => {
   /* #endregion */
 
   // ***********************
-  // ** Bike Info Tab (1) **
+  // ** Vehicle Info Tab (1) **
   // ***********************
-  /* #region  Bike Info Tab */
+  /* #region  Vehicle Info Tab */
+
+  // LINK - views/partials/regFlow/vehicleInfo.ejs
 
   // Handle Add New Bike Button
   $('#addNewBikeBtn').on('click', (e) => {
@@ -135,6 +139,37 @@ $(document).ready(() => {
       data: bikeInfo,
     }).then(() => {
       location.reload();
+    });
+  });
+
+  // Handle Save New Auto Button
+  $('#saveNewAutoBtn').on('click', function saveNewAutoBtn(e) {
+    e.preventDefault();
+    const UserID = $(this).data('userid');
+    const automobileInfo = {
+      UserID,
+      BikeYear: '0000',
+      BikeMake: '99',
+      BikeModel: 'Automobile',
+    };
+
+    $.ajax('/api/v1/bike', {
+      type: 'POST',
+      data: automobileInfo,
+    }).then(() => {
+      const AutoInfo = {
+        RegStep: 'Bike',
+        UserID,
+        NextStepNum: 2,
+      };
+
+      $.ajax('/api/v1/regFlow', {
+        type: 'POST',
+        data: AutoInfo,
+      }).then(() => {
+        $('#RegStep2').removeClass('disabled');
+        UIkit.switcher('#registrationSwitcher').show(2);
+      });
     });
   });
 
@@ -208,6 +243,8 @@ $(document).ready(() => {
   // ** Passenger Info Tab (2) **
   // ****************************
   /* #region  Passenger Info Tab */
+
+  // LINK - views/partials/regFlow/passengerInfo.ejs
 
   // Handle Has Passenger No button
   $('#registerPassengerNo').on('click', function registerPassengerNo() {
@@ -401,6 +438,8 @@ $(document).ready(() => {
   // ****************************
   /* #region  Charity Choice Tab */
 
+  // LINK - views/partials/regFlow/charityChoice.ejs
+
   // Enabled the Button when a choice is made
   $('#CharityChoice').on('change', () => {
     $('#saveCharityChoiceBtn').removeAttr('disabled');
@@ -433,6 +472,8 @@ $(document).ready(() => {
   // ** T-Shirt Choice Tab (X) **
   // ****************************
   /* #region  T-Shirt Choice Tab */
+
+  // LINK - views/partials/regFlow/t-shirt.ejs
 
   // Handle Save T-Shirt Choices Button
   $('#saveTshirtInfo').on('click', function saveTshirtInfo(e) {
@@ -475,6 +516,8 @@ $(document).ready(() => {
   // *************************
   /* #region  Waiver Info Tab */
 
+  // LINK - views/partials/regFlow/waiver.ejs
+
   // Handle Waiver Button
   $('.signWaiverButton').on('click', function signWaiverButton(e) {
     e.preventDefault();
@@ -516,6 +559,8 @@ $(document).ready(() => {
   // **************************
   /* #region  Payment Info Tab */
 
+  // LINK - views/partials/regFlow/payment.ejs
+
   // Handle Rider Payment Button
   $('#goToPayment').on('click', (e) => {
     e.preventDefault();
@@ -537,7 +582,7 @@ $(document).ready(() => {
   $('.checkForOrderNumber').on('click', function checkForOr() {
     const UserID = $(this).data('userid');
 
-    $.ajax(`/api/v1/checkOrderStatus/${UserID}`, {
+    $.ajax(`/api/v1/orders/checkOrderStatus/${UserID}`, {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
@@ -551,7 +596,7 @@ $(document).ready(() => {
   $('.goToFlagNumberButton').on('click', function goToFlagNumberButton() {
     const UserID = $(this).data('userid');
 
-    $.ajax(`/api/v1/checkOrderStatus/${UserID}`, {
+    $.ajax(`/api/v1/orders/checkOrderStatus/${UserID}`, {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
@@ -564,9 +609,85 @@ $(document).ready(() => {
     });
   });
 
+  $('#goToSummaryAutoBtn').on('click', function goToSummaryButton() {
+    const UserID = $(this).data('userid');
+    const OrderID = $(this).data('orderid');
+    const whoami = $(this).data('whoami');
+
+    $.ajax(`/api/v1/orders/checkOrderStatus/${UserID}`, {
+      type: 'GET',
+    }).then((res) => {
+      if (res > 0) {
+        $.ajax(`/api/v1/flag/nextAvailableAuto`, {
+          type: 'GET',
+        })
+          .then((flagNumber) => {
+            if (flagNumber > 0) {
+              console.log(`==== flagNumber assigned is ${flagNumber} ====`);
+
+              const OrderUpdateInfo = {
+                RegStep: 'FlagInProgress',
+                whoami,
+                RallyYear: 2025,
+                UserID,
+                OrderID,
+                RequestedFlagNumber: flagNumber,
+              };
+
+              console.log(`==== OrderUpdateInfo object contains: ====`, OrderUpdateInfo);
+
+              $.ajax(`/api/v1/regFlow`, {
+                beforeSend() {
+                  $('.spinnerBox').removeClass('hide-me');
+                },
+                complete() {
+                  $('.spinnerBox').addClass('hide-me');
+                },
+                type: 'POST',
+                data: OrderUpdateInfo,
+              })
+                .then(() => {
+                  const OrderFinishedInfo = {
+                    RegStep: 'FlagComplete',
+                    OrderID,
+                    NextStepNum: 8,
+                  };
+
+                  $.ajax(`/api/v1/regFlow`, {
+                    beforeSend() {
+                      $('.spinnerBox').removeClass('hide-me');
+                    },
+                    complete() {
+                      $('.spinnerBox').addClass('hide-me');
+                    },
+                    type: 'POST',
+                    data: OrderFinishedInfo,
+                  })
+                    .then(() => {
+                      location.reload();
+                    })
+                    .catch(() => {
+                      showToastrError('An error occured while loading your summary.');
+                    });
+                })
+                .catch(() => {
+                  showToastrError('An error occured while assigning your flag number.');
+                });
+            }
+          })
+          .catch(() => {
+            showToastrError('An error occured while reserving a flag number for you.');
+          });
+      } else {
+        $('#awaitingShopifyContent').addClass('hide-me');
+        $('#orderNumberMissing').removeClass('hide-me');
+      }
+    });
+  });
+
   $('#goToWaiver2').on('click', function goToWaiver2() {
     const UserID = $(this).data('userid');
-    $.ajax(`/api/v1/checkOrderStatus/${UserID}`, {
+    $.ajax(`/api/v1/orders/checkOrderStatus/${UserID}`, {
       type: 'GET',
     }).then((res) => {
       if (res > 0) {
@@ -599,7 +720,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2024,
+      RallyYear: 2025,
       UserID,
       OrderID,
       RequestedFlagNumber: ExistingFlagNum,
@@ -694,16 +815,16 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 2500) {
+    if (requestedFlagNumber > 2999) {
       $('#RequestedFlagNumber').val('');
       $('#flagAvailabilityResponse')
-        .text('Flag numbers must be lower than 2500.')
+        .text('Requested flag number must be lower than 3000.')
         .css('color', 'red')
         .removeClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 10 && requestedFlagNumber <= 2500) {
+    if (requestedFlagNumber > 10 && requestedFlagNumber < 3000) {
       $.ajax(`/api/v1/flag/${requestedFlagNumber}`, {
         type: 'GET',
       }).then((flagInfo) => {
@@ -714,7 +835,7 @@ $(document).ready(() => {
             .removeClass('hide-me');
           $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
         } else {
-          if (requestedFlagNumber >= 1201) {
+          if (requestedFlagNumber >= 1201 && requestedFlagNumber < 3000) {
             $('#flagAvailabilityResponse')
               .text(`Flag #${requestedFlagNumber} is available with a $20 surcharge.`)
               .css('color', 'green')
@@ -742,7 +863,7 @@ $(document).ready(() => {
     const OrderUpdateInfo = {
       RegStep: 'FlagInProgress',
       whoami,
-      RallyYear: 2024,
+      RallyYear: 2025,
       UserID,
       OrderID,
       RequestedFlagNumber: requestedFlagNumber,
@@ -756,14 +877,14 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 2500) {
-      showToastrError('Flag numbers must be lower than 2500.');
+    if (requestedFlagNumber > 2999) {
+      showToastrError('Requested flag number must be lower than 3000.');
       $('#RequestedFlagNumber').val('');
       $('#flagAvailabilityResponse').addClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (requestedFlagNumber > 10 && requestedFlagNumber <= 2500) {
+    if (requestedFlagNumber > 10 && requestedFlagNumber < 3000) {
       $.ajax('/api/v1/regFlow', {
         beforeSend() {
           $('.modal').css('display', 'none');

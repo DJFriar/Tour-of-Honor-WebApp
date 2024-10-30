@@ -185,14 +185,14 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (assignedFlagNumber > 2500) {
-      showToastrError('Flag numbers must be lower than 2500.');
+    if (assignedFlagNumber >= 3000) {
+      showToastrError('Flag numbers must be lower than 3000.');
       $('#assignedFlagNumber').val('');
       $('#flagAvailabilityResponse').addClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (assignedFlagNumber > 10 && assignedFlagNumber <= 2500) {
+    if (assignedFlagNumber > 10 && assignedFlagNumber < 3000) {
       $.ajax('/api/v1/regFlow', {
         beforeSend() {
           $('.modal').css('display', 'none');

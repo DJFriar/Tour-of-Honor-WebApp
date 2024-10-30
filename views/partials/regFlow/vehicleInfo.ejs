@@ -1,14 +1,18 @@
 <div>
-  <h2 class="toh-mb-18">Bike Info</h2>
+  <h2 class="toh-mb-18">Vehicle Info</h2>
   <div style="padding-left: 60px; padding-right: 60px;">
     <div class="toh-mt-18">
       <% if(RiderBikeInfo.length == 0) { %> 
         <div class="uk-width-1-1@s uk-text-center">
-          <p>You don't appear to have any bikes. Click the button below to add one.</p>
-          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary button-rounded">Add New Bike</button>
+          <p>You don't appear to have a vehicle. Click the appropriate button below to add one.</p>
+          <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary button-rounded">Add New Motorcycle</button><br/><br/>
+          <button type="button" id="saveNewAutoBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">I'm Using an Automobile</button>
         </div>
       <% } %>
-      <% if(RiderBikeInfo.length > 0) { %> 
+      <% if(RiderBikeInfo.length > 0 && RiderBikeInfo[0].make_id == 99) { %> 
+        <p>We have you marked as using an automobile.</p><p> If this is incorrect, please confirm you are logged in to the correct account. If still incorrect, please send an email to <a href="mailto:support@tourofhonor.com">support@tourofhonor.com</a> and we will assist you.</p>
+      <% } %>
+      <% if(RiderBikeInfo.length > 0 && RiderBikeInfo[0].make_id < 99) { %> 
         <p>We have the following bike info listed for you. Please update as needed before continuing.</p>
         <div class="uk-align-right toh-mb-0">
           <button type="button" id="addNewBikeBtn" class="uk-button uk-button-primary uk-button-small button-rounded">Add New Bike</button>

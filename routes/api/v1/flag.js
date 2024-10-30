@@ -64,12 +64,40 @@ ApiFlagRouter.route('/nextAvailable').get((req, res) => {
     const assignedFlags = flags.map((inUse) => inUse.FlagNumber);
     db.ReservedFlag.findAll({ order: [['FlagNumber', 'ASC']], raw: true }).then(
       (reservedNumbers) => {
-        const allowedNumbers = _.range(11, 1201, 1);
+        // eslint-disable-next-line prettier/prettier
+        const allowedNumbers = _.range(11, 1201, 1); /* range(starting_number, ending_number, increment_by) */
         const reservedFlags = reservedNumbers.map((reserved) => reserved.FlagNumber);
         const badNumbers = concat(assignedFlags, reservedFlags);
         const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
         const nextFlag = _.min(goodNumbers);
         res.json(nextFlag);
+      },
+    );
+  });
+});
+
+ApiFlagRouter.route('/nextAvailableAuto').get((req, res) => {
+  db.Flag.findAll({
+    where: {
+      RallyYear: {
+        [Op.in]: rallyYearArray,
+      },
+    },
+    order: [['FlagNumber', 'ASC']],
+    raw: true,
+  }).then((flags) => {
+    const assignedFlags = flags.map((inUse) => inUse.FlagNumber);
+    db.ReservedFlag.findAll({ order: [['FlagNumber', 'ASC']], raw: true }).then(
+      (reservedNumbers) => {
+        const allowedNumbers = _.range(3000, 4001, 1);
+        const reservedFlags = reservedNumbers.map((reserved) => reserved.FlagNumber);
+        const badNumbers = concat(assignedFlags, reservedFlags);
+        const goodNumbers = _.pullAll(allowedNumbers, badNumbers);
+        const nextAutoFlag = _.min(goodNumbers);
+        logger.info(`Next available automotive flag is ${nextAutoFlag}.`, {
+          calledFrom: 'api/v1/flag.js',
+        });
+        res.json(nextAutoFlag);
       },
     );
   });
