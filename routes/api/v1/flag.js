@@ -17,9 +17,9 @@ const q = require('../../../private/queries');
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 const rallyYearArray = [];
 
-logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, {
-  calledFrom: 'api/v1/flag.js',
-});
+// logger.info(`==== Current server time is: ${DateTime.now().toISO()}`, {
+//   calledFrom: 'api/v1/flag.js',
+// });
 
 // Set rally year array to honor prior year flag reservations
 if (DateTime.now().toISO() < process.env.RELEASE_UNRESERVED_FLAGS_DATE) {
