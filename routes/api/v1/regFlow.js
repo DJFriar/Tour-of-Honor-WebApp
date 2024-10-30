@@ -7,38 +7,38 @@
  */
 
 const ApiRegFlowRouter = require('express').Router();
-// const { QueryTypes } = require('sequelize');
 
 const { logger } = require('../../../controllers/logger');
 const db = require('../../../models');
-// const { sequelize } = require('../../../models');
 const q = require('../../../private/queries');
-const {
-  generateShopifyCheckout,
-  // checkOrderStatusByCheckoutID,
-} = require('../../../controllers/shopify');
+const { generateShopifyCheckout } = require('../../../controllers/shopify');
 const { addSubscriber } = require('../../../controllers/mailchimp');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 
 ApiRegFlowRouter.route('/').post(async (req, res) => {
   const { RegStep } = req.body;
-  logger.debug(`regFlow called with step: ${RegStep}`);
+  logger.debug(`regFlow called with step: ${RegStep}`, {
+    calledFrom: 'regFlow.js',
+  });
 
   /* #region  RegStep Rider (0) */
   if (RegStep === 'Rider') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     db.Order.create({
       UserID: req.body.UserID,
       NextStepNum: 1,
     })
       .then((o) => {
-        logger.info(`Order ${o.id} created.`, { calledFrom: 'be-routes.js' });
+        logger.info(`Order ${o.id} created.`, { calledFrom: 'regFlow.js' });
         res.status(200).send();
       })
       .catch((err) => {
         logger.error(`Error creating order: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -47,7 +47,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep Vehicle (1) */
   if (RegStep === 'Bike') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     db.Order.update(
       {
         NextStepNum: 2,
@@ -64,7 +67,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with bike info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -73,7 +76,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep NoPassenger (2) */
   if (RegStep === 'NoPassenger') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     db.Order.update(
       {
         PassUserID: req.body.PassUserID,
@@ -91,7 +97,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with no passenger info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -101,7 +107,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
   /* #region  RegStep ExistingPassenger (2) */
   if (RegStep === 'ExistingPassenger') {
     // let hasPassenger;
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     db.Order.update(
       {
         PassUserID: req.body.PassUserID,
@@ -120,7 +129,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with passenger info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -129,7 +138,9 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep NewPassenger (2) */
   if (RegStep === 'NewPassenger') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
 
     // Check to see if Email is unique
     db.User.findOne({
@@ -175,7 +186,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
               }
             } catch (err) {
               logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
-                calledFrom: 'be-routes.js',
+                calledFrom: 'regFlow.js',
               });
             }
             res.status(200).send();
@@ -188,7 +199,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep Charity (3) */
   if (RegStep === 'Charity') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     db.Order.update(
       {
         CharityChosen: req.body.CharityChoice,
@@ -217,7 +231,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with charity info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -226,7 +240,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep Shirts (X) */
   if (RegStep === 'Shirts') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     logger.debug(`Shirt info provided:${req.body}`);
     const BaseRiderRateObject = await q.queryBaseRiderRate();
     const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price, 10);
@@ -284,11 +301,11 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     const { CheckoutURL } = checkoutDetails;
     ShirtDetails.CheckoutURL = CheckoutURL;
     logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
-      calledFrom: 'be-routes.js',
+      calledFrom: 'regFlow.js',
     });
     ShirtDetails.CheckoutID = checkoutDetails.CheckoutID;
     logger.info(`Checkout ID Generated: ${ShirtDetails.CheckoutID}`, {
-      calledFrom: 'be-routes.js',
+      calledFrom: 'regFlow.js',
     });
 
     // Update Order with the shirt details
@@ -303,7 +320,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with t-shirt info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -312,7 +329,9 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep Waiver (4) */
   if (RegStep === 'Waiver') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
 
     const BaseRiderRateObject = await q.queryBaseRiderRate();
     const BaseRiderRate = parseInt(BaseRiderRateObject[0].Price, 10);
@@ -340,11 +359,11 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     const { CheckoutURL } = checkoutDetails;
     WaiverInfo.CheckoutURL = CheckoutURL;
     logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
-      calledFrom: 'be-routes.js',
+      calledFrom: 'regFlow.js',
     });
     WaiverInfo.CheckoutID = checkoutDetails.CheckoutID;
     logger.info(`Checkout ID Generated: ${WaiverInfo.CheckoutID}`, {
-      calledFrom: 'be-routes.js',
+      calledFrom: 'regFlow.js',
     });
 
     // Update Order with WaiverInfo
@@ -359,7 +378,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order with Waiver info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
@@ -368,14 +387,20 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep Payment (5) */
   if (RegStep === 'Payment') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     res.send('success');
   }
   /* #endregion */
 
   /* #region  RegStep Fix Missing Payment (5) */
   if (RegStep === 'PaymentFix') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     const { OrderID, OrderNumber } = req.body;
     const OrderInfo = {
       id: OrderID,
@@ -389,13 +414,13 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     })
       .then(() => {
         logger.info(`Order ${OrderNumber} was added to ${OrderID}.`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(202).send();
       })
       .catch((err) => {
         logger.error(`Error updating order with PaymentFix info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(400).json(err);
       });
@@ -405,7 +430,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep FlagInProgress (6) */
   if (RegStep === 'FlagInProgress') {
-    logger.info(`${RegStep} step entered.`);
+    logger.info(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+
     let ApplyFlagSurcharge = req.body.FlagSurcharge;
     const { RequestedFlagNumber } = req.body;
     const FlagInfo = {
@@ -440,12 +468,12 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       const { CheckoutURL } = checkoutDetails;
       OrderInfo.FlagSurchargeCheckoutURL = CheckoutURL;
       logger.info(`Flag Surcharge Checkout URL Generated: ${CheckoutURL}`, {
-        calledFrom: 'be-routes.js',
+        calledFrom: 'regFlow.js',
       });
       const { CheckoutID } = checkoutDetails;
       OrderInfo.FlagSurchargeCheckoutID = CheckoutID;
       logger.info(`Flag Surcharge Checkout ID Generated: ${CheckoutID}`, {
-        calledFrom: 'be-routes.js',
+        calledFrom: 'regFlow.js',
       });
     }
 
@@ -456,7 +484,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
         logger.info(
           `Flag number ${req.body.RequestedFlagNumber} assigned to UserID ${req.body.UserID}`,
           {
-            calledFrom: 'be-routes.js',
+            calledFrom: 'regFlow.js',
           },
         );
         // Update User to be Active
@@ -467,7 +495,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
         })
           .then(() => {
             logger.info(`User ${req.body.UserID} was marked active.`, {
-              calledFrom: 'be-routes.js',
+              calledFrom: 'regFlow.js',
             });
             // Update Order with Flag info
             db.Order.update(OrderInfo, {
@@ -478,27 +506,27 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
             })
               .then(() => {
                 logger.info(`Order ${req.body.OrderID} was updated with FlagInfo.`, {
-                  calledFrom: 'be-routes.js',
+                  calledFrom: 'regFlow.js',
                 });
                 res.status(202).send();
               })
               .catch((err) => {
                 logger.error(`Error updating order with FlagInProgress info: ${err}`, {
-                  calledFrom: 'be-routes.js',
+                  calledFrom: 'regFlow.js',
                 });
                 res.status(400).json(err);
               });
           })
           .catch((err) => {
             logger.error(`Error marking User ${req.body.UserID} active: ${err}`, {
-              calledFrom: 'be-routes.js',
+              calledFrom: 'regFlow.js',
             });
             res.status(400).json(err);
           });
       })
       .catch((err) => {
         logger.error(`Error when saving flag number assignments:${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(400).json(err);
       });
@@ -507,7 +535,9 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep FlagAssignment (6) */
   if (RegStep === 'FlagAssignment') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
     const { assignedFlagNumber, OrderID, RallyYear, UserID } = req.body;
 
     const FlagInfo = {
@@ -528,7 +558,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     db.Flag.create(FlagInfo)
       .then(() => {
         logger.info(`Flag number ${assignedFlagNumber} assigned by admins to UserID ${UserID}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         // Update User to be Active
         db.User.update(UserInfo, {
@@ -538,7 +568,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
         })
           .then(() => {
             logger.info(`User ${UserID} was marked active.`, {
-              calledFrom: 'be-routes.js',
+              calledFrom: 'regFlow.js',
             });
             // Update Order with Flag info
             db.Order.update(OrderInfo, {
@@ -549,27 +579,27 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
             })
               .then(() => {
                 logger.info(`Order ${OrderID} was updated with assigned FlagInfo.`, {
-                  calledFrom: 'be-routes.js',
+                  calledFrom: 'regFlow.js',
                 });
                 res.status(202).send();
               })
               .catch((err) => {
                 logger.error(`Error updating order with FlagAssigned info: ${err}`, {
-                  calledFrom: 'be-routes.js',
+                  calledFrom: 'regFlow.js',
                 });
                 res.status(400).json(err);
               });
           })
           .catch((err) => {
             logger.error(`Error marking User ${UserID} active: ${err}`, {
-              calledFrom: 'be-routes.js',
+              calledFrom: 'regFlow.js',
             });
             res.status(400).json(err);
           });
       })
       .catch((err) => {
         logger.error(`Error when saving flag number assignments:${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(400).json(err);
       });
@@ -578,7 +608,9 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
   /* #region  RegStep FlagComplete (6) */
   if (RegStep === 'FlagComplete') {
-    logger.debug(`${RegStep} step entered.`);
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
 
     const FlagInfoComplete = {
       NextStepNum: 8,
@@ -603,7 +635,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
               RallyYear: currentRallyYear,
             }).catch((err) => {
               logger.error(`Error saving Passenger Info for Order ${req.body.OrderID}: ${err}`, {
-                calledFrom: 'be-routes.js',
+                calledFrom: 'regFlow.js',
               });
             });
           }
@@ -614,7 +646,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       })
       .catch((err) => {
         logger.error(`Error updating order ${req.body.OrderID} with FlagComplete info: ${err}`, {
-          calledFrom: 'be-routes.js',
+          calledFrom: 'regFlow.js',
         });
         res.status(401).json(err);
       });
