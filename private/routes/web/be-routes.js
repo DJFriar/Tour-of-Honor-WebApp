@@ -415,11 +415,11 @@ module.exports = function (app) {
       isActive: 0,
     })
       .then(async () => {
-        // Add passenger to Mailchimp
+        // Add new rider to Mailchimp
         try {
           const subscribeUser = await addSubscriber(email, firstName, lastName);
           if (subscribeUser) {
-            console.log('==== rider subscribed to mailchimp ====');
+            console.log('==== new rider subscribed to mailchimp ====');
           }
         } catch (err) {
           logger.error(`Error encountered when subscribing user to mailchimp.${err}`, {

@@ -32,8 +32,23 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       UserID: req.body.UserID,
       NextStepNum: 1,
     })
-      .then((o) => {
+      .then(async (o) => {
         logger.info(`Order ${o.id} created.`, { calledFrom: 'regFlow.js' });
+        // Add rider to Mailchimp
+        try {
+          const subscribeUser = await addSubscriber(
+            req.body.Email.toLowerCase(),
+            req.body.FirstName,
+            req.body.LastName,
+          );
+          if (subscribeUser) {
+            logger.info('==== rider subscribed to mailchimp ====');
+          }
+        } catch (err) {
+          logger.error(`Error encountered when adding rider to mailchimp: ${err}`, {
+            calledFrom: 'regFlow.js',
+          });
+        }
         res.status(200).send();
       })
       .catch((err) => {
@@ -182,10 +197,10 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
                 req.body.LastName,
               );
               if (subscribeUser) {
-                console.log('==== passenger subscribed to mailchimp ====');
+                logger.info('==== passenger subscribed to mailchimp ====');
               }
             } catch (err) {
-              logger.error(`Error encountered: queryNextPendingSubmissions.${err}`, {
+              logger.error(`Error encountered when adding passenger to mailchimp: ${err}`, {
                 calledFrom: 'regFlow.js',
               });
             }
