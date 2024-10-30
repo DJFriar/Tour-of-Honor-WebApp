@@ -3,23 +3,15 @@
 const ejs = require('ejs');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
-// const multer = require('multer');
 const fetch = require('node-fetch');
-// const { getDefaultSettings } = require('http2');
-// const Shopify = require('shopify-api');
 const { register } = require('prom-client');
 
 const db = require('../../../models');
 const q = require('../../queries');
 const uploadSubmission = require('../../../controllers/uploadSubmission');
 const passport = require('../../../config/passport');
-// const isAuthenticated = require('../../../config/isAuthenticated');
 const sendEmail = require('../../sendEmail');
 const { logger } = require('../../../controllers/logger');
-const {
-  // generateShopifyCheckout,
-  checkOrderStatusByCheckoutID,
-} = require('../../../controllers/shopify');
 const twilio = require('../../../controllers/twilio');
 const { addSubscriber } = require('../../../controllers/mailchimp');
 
@@ -755,59 +747,6 @@ module.exports = function (app) {
       },
     }).then((dbPost) => {
       res.json(dbPost);
-    });
-  });
-
-  // Check Order Status for a given Rider
-  app.get('/api/v1/checkOrderStatus/:id', async (req, res) => {
-    const { id } = req.params;
-    db.Order.findOne({
-      where: {
-        UserID: id,
-        RallyYear: 2024,
-      },
-    }).then(async (o) => {
-      if (o.OrderNumber === null) {
-        logger.info(`OrderNumber not found locally, checking Shopify...`, {
-          calledFrom: 'be-routes.js',
-        });
-        // Check Shopify for an Order Number
-        let orderNumber;
-        try {
-          orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
-        } catch (err) {
-          logger.warn(
-            `orderNumber not found for TOH Order ${o.id}. Order is likely not paid for yet.${err}`,
-          );
-          res.json(0);
-        }
-        // If Shopify provides us with an Order number, then add it to the DB.
-        if (orderNumber) {
-          db.Order.update(
-            {
-              OrderNumber: orderNumber,
-              NextStepNum: 6,
-            },
-            {
-              where: {
-                RallyYear: 2024,
-                UserID: id,
-              },
-            },
-          ).then(() => {
-            logger.info(`Shopify Order Number updated for rider ${id}`, {
-              calledFrom: 'be-routes.js',
-            });
-            res.json(orderNumber);
-          });
-        }
-      }
-      if (o.OrderNumber) {
-        logger.info(`Shopify Order Number found locally: ${o.OrderNumber}`, {
-          calledFrom: 'be-routes.js',
-        });
-        res.json(o.OrderNumber);
-      }
     });
   });
 
