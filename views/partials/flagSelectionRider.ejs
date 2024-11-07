@@ -27,7 +27,7 @@
       <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
     <% if(!OrderInfo.RequestedRiderFlagNumber && (User.FlagNumber == 0 || !User.FlagNumber )) { %>
-      <p>Welcome to the rally! Please click the button below to choose a flag number.</p>
+      <p>Welcome to the Tour! Please click the button below to choose a flag number.</p>
       <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
     <% } %>
   <% } %>
