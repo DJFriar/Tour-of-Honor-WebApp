@@ -67,7 +67,7 @@ $(document).ready(() => {
     const UserID = $(this).data('userid');
     const orderInfo = {
       RegStep: 'Rider',
-      RallyYear: 2024,
+      RallyYear: 2025,
       UserID,
       NextStepNum: 1,
     };
