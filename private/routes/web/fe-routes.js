@@ -787,9 +787,11 @@ module.exports = function (app) {
     }
 
     try {
-      Charities = await q.queryAllCharities();
+      Charities = await q.queryAllActiveCharities();
     } catch (err) {
-      logger.error(`Error encountered: queryAllCharities().${err}`, { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryAllActiveCharities().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {

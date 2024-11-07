@@ -67,7 +67,7 @@ $(document).ready(() => {
     const UserID = $(this).data('userid');
     const orderInfo = {
       RegStep: 'Rider',
-      RallyYear: 2024,
+      RallyYear: 2025,
       UserID,
       NextStepNum: 1,
     };
@@ -300,12 +300,13 @@ $(document).ready(() => {
   // Handle Lookup Passenger Info Button
   $('#lookupPassengerFlag').on('click', function lookupPassengerFlag() {
     $('#passengerFlagLookupResultsError').addClass('hide-me');
+    $('#passengerFlagLookupResults').addClass('hide-me');
     const UserID = $(this).data('userid');
     const flag = $('#PassengerFlagNumber').val().trim();
     $.ajax(`/api/v1/lookupPassInfoByFlag/${flag}`, {
       type: 'GET',
     }).then((res) => {
-      if (res === null) {
+      if (res.FirstName === null) {
         $('#passengerFlagLookupResults').addClass('hide-me');
         $('#passengerFlagLookupResultsError').removeClass('hide-me');
         $('#errorMessage').text('You have entered an invalid flag number. Please try again.');
@@ -314,7 +315,8 @@ $(document).ready(() => {
         $('#passengerFlagLookupResults').addClass('hide-me');
         $('#passengerFlagLookupResultsError').removeClass('hide-me');
         $('#errorMessage').text('You entered your own flag number. Please try again.');
-      } else {
+      }
+      if (res.id && res.id !== UserID) {
         $('#passengerFlagLookupResults').removeClass('hide-me');
         $('#acceptPassengerFlagMatch').attr('data-passuserid', res.id);
         $('#PassengerFirstName').text(`#${flag} ${res.FirstName}`);
