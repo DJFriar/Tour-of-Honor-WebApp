@@ -670,7 +670,7 @@ module.exports = function (app) {
     try {
       riderInfo = await q.queryUserInfoByID(uid);
     } catch (err) {
-      logger.error(`Error encountere when fetching queryUserInfoByID(${uid}).${err}`, {
+      logger.error(`Error encountered when fetching queryUserInfoByID(${uid}).${err}`, {
         calledFrom: 'be-routes.js',
       });
     }
@@ -699,15 +699,32 @@ module.exports = function (app) {
         FlagNumber: flag,
         RallyYear: 2024,
       },
-    }).then((flagInfo) => {
-      db.User.findOne({
-        where: {
-          id: flagInfo.UserID,
-        },
-      }).then((userInfo) => {
-        res.json(userInfo);
+    })
+      .then((flagInfo) => {
+        db.User.findOne({
+          where: {
+            id: flagInfo.UserID,
+          },
+        })
+          .then((userInfo) => {
+            res.json(userInfo);
+          })
+          .catch((err) => {
+            logger.error(
+              `Error encountered when fetching user info for user ${flagInfo.UserID}. ${err}`,
+              {
+                calledFrom: 'be-routes.js',
+              },
+            );
+            res.json({ FirstName: null });
+          });
+      })
+      .catch((err) => {
+        logger.error(`Error encountered when fetching flag info for flag ${flag}. ${err}`, {
+          calledFrom: 'be-routes.js',
+        });
+        res.json({ FirstName: null });
       });
-    });
   });
 
   // Handle Trophy Awards
