@@ -21,5 +21,6 @@ ApiRouter.use('/photoRule', require('./v1/photoRule'));
 ApiRouter.use('/regFlow', require('./v1/regFlow'));
 ApiRouter.use('/riders', require('./v1/riders'));
 ApiRouter.use('/submission', require('./v1/submission'));
+ApiRouter.use('/waiver', require('./v1/waiver'));
 
 module.exports = ApiRouter;
