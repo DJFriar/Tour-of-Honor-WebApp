@@ -8,7 +8,7 @@ $(document).ready(() => {
   function checkForWaiver(id) {
     clearTimeout(timeoutID);
     // console.log(`checkForWaiver() called with user ${id} / Attempt ${checkAttempt}`);
-    $.ajax(`/api/v1/checkWaiverStatus/${id}`, {
+    $.ajax(`/api/v1/waiver/${id}`, {
       type: 'GET',
     })
       .then((res) => {

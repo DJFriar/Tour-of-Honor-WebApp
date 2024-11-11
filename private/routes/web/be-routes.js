@@ -813,70 +813,70 @@ module.exports = function (app) {
       });
   });
 
-  app.post('/api/v1/waiver', async (req, res) => {
-    const waiverID = req.body.unique_id;
-    const smartWaiverURL = `https://api.smartwaiver.com/v4/waivers/${waiverID}`;
-    const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
+  // app.post('/api/v1/waiver', async (req, res) => {
+  //   const waiverID = req.body.unique_id;
+  //   const smartWaiverURL = `https://api.smartwaiver.com/v4/waivers/${waiverID}`;
+  //   const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
 
-    let RiderID = 0;
+  //   let RiderID = 0;
 
-    logger.info(`Waiver Webhook Response: ${req.body}`, { calledFrom: 'be-routes.js' });
+  //   logger.info(`Waiver Webhook Response: ${req.body}`, { calledFrom: 'be-routes.js' });
 
-    fetch(smartWaiverURL, {
-      method: 'get',
-      headers: { 'sw-api-key': smartWaiverAPIKey },
-    })
-      .then((res2) => res2.json())
-      .then((json) => {
-        try {
-          RiderID = json.waiver.autoTag || 0;
-          updateWaiverTable(RiderID);
-        } catch (err) {
-          logger.error(
-            `No user found when fetching from SmartWaiver. Response was: ${json} | ${err}`,
-            {
-              calledFrom: 'be-routes.js',
-            },
-          );
-        }
-      });
+  //   fetch(smartWaiverURL, {
+  //     method: 'get',
+  //     headers: { 'sw-api-key': smartWaiverAPIKey },
+  //   })
+  //     .then((res2) => res2.json())
+  //     .then((json) => {
+  //       try {
+  //         RiderID = json.waiver.autoTag || 0;
+  //         updateWaiverTable(RiderID);
+  //       } catch (err) {
+  //         logger.error(
+  //           `No user found when fetching from SmartWaiver. Response was: ${json} | ${err}`,
+  //           {
+  //             calledFrom: 'be-routes.js',
+  //           },
+  //         );
+  //       }
+  //     });
 
-    async function updateWaiverTable(rider) {
-      if (rider > 0) {
-        await db.Waiver.findOrCreate({
-          where: {
-            UserID: rider,
-            RallyYear: currentRallyYear,
-          },
-          defaults: {
-            UserID: rider,
-            WaiverID: waiverID,
-            RallyYear: currentRallyYear,
-          },
-        });
-        res.status(200).send();
-      } else {
-        logger.error(`UserID ${rider} was not found in SmartWaiver response.`, {
-          calledFrom: 'be-routes.js',
-        });
-      }
-    }
+  //   async function updateWaiverTable(rider) {
+  //     if (rider > 0) {
+  //       await db.Waiver.findOrCreate({
+  //         where: {
+  //           UserID: rider,
+  //           RallyYear: currentRallyYear,
+  //         },
+  //         defaults: {
+  //           UserID: rider,
+  //           WaiverID: waiverID,
+  //           RallyYear: currentRallyYear,
+  //         },
+  //       });
+  //       res.status(200).send();
+  //     } else {
+  //       logger.error(`UserID ${rider} was not found in SmartWaiver response.`, {
+  //         calledFrom: 'be-routes.js',
+  //       });
+  //     }
+  //   }
 
-    res.status(404).send();
-  });
+  //   res.status(404).send();
+  // });
 
   // Check Waiver Status
-  app.get('/api/v1/checkWaiverStatus/:id', (req, res) => {
-    const waiverID = req.params.id;
-    db.Waiver.findOne({
-      where: {
-        UserID: waiverID,
-        RallyYear: currentRallyYear,
-      },
-    }).then((waiverData) => {
-      res.json(waiverData);
-    });
-  });
+  // app.get('/api/v1/checkWaiverStatus/:id', (req, res) => {
+  //   const waiverID = req.params.id;
+  //   db.Waiver.findOne({
+  //     where: {
+  //       UserID: waiverID,
+  //       RallyYear: currentRallyYear,
+  //     },
+  //   }).then((waiverData) => {
+  //     res.json(waiverData);
+  //   });
+  // });
 
   // Send SMS Message
   app.post('/api/v1/sendSMS', (req, res) => {
