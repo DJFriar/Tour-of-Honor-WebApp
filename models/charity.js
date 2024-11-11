@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
     RallyYear: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 2024,
+      defaultValue: 2025,
     },
     Name: {
       type: DataTypes.STRING,

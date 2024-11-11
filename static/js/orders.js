@@ -32,42 +32,48 @@ $(document).ready(() => {
     ],
     columnDefs: [
       { targets: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22], visible: false },
-      { render: function (data, type, row) {
-        const riderEmailIcon = `<span class="toh-mr-4" uk-tooltip="Click to send email to ${row['RiderEmail']}."><a href="mailto:${row['RiderEmail']}"><i class="fa-light fa-envelope"></i></a>&nbsp;</span>`;
-        const riderPhoneIcon = `<span class="sendSMSTextButton toh-mr-4" uk-tooltip="Click to send text to ${row['CellNumber']}." data-uid="${row['RiderID']}"><i class="fa-light fa-message-sms"></i>&nbsp;</span>`;
-        const riderIsNewIcon = '<span class="toh-mr-4" uk-tooltip="Rider is new to TOH."><i class="fa-duotone fa-sparkles" style="--fa-primary-color: orange; --fa-secondary-color: orangered;"></i>&nbsp;</span>';
-        const flagSurchargeRequiredIcon = `<span class="flagSurchargeIndicator" uk-tooltip="Flag surcharge not paid, click to re-check." data-orderid="${row['id']}"><i class="fa-duotone fa-flag" style="--fa-primary-color: red; --fa-secondary-color: red;"></i></span>&nbsp;`;
-        const flagSurchargePaidIcon = `<span class="flagSurchargeIndicator" uk-tooltip="Flag surcharge already paid." data-orderid="${row['id']}"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>&nbsp;`;
-        let response = `<span style="white-space:nowrap;">${riderEmailIcon}`;
-        if (row['CellNumber']) {
-          response += `${riderPhoneIcon}`
-        }
-        if (row['applyFlagSurcharge'] > 0) {
-          if (row['FlagSurchargeOrderNumber']) {
-            response += `${flagSurchargePaidIcon}` 
-          } else {
-            response += `${flagSurchargeRequiredIcon}` 
+      {
+        render: function (data, type, row) {
+          const riderEmailIcon = `<span class="toh-mr-4" uk-tooltip="Click to send email to ${row['RiderEmail']}."><a href="mailto:${row['RiderEmail']}"><i class="fa-light fa-envelope"></i></a>&nbsp;</span>`;
+          const riderPhoneIcon = `<span class="sendSMSTextButton toh-mr-4" uk-tooltip="Click to send text to ${row['CellNumber']}." data-uid="${row['RiderID']}"><i class="fa-light fa-message-sms"></i>&nbsp;</span>`;
+          const riderIsNewIcon = '<span class="toh-mr-4" uk-tooltip="Rider is new to TOH."><i class="fa-duotone fa-sparkles" style="--fa-primary-color: orange; --fa-secondary-color: orangered;"></i>&nbsp;</span>';
+          const flagSurchargeRequiredIcon = `<span class="flagSurchargeIndicator" uk-tooltip="Flag surcharge not paid, click to re-check." data-orderid="${row['id']}"><i class="fa-duotone fa-flag" style="--fa-primary-color: red; --fa-secondary-color: red;"></i></span>&nbsp;`;
+          const flagSurchargePaidIcon = `<span class="flagSurchargeIndicator" uk-tooltip="Flag surcharge already paid." data-orderid="${row['id']}"><i class="fa-duotone fa-flag" style="--fa-primary-color: green; --fa-secondary-color: green;"></i></span>&nbsp;`;
+          let response = `<span style="white-space:nowrap;">${riderEmailIcon}`;
+          if (row['CellNumber']) {
+            response += `${riderPhoneIcon}`
           }
-        }
-        if (row['isNew']) {
-          response += `${riderIsNewIcon}`
-        }
-        response += '</span>'
-        return response;
-      }, targets: [1] },
-      { render: function (data, type, row) {
-        if (row['NextStep'] === 'Payment') {
-          return `<span class="fixMissingOrderBtn" uk-tooltip="Add Missing Order #" data-orderid="${row['id']}">${data}</span>`
-        }
-        if (row['NextStep'] === 'Flag Number') {
-          return `<span class="assignFlagNumberBtn" uk-tooltip="Assign Flag #" data-orderid="${row['id']}" data-userid="${row['RiderID']}">${data}</span>`
-        }
-        return data;
-      }, targets: [3] },
-      { render: function (data, type, row) {
-        const createdDate = new Date(data);
-        return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
-      }, targets: [13] },
+          if (row['applyFlagSurcharge'] > 0) {
+            if (row['FlagSurchargeOrderNumber']) {
+              response += `${flagSurchargePaidIcon}`
+            } else {
+              response += `${flagSurchargeRequiredIcon}`
+            }
+          }
+          if (row['isNew']) {
+            response += `${riderIsNewIcon}`
+          }
+          response += '</span>'
+          return response;
+        }, targets: [1]
+      },
+      {
+        render: function (data, type, row) {
+          if (row['NextStep'] === 'Payment') {
+            return `<span class="fixMissingOrderBtn" uk-tooltip="Add Missing Order #" data-orderid="${row['id']}">${data}</span>`
+          }
+          if (row['NextStep'] === 'Flag Number') {
+            return `<span class="assignFlagNumberBtn" uk-tooltip="Assign Flag #" data-orderid="${row['id']}" data-userid="${row['RiderID']}">${data}</span>`
+          }
+          return data;
+        }, targets: [3]
+      },
+      {
+        render: function (data, type, row) {
+          const createdDate = new Date(data);
+          return `${createdDate.toLocaleString('en-US', { timeZone: userTimeZone })}`;
+        }, targets: [13]
+      },
     ],
     dom: 'Bfrtip',
     buttons: [
@@ -92,7 +98,7 @@ $(document).ready(() => {
   $('#ordersTable').on('click', '.fixMissingOrderBtn', function () {
     const fixingOrderID = $(this).data('orderid');
     $('#fixMissingOrderNumberModal').css('display', 'block');
-    $('#saveMissingOrderNumberBtn').data('orderid',fixingOrderID);
+    $('#saveMissingOrderNumberBtn').data('orderid', fixingOrderID);
   });
 
   // Handle Save Order Number Button
@@ -148,8 +154,8 @@ $(document).ready(() => {
     const AssigneeUserID = $(this).data('userid');
     const AssigneeOrderID = $(this).data('orderid');
     $('#assignFlagNumberModal').css('display', 'block');
-    $('#saveFlagAssignmentBtn').data('orderid',AssigneeOrderID);
-    $('#saveFlagAssignmentBtn').data('userid',AssigneeUserID);
+    $('#saveFlagAssignmentBtn').data('orderid', AssigneeOrderID);
+    $('#saveFlagAssignmentBtn').data('userid', AssigneeUserID);
   });
 
   // Handle getNextAvailableFlagNumber Button
@@ -172,7 +178,7 @@ $(document).ready(() => {
     const assignedFlagNumber = $('#AssignedFlagNumber').val().trim();
     const FlagAssignmentInfo = {
       RegStep: 'FlagAssignment',
-      RallyYear: 2024,
+      RallyYear: 2025,
       UserID: AssignedUserID,
       OrderID: AssignedOrderID,
       assignedFlagNumber: assignedFlagNumber,
