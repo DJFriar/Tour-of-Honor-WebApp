@@ -102,7 +102,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2024,
+          RallyYear: currentRallyYear,
           UserID: req.body.UserID,
         },
       },
@@ -133,7 +133,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2024,
+          RallyYear: currentRallyYear,
           UserID: req.body.UserID,
         },
       },
@@ -184,7 +184,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
             },
             {
               where: {
-                RallyYear: 2024,
+                RallyYear: currentRallyYear,
                 UserID: req.body.UserID,
               },
             },
@@ -225,7 +225,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       },
       {
         where: {
-          RallyYear: 2024,
+          RallyYear: currentRallyYear,
           UserID: req.body.UserID,
         },
       },
@@ -233,7 +233,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       .then(() => {
         db.Order.findOne({
           where: {
-            RallyYear: 2024,
+            RallyYear: currentRallyYear,
             UserID: req.body.UserID,
           },
         }).then((dbOrder) => {
@@ -326,7 +326,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     // Update Order with the shirt details
     db.Order.update(ShirtDetails, {
       where: {
-        RallyYear: 2024,
+        RallyYear: currentRallyYear,
         UserID: req.body.UserID,
       },
     })
