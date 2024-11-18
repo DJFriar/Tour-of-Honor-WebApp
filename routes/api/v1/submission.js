@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
  * routes/api/submission.js
  *
@@ -143,7 +144,7 @@ ApiSubmissionRouter.route('/byUser/:id').get(async (req, res) => {
     LEFT JOIN Memorials m ON m.id = s.MemorialID 
     LEFT JOIN Categories c ON c.id = m.Category 
   WHERE s.UserID = ? 
-    AND s.createdAt > '2024-01-01' 
+    AND s.createdAt > '2025-01-01' 
   ORDER BY s.createdAt DESC
   `;
   try {
@@ -317,13 +318,13 @@ ApiSubmissionRouter.route('/:category/:sid').get(async (req, res) => {
     const NextPendingSubmission =
       category === 'all'
         ? await sequelize.query(sqlQueryAll, {
-            replacements: [submissionID],
-            type: QueryTypes.SELECT,
-          })
+          replacements: [submissionID],
+          type: QueryTypes.SELECT,
+        })
         : await sequelize.query(sqlQuery, {
-            replacements: [category, submissionID],
-            type: QueryTypes.SELECT,
-          });
+          replacements: [category, submissionID],
+          type: QueryTypes.SELECT,
+        });
     console.log(
       `=== Category = ${category} / sqlQuery = ${category === 'all' ? sqlQueryAll : sqlQuery} ===`,
     );

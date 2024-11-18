@@ -3,23 +3,15 @@
 const ejs = require('ejs');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
-// const multer = require('multer');
 const fetch = require('node-fetch');
-// const { getDefaultSettings } = require('http2');
-// const Shopify = require('shopify-api');
 const { register } = require('prom-client');
 
 const db = require('../../../models');
 const q = require('../../queries');
 const uploadSubmission = require('../../../controllers/uploadSubmission');
 const passport = require('../../../config/passport');
-// const isAuthenticated = require('../../../config/isAuthenticated');
 const sendEmail = require('../../sendEmail');
 const { logger } = require('../../../controllers/logger');
-const {
-  // generateShopifyCheckout,
-  checkOrderStatusByCheckoutID,
-} = require('../../../controllers/shopify');
 const twilio = require('../../../controllers/twilio');
 const { addSubscriber } = require('../../../controllers/mailchimp');
 
@@ -423,11 +415,11 @@ module.exports = function (app) {
       isActive: 0,
     })
       .then(async () => {
-        // Add passenger to Mailchimp
+        // Add new rider to Mailchimp
         try {
           const subscribeUser = await addSubscriber(email, firstName, lastName);
           if (subscribeUser) {
-            console.log('==== rider subscribed to mailchimp ====');
+            console.log('==== new rider subscribed to mailchimp ====');
           }
         } catch (err) {
           logger.error(`Error encountered when subscribing user to mailchimp.${err}`, {
@@ -678,7 +670,7 @@ module.exports = function (app) {
     try {
       riderInfo = await q.queryUserInfoByID(uid);
     } catch (err) {
-      logger.error(`Error encountere when fetching queryUserInfoByID(${uid}).${err}`, {
+      logger.error(`Error encountered when fetching queryUserInfoByID(${uid}).${err}`, {
         calledFrom: 'be-routes.js',
       });
     }
@@ -707,15 +699,32 @@ module.exports = function (app) {
         FlagNumber: flag,
         RallyYear: 2024,
       },
-    }).then((flagInfo) => {
-      db.User.findOne({
-        where: {
-          id: flagInfo.UserID,
-        },
-      }).then((userInfo) => {
-        res.json(userInfo);
+    })
+      .then((flagInfo) => {
+        db.User.findOne({
+          where: {
+            id: flagInfo.UserID,
+          },
+        })
+          .then((userInfo) => {
+            res.json(userInfo);
+          })
+          .catch((err) => {
+            logger.error(
+              `Error encountered when fetching user info for user ${flagInfo.UserID}. ${err}`,
+              {
+                calledFrom: 'be-routes.js',
+              },
+            );
+            res.json({ FirstName: null });
+          });
+      })
+      .catch((err) => {
+        logger.error(`Error encountered when fetching flag info for flag ${flag}. ${err}`, {
+          calledFrom: 'be-routes.js',
+        });
+        res.json({ FirstName: null });
       });
-    });
   });
 
   // Handle Trophy Awards
@@ -755,59 +764,6 @@ module.exports = function (app) {
       },
     }).then((dbPost) => {
       res.json(dbPost);
-    });
-  });
-
-  // Check Order Status for a given Rider
-  app.get('/api/v1/checkOrderStatus/:id', async (req, res) => {
-    const { id } = req.params;
-    db.Order.findOne({
-      where: {
-        UserID: id,
-        RallyYear: 2024,
-      },
-    }).then(async (o) => {
-      if (o.OrderNumber === null) {
-        logger.info(`OrderNumber not found locally, checking Shopify...`, {
-          calledFrom: 'be-routes.js',
-        });
-        // Check Shopify for an Order Number
-        let orderNumber;
-        try {
-          orderNumber = await checkOrderStatusByCheckoutID(o.CheckoutID);
-        } catch (err) {
-          logger.warn(
-            `orderNumber not found for TOH Order ${o.id}. Order is likely not paid for yet.${err}`,
-          );
-          res.json(0);
-        }
-        // If Shopify provides us with an Order number, then add it to the DB.
-        if (orderNumber) {
-          db.Order.update(
-            {
-              OrderNumber: orderNumber,
-              NextStepNum: 6,
-            },
-            {
-              where: {
-                RallyYear: 2024,
-                UserID: id,
-              },
-            },
-          ).then(() => {
-            logger.info(`Shopify Order Number updated for rider ${id}`, {
-              calledFrom: 'be-routes.js',
-            });
-            res.json(orderNumber);
-          });
-        }
-      }
-      if (o.OrderNumber) {
-        logger.info(`Shopify Order Number found locally: ${o.OrderNumber}`, {
-          calledFrom: 'be-routes.js',
-        });
-        res.json(o.OrderNumber);
-      }
     });
   });
 
@@ -857,70 +813,70 @@ module.exports = function (app) {
       });
   });
 
-  app.post('/api/v1/waiver', async (req, res) => {
-    const waiverID = req.body.unique_id;
-    const smartWaiverURL = `https://api.smartwaiver.com/v4/waivers/${waiverID}`;
-    const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
+  // app.post('/api/v1/waiver', async (req, res) => {
+  //   const waiverID = req.body.unique_id;
+  //   const smartWaiverURL = `https://api.smartwaiver.com/v4/waivers/${waiverID}`;
+  //   const smartWaiverAPIKey = process.env.SMARTWAIVER_API_KEY;
 
-    let RiderID = 0;
+  //   let RiderID = 0;
 
-    logger.info(`Waiver Webhook Response: ${req.body}`, { calledFrom: 'be-routes.js' });
+  //   logger.info(`Waiver Webhook Response: ${req.body}`, { calledFrom: 'be-routes.js' });
 
-    fetch(smartWaiverURL, {
-      method: 'get',
-      headers: { 'sw-api-key': smartWaiverAPIKey },
-    })
-      .then((res2) => res2.json())
-      .then((json) => {
-        try {
-          RiderID = json.waiver.autoTag || 0;
-          updateWaiverTable(RiderID);
-        } catch (err) {
-          logger.error(
-            `No user found when fetching from SmartWaiver. Response was: ${json} | ${err}`,
-            {
-              calledFrom: 'be-routes.js',
-            },
-          );
-        }
-      });
+  //   fetch(smartWaiverURL, {
+  //     method: 'get',
+  //     headers: { 'sw-api-key': smartWaiverAPIKey },
+  //   })
+  //     .then((res2) => res2.json())
+  //     .then((json) => {
+  //       try {
+  //         RiderID = json.waiver.autoTag || 0;
+  //         updateWaiverTable(RiderID);
+  //       } catch (err) {
+  //         logger.error(
+  //           `No user found when fetching from SmartWaiver. Response was: ${json} | ${err}`,
+  //           {
+  //             calledFrom: 'be-routes.js',
+  //           },
+  //         );
+  //       }
+  //     });
 
-    async function updateWaiverTable(rider) {
-      if (rider > 0) {
-        await db.Waiver.findOrCreate({
-          where: {
-            UserID: rider,
-            RallyYear: currentRallyYear,
-          },
-          defaults: {
-            UserID: rider,
-            WaiverID: waiverID,
-            RallyYear: currentRallyYear,
-          },
-        });
-        res.status(200).send();
-      } else {
-        logger.error(`UserID ${rider} was not found in SmartWaiver response.`, {
-          calledFrom: 'be-routes.js',
-        });
-      }
-    }
+  //   async function updateWaiverTable(rider) {
+  //     if (rider > 0) {
+  //       await db.Waiver.findOrCreate({
+  //         where: {
+  //           UserID: rider,
+  //           RallyYear: currentRallyYear,
+  //         },
+  //         defaults: {
+  //           UserID: rider,
+  //           WaiverID: waiverID,
+  //           RallyYear: currentRallyYear,
+  //         },
+  //       });
+  //       res.status(200).send();
+  //     } else {
+  //       logger.error(`UserID ${rider} was not found in SmartWaiver response.`, {
+  //         calledFrom: 'be-routes.js',
+  //       });
+  //     }
+  //   }
 
-    res.status(404).send();
-  });
+  //   res.status(404).send();
+  // });
 
   // Check Waiver Status
-  app.get('/api/v1/checkWaiverStatus/:id', (req, res) => {
-    const waiverID = req.params.id;
-    db.Waiver.findOne({
-      where: {
-        UserID: waiverID,
-        RallyYear: currentRallyYear,
-      },
-    }).then((waiverData) => {
-      res.json(waiverData);
-    });
-  });
+  // app.get('/api/v1/checkWaiverStatus/:id', (req, res) => {
+  //   const waiverID = req.params.id;
+  //   db.Waiver.findOne({
+  //     where: {
+  //       UserID: waiverID,
+  //       RallyYear: currentRallyYear,
+  //     },
+  //   }).then((waiverData) => {
+  //     res.json(waiverData);
+  //   });
+  // });
 
   // Send SMS Message
   app.post('/api/v1/sendSMS', (req, res) => {

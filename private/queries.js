@@ -877,6 +877,23 @@ module.exports.queryAllCharities = async function queryAllCharities() {
   }
 };
 
+module.exports.queryAllActiveCharities = async function queryAllActiveCharities() {
+  try {
+    const result = await sequelize.query(
+      'SELECT c.id, c.Name, c.URL, c.RallyYear, COUNT(o.CharityChosen) AS TotalDonations FROM Charities c LEFT OUTER JOIN Orders o ON o.CharityChosen = c.id AND o.OrderNumber > 0 WHERE c.isActive = 1 GROUP BY c.id',
+      {
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error('An error was encountered in queryAllActiveCharities()', {
+      calledFrom: 'queries.js',
+    });
+    throw err;
+  }
+};
+
 module.exports.queryTotalOrderCostByRider = async function queryTotalOrderCostByRider(UserID) {
   try {
     const result = await sequelize.query(

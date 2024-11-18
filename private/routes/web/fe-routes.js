@@ -24,9 +24,9 @@ module.exports = function (app) {
     {
       StepIndex: 1,
       Title: 'Step 2',
-      Subtitle: 'Bike Info',
+      Subtitle: 'Vehicle Info',
       StepNumber: 2,
-      Partial: 'bikeInfo',
+      Partial: 'vehicleInfo',
     },
     {
       StepIndex: 2,
@@ -795,9 +795,11 @@ module.exports = function (app) {
     }
 
     try {
-      Charities = await q.queryAllCharities();
+      Charities = await q.queryAllActiveCharities();
     } catch (err) {
-      logger.error(`Error encountered: queryAllCharities().${err}`, { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered: queryAllActiveCharities().${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     try {

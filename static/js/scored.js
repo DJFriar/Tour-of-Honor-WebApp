@@ -3,7 +3,7 @@ $(document).ready(() => {
   // Create the New Scored Table
   $('#scoredTable').DataTable({
     ajax: {
-      url: '/api/v1/submission/scored/2024',
+      url: '/api/v1/submission/scored/2025',
       dataSrc: '',
     },
     columns: [
@@ -109,6 +109,7 @@ $(document).ready(() => {
       },
     ],
     pageLength: 50,
+    serverSide: true,
   });
 });
 

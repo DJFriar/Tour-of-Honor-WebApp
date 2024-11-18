@@ -23,14 +23,14 @@
           It appears we do not have your full mailing address. Please click the button below to update your address. <br />
           <button type="button" id="setAddressButton" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Set Address</button>
         <% } else { %>
-          Please confirm that the information above is correct. All shipping and correspondance will be sent to these addresses. <br />
+          Please confirm that the information above is correct. All shipping and correspondence will be sent to these addresses. <br />
           <button type="button" id="addressIsCorrectNo" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">No, Needs Updating</button>
           <button type="button" id="addressIsCorrectYes" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Yes, Looks Good</button>
         <% } %>
       </div>
     <% } %>
     <% if(!activeUser) { %>
-      <p>You are not logged in. If you particpated in the 2022 Rally, please <a href="/login">login</a> before proceeding.</p>
+      <p>You are not logged in. If you particpated in the 2024 Tour, please <a href="/login">login</a> before proceeding.</p>
     <% } %>
     <div id="setAddressModal" class="modal">
       <%- include('../../partials/editAddressModal'); %>

@@ -53,6 +53,18 @@ ApiCharityRouter.route('/')
     });
   });
 
+ApiCharityRouter.route('/active').get(async (req, res) => {
+  let CharityArray;
+  try {
+    CharityArray = await q.queryAllActiveCharities();
+  } catch (err) {
+    logger.error(`Error encountered: queryAllActiveCharities.${err}`, {
+      calledFrom: 'api/v1/charity.js',
+    });
+  }
+  res.json(CharityArray);
+});
+
 ApiCharityRouter.route('/donationCount').get(async (req, res) => {
   let DonationStats;
   try {

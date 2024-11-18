@@ -53,7 +53,7 @@ $(document).ready(() => {
   $('#saveNewCharityBtn').on('click', (e) => {
     e.preventDefault();
     const charityInfo = {
-      RallyYear: 2024,
+      RallyYear: 2025,
       CharityName: $('#CharityName').val().trim(),
       CharityURL: $('#CharityURL').val().trim(),
     };

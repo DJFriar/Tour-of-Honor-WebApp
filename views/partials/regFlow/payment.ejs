@@ -18,23 +18,30 @@
           <p class="toh-mt-18">&nbsp;<span class="noOrderFoundText hide-me">No order was found.</span></p>
           <p class="forceOrderUpdateText">
             If you are seeing this message after paying, you may <a class="checkForOrderNumber" href="#" data-userid="<%= User.id %>">click here</a> to have the system check for your order again.<br /> 
-            If that does not work, please <a href="mailto:dave.brooks@tourofhonor.com">contact us</a> and include your Order Number.
+            If that does not work, please <a href="mailto:dave.brooks@tourofhonor.com">contact Dave</a> and include your Order Number.
           </p>
         </div>
       </div>
     <% } %>
-
-    <% if (OrderInfo.OrderNumber) { %>
+    <!-- Order complete for automobile -->
+    <% if (OrderInfo.OrderNumber && RiderBikeInfo[0].make_id == 99) { %>
     <h2 class="toh-mb-18">Payment Complete</h2>
       <p>Thank you for your order. Please click the button below to continue registering.</p>
-      <label class="uk-form-label" for="goToWaiverBtn1">&nbsp;</label>
-      <button type="button" id="goToWaiverBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
+      <label class="uk-form-label" for="goToSummaryAutoBtn">&nbsp;</label>
+      <button type="button" id="goToSummaryAutoBtn" class="uk-button uk-button-primary button-rounded goToSummaryButton" data-orderid="<%= OrderInfo.id %>" data-userid="<%= User.id %>" data-whoami="rider" >Continue to Summary</button>
     <% } %>
+    <!-- Order complete for motorcycle -->
+    <% if (OrderInfo.OrderNumber && RiderBikeInfo[0].make_id !== 99) { %>
+      <h2 class="toh-mb-18">Payment Complete</h2>
+        <p>Thank you for your order. Please click the button below to continue registering.</p>
+        <label class="uk-form-label" for="goToFlagNumBtn1">&nbsp;</label>
+        <button type="button" id="goToFlagNumBtn1" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
+      <% } %>
 
     <div id="awaitingShopifyContent" class="uk-width-1-1@s uk-text-center hide-me">
       <p>Shopify Checkout has opened in another tab or window. <br/>Once you have completed payment, please come back here and click "Continue to Flag Number Selection" below to proceed with your registration.</p>
       <label class="uk-form-label" for="goToWaiverBtn2">&nbsp;</label>
-      <button type="button" id="goToWaiverBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
+      <button type="button" id="goToFlagNumBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
       <p>If you do not see another tab or accidentally closed it out before paying, you may click the button below to re-open it. <br />Note that if you have a pop-up blocker on, you may need to disable it for our site.</p>
       <label class="uk-form-label" for="goToPayment2">&nbsp;</label>
       <button type="button" id="goToPayment2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
