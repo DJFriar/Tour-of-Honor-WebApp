@@ -40,7 +40,7 @@
 
     <div id="awaitingShopifyContent" class="uk-width-1-1@s uk-text-center hide-me">
       <!-- awaiting Shopify Content for Automobile -->
-      <% if (OrderInfo.OrderNumber && RiderBikeInfo[0].make_id == 99) { %>
+      <% if (!OrderInfo.OrderNumber && RiderBikeInfo[0].make_id == 99) { %>
         <p>Shopify Checkout has opened in another tab or window. <br/>Once you have completed payment, please come back here and click "Continue to Summary" below to proceed with your registration.</p>
         <label class="uk-form-label" for="goToSummaryAutoBtn">&nbsp;</label>
         <button type="button" id="goToSummaryAutoBtn" class="uk-button uk-button-primary button-rounded goToSummaryButton" data-userid="<%= User.id %>">Continue to Summary</button>
@@ -49,7 +49,7 @@
         <button type="button" id="goToPayment2" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue to Payment</button>
       <% } %>
       <!-- awaiting Shopify Content for Motorcycles -->
-      <% if (OrderInfo.OrderNumber && RiderBikeInfo[0].make_id !== 99) { %>
+      <% if (!OrderInfo.OrderNumber && RiderBikeInfo[0].make_id !== 99) { %>
         <p>Shopify Checkout has opened in another tab or window. <br/>Once you have completed payment, please come back here and click "Continue to Flag Number Selection" below to proceed with your registration.</p>
         <label class="uk-form-label" for="goToWaiverBtn2">&nbsp;</label>
         <button type="button" id="goToFlagNumBtn2" class="uk-button uk-button-primary button-rounded goToFlagNumberButton" data-userid="<%= User.id %>">Continue to Flag Number Selection</button>
