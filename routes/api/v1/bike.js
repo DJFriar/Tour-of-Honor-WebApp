@@ -87,4 +87,22 @@ ApiBikeRouter.route('/:id')
     });
   });
 
+ApiBikeRouter.route('/convert/:id').delete((req, res) => {
+  const { id } = req.params;
+  db.Bike.destroy({
+    where: { user_id: id },
+  }).then(() => {
+    db.Bike.create({
+      user_id: id,
+      Year: 0,
+      Make: 'Automobile',
+      make_id: 99,
+      Model: 'Automobile',
+    }).then(() => {
+      res.status(202).send();
+    });
+    res.status(202).send();
+  });
+});
+
 module.exports = ApiBikeRouter;

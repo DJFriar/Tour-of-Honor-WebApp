@@ -219,6 +219,18 @@ $(document).ready(() => {
     });
   });
 
+  // Handle Switch to Automobile Button
+  $('#changeToAutomobileBtn').on('click', function covertToAutomobile(e) {
+    e.preventDefault();
+    const UserID = $(this).data('userid');
+
+    $.ajax(`/api/v1/bike/convert/${UserID}`, {
+      type: 'DELETE',
+    }).then(() => {
+      location.reload();
+    });
+  });
+
   // Handle Bike Info Accurate Button
   $('#acceptBikeInfoBtn').on('click', function acceptBikeInfoBtn(e) {
     e.preventDefault();
