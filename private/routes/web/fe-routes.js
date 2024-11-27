@@ -702,6 +702,7 @@ module.exports = function (app) {
     let OrderInfoArray = [];
     let PassengerSurcharge;
     let RiderBikeInfo;
+    let RiderIsAutomobile = false;
     let ShirtSizeSurcharge;
     let ShirtStyleSurcharge;
     let TimeZoneOptions;
@@ -812,6 +813,9 @@ module.exports = function (app) {
 
     try {
       RiderBikeInfo = await q.queryBikesByRider(req.user.id);
+      if (RiderBikeInfo.length > 0 && RiderBikeInfo[0].make_id === 99) {
+        RiderIsAutomobile = true;
+      }
     } catch (err) {
       logger.error(`Error encountered: queryBikesByRider().${err}`, { calledFrom: 'fe-routes.js' });
     }
@@ -858,6 +862,7 @@ module.exports = function (app) {
       OrderSteps: orderSteps,
       PassengerSurcharge,
       RiderBikeInfo,
+      RiderIsAutomobile,
       ShirtSizeSurcharge,
       ShirtStyleSurcharge,
       TimeZoneOptions,
