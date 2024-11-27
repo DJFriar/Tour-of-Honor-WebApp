@@ -131,7 +131,7 @@ module.exports = function (app) {
     } catch (err) {
       logger.error('Error encountered: queryTimeZoneData', { calledFrom: 'fe-routes.js' });
     }
-    res.locals.title = 'TOH Scored 2023';
+    res.locals.title = 'TOH Scored 2024';
     res.render('pages/scored-prior', {
       activeUser,
       User: req.user,
@@ -727,7 +727,7 @@ module.exports = function (app) {
       // Check if Passenger has an existing flag number.
       if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
         try {
-          const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2022);
+          const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2024);
           if (passFlagNum && passFlagNum.FlagNumber > 0) {
             OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
           } else {
