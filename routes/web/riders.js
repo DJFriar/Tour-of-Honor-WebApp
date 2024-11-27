@@ -46,7 +46,7 @@ WebRiderRouter.route('/').get(async (req, res) => {
 
 WebRiderRouter.route('/:flag').get(async (req, res) => {
   const flagNumber = req.params.flag;
-  const rallyYear = 2022;
+  const rallyYear = currentRallyYear;
 
   let activeUser = false;
   let earnedCounts;
