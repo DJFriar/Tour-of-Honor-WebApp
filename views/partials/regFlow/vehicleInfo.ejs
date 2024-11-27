@@ -11,7 +11,10 @@
       <% } %>
       <% if(RiderBikeInfo.length > 0 && RiderBikeInfo[0].make_id == 99) { %> 
         <p>We have you marked as using an automobile.</p><p> If this is incorrect, please confirm you are logged in to the correct account. If still incorrect, please send an email to <a href="mailto:support@tourofhonor.com">support@tourofhonor.com</a> and we will assist you.</p>
-      <% } %>
+        <div class="uk-align-center">
+          <button type="button" id="acceptBikeInfoBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">Continue</button>
+        </div>
+        <% } %>
       <% if(RiderBikeInfo.length > 0 && RiderBikeInfo[0].make_id < 99) { %> 
         <p>We have the following bike info listed for you. Please update as needed before continuing.</p>
         <div class="uk-align-right toh-mb-0">
@@ -47,6 +50,7 @@
           </tbody>
         </table>
         <div class="uk-align-center">
+          <button type="button" id="changeToAutomobileBtn" class="uk-button uk-button-secondary button-rounded" data-userid="<%= User.id %>">Switch to Automobile</button>
           <button type="button" id="acceptBikeInfoBtn" class="uk-button uk-button-primary button-rounded" data-userid="<%= User.id %>">This Is Accurate</button>
         </div>
       <% } %>
