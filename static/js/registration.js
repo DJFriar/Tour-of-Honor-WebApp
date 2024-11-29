@@ -589,7 +589,7 @@ $(document).ready(() => {
     $('#awaitingShopifyContent').removeClass('hide-me');
   });
 
-  $('#goToPayment2, #goToPayment3').on('click', () => {
+  $('.goToPaymentBtn').on('click', () => {
     window.open(CheckoutURL);
   });
 
@@ -623,7 +623,7 @@ $(document).ready(() => {
     });
   });
 
-  $('#goToSummaryAutoBtn').on('click', function goToSummaryButton() {
+  $('.goToAutoSummaryBtn').on('click', function goToSummaryButton() {
     const UserID = $(this).data('userid');
     const OrderID = $(this).data('orderid');
     const whoami = $(this).data('whoami');
@@ -648,7 +648,10 @@ $(document).ready(() => {
                 RequestedFlagNumber: flagNumber,
               };
 
-              console.log(`==== OrderUpdateInfo object contains: ====`, OrderUpdateInfo);
+              console.log(
+                `==== OrderUpdateInfo object contains: ====`,
+                JSON.stringify(OrderUpdateInfo),
+              );
 
               $.ajax(`/api/v1/regFlow`, {
                 beforeSend() {
