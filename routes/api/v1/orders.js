@@ -34,7 +34,7 @@ ApiOrderRouter.route('/').get(async (req, res) => {
       CASE WHEN ISNULL(o.OrderNumber) THEN 'UNPAID' ELSE o.OrderNumber END AS OrderNumber, 
       CONCAT(CASE WHEN o.ShirtSize = 'NA' THEN '' ELSE o.ShirtSize END, ' ',  o.ShirtStyle) AS RiderShirt, 
       CASE WHEN o.PassUserID = 0 THEN '' ELSE CONCAT(CASE WHEN o.PassShirtSize = 'NA' THEN '' ELSE o.PassShirtSize END, ' ', o.PassShirtStyle) END AS PassengerShirt, 
-      u1.id AS RiderID, u1.FirstName AS RiderFirstName,  u1.LastName AS RiderLastName, u1.Email AS RiderEmail, u1.CellNumber,
+      u1.id AS RiderID, o.PassUserID, u1.FirstName AS RiderFirstName,  u1.LastName AS RiderLastName, u1.Email AS RiderEmail, u1.CellNumber,
       u1.Address1 AS Address, u1.City, u1.State, u1.ZipCode,
       CASE WHEN ISNULL(o.RequestedRiderFlagNumber) THEN '-' ELSE o.RequestedRiderFlagNumber END AS RiderFlagNumber, 
       CASE WHEN o.PassUserID = 0 THEN '' ELSE CONCAT(u2.FirstName, ' ', u2.LastName) END AS PassengerName, 
