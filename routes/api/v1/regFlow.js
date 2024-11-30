@@ -540,7 +540,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
           });
       })
       .catch((err) => {
-        logger.error(`Error when saving flag number assignments:${err}`, {
+        logger.error(`Error when saving flag number assignments (FlagInProgress):${err}`, {
           calledFrom: 'regFlow.js',
         });
         res.status(400).json(err);
@@ -613,7 +613,82 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
           });
       })
       .catch((err) => {
-        logger.error(`Error when saving flag number assignments:${err}`, {
+        logger.error(`Error when saving flag number assignments (FlagAssignment):${err}`, {
+          calledFrom: 'regFlow.js',
+        });
+        res.status(400).json(err);
+      });
+  }
+  /* #endregion */
+
+  /* #region  RegStep PassFlagAssignment (6) */
+  if (RegStep === 'PassFlagAssignment') {
+    logger.debug(`${RegStep} step entered.`, {
+      calledFrom: 'regFlow.js',
+    });
+    const { assignedPassFlagNumber, OrderID, RallyYear, UserID } = req.body;
+
+    const PassengerFlagInfo = {
+      FlagNumber: assignedPassFlagNumber,
+      UserID,
+      RallyYear,
+    };
+    const UserInfo = {
+      isActive: 1,
+    };
+    const OrderInfo = {
+      RequestedPassFlagNumber: assignedPassFlagNumber,
+    };
+
+    // Update the DB tables
+    // Assign the Flag number to the passenger
+    db.Flag.create(PassengerFlagInfo)
+      .then(() => {
+        logger.info(
+          `Flag number ${assignedPassFlagNumber} assigned by admins to UserID ${UserID}`,
+          {
+            calledFrom: 'regFlow.js',
+          },
+        );
+        // Update User to be Active
+        db.User.update(UserInfo, {
+          where: {
+            id: UserID,
+          },
+        })
+          .then(() => {
+            logger.info(`User ${UserID} was marked active.`, {
+              calledFrom: 'regFlow.js',
+            });
+            // Update Order with Flag info
+            db.Order.update(OrderInfo, {
+              where: {
+                RallyYear,
+                id: OrderID,
+              },
+            })
+              .then(() => {
+                logger.info(`Order ${OrderID} was updated with assigned PassengerFlagInfo.`, {
+                  calledFrom: 'regFlow.js',
+                });
+                res.status(202).send();
+              })
+              .catch((err) => {
+                logger.error(`Error updating order with FlagAssigned info: ${err}`, {
+                  calledFrom: 'regFlow.js',
+                });
+                res.status(400).json(err);
+              });
+          })
+          .catch((err) => {
+            logger.error(`Error marking User ${UserID} active: ${err}`, {
+              calledFrom: 'regFlow.js',
+            });
+            res.status(400).json(err);
+          });
+      })
+      .catch((err) => {
+        logger.error(`Error when saving flag number assignments (PassFlagAssignment):${err}`, {
           calledFrom: 'regFlow.js',
         });
         res.status(400).json(err);
