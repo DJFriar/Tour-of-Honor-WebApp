@@ -39,6 +39,7 @@
             <th>FlagOrderNumber</th>
             <th>Cell Number</th>
             <th>RiderID</th>
+            <th>PassengerID</th>
             <th>Address</th>
             <th>City</th>
             <th>State</th>
@@ -50,9 +51,13 @@
       <div id="sendTextMessageModal" class="modal">
         <%- include('../../partials/sendSMSTextModal'); %>
       </div>
-      <!-- This is the Assign Flag Number modal -->
+      <!-- This is the Assign Rider Flag Number modal -->
       <div id="assignFlagNumberModal" class="modal">
         <%- include('../../partials/assignFlagNumberModal'); %>
+      </div>
+      <!-- This is the Assign Passenger Flag Number modal -->
+      <div id="assignPassFlagNumberModal" class="modal">
+        <%- include('../../partials/assignPassFlagNumberModal'); %>
       </div>
       <!-- This is the Fix Missing Order Number modal -->
       <div id="fixMissingOrderNumberModal" class="modal">

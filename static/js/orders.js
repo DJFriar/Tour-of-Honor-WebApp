@@ -1,5 +1,6 @@
 $(document).ready(() => {
   const userTimeZone = $('#userTZ').data('usertz');
+
   $('#ordersTable').DataTable({
     ajax: {
       url: '/api/v1/orders',
@@ -25,13 +26,14 @@ $(document).ready(() => {
       { data: 'FlagSurchargeOrderNumber' },     // 16
       { data: 'CellNumber' },                   // 17
       { data: 'RiderID' },                      // 18
-      { data: 'Address' },                      // 19
-      { data: 'City' },                         // 20
-      { data: 'State' },                        // 21
-      { data: 'ZipCode' },                      // 22
+      { data: 'PassUserID' },                   // 19
+      { data: 'Address' },                      // 20
+      { data: 'City' },                         // 21
+      { data: 'State' },                        // 22
+      { data: 'ZipCode' },                      // 23
     ],
     columnDefs: [
-      { targets: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22], visible: false },
+      { targets: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], visible: false },
       {
         render: function (data, type, row) {
           const riderEmailIcon = `<span class="toh-mr-4" uk-tooltip="Click to send email to ${row['RiderEmail']}."><a href="mailto:${row['RiderEmail']}"><i class="fa-light fa-envelope"></i></a>&nbsp;</span>`;
@@ -63,10 +65,18 @@ $(document).ready(() => {
             return `<span class="fixMissingOrderBtn" uk-tooltip="Add Missing Order #" data-orderid="${row['id']}">${data}</span>`
           }
           if (row['NextStep'] === 'Flag Number') {
-            return `<span class="assignFlagNumberBtn" uk-tooltip="Assign Flag #" data-orderid="${row['id']}" data-userid="${row['RiderID']}">${data}</span>`
+            return `<span id="assignFlagNumberBtn" class="assignFlagNumberBtn" uk-tooltip="Assign Rider Flag #" data-orderid="${row['id']}" data-whoami="rider" data-userid="${row['RiderID']}">${data}</span>`
           }
           return data;
         }, targets: [3]
+      },
+      {
+        render: function (data, type, row) {
+          if (row['NextStep'] === 'Flag Number') {
+            return `<span id="assignPassFlagNumberBtn" class="assignPassFlagNumberBtn" uk-tooltip="Assign Passenger Flag #" data-orderid="${row['id']}" data-whoami="passenger" data-userid="${row['PassUserID']}">${data}</span>`
+          }
+          return data;
+        }, targets: [9]
       },
       {
         render: function (data, type, row) {
@@ -82,7 +92,7 @@ $(document).ready(() => {
         text: 'Download Paid Orders',
         title: 'TOH Paid Orders',
         exportOptions: {
-          columns: [7, 4, 5, 6, 10, 9, 19, 20, 21, 22, 8, 11, 12, 2, 13],
+          columns: [7, 4, 5, 6, 10, 9, 20, 21, 22, 23, 8, 11, 12, 2, 13],
           modifier: {
             search: 'none',
           },
@@ -149,13 +159,24 @@ $(document).ready(() => {
     });
   })
 
-  // Handle Assign Flag Number Button to Open Modal
-  $('#ordersTable').on('click', '.assignFlagNumberBtn', function () {
+  // Handle Assign Rider Flag Number Button to Open Modal
+  $('#ordersTable').on('click', '#assignFlagNumberBtn', function () {
     const AssigneeUserID = $(this).data('userid');
     const AssigneeOrderID = $(this).data('orderid');
     $('#assignFlagNumberModal').css('display', 'block');
     $('#saveFlagAssignmentBtn').data('orderid', AssigneeOrderID);
     $('#saveFlagAssignmentBtn').data('userid', AssigneeUserID);
+    $('#saveFlagAssignmentBtn').data('whoami', 'rider');
+  });
+
+  // Handle Assign Passenger Flag Number Button to Open Modal
+  $('#ordersTable').on('click', '#assignPassFlagNumberBtn', function () {
+    const AssigneeUserID = $(this).data('userid');
+    const AssigneeOrderID = $(this).data('orderid');
+    $('#assignPassFlagNumberModal').css('display', 'block');
+    $('#savePassFlagAssignmentBtn').data('orderid', AssigneeOrderID);
+    $('#savePassFlagAssignmentBtn').data('userid', AssigneeUserID);
+    $('#savePassFlagAssignmentBtn').data('whoami', 'passenger');
   });
 
   // Handle getNextAvailableFlagNumber Button
@@ -171,7 +192,20 @@ $(document).ready(() => {
     });
   });
 
-  // Handle Save Flag Assignment Button
+  // Handle getNextAvailablePassFlagNumber Button
+  $('#getNextAvailablePassFlagNumber').on('click', (e) => {
+    e.preventDefault();
+    $.ajax('/api/v1/flag/nextAvailable', {
+      type: 'GET',
+    }).then((flagNumber) => {
+      if (flagNumber > 0) {
+        $('#AssignedPassFlagNumber').val(flagNumber);
+        $('#savePassFlagAssignmentBtn').prop('disabled', false);
+      }
+    });
+  });
+
+  // Handle Save Rider Flag Assignment Button
   $('#saveFlagAssignmentBtn').on('click', function () {
     const AssignedUserID = $(this).data('userid');
     const AssignedOrderID = $(this).data('orderid');
@@ -181,6 +215,7 @@ $(document).ready(() => {
       RallyYear: 2025,
       UserID: AssignedUserID,
       OrderID: AssignedOrderID,
+      whoami: 'rider',
       assignedFlagNumber: assignedFlagNumber,
     };
 
@@ -191,14 +226,57 @@ $(document).ready(() => {
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (assignedFlagNumber >= 3000) {
-      showToastrError('Flag numbers must be lower than 3000.');
-      $('#assignedFlagNumber').val('');
+    // if (assignedFlagNumber >= 3000) {
+    //   showToastrError('Flag numbers must be lower than 3000.');
+    //   $('#assignedFlagNumber').val('');
+    //   $('#flagAvailabilityResponse').addClass('hide-me');
+    //   $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
+    // }
+
+    // if (assignedFlagNumber > 10 && assignedFlagNumber < 3000) {
+    if (assignedFlagNumber > 10) {
+      $.ajax('/api/v1/regFlow', {
+        beforeSend() {
+          $('.modal').css('display', 'none');
+          $('.spinnerBox').removeClass('hide-me');
+        },
+        complete() {
+          $('.spinnerBox').addClass('hide-me');
+        },
+        type: 'POST',
+        data: FlagAssignmentInfo,
+      })
+        .then(() => {
+          location.reload();
+        })
+        .catch(() => {
+          showToastrError('An error occured while assigning that flag.');
+        });
+    }
+  });
+
+  // Handle Save Passenger Flag Assignment Button
+  $('#savePassFlagAssignmentBtn').on('click', function () {
+    const AssignedPassUserID = $(this).data('userid');
+    const AssignedPassOrderID = $(this).data('orderid');
+    const assignedPassFlagNumber = $('#AssignedPassFlagNumber').val().trim();
+    const FlagAssignmentInfo = {
+      RegStep: 'PassFlagAssignment',
+      RallyYear: 2025,
+      UserID: AssignedPassUserID,
+      OrderID: AssignedPassOrderID,
+      whoami: 'passenger',
+      assignedPassFlagNumber: assignedPassFlagNumber,
+    };
+
+    if (!assignedPassFlagNumber || assignedPassFlagNumber < 11) {
+      showToastrError('A flag number is required.');
+      $('#AssignedPassFlagNumber').val('');
       $('#flagAvailabilityResponse').addClass('hide-me');
       $('#saveNewFlagNumChoiceBtn').prop('disabled', true);
     }
 
-    if (assignedFlagNumber > 10 && assignedFlagNumber < 3000) {
+    if (assignedPassFlagNumber > 10) {
       $.ajax('/api/v1/regFlow', {
         beforeSend() {
           $('.modal').css('display', 'none');
