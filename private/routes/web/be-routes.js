@@ -3,7 +3,7 @@
 const ejs = require('ejs');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 const { register } = require('prom-client');
 
 const db = require('../../../models');
@@ -719,10 +719,10 @@ module.exports = function (app) {
             res.json({ FirstName: null });
           });
       })
-      .catch((err) => {
-        logger.error(`Error encountered when fetching flag info for flag ${flag}. ${err}`, {
-          calledFrom: 'be-routes.js',
-        });
+      .catch(() => {
+        // logger.error(`Error encountered when fetching flag info for flag ${flag}. ${err}`, {
+        //   calledFrom: 'be-routes.js',
+        // });
         res.json({ FirstName: null });
       });
   });
