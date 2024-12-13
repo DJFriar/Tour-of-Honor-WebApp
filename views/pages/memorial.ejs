@@ -9,125 +9,135 @@
     <% } else { %>
       <%- include('../partials/topnav'); %>
     <% } %>
-    <h1 style="text-align:center">
-      <%= MemorialData[0].Name %> 
-      (<%= MemorialData[0].Code %>) &nbsp;
-      <% if(SubmissionStatus[0].Status == 0) { %>
-        <i class="fa-light fa-clock"></i>
+    <% if (MemorialData.length > 0) { %>
+      <h1 style="text-align:center">
+        <%= MemorialData[0].Name %> 
+        (<%= MemorialData[0].Code %>) &nbsp;
+        <% if(SubmissionStatus[0].Status == 0) { %>
+          <i class="fa-light fa-clock"></i>
+        <% } %>
+        <% if(SubmissionStatus[0].Status == 1) { %>
+          <i class="fa-solid fa-shield-check" color="green"></i>
+        <% } %>
+      </h1>
+      <% if(NotificationText) { %>
+        <%- include('../partials/notice'); %>
       <% } %>
-      <% if(SubmissionStatus[0].Status == 1) { %>
-        <i class="fa-solid fa-shield-check" color="green"></i>
-      <% } %>
-    </h1>
-    <% if(NotificationText) { %>
-      <%- include('../partials/notice'); %>
+      <main>
+        <div class="uk-child-width-expand@s" uk-grid>
+          <div>
+            <div class="" uk-grid>
+              <img class="sampleImage uk-align-center" src="<%= baseSampleImageUrl %><%= MemorialData[0].SampleImage %>">
+              <div class="uk-align-center" style="width: 73%; margin-top: 0; margin-bottom: 0;">
+                <div class="uk-align-left"><%= MemorialData[0].Code %></div>
+                <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
+              </div>
+            </div>
+            <% if(isAvailableToSubmit) { %>
+              <div>
+                <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
+                  <div class="uk-text-center toh-mb-18">
+                    <% if(User.PillionFlagNumber > 0) { %>
+                      <input class="uk-checkbox" type="checkbox" name="hasPillion" id="hasPillion">
+                      <label for="hasPillion" id="inputPillionLabel">Include Passenger</label>
+                      <input type="hidden" id="PillionFlagNumber" name="PillionFlagNumber" value="<%= User.PillionFlagNumber %>">
+                      &nbsp;
+                    <% } %>
+                    <input class="uk-checkbox" type="checkbox" name="isGroupSubmission" id="isGroupSubmission">
+                    <label for="isGroupSubmission" id="isGroupSubmissionLabel">Group Submission</label>
+                  </div>
+                  <div class="uk-grid-large uk-child-width-expand@s" uk-grid>
+                    <div>
+                      <label for="input-primary" id="inputPrimaryLabel">
+                        <img class="primaryImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+                      </label>
+                      <input required type="file" name="input-primary" id="input-primary" class="form-control-file border hide-me" />
+                    </div>
+                    <div>
+                      <label for="input-optional" id="inputOptionalLabel">
+                        <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
+                      </label>
+                      <input required type="file" name="input-optional" id="input-optional" class="form-control-file border hide-me" />
+                    </div>
+                  </div>
+                  <input type="hidden" id="MemorialID" name="MemorialID" value="<%= MemorialData[0].id %>">
+                  <input type="hidden" id="MemorialCode" name="MemorialCode" value="<%= MemorialData[0].Code %>">
+                  <input type="hidden" id="Source" name="Source" value="4">
+                  <input type="hidden" id="MultiImage" name="MultiImage" value="<%= MemorialData[0].MultiImage %>">
+                  <div class="uk-margin hide-me" id="GroupRiderInfoDiv">
+                    <label for="GroupRiderInfo" id="GroupRiderInfoLabel">Group Rider Flag Numbers&nbsp;<span uk-tooltip="Enter flag numbers only, seperated by a comma, ie '123,999,555'."><i class="fa-light fa-circle-info"></i></span></label>
+                    <input class="uk-input toh-input uk-width-1-1" type="text" name="GroupRiderInfo" id="GroupRiderInfo" placeholder="">
+                  </div>
+                  <div class="uk-margin">
+                    <label for="RiderNotes" id="RiderNotesLabel">Rider Notes (Optional)</label>
+                    <textarea class="uk-textarea toh-input" rows="3" name="RiderNotes" id="RiderNotes" placeholder=""></textarea>
+                  </div>
+                  <div class="uk-text-center toh-mt-18">
+                    <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
+                    <span id="buttonSpan" uk-tooltip="Missing a Required Image"><button disabled class="uk-button uk-button-primary button-rounded bonusField" id="saveSubmission" >Submit</button></span>
+                  </div>
+                </form>
+              </div>
+            <% } %>
+            <% if(User.FlagNumber && (SubmissionStatus[0].Status == 0 || SubmissionStatus[0].Status == 3)) { %>
+              <div class="uk-align-center" style="width:80%">
+                <p style="text-align: center">This memorial has a pending submission. If you need to correct it, please delete this submission from your <a href="/user-profile">User Profile</a> and resubmit.</p>
+              </div>
+            <% } %>
+            <% if(User.FlagNumber && MemorialStatus > 1) { %>
+              <div class="uk-align-center">
+                <p style="text-align: center;">This memorial has already been earned.</p>
+              </div>
+            <% } %>
+          </div>
+          <!-- BEGIN: Right hand column -->
+          <div>
+            <div id="memorialInfo">
+              <% if(MemorialData[0].MultiImage == 1) { %>
+                <span class="toh-mr-12"><i class="fa-solid fa-images fa-2xl"></i></span>
+              <% } %>
+              <% if(MemorialData[0].Restrictions > 1) { %>
+                <i class="fa-solid fa-octagon-exclamation fa-2xl" color="red"></i>
+              <% } %>
+              <p class="toh-miniHeader">Address</p>
+              <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
+              <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
+              <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
+              <p class="toh-miniHeader">GPS Coordinates</p>
+              <a href="https://www.google.com/maps/@<%= MemorialData[0].Latitude %>,<%= MemorialData[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %></a>
+              <p class="toh-miniHeader">Access Restrictions</p>
+              <%= MemorialData[0].Access %><br>
+              <% if(MemorialData[0].URL) { %> 
+                <p class="toh-miniHeader">Related Link</p>
+                <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a>
+              <% } %>
+              <% if(MemorialData[0].Sponsor) { %>
+                <p class="toh-miniHeader">Sponsored By</p>
+                <%= MemorialData[0].Sponsor %>
+              <% } %>
+            </div>
+            <hr>
+            <div id="memorialMetadata">
+              <% MemorialText.forEach(function(memText) { %>
+                <h6><%= memText.Heading %></h6>
+                <p>
+                  <%- memText.Text %>
+                </p>
+              <% }) %>
+            </div>
+          </div>
+          <!-- END: Right hand column -->
+        </div>
+      </main>
+    <% } else { %>
+      <h1 style="text-align:center">Memorial Not Found</h1>
+      <main>
+        <div class="uk-child-width-expand@s" style="text-align: center">
+          <p style="padding-top: 8px;">The memorial you are looking for either does not exist or has not been made available yet.<br />
+          Please check the memorial code and try again. If you believe this message to be in error, please contact <a href="mailto:support@tourofhonor.com">support@tourofhonor.com</a>.</p>
+        </div>
+      </main>
     <% } %>
-    <main>
-      <div class="uk-child-width-expand@s" uk-grid>
-        <div>
-          <div class="" uk-grid>
-            <img class="sampleImage uk-align-center" src="<%= baseSampleImageUrl %><%= MemorialData[0].SampleImage %>">
-            <div class="uk-align-center" style="width: 73%; margin-top: 0; margin-bottom: 0;">
-              <div class="uk-align-left"><%= MemorialData[0].Code %></div>
-              <div class="uk-align-right"><%= MemorialData[0].City %>, <%= MemorialData[0].State %></div>
-            </div>
-          </div>
-          <% if(isAvailableToSubmit) { %>
-            <div>
-              <form id="RiderSubmissionForm" class="mt-4 image-submission" action="/submit-memorial" method="POST" enctype="multipart/form-data">
-                <div class="uk-text-center toh-mb-18">
-                  <% if(User.PillionFlagNumber > 0) { %>
-                    <input class="uk-checkbox" type="checkbox" name="hasPillion" id="hasPillion">
-                    <label for="hasPillion" id="inputPillionLabel">Include Passenger</label>
-                    <input type="hidden" id="PillionFlagNumber" name="PillionFlagNumber" value="<%= User.PillionFlagNumber %>">
-                    &nbsp;
-                  <% } %>
-                  <input class="uk-checkbox" type="checkbox" name="isGroupSubmission" id="isGroupSubmission">
-                  <label for="isGroupSubmission" id="isGroupSubmissionLabel">Group Submission</label>
-                </div>
-                <div class="uk-grid-large uk-child-width-expand@s" uk-grid>
-                  <div>
-                    <label for="input-primary" id="inputPrimaryLabel">
-                      <img class="primaryImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
-                    </label>
-                    <input required type="file" name="input-primary" id="input-primary" class="form-control-file border hide-me" />
-                  </div>
-                  <div>
-                    <label for="input-optional" id="inputOptionalLabel">
-                      <img class="optionalImagePlaceholder" data-src="/images/no_image_taken.png" alt="Click here to upload" uk-img>
-                    </label>
-                    <input required type="file" name="input-optional" id="input-optional" class="form-control-file border hide-me" />
-                  </div>
-                </div>
-                <input type="hidden" id="MemorialID" name="MemorialID" value="<%= MemorialData[0].id %>">
-                <input type="hidden" id="MemorialCode" name="MemorialCode" value="<%= MemorialData[0].Code %>">
-                <input type="hidden" id="Source" name="Source" value="4">
-                <input type="hidden" id="MultiImage" name="MultiImage" value="<%= MemorialData[0].MultiImage %>">
-                <div class="uk-margin hide-me" id="GroupRiderInfoDiv">
-                  <label for="GroupRiderInfo" id="GroupRiderInfoLabel">Group Rider Flag Numbers&nbsp;<span uk-tooltip="Enter flag numbers only, seperated by a comma, ie '123,999,555'."><i class="fa-light fa-circle-info"></i></span></label>
-                  <input class="uk-input toh-input uk-width-1-1" type="text" name="GroupRiderInfo" id="GroupRiderInfo" placeholder="">
-                </div>
-                <div class="uk-margin">
-                  <label for="RiderNotes" id="RiderNotesLabel">Rider Notes (Optional)</label>
-                  <textarea class="uk-textarea toh-input" rows="3" name="RiderNotes" id="RiderNotes" placeholder=""></textarea>
-                </div>
-                <div class="uk-text-center toh-mt-18">
-                  <label class="uk-form-label bonusField" for="saveSubmission">&nbsp;</label>
-                  <span id="buttonSpan" uk-tooltip="Missing a Required Image"><button disabled class="uk-button uk-button-primary button-rounded bonusField" id="saveSubmission" >Submit</button></span>
-                </div>
-              </form>
-            </div>
-          <% } %>
-          <% if(User.FlagNumber && (SubmissionStatus[0].Status == 0 || SubmissionStatus[0].Status == 3)) { %>
-            <div class="uk-align-center" style="width:80%">
-              <p style="text-align: center">This memorial has a pending submission. If you need to correct it, please delete this submission from your <a href="/user-profile">User Profile</a> and resubmit.</p>
-            </div>
-          <% } %>
-          <% if(User.FlagNumber && MemorialStatus > 1) { %>
-            <div class="uk-align-center">
-              <p style="text-align: center;">This memorial has already been earned.</p>
-            </div>
-          <% } %>
-        </div>
-        <!-- BEGIN: Right hand column -->
-        <div>
-          <div id="memorialInfo">
-            <% if(MemorialData[0].MultiImage == 1) { %>
-              <span class="toh-mr-12"><i class="fa-solid fa-images fa-2xl"></i></span>
-            <% } %>
-            <% if(MemorialData[0].Restrictions > 1) { %>
-              <i class="fa-solid fa-octagon-exclamation fa-2xl" color="red"></i>
-            <% } %>
-            <p class="toh-miniHeader">Address</p>
-            <% if(MemorialData[0].Address1) { %><%= MemorialData[0].Address1 %><br/><% } %>
-            <% if(MemorialData[0].Address2) { %><%= MemorialData[0].Address2 %><br/><% } %>
-            <%= MemorialData[0].City %>, <%= MemorialData[0].State %><br/>
-            <p class="toh-miniHeader">GPS Coordinates</p>
-            <a href="https://www.google.com/maps/@<%= MemorialData[0].Latitude %>,<%= MemorialData[0].Longitude %>,100m" class="hidden-link" target="_blank"><%= MemorialData[0].Latitude %>, <%= MemorialData[0].Longitude %></a>
-            <p class="toh-miniHeader">Access Restrictions</p>
-            <%= MemorialData[0].Access %><br>
-            <% if(MemorialData[0].URL) { %> 
-              <p class="toh-miniHeader">Related Link</p>
-              <a href="<%= MemorialData[0].URL %>" target="_blank"><%= MemorialData[0].URL %></a>
-            <% } %>
-            <% if(MemorialData[0].Sponsor) { %>
-              <p class="toh-miniHeader">Sponsored By</p>
-              <%= MemorialData[0].Sponsor %>
-            <% } %>
-          </div>
-          <hr>
-          <div id="memorialMetadata">
-            <% MemorialText.forEach(function(memText) { %>
-              <h6><%= memText.Heading %></h6>
-              <p>
-                <%- memText.Text %>
-              </p>
-            <% }) %>
-          </div>
-        </div>
-        <!-- END: Right hand column -->
-      </div>
-    </main>
     <footer>
       <%- include('../partials/footer'); %>
     </footer>

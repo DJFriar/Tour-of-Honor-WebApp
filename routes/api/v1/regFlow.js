@@ -570,7 +570,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
     // Update the DB tables
     // Assign the Flag number to the rider
-    db.Flag.create(FlagInfo)
+    db.Flag.upsert(FlagInfo)
       .then(() => {
         logger.info(`Flag number ${assignedFlagNumber} assigned by admins to UserID ${UserID}`, {
           calledFrom: 'regFlow.js',
@@ -642,7 +642,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
 
     // Update the DB tables
     // Assign the Flag number to the passenger
-    db.Flag.create(PassengerFlagInfo)
+    db.Flag.upsert(PassengerFlagInfo)
       .then(() => {
         logger.info(
           `Flag number ${assignedPassFlagNumber} assigned by admins to UserID ${UserID}`,

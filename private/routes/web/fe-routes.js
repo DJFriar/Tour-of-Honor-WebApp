@@ -7,6 +7,8 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 const { logger } = require('../../../controllers/logger');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const rallyStartDate = `${currentRallyYear}-04-01`;
+const rallyEndDate = `${currentRallyYear}-10-31`;
 
 // eslint-disable-next-line func-names
 module.exports = function (app) {
@@ -414,9 +416,12 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      const todaysDate = DateTime.now().toISODate();
+      if (todaysDate >= rallyStartDate && todaysDate <= rallyEndDate) {
+        logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
+          calledFrom: 'fe-routes.js',
+        });
+      }
     }
     try {
       MemorialData = await q.queryMemorial(memID);
@@ -726,24 +731,32 @@ module.exports = function (app) {
       OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, currentRallyYear);
       [OrderInfo] = OrderInfoArray;
       // Check if Passenger has an existing flag number.
-      if (OrderInfo.PassUserID && OrderInfo.PassUserID > 0) {
-        try {
-          const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2024);
-          if (passFlagNum && passFlagNum.FlagNumber > 0) {
-            OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
-          } else {
-            OrderInfo.PassFlagNum = 0;
+      if (OrderInfo.PassUserID) {
+        if (OrderInfo.PassUserID > 0) {
+          try {
+            const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2024);
+            if (passFlagNum && passFlagNum.FlagNumber > 0) {
+              OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
+            } else {
+              OrderInfo.PassFlagNum = 0;
+            }
+          } catch (err) {
+            logger.error(
+              `Error encountered while rendering /registration: queryFlagNumFromUserID(). ${err}`,
+              {
+                calledFrom: 'fe-routes.js',
+              },
+            );
           }
-        } catch (err) {
-          logger.error(`Error encountered: queryFlagNumFromUserID().${err}`, {
-            calledFrom: 'fe-routes.js',
-          });
         }
       }
     } catch (err) {
-      logger.error(`Error encountered: queryOrderInfoByRider().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      logger.error(
+        `Error encountered while setting OrderInfoArray: queryOrderInfoByRider(). ${err}`,
+        {
+          calledFrom: 'fe-routes.js',
+        },
+      );
     }
 
     if (!OrderInfo || OrderInfo.length === 0) {
@@ -755,9 +768,12 @@ module.exports = function (app) {
     try {
       TotalOrderCost = await q.queryTotalOrderCostByRider(req.user.id);
     } catch (err) {
-      logger.error(`Error encountered: queryTotalOrderCostByRider().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      logger.error(
+        `Error encountered while rendering /registration: queryTotalOrderCostByRider(). ${err}`,
+        {
+          calledFrom: 'fe-routes.js',
+        },
+      );
     }
     if (!TotalOrderCost || TotalOrderCost.length === 0) {
       TotalOrderCost = [];
@@ -767,9 +783,12 @@ module.exports = function (app) {
     try {
       BikeMakes = await q.queryBikeMakesList();
     } catch (err) {
-      logger.error(`Error encountered: queryBikeMakesList().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      logger.error(
+        `Error encountered while rendering /registration: queryBikeMakesList(). ${err}`,
+        {
+          calledFrom: 'fe-routes.js',
+        },
+      );
     }
 
     try {
@@ -782,7 +801,7 @@ module.exports = function (app) {
       const ShirtStyleSurchargeObject = await q.queryShirtStyleSurcharge();
       ShirtStyleSurcharge = ShirtStyleSurchargeObject[0].iValue;
     } catch (err) {
-      logger.error(`Error encountered while gathering pricing info.${err}`, {
+      logger.error(`Error encountered while gathering pricing info. ${err}`, {
         calledFrom: 'fe-routes.js',
       });
     }
@@ -790,15 +809,18 @@ module.exports = function (app) {
     try {
       Charities = await q.queryAllActiveCharities();
     } catch (err) {
-      logger.error(`Error encountered: queryAllActiveCharities().${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      logger.error(
+        `Error encountered while rendering /registration: queryAllActiveCharities(). ${err}`,
+        {
+          calledFrom: 'fe-routes.js',
+        },
+      );
     }
 
     try {
       TimeZoneOptions = await q.queryTimeZoneData();
     } catch (err) {
-      logger.error(`Error encountered: queryTimeZoneData().${err}`, {
+      logger.error(`Error encountered while rendering /registration: queryTimeZoneData(). ${err}`, {
         calledFrom: 'fe-routes.js',
       });
     }
@@ -809,7 +831,9 @@ module.exports = function (app) {
         RiderIsAutomobile = true;
       }
     } catch (err) {
-      logger.error(`Error encountered: queryBikesByRider().${err}`, { calledFrom: 'fe-routes.js' });
+      logger.error(`Error encountered while rendering /registration: queryBikesByRider(). ${err}`, {
+        calledFrom: 'fe-routes.js',
+      });
     }
 
     // Check for Rider Waiver info
@@ -820,9 +844,12 @@ module.exports = function (app) {
           OrderInfo.RiderWaiverID = RiderWaiverInfo.WaiverID;
         }
       } catch (err) {
-        logger.error(`Error encountered: Rider queryWaiverIDByUser().${err}`, {
-          calledFrom: 'fe-routes.js',
-        });
+        logger.error(
+          `Error encountered while rendering /registration: Rider queryWaiverIDByUser(). ${err}`,
+          {
+            calledFrom: 'fe-routes.js',
+          },
+        );
       }
     } else {
       OrderInfo.RiderWaiverID = '';
@@ -836,9 +863,12 @@ module.exports = function (app) {
           OrderInfo.PassengerWaiverID = PassWaiverInfo.WaiverID;
         }
       } catch (err) {
-        logger.error(`Error encountered: Passenger queryWaiverIDByUser().${err}`, {
-          calledFrom: 'fe-routes.js',
-        });
+        logger.error(
+          `Error encountered while rendering /registration: Passenger queryWaiverIDByUser(). ${err}`,
+          {
+            calledFrom: 'fe-routes.js',
+          },
+        );
       }
     }
 
@@ -908,9 +938,12 @@ module.exports = function (app) {
     try {
       OrderInfoRaw = await q.queryOrderInfoByRider(userid, currentRallyYear);
     } catch (err) {
-      logger.error(`Error encountered: queryOrderInfoByRider(${userid}).${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      logger.error(
+        `Error encountered while setting OrderInfoRaw: queryOrderInfoByRider(${userid}).${err}`,
+        {
+          calledFrom: 'fe-routes.js',
+        },
+      );
     }
 
     if (!OrderInfoRaw || OrderInfoRaw.length === 0) {
