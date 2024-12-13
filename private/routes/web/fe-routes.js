@@ -7,6 +7,8 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 const { logger } = require('../../../controllers/logger');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const rallyStartDate = `${currentRallyYear}-04-01`;
+const rallyEndDate = `${currentRallyYear}-10-31`;
 
 // eslint-disable-next-line func-names
 module.exports = function (app) {
@@ -414,9 +416,12 @@ module.exports = function (app) {
       const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
       memID = memIDResponse[0].id;
     } catch (err) {
-      logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
-        calledFrom: 'fe-routes.js',
-      });
+      const todaysDate = DateTime.now().toISODate();
+      if (todaysDate >= rallyStartDate && todaysDate <= rallyEndDate) {
+        logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
+          calledFrom: 'fe-routes.js',
+        });
+      }
     }
     try {
       MemorialData = await q.queryMemorial(memID);
