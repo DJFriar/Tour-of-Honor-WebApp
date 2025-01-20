@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-// const fs = require('fs');
-const S3 = require('aws-sdk/clients/s3');
+const { Upload } = require('@aws-sdk/lib-storage');
+const { S3 } = require('@aws-sdk/client-s3');
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 const region = process.env.AWS_BUCKET_REGION;
@@ -13,8 +13,11 @@ let s3FilePath = '';
 
 const s3 = new S3({
   region,
-  accessKeyId,
-  secretAccessKey,
+
+  credentials: {
+    accessKeyId,
+    secretAccessKey,
+  },
 });
 
 // Uploads Rider Submitted Image to S3
@@ -33,7 +36,10 @@ function uploadRiderSubmittedImage(fileName, file) {
     Key: s3FilePath,
   };
   // Do the upload
-  return s3.upload(uploadParams).promise();
+  return new Upload({
+    client: s3,
+    params: uploadParams,
+  }).done();
 }
 
 // Uploads SampleImages to S3
@@ -48,7 +54,10 @@ function uploadSampleImage(fileName, file) {
     Key: s3FilePath,
   };
   // Do the upload
-  return s3.upload(uploadParams).promise();
+  return new Upload({
+    client: s3,
+    params: uploadParams,
+  }).done();
 }
 
 exports.uploadRiderSubmittedImage = uploadRiderSubmittedImage;

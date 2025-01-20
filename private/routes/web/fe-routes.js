@@ -7,6 +7,7 @@ const isAuthenticated = require('../../../config/isAuthenticated');
 const { logger } = require('../../../controllers/logger');
 
 const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
+const flagNumberReleaseDate = process.env.RELEASE_UNRESERVED_FLAGS_DATE;
 const rallyStartDate = `${currentRallyYear}-04-01`;
 const rallyEndDate = `${currentRallyYear}-10-31`;
 
@@ -700,6 +701,7 @@ module.exports = function (app) {
 
   app.get('/registration', async (req, res) => {
     let activeUser = false;
+    let allowCustomFlag = false;
     let BaseRiderRate;
     let BikeMakes;
     let Charities;
@@ -719,6 +721,10 @@ module.exports = function (app) {
     }
     if (!req.user) {
       return res.redirect('/signup');
+    }
+
+    if (Date.now() <= flagNumberReleaseDate) {
+      allowCustomFlag = true;
     }
 
     if (process.env.NODE_ENV === 'Production') {
@@ -883,6 +889,7 @@ module.exports = function (app) {
     res.locals.title = 'TOH Registration';
     res.render('pages/registration', {
       activeUser,
+      allowCustomFlag,
       User: req.user,
       NotificationText: '',
       BaseRiderRate,
