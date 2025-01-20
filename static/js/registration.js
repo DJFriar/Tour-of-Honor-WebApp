@@ -761,7 +761,7 @@ $(document).ready(() => {
       });
   });
 
-  // Handle Keep Existing Flag No button for Rider
+  // Handle Keep Existing Flag No button for Rider (opens Flag Selection modal)
   $('.chooseFlagNum').on('click', function chooseFlagNum(e) {
     e.preventDefault();
     const UserID = $(this).data('userid');

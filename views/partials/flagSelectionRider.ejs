@@ -15,21 +15,27 @@
       </div> 
     </div>
   </div>
-  <% if(User.FlagNumber > 10 && !OrderInfo.RequestedRiderFlagNumber) { %>
-    <div id="keepExistingFlagNumSection">
-      <p>Would you like to keep this flag number again for next year?</p>
-      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-userid="<%= User.id %>">No</button>
-      <button type="button" id="keepExistingFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded keepExistingFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= User.id %>" data-existingflagnumber="<%= User.FlagNumber %>">Yes</button>
-    </div>
-  <% } else { %>
-    <% if(User.FlagNumber >= 1 && User.FlagNumber <= 10) { %>
-      <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
+  <% if (allowCustomFlag && (User.FlagNumber === 0)) { %>
+    <% if(User.FlagNumber > 10 && !OrderInfo.RequestedRiderFlagNumber) { %>
+      <div id="keepExistingFlagNumSection">
+        <p>Would you like to keep this flag number again for next year?</p>
+        <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-userid="<%= User.id %>">No</button>
+        <button type="button" id="keepExistingFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded keepExistingFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= User.id %>" data-existingflagnumber="<%= User.FlagNumber %>">Yes</button>
+      </div>
+    <% } else { %>
+      <% if(User.FlagNumber >= 1 && User.FlagNumber <= 10) { %>
+        <p>You currently have a reserved Flag Number. Please click the button below to choose a flag number.</p>
+        <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
+      <% } %>
+      <% if(!OrderInfo.RequestedRiderFlagNumber && (User.FlagNumber == 0 || !User.FlagNumber )) { %>
+        <p>Welcome to the Tour! Please click the button below to choose a flag number.</p>
+        <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
+      <% } %>
     <% } %>
-    <% if(!OrderInfo.RequestedRiderFlagNumber && (User.FlagNumber == 0 || !User.FlagNumber )) { %>
-      <p>Welcome to the Tour! Please click the button below to choose a flag number.</p>
-      <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
-    <% } %>
+  <% } %>
+  <% if (!allowCustomFlag && (User.FlagNumber === 0)) { %> 
+    <p>Please click below to get the next available flag number.</p>
+    <button type="button" id="chooseFlagNumRider" class="uk-button uk-button-primary uk-buttom-small button-rounded chooseFlagNum" data-whoami="rider" data-orderid="<%= OrderInfo.id %>" data-userid="<%= OrderInfo.UserID %>">Choose Flag Number</button>
   <% } %>
   <% if (OrderInfo.RequestedRiderFlagNumber && (User.FlagNumber > 0)) { %>
     <p>Your flag number choice has been confirmed. If you need to make a change, please reach out to support.</p>
