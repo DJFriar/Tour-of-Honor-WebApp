@@ -3,14 +3,10 @@ module.exports = (req, res, next) => {
   req.session.returnTo = req.originalUrl;
   const source = req.route.path;
   const publicPages = ['/', '/login', '/signup', '/history', '/contact'];
-  // const privatePages = ['/admin', '/user-profile', '/review', '/submit'];
 
   // Logged in, private page
   if (req.user && !publicPages.includes(source)) {
     req.user.destinationURL = req.originalUrl;
-    // return res.redirect(req.session.returnTo || '/');
-    // req.session.redirect = null;
-    // return res.render(source, { activeUser: true, user: req.user });
     return next();
   }
 

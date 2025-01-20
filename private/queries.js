@@ -9,9 +9,9 @@ const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 module.exports.queryUserSessionDataByID = async function queryUserSessionDataByID(id) {
   try {
     const result = await sequelize.query(
-      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, tz.LongName AS TimeZoneLong, u.PillionFlagNumber, u.isAdmin, u.isActive FROM Users u INNER JOIN TimeZones tz ON u.TimeZone = tz.LongName LEFT JOIN Flags f ON u.id = f.UserID WHERE u.id = ? ORDER BY f.RallyYear DESC LIMIT 1;',
+      'SELECT u.id, u.FirstName, u.LastName, IFNULL(f.FlagNumber,0) FlagNumber, u.Email, u.Password, u.Address1, u.City, u.State, u.ZipCode, u.CellNumber, u.TimeZone, tz.LongName AS TimeZoneLong, u.PillionFlagNumber, u.isAdmin, u.isActive FROM Users u INNER JOIN TimeZones tz ON u.TimeZone = tz.LongName LEFT JOIN Flags f ON u.id = f.UserID AND f.RallyYear = ? WHERE u.id = ? ORDER BY f.RallyYear DESC LIMIT 1;',
       {
-        replacements: [id],
+        replacements: [currentRallyYear, id],
         type: QueryTypes.SELECT,
       },
     );
