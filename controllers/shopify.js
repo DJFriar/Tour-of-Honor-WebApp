@@ -1,98 +1,103 @@
+const { createStorefrontApiClient } = require('@shopify/storefront-api-client');
+
 require('dotenv').config();
-const fetch = require('isomorphic-fetch');
 
-const storefrontToken = process.env.SHOPIFY_STOREFRONT_KEY;
-const url = process.env.SHOPIFY_SHOP_API_ENDPOINT;
+// const url = process.env.SHOPIFY_SHOP_API_ENDPOINT;
 
-const connection = {
-  url,
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Shopify-Storefront-Access-Token': storefrontToken,
-  },
-};
+const client = createStorefrontApiClient({
+  storeDomain: process.env.SHOPIFY_SHOP,
+  publicAccessToken: process.env.SHOPIFY_STOREFRONT_KEY,
+  apiVersion: '2025-04',
+});
 
-function buildGraphQLQuery() {
-  const query = `mutation ($id:ID!) {
-    checkoutCreate(input: {
-    lineItems: [{ variantId: $id, quantity: 1 }]
-}) {
-    checkout {
-        id
-        webUrl
-    }
-}
-}`;
-  return query;
-}
-
-function buildGraphQLQueryToGetOrderNumber() {
-  const query = `query ($id:ID!) { 
-    node(
-      id: $id
-    ) {
+const createCartMutation = `mutation createCart($cartInput: CartInput!) {
+  cartCreate(input: $cartInput) {
+    cart {
       id
-      ... on Checkout {
-      id
-      order {
-          canceledAt
-          id
-          name
-          email
+      checkoutUrl
+      lines(first: 10) {
+        edges {
+          node {
+            id
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+              }
+            }
+          }
+        }
       }
+      cost {
+        totalAmount {
+          amount
+          currencyCode
+        }
       }
     }
-  }`;
-  return query;
-}
-
-function getQueryVars(id) {
-  // const id = id;
-  const queryVars = { id };
-  return queryVars;
-}
-
-async function postQuery(query, queryVars) {
-  const res = await fetch(connection.url, {
-    method: 'POST',
-    headers: connection.headers,
-    body: JSON.stringify({
-      query,
-      variables: queryVars,
-    }),
-  });
-
-  if (res.status === 200) {
-    const response = await res.json();
-    return response;
   }
-  // throw res.statusText;
-  return false;
-}
+}`;
+
+const createOrderStatusByCheckoutIDMutation = `query ($id:ID!) { 
+  node(id: $id) {
+    id
+    order {
+      id
+      orderNumber
+    }
+  }
+}`;
 
 async function generateShopifyCheckout(variantid) {
-  const query = buildGraphQLQuery();
-  const queryVars = getQueryVars(variantid);
-  const createCheckoutResponse = await postQuery(query, queryVars);
-  const checkoutURL = createCheckoutResponse.data.checkoutCreate.checkout.webUrl;
-  const checkoutID = createCheckoutResponse.data.checkoutCreate.checkout.id;
+  const { data, errors } = await client.request(createCartMutation, {
+    variables: {
+      cartInput: {
+        lines: [
+          {
+            quantity: 1,
+            merchandiseId: variantid,
+          },
+        ],
+      },
+    },
+  });
+
+  if (errors) {
+    console.error(errors.message);
+  }
+
+  const checkoutURL = data.cartCreate.cart.checkoutUrl;
+  const checkoutID = data.cartCreate.cart.id;
   const checkoutDetails = {
     CheckoutURL: checkoutURL,
     CheckoutID: checkoutID,
   };
 
+  console.log('Checkout URL: ', checkoutURL);
+  console.log('Checkout ID: ', checkoutID);
+
   return checkoutDetails;
 }
 
 async function checkOrderStatusByCheckoutID(checkoutid) {
-  const query = buildGraphQLQueryToGetOrderNumber();
-  const queryVars = getQueryVars(checkoutid);
-  const orderStatusResponse = await postQuery(query, queryVars);
-  // console.debug(orderStatusResponse)
-  const orderNumber = orderStatusResponse.data.node.order.name;
+  const { data, errors } = await client.request(createOrderStatusByCheckoutIDMutation, {
+    variables: {
+      id: checkoutid,
+    },
+  });
+
+  if (errors) {
+    console.error(errors.message);
+    console.error(errors.graphQLErrors);
+  }
+
+  console.log('==== RAW data object ====');
+  console.log(data);
+  const { orderNumber } = data.node.order;
+  console.log(`orderNumber is: ${orderNumber}`);
 
   return orderNumber.slice(1);
 }
 
 exports.generateShopifyCheckout = generateShopifyCheckout;
-exports.checkOrderStatusByCheckoutID = checkOrderStatusByCheckoutID;
+// exports.checkOrderStatusByCheckoutID = checkOrderStatusByCheckoutID;
