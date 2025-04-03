@@ -270,6 +270,21 @@ ApiSubmissionRouter.route('/held').get(async (req, res) => {
 // Get All Scored Submissions
 ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
   const scoredYear = req.params.year;
+  const table = 'tbl_message';
+  let column_index = 0;
+  let column_name = `${table}.id`;
+  let column_sort_order = 'desc';
+  let startindex = 0;
+  let length = 50;
+  const draw = parseInt(req.query.draw, 10);
+
+  if (typeof req.query.order !== 'undefined') {
+    column_index = req.query.order[0].column;
+    column_name = req.query.columns[column_index].data;
+    column_sort_order = req.query.order[0].dir;
+    startindex = req.query.start;
+    length = req.query.length;
+  }
   const sqlQuery = `
   SELECT DISTINCT 
     s.id, s.Status, s.Source, s.createdAt, s.updatedAt, s.ScorerNotes, s.RiderNotes, s.OtherRiders,
@@ -283,13 +298,35 @@ ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
     INNER JOIN Categories c ON m.Category = c.id 
   WHERE s.Status IN (1,2)
     AND YEAR(s.createdAt) = ? 
+  ORDER BY ${column_name} ${column_sort_order}
+  LIMIT ${startindex}, ${length}
+  `;
+  const sqlQueryCount = `
+  SELECT COUNT(*) AS totalCount
+  FROM Submissions s 
+    INNER JOIN Flags f ON f.UserID = s.UserID AND f.RallyYear = ${currentRallyYear}
+    INNER JOIN Users u ON s.UserID = u.id
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+  WHERE s.Status IN (1,2)
+    AND YEAR(s.createdAt) = ? 
   `;
   try {
+    const totalCount = await sequelize.query(sqlQueryCount, {
+      replacements: [scoredYear],
+      type: QueryTypes.SELECT,
+    });
     const allScoredSubmissions = await sequelize.query(sqlQuery, {
       replacements: [scoredYear],
       type: QueryTypes.SELECT,
     });
-    res.json(allScoredSubmissions);
+    const jsonResponse = {
+      draw,
+      recordsTotal: totalCount[0].totalCount,
+      recordsFiltered: totalCount[0].totalCount,
+      data: allScoredSubmissions,
+    };
+    res.json(jsonResponse);
   } catch (err) {
     logger.error(`An error was encountered in allScoredSubmissions: ${err}`, {
       calledFrom: 'api/v1/submission.js',

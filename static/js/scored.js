@@ -4,7 +4,7 @@ $(document).ready(() => {
   $('#scoredTable').DataTable({
     ajax: {
       url: '/api/v1/submission/scored/2025',
-      dataSrc: '',
+      dataSrc: 'data',
     },
     columns: [
       { data: 'id' },
@@ -60,6 +60,7 @@ $(document).ready(() => {
         targets: [2],
       },
       {
+        orderable: false,
         render(data, type, row) {
           return `${row.City}, ${row.State}&nbsp;<a href="https://maps.google.com/maps?t=m&q=loc:${row.Latitude},${row.Longitude}" target="_blank"><span class=""><i class="fa-duotone fa-map-location-dot"></i></span></a>`;
         },
@@ -108,7 +109,7 @@ $(document).ready(() => {
         },
       },
     ],
-    pageLength: 50,
+    pageLength: 25,
     serverSide: true,
   });
 });
