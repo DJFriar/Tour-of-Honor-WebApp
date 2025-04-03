@@ -270,10 +270,27 @@ ApiSubmissionRouter.route('/held').get(async (req, res) => {
 // Get All Scored Submissions
 ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
   const scoredYear = req.params.year;
-  const sqlQuery = `
+  const table = 'tbl_message';
+  const column_index = req.query.order[0].column;
+  let column_name = `${table}.id`;
+  let column_sort_order = 'desc';
+  let startindex = 0;
+  let length = 50;
+  let search_value;
+  let sqlQuery;
+  const draw = parseInt(req.query.draw, 10);
+
+  if (typeof req.query.order !== 'undefined') {
+    column_name = req.query.columns[column_index].data || req.query.columns[column_index].name;
+    column_sort_order = req.query.order[0].dir;
+    startindex = req.query.start;
+    length = req.query.length;
+    search_value = req.query.search.value;
+  }
+  const sqlQueryMain = `
   SELECT DISTINCT 
     s.id, s.Status, s.Source, s.createdAt, s.updatedAt, s.ScorerNotes, s.RiderNotes, s.OtherRiders,
-    u.FirstName, u.LastName, f.FlagNumber, 
+    u.FirstName, u.LastName, f.FlagNumber as FlagNumber, 
     m.Code, m.Region, m.Latitude, m.Longitude, m.City, m.State, 
     c.Name AS CatName
   FROM Submissions s 
@@ -281,15 +298,55 @@ ApiSubmissionRouter.route('/scored/:year').get(async (req, res) => {
     INNER JOIN Users u ON s.UserID = u.id
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
-  WHERE s.Status IN (1,2)
-    AND YEAR(s.createdAt) = ? 
+  WHERE
+    s.Status IN (1,2)
+    AND YEAR(s.createdAt) = ${scoredYear}  
   `;
+  const sqlSearchQuery = `
+    AND (u.FirstName LIKE '%${search_value}%'
+    OR u.LastName LIKE '%${search_value}%'
+    OR f.FlagNumber LIKE '%${search_value}%'
+    OR m.Code LIKE '%${search_value}%'
+    OR m.City LIKE '%${search_value}%'
+    OR m.State LIKE '%${search_value}%'
+    OR c.Name LIKE '%${search_value}%'
+    OR s.id LIKE '%${search_value}%')
+  `;
+  const sqlQueryOrderLimit = `
+    ORDER BY ${column_name} ${column_sort_order}
+    LIMIT ${startindex}, ${length}
+  `;
+  const sqlQueryCount = `
+  SELECT COUNT(*) AS totalCount
+  FROM Submissions s 
+    INNER JOIN Flags f ON f.UserID = s.UserID AND f.RallyYear = ${currentRallyYear}
+    INNER JOIN Users u ON s.UserID = u.id
+    INNER JOIN Memorials m ON s.MemorialID = m.id	
+    INNER JOIN Categories c ON m.Category = c.id 
+  WHERE s.Status IN (1,2)
+    AND YEAR(s.createdAt) = ${scoredYear} 
+  `;
+
+  if (search_value !== '') {
+    sqlQuery = sqlQueryMain + sqlSearchQuery + sqlQueryOrderLimit;
+  } else {
+    sqlQuery = sqlQueryMain + sqlQueryOrderLimit;
+  }
+
   try {
-    const allScoredSubmissions = await sequelize.query(sqlQuery, {
-      replacements: [scoredYear],
+    const totalCount = await sequelize.query(sqlQueryCount, {
       type: QueryTypes.SELECT,
     });
-    res.json(allScoredSubmissions);
+    const allScoredSubmissions = await sequelize.query(sqlQuery, {
+      type: QueryTypes.SELECT,
+    });
+    const jsonResponse = {
+      draw,
+      recordsTotal: totalCount[0].totalCount,
+      recordsFiltered: totalCount[0].totalCount,
+      data: allScoredSubmissions,
+    };
+    res.json(jsonResponse);
   } catch (err) {
     logger.error(`An error was encountered in allScoredSubmissions: ${err}`, {
       calledFrom: 'api/v1/submission.js',
