@@ -3,15 +3,15 @@ $(document).ready(() => {
   // Create the New Scored Table
   $('#scoredTable').DataTable({
     ajax: {
-      url: '/api/v1/submission/scored/2025',
+      url: '/api/v1/submission/scored/2023',
       dataSrc: 'data',
     },
     columns: [
       { data: 'id' },
-      { data: null, name: 'Rider' },
+      { data: null, name: 'FlagNumber' },
       { data: 'Code' },
       { data: 'CatName' },
-      { data: null, name: 'Location' },
+      { data: null, name: 'City' },
       { data: 'createdAt' },
       { data: 'Status' },
       { data: 'updatedAt' },
@@ -60,7 +60,7 @@ $(document).ready(() => {
         targets: [2],
       },
       {
-        orderable: false,
+        // orderable: false,
         render(data, type, row) {
           return `${row.City}, ${row.State}&nbsp;<a href="https://maps.google.com/maps?t=m&q=loc:${row.Latitude},${row.Longitude}" target="_blank"><span class=""><i class="fa-duotone fa-map-location-dot"></i></span></a>`;
         },
