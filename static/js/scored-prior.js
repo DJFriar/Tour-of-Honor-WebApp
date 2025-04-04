@@ -4,15 +4,15 @@ $(document).ready(() => {
   $('#HistoricalScoredTable').DataTable({
     ajax: {
       url: '/api/v1/submission/scored/2024',
-      dataSrc: '',
+      dataSrc: 'data',
     },
     deferRender: true,
     columns: [
       { data: 'id' },
-      { data: null, name: 'Rider' },
+      { data: null, name: 'FlagNumber' },
       { data: 'Code' },
       { data: 'CatName' },
-      { data: null, name: 'Location' },
+      { data: null, name: 'City' },
       { data: 'createdAt' },
       { data: 'Status' },
       { data: 'updatedAt' },
@@ -113,5 +113,6 @@ $(document).ready(() => {
       },
     ],
     pageLength: 50,
+    serverSide: true,
   });
 });
