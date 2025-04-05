@@ -31,7 +31,17 @@ $(document).ready(() => {
         targets: [4],
       },
     ],
-    dom: 'frtip',
+    language: {
+      entries: {
+        _: 'reservations',
+        1: 'reservation',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 25,
   });
 
@@ -96,17 +106,17 @@ $(document).ready(() => {
       }).then((riderInfo) => {
         if (riderInfo.length > 0) {
           $('#flagNumberAssignedTo')
-          .text(`${riderInfo[0].FullName}`)
-          .css('color', 'green')
-          .removeClass('hide-me');
-          $('#UpdateFlagNumberAssignmentBtn').attr('data-rid',riderInfo[0].UserID);
+            .text(`${riderInfo[0].FullName}`)
+            .css('color', 'green')
+            .removeClass('hide-me');
+          $('#UpdateFlagNumberAssignmentBtn').attr('data-rid', riderInfo[0].UserID);
           sourceFlagValid = true;
           enableUpdateFlagBtn();
         } else {
           $('#flagNumberAssignedTo')
-          .text('No Flag Found!')
-          .css('color', 'red')
-          .removeClass('hide-me');
+            .text('No Flag Found!')
+            .css('color', 'red')
+            .removeClass('hide-me');
           sourceFlagValid = false;
           enableUpdateFlagBtn();
         }
@@ -124,16 +134,16 @@ $(document).ready(() => {
       }).then((riderInfo) => {
         if (riderInfo.length > 0) {
           $('#flagNumberAvailableCheck')
-          .text(`${riderInfo[0].FullName}`)
-          .css('color', 'red')
-          .removeClass('hide-me');
+            .text(`${riderInfo[0].FullName}`)
+            .css('color', 'red')
+            .removeClass('hide-me');
           destinationFlagValid = false;
           enableUpdateFlagBtn();
         } else {
           $('#flagNumberAvailableCheck')
-          .text('Flag Available')
-          .css('color', 'green')
-          .removeClass('hide-me');
+            .text('Flag Available')
+            .css('color', 'green')
+            .removeClass('hide-me');
           destinationFlagValid = true;
           enableUpdateFlagBtn();
         }
@@ -189,9 +199,9 @@ $(document).ready(() => {
 
   function enableUpdateFlagBtn() {
     if (sourceFlagValid && destinationFlagValid) {
-      $('#UpdateFlagNumberAssignmentBtn').attr('disabled',false);
+      $('#UpdateFlagNumberAssignmentBtn').attr('disabled', false);
     } else {
-      $('#UpdateFlagNumberAssignmentBtn').attr('disabled',true);
+      $('#UpdateFlagNumberAssignmentBtn').attr('disabled', true);
     }
   }
 

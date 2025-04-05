@@ -20,7 +20,17 @@ $(document).ready(() => {
         targets: [3],
       },
     ],
-    dom: 'frtip',
+    language: {
+      entries: {
+        _: 'rules',
+        1: 'rule',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 25,
   });
 

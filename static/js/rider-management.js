@@ -18,33 +18,53 @@ $(document).ready(() => {
     ],
     columnDefs: [
       { targets: [0], visible: false },
-      { render: function (data, type, row) {
-        return `<div class="resetFlagSelection" data-uid="${row['id']}"><span class="toh-mr-8"><i class="fa-duotone fa-flag"></i></span>${data}</div>`
-      }, targets: [1] },
-      { render: function (data, type, row) {
-        if (data) {
-          return `<div class="sendSMSTextButton" data-uid="${row['id']}">${data} <i class="fa-light fa-message-sms fa-lg"></i></div>`
-        } else {
-          return data
-        }
-      }, targets: [5] },
-      { render: function (data, type, row) {
-        return `<div class="editUserButton" data-uid="${row['id']}"><i class="fa-light fa-pen-to-square fa-lg"></i> Edit Rider</div>`
-      }, targets: [6]}
-    ],
-    dom: 'Bfrtip',
-    buttons: [
       {
-        extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Active Riders',
-        exportOptions: {
-          modifier: {
-            search: 'none',
-          },
-        },
+        render: function (data, type, row) {
+          return `<div class="resetFlagSelection" data-uid="${row['id']}"><span class="toh-mr-8"><i class="fa-duotone fa-flag"></i></span>${data}</div>`
+        }, targets: [1]
       },
+      {
+        render: function (data, type, row) {
+          if (data) {
+            return `<div class="sendSMSTextButton" data-uid="${row['id']}">${data} <i class="fa-light fa-message-sms fa-lg"></i></div>`
+          } else {
+            return data
+          }
+        }, targets: [5]
+      },
+      {
+        render: function (data, type, row) {
+          return `<div class="editUserButton" data-uid="${row['id']}"><i class="fa-light fa-pen-to-square fa-lg"></i> Edit Rider</div>`
+        }, targets: [6]
+      }
     ],
+    language: {
+      entries: {
+        _: 'riders',
+        1: 'rider',
+      },
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Save to Excel',
+            title: 'TOH Active Riders',
+            sheetName: 'Active Riders',
+            exportOptions: {
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+          },
+        ],
+      },
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 100,
   });
 
@@ -64,33 +84,53 @@ $(document).ready(() => {
     ],
     columnDefs: [
       { targets: [0], visible: false },
-      { render: function (data, type, row) {
-        return '<div class="resetFlagSelection" data-uid="' + row['id'] + '"><span class="toh-mr-8"><i class="fa-duotone fa-flag"></i></span>' + data + '</div>'
-      }, targets: [1] },
-      { render: function (data, type, row) {
-        if (data) {
-          return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fa-light fa-message-sms fa-lg"></i></div>'
-        } else {
-          return data
-        }
-      }, targets: [5] },
-      { render: function (data, type, row) {
-        return '<div class="editUserButton" data-uid="' + row['id'] + '"><i class="fa-light fa-pen-to-square fa-lg"></i> Edit Rider</div>'
-      }, targets: [6]}
-    ],
-    dom: 'Bfrtip',
-    buttons: [
       {
-        extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Active Riders',
-        exportOptions: {
-          modifier: {
-            search: 'none',
-          },
-        },
+        render: function (data, type, row) {
+          return '<div class="resetFlagSelection" data-uid="' + row['id'] + '"><span class="toh-mr-8"><i class="fa-duotone fa-flag"></i></span>' + data + '</div>'
+        }, targets: [1]
       },
+      {
+        render: function (data, type, row) {
+          if (data) {
+            return '<div class="sendSMSTextButton" data-uid="' + row['id'] + '">' + data + ' <i class="fa-light fa-message-sms fa-lg"></i></div>'
+          } else {
+            return data
+          }
+        }, targets: [5]
+      },
+      {
+        render: function (data, type, row) {
+          return '<div class="editUserButton" data-uid="' + row['id'] + '"><i class="fa-light fa-pen-to-square fa-lg"></i> Edit Rider</div>'
+        }, targets: [6]
+      }
     ],
+    language: {
+      entries: {
+        _: 'riders',
+        1: 'rider',
+      },
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Save to Excel',
+            title: 'TOH Inactive Riders',
+            sheetName: 'Inactive Riders',
+            exportOptions: {
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+          },
+        ],
+      },
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 100,
   });
 
@@ -108,29 +148,49 @@ $(document).ready(() => {
     ],
     columnDefs: [
       { targets: [0], visible: false },
-      { render: function (data, type, row) {
-        return `${data} (${row['RiderName']})`
-      }, targets: [1] },
-      { render: function (data, type, row) {
-        return `${data} (${row['PassengerName']})`
-      }, targets: [2] },
-      { render: function (data, type, row) {
-        return `<div class="deletePairingBtn" data-pid="${row['id']}"><i class="fa-light fa-trash-can fa-lg"></i> Delete Pairing</div>`
-      }, targets: [4] },
-    ],
-    dom: 'Bfrtip',
-    buttons: [
       {
-        extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Rider / Passenger Pairings',
-        exportOptions: {
-          modifier: {
-            search: 'none',
-          },
-        },
+        render: function (data, type, row) {
+          return `${data} (${row['RiderName']})`
+        }, targets: [1]
+      },
+      {
+        render: function (data, type, row) {
+          return `${data} (${row['PassengerName']})`
+        }, targets: [2]
+      },
+      {
+        render: function (data, type, row) {
+          return `<div class="deletePairingBtn" data-pid="${row['id']}"><i class="fa-light fa-trash-can fa-lg"></i> Delete Pairing</div>`
+        }, targets: [4]
       },
     ],
+    language: {
+      entries: {
+        _: 'pairings',
+        1: 'pairing',
+      },
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Save to Excel',
+            title: 'TOH Riders / Passenger Pairings',
+            sheetName: 'Pairings',
+            exportOptions: {
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+          },
+        ],
+      },
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 100,
   });
 
@@ -188,14 +248,14 @@ $(document).ready(() => {
       }
     });
   });
-  
+
   // Handle Reset Flag Selection Button (on Data Table)
   $('#activeRidersTable').on('click', '.resetFlagSelection', function () {
     const uid = $(this).data('uid');
     $.ajax(`/api/v1/riderInfo/${uid}`, {
       type: 'GET',
     }).then((res) => {
-      $('#resetRiderFlagBtn').attr('data-userid', uid).attr('data-flagnumber', res.FlagNumber).attr('data-role', res.OrderRole).attr('data-oid', res.OrderID);      
+      $('#resetRiderFlagBtn').attr('data-userid', uid).attr('data-flagnumber', res.FlagNumber).attr('data-role', res.OrderRole).attr('data-oid', res.OrderID);
       $('#riderFlagNumber').text(res.FlagNumber);
       $('#riderCellNumber').text(res.CellNumber);
       $('#resetFlagNumberModal').css('display', 'block');
@@ -245,18 +305,18 @@ $(document).ready(() => {
       }).then((riderInfo) => {
         if (riderInfo.length > 0) {
           $('#riderFlagNumberAssignedTo')
-          .text(`${riderInfo[0].FullName}`)
-          .css('color', 'green')
-          .removeClass('hide-me');
+            .text(`${riderInfo[0].FullName}`)
+            .css('color', 'green')
+            .removeClass('hide-me');
           riderFlagValid = true;
           if (riderFlagNumber != $('#PassengerFlagNumber').val().trim()) {
             enableSavePairingBtn();
           }
         } else {
           $('#riderFlagNumberAssignedTo')
-          .text('No Flag Found!')
-          .css('color', 'red')
-          .removeClass('hide-me');
+            .text('No Flag Found!')
+            .css('color', 'red')
+            .removeClass('hide-me');
           riderFlagValid = false;
           enableSavePairingBtn();
         }
@@ -274,18 +334,18 @@ $(document).ready(() => {
       }).then((riderInfo) => {
         if (riderInfo.length > 0) {
           $('#passengerFlagNumberAssignedTo')
-          .text(`${riderInfo[0].FullName}`)
-          .css('color', 'green')
-          .removeClass('hide-me');
+            .text(`${riderInfo[0].FullName}`)
+            .css('color', 'green')
+            .removeClass('hide-me');
           passengerFlagValid = true;
           if (passengerFlagNumber != $('#RiderFlagNumber').val().trim()) {
             enableSavePairingBtn();
           }
         } else {
           $('#passengerFlagNumberAssignedTo')
-          .text('No Flag Found!')
-          .css('color', 'red')
-          .removeClass('hide-me');
+            .text('No Flag Found!')
+            .css('color', 'red')
+            .removeClass('hide-me');
           passengerFlagValid = false;
           enableSavePairingBtn();
         }
@@ -307,7 +367,7 @@ $(document).ready(() => {
   });
 
   // Handle Add New Pairing Button
-  $('#addNewPairingBtn').on('click', function() {
+  $('#addNewPairingBtn').on('click', function () {
     $('#addRiderPassengerPairingModal').css('display', 'block');
   })
 
@@ -634,9 +694,9 @@ $(document).ready(() => {
 
   function enableSavePairingBtn() {
     if (riderFlagValid && passengerFlagValid) {
-      $('#saveNewPairingBtn').attr('disabled',false);
+      $('#saveNewPairingBtn').attr('disabled', false);
     } else {
-      $('#saveNewPairingBtn').attr('disabled',true);
+      $('#saveNewPairingBtn').attr('disabled', true);
     }
   }
 

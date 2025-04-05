@@ -21,20 +21,34 @@ $(document).ready(() => {
         targets: [4],
       },
     ],
-    dom: 'Bfrtip',
-    buttons: [
-      {
-        extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Donation Summary',
-        exportOptions: {
-          columns: ':visible',
-          modifier: {
-            search: 'none',
-          },
-        },
+    language: {
+      entries: {
+        _: 'charities',
+        1: 'charity',
       },
-    ],
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Save to Excel',
+            title: 'TOH Donation Summary',
+            sheetName: 'Donations',
+            exportOptions: {
+              columns: ':visible',
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+          },
+        ],
+      },
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 10,
   });
 
