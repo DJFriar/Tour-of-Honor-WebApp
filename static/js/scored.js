@@ -1,9 +1,11 @@
 $(document).ready(() => {
   const userTimeZone = $('#userTZ').data('usertz');
+  const currentRallyYear = '2025';
+
   // Create the New Scored Table
   $('#scoredTable').DataTable({
     ajax: {
-      url: '/api/v1/submission/scored/2025',
+      url: `/api/v1/submission/scored/${currentRallyYear}`,
       dataSrc: 'data',
     },
     columns: [
@@ -96,19 +98,33 @@ $(document).ready(() => {
       { targets: [11, 15, 16], visible: false, Searchable: false },
       { targets: [8, 9, 10, 12, 13, 14], visible: false, Searchable: true },
     ],
-    dom: 'Bfrtip',
-    buttons: [
-      {
-        extend: 'excel',
-        text: 'Save to Excel',
-        title: 'TOH Scored Submissions',
-        exportOptions: {
-          modifier: {
-            search: 'none',
-          },
-        },
+    language: {
+      entries: {
+        _: 'submissions',
+        1: 'submission',
       },
-    ],
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Save to Excel',
+            title: `TOH ${currentRallyYear} Scored Submissions`,
+            sheetName: `TOH ${currentRallyYear}`,
+            exportOptions: {
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+          },
+        ],
+        info: {},
+      },
+      bottomStart: 'paging',
+      bottomEnd: 'pageLength',
+    },
     pageLength: 25,
     serverSide: true,
   });

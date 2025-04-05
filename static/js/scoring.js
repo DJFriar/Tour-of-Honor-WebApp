@@ -80,6 +80,17 @@ $(document).ready(() => {
       { targets: [6, 7, 11, 15], visible: false, Searchable: false },
       { targets: [8, 9, 10, 12, 13, 14], visible: false, Searchable: true },
     ],
+    language: {
+      entries: {
+        _: 'submissions',
+        1: 'submission',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 100,
     order: [[0, 'asc']],
   });
@@ -161,6 +172,17 @@ $(document).ready(() => {
       { targets: [6, 7, 11, 15], visible: false, Searchable: false },
       { targets: [8, 9, 10, 12, 13, 14], visible: false, Searchable: true },
     ],
+    language: {
+      entries: {
+        _: 'submissions',
+        1: 'submission',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 50,
     order: [[0, 'asc']],
   });

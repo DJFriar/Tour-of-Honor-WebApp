@@ -85,21 +85,34 @@ $(document).ready(() => {
         }, targets: [13]
       },
     ],
-    dom: 'Bfrtip',
-    buttons: [
-      {
-        extend: 'excel',
-        text: 'Download Paid Orders',
-        title: 'TOH Paid Orders',
-        exportOptions: {
-          columns: [7, 4, 5, 6, 10, 9, 20, 21, 22, 23, 8, 11, 12, 2, 13],
-          modifier: {
-            search: 'none',
-          },
-        },
-        sheetName: 'Paid Orders',
+    language: {
+      entries: {
+        _: 'orders',
+        1: 'order',
       },
-    ],
+    },
+    layout: {
+      topStart: {
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Download Paid Orders',
+            title: 'TOH Paid Orders',
+            exportOptions: {
+              columns: [7, 4, 5, 6, 10, 9, 20, 21, 22, 23, 8, 11, 12, 2, 13],
+              modifier: {
+                search: 'none',
+                page: 'all',
+              },
+            },
+            sheetName: 'Paid Orders',
+          },
+        ],
+      },
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     order: [[13, 'desc']],
     pageLength: 100,
   });
