@@ -6,7 +6,17 @@ $(document).ready(() => {
     },
     columns: [{ data: 'id' }, { data: 'Name' }],
     columnDefs: [{ targets: [0], visible: false }],
-    dom: 'frtip',
+    language: {
+      entries: {
+        _: 'bikes',
+        1: 'bike',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 25,
     order: [[1, 'asc']],
   });

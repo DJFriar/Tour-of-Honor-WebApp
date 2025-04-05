@@ -51,7 +51,17 @@ $(document).ready(() => {
         targets: [8],
       },
     ],
-    dom: 'frtip',
+    language: {
+      entries: {
+        _: 'memorials',
+        1: 'memorial',
+      },
+    },
+    layout: {
+      topEnd: 'search',
+      bottomStart: 'info',
+      bottomEnd: 'paging',
+    },
     pageLength: 100,
   });
 
