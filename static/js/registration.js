@@ -546,10 +546,12 @@ $(document).ready(() => {
     e.preventDefault();
     const OrderID = $(this).data('orderid');
     const submittedPassID = $(this).data('passid');
+    const UserID = $(this).data('userid');
 
     const WaiverInfo = {
       RegStep: 'Waiver',
       OrderID,
+      UserID,
       hasPass: false,
       NextStepNum: 5,
     };

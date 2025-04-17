@@ -312,7 +312,11 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     ShirtDetails.PriceTier = PriceTier;
 
     // Generate the Shopify URL & ID
-    const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
+    const { UserID } = req.body;
+    logger.info(`UserID: ${UserID}`, {
+      calledFrom: 'regFlow.js',
+    });
+    const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID, UserID);
     const { CheckoutURL } = checkoutDetails;
     ShirtDetails.CheckoutURL = CheckoutURL;
     logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
@@ -370,7 +374,11 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     WaiverInfo.PriceTier = PriceTier;
 
     // Generate the Shopify URL & ID
-    const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
+    const { UserID } = req.body;
+    logger.info(`UserID: ${UserID}`, {
+      calledFrom: 'regFlow.js',
+    });
+    const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID, UserID);
     const { CheckoutURL } = checkoutDetails;
     WaiverInfo.CheckoutURL = CheckoutURL;
     logger.info(`Checkout URL Generated: ${CheckoutURL}`, {
@@ -479,7 +487,11 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       const { ShopifyVariantID } = PriceTierObject[0];
 
       // Generate the Shopify URL & ID for the Flag Surcharge
-      const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID);
+      const { UserID } = req.body;
+      logger.info(`UserID: ${UserID}`, {
+        calledFrom: 'regFlow.js',
+      });
+      const checkoutDetails = await generateShopifyCheckout(ShopifyVariantID, UserID);
       const { CheckoutURL } = checkoutDetails;
       OrderInfo.FlagSurchargeCheckoutURL = CheckoutURL;
       logger.info(`Flag Surcharge Checkout URL Generated: ${CheckoutURL}`, {
