@@ -1,6 +1,7 @@
 const { createStorefrontApiClient } = require('@shopify/storefront-api-client');
 
 require('dotenv').config();
+const { logger } = require('./logger');
 
 // const url = process.env.SHOPIFY_SHOP_API_ENDPOINT;
 
@@ -13,6 +14,10 @@ const client = createStorefrontApiClient({
 const createCartMutation = `mutation createCart($cartInput: CartInput!) {
   cartCreate(input: $cartInput) {
     cart {
+      attributes {
+        key
+        value
+      }
       id
       checkoutUrl
       lines(first: 10) {
@@ -38,20 +43,19 @@ const createCartMutation = `mutation createCart($cartInput: CartInput!) {
   }
 }`;
 
-const createOrderStatusByCheckoutIDMutation = `query ($id:ID!) { 
-  node(id: $id) {
-    id
-    order {
-      id
-      orderNumber
-    }
-  }
-}`;
-
-async function generateShopifyCheckout(variantid) {
+async function generateShopifyCheckout(variantid, userid) {
+  logger.info(`Generating Shopify checkout for User ID: ${userid} & Variant ID: ${variantid}`, {
+    calledFrom: 'controllers/shopify.js',
+  });
   const { data, errors } = await client.request(createCartMutation, {
     variables: {
       cartInput: {
+        attributes: [
+          {
+            key: 'UserID_Year',
+            value: `${userid}_${process.env.CURRENT_RALLY_YEAR}`,
+          },
+        ],
         lines: [
           {
             quantity: 1,
@@ -63,7 +67,7 @@ async function generateShopifyCheckout(variantid) {
   });
 
   if (errors) {
-    console.error(errors.message);
+    logger.error(errors.message);
   }
 
   const checkoutURL = data.cartCreate.cart.checkoutUrl;
@@ -73,13 +77,22 @@ async function generateShopifyCheckout(variantid) {
     CheckoutID: checkoutID,
   };
 
-  console.log('Checkout URL: ', checkoutURL);
-  console.log('Checkout ID: ', checkoutID);
+  logger.debug('Checkout URL: ', checkoutURL);
+  logger.debug('Checkout ID: ', checkoutID);
 
   return checkoutDetails;
 }
 
-async function checkOrderStatusByCheckoutID(checkoutid) {
+const createOrderStatusByCheckoutIDMutation = `query ($id:ID!) { 
+  node(id: $id) {
+    id
+  }
+}`;
+
+async function checkOrderStatusByUserID(checkoutid) {
+  logger.info(`Checking order status for checkout ID: ${checkoutid}`, {
+    calledFrom: 'controllers/shopify.js',
+  });
   const { data, errors } = await client.request(createOrderStatusByCheckoutIDMutation, {
     variables: {
       id: checkoutid,
@@ -87,17 +100,17 @@ async function checkOrderStatusByCheckoutID(checkoutid) {
   });
 
   if (errors) {
-    console.error(errors.message);
-    console.error(errors.graphQLErrors);
+    logger.error(errors.message);
+    logger.error(errors.graphQLErrors);
   }
 
-  console.log('==== RAW data object ====');
-  console.log(data);
+  logger.info('==== RAW data object ====');
+  logger.info(data);
   const { orderNumber } = data.node.order;
-  console.log(`orderNumber is: ${orderNumber}`);
+  logger.info(`orderNumber is: ${orderNumber}`);
 
   return orderNumber.slice(1);
 }
 
 exports.generateShopifyCheckout = generateShopifyCheckout;
-// exports.checkOrderStatusByCheckoutID = checkOrderStatusByCheckoutID;
+exports.checkOrderStatusByUserID = checkOrderStatusByUserID;
