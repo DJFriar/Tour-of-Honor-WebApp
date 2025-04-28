@@ -258,13 +258,19 @@ ApiOrderRouter.route('/checkOrderStatus/:id').get(async (req, res) => {
 
 // Update Order Paid status from Shopify
 ApiOrderRouter.route('/orderPaid').post(async (req, res) => {
-  const { OrderNumber, UserID } = req.body;
-  logger.info(`Order paid status received from Shopify: ${OrderNumber} for ${UserID}`, {
-    calledFrom: 'api/v1/orders.js',
-  });
+  const OrderNumber = req.body.order_number;
+  const tohOrderTag = req.body.note_attributes[0].value;
+  const UserID = tohOrderTag.split('_')[0];
+  const RallyYear = tohOrderTag.split('_')[1];
   logger.info(`Webhook Payload: ${JSON.stringify(req.body)}`, {
     calledFrom: 'api/v1/orders.js',
   });
+  logger.info(
+    `Order paid status received from Shopify: ${OrderNumber} for ${UserID} in Rally Year ${RallyYear}`,
+    {
+      calledFrom: 'api/v1/orders.js',
+    },
+  );
   // db.Order.update(
   //   {
   //     OrderNumber,
