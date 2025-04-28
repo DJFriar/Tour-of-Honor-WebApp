@@ -419,7 +419,7 @@ module.exports = function (app) {
     } catch (err) {
       const todaysDate = DateTime.now().toISODate();
       if (todaysDate >= rallyStartDate && todaysDate <= rallyEndDate) {
-        logger.error(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
+        logger.warn(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
           calledFrom: 'fe-routes.js',
         });
       }
