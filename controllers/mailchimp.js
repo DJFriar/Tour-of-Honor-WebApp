@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const client = require('@mailchimp/mailchimp_marketing');
 const crypto = require('crypto');
+const { logger } = require('./logger');
 
 const apiKey = process.env.MAILCHIMP_API_KEY;
 const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX;
@@ -21,8 +22,8 @@ const addSubscriber = async (email, firstName, lastName) => {
     },
     status_if_new: 'subscribed',
   });
-  console.log('==== Mailchimp createSubscriber ====');
-  console.log(createSubscriber);
+  logger.debug('==== Mailchimp createSubscriber ====');
+  logger.debug(createSubscriber);
   if (createSubscriber && createSubscriber.id) {
     const addTag = await client.lists.updateListMemberTags('9af8900b6e', userHash, {
       tags: [
@@ -32,8 +33,8 @@ const addSubscriber = async (email, firstName, lastName) => {
         },
       ],
     });
-    console.log('==== Mailchimp addTag ====');
-    console.log(addTag);
+    logger.debug('==== Mailchimp addTag ====');
+    logger.debug(addTag);
   }
 };
 

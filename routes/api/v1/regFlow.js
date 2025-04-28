@@ -34,22 +34,28 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
     })
       .then(async (o) => {
         logger.info(`Order ${o.id} created.`, { calledFrom: 'regFlow.js' });
-        // Add rider to Mailchimp
-        try {
-          const subscribeUser = await addSubscriber(
-            req.body.Email.toLowerCase(),
-            req.body.FirstName,
-            req.body.LastName,
-          );
-          if (subscribeUser) {
-            logger.info('==== rider subscribed to mailchimp ====');
+        await db.User.findOne({
+          where: {
+            id: req.body.UserID,
+          },
+        }).then(async (rider) => {
+          // Add rider to Mailchimp
+          try {
+            const subscribeUser = await addSubscriber(
+              rider.Email.toLowerCase(),
+              req.body.FirstName,
+              req.body.LastName,
+            );
+            if (subscribeUser) {
+              logger.info('==== rider subscribed to mailchimp ====');
+            }
+          } catch (err) {
+            logger.error(`Error encountered when adding rider to mailchimp: ${err}`, {
+              calledFrom: 'regFlow.js',
+            });
           }
-        } catch (err) {
-          logger.error(`Error encountered when adding rider to mailchimp: ${err}`, {
-            calledFrom: 'regFlow.js',
-          });
-        }
-        res.status(200).send();
+          res.status(200).send();
+        });
       })
       .catch((err) => {
         logger.error(`Error creating order: ${err}`, {
