@@ -735,24 +735,37 @@ module.exports = function (app) {
 
     try {
       OrderInfoArray = await q.queryOrderInfoByRider(req.user.id, currentRallyYear);
-      [OrderInfo] = OrderInfoArray;
-      // Check if Passenger has an existing flag number.
-      if (OrderInfo.PassUserID) {
-        if (OrderInfo.PassUserID > 0) {
-          try {
-            const passFlagNum = await q.queryFlagNumFromUserID(OrderInfo.PassUserID, 2024);
-            if (passFlagNum && passFlagNum.FlagNumber > 0) {
-              OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
-            } else {
-              OrderInfo.PassFlagNum = 0;
+      if (!OrderInfo || OrderInfo.length === 0) {
+        OrderInfo = {};
+        OrderInfo.NextStepNum = 0;
+        OrderInfo.PassUserID = 0;
+      } else {
+        [OrderInfo] = OrderInfoArray;
+        logger.info(`OrderInfo: ${JSON.stringify(OrderInfo)}`, {
+          calledFrom: 'fe-routes.js',
+          OrderInfo,
+        });
+        // Check if Passenger has an existing flag number.
+        if (OrderInfo.PassUserID) {
+          if (OrderInfo.PassUserID > 0) {
+            try {
+              const passFlagNum = await q.queryFlagNumFromUserID(
+                OrderInfo.PassUserID,
+                currentRallyYear - 1,
+              );
+              if (passFlagNum && passFlagNum.FlagNumber > 0) {
+                OrderInfo.PassFlagNum = passFlagNum.FlagNumber;
+              } else {
+                OrderInfo.PassFlagNum = 0;
+              }
+            } catch (err) {
+              logger.error(
+                `Error encountered while rendering /registration: queryFlagNumFromUserID(). ${err}`,
+                {
+                  calledFrom: 'fe-routes.js',
+                },
+              );
             }
-          } catch (err) {
-            logger.error(
-              `Error encountered while rendering /registration: queryFlagNumFromUserID(). ${err}`,
-              {
-                calledFrom: 'fe-routes.js',
-              },
-            );
           }
         }
       }
@@ -763,12 +776,6 @@ module.exports = function (app) {
           calledFrom: 'fe-routes.js',
         },
       );
-    }
-
-    if (!OrderInfo || OrderInfo.length === 0) {
-      OrderInfo = {};
-      OrderInfo.NextStepNum = 0;
-      OrderInfo.PassUserID = 0;
     }
 
     try {
