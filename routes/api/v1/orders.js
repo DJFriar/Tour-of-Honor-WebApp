@@ -257,7 +257,7 @@ ApiOrderRouter.route('/checkOrderStatus/:id').get(async (req, res) => {
 });
 
 // Update Order Paid status from Shopify
-ApiOrderRouter.route('/orderPaid').put(async (req, res) => {
+ApiOrderRouter.route('/orderPaid').post(async (req, res) => {
   const { OrderNumber, UserID } = req.body;
   logger.info(`Order paid status received from Shopify: ${OrderNumber} for ${UserID}`, {
     calledFrom: 'api/v1/orders.js',
