@@ -256,4 +256,32 @@ ApiOrderRouter.route('/checkOrderStatus/:id').get(async (req, res) => {
   });
 });
 
+// Update Order Paid status from Shopify
+ApiOrderRouter.route('/orderPaid').put(async (req, res) => {
+  const { OrderNumber, UserID } = req.body;
+  logger.info(`Order paid status received from Shopify: ${OrderNumber} for ${UserID}`, {
+    calledFrom: 'api/v1/orders.js',
+  });
+  logger.info(`Webhook Payload: ${JSON.stringify(req.body)}`, {
+    calledFrom: 'api/v1/orders.js',
+  });
+  // db.Order.update(
+  //   {
+  //     OrderNumber,
+  //     NextStepNum: 6,
+  //   },
+  //   {
+  //     where: {
+  //       RallyYear: currentRallyYear,
+  //       UserID,
+  //     },
+  //   },
+  // ).then(() => {
+  //   logger.info(`Shopify Order Number updated for rider ${UserID}`, {
+  //     calledFrom: 'api/v1/orders.js',
+  //   });
+  res.status(202).send();
+  // });
+});
+
 module.exports = ApiOrderRouter;
