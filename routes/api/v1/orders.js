@@ -282,5 +282,6 @@ ApiOrderRouter.route('/orderPaid').post(async (req, res) => {
     });
     res.status(202).send();
   });
+});
 
-  module.exports = ApiOrderRouter;
+module.exports = ApiOrderRouter;
