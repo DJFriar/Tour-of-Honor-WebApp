@@ -19,13 +19,13 @@ const currentRallyYear = process.env.CURRENT_RALLY_YEAR;
 ApiRegFlowRouter.route('/').post(async (req, res) => {
   const { RegStep } = req.body;
   logger.debug(`regFlow called with step: ${RegStep}`, {
-    calledFrom: 'regFlow.js',
+    calledFrom: '/api/v1/regFlow.js',
   });
 
   /* #region  RegStep Rider (0) */
   if (RegStep === 'Rider') {
     logger.debug(`${RegStep} step entered.`, {
-      calledFrom: 'regFlow.js',
+      calledFrom: '/api/v1/regFlow.js',
     });
 
     db.Order.create({
@@ -33,7 +33,7 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
       NextStepNum: 1,
     })
       .then(async (o) => {
-        logger.info(`Order ${o.id} created.`, { calledFrom: 'regFlow.js' });
+        logger.info(`Order ${o.id} created.`, { calledFrom: '/api/v1/regFlow.js' });
         await db.User.findOne({
           where: {
             id: req.body.UserID,
@@ -51,15 +51,15 @@ ApiRegFlowRouter.route('/').post(async (req, res) => {
             }
           } catch (err) {
             logger.error(`Error encountered when adding rider to mailchimp: ${err}`, {
-              calledFrom: 'regFlow.js',
+              calledFrom: '/api/v1/regFlow.js',
             });
           }
           res.status(200).send();
         });
       })
       .catch((err) => {
-        logger.error(`Error creating order: ${err}`, {
-          calledFrom: 'regFlow.js',
+        logger.error(`Error creating order for rider ${req.body.UserID}: ${err}`, {
+          calledFrom: '/api/v1/regFlow.js',
         });
         res.status(401).json(err);
       });
