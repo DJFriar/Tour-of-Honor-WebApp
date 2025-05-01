@@ -705,7 +705,7 @@ module.exports = function (app) {
     let BaseRiderRate;
     let BikeMakes;
     let Charities;
-    let OrderInfo;
+    let OrderInfo = {};
     let OrderInfoArray = [];
     let PassengerSurcharge;
     let RiderBikeInfo;
@@ -749,10 +749,7 @@ module.exports = function (app) {
         OrderInfo.PassUserID = 0;
       } else {
         [OrderInfo] = OrderInfoArray;
-        logger.info(`OrderInfo: ${JSON.stringify(OrderInfo)}`, {
-          calledFrom: 'fe-routes.js',
-          OrderInfo,
-        });
+
         // Check if Passenger has an existing flag number.
         if (OrderInfo.PassUserID) {
           if (OrderInfo.PassUserID > 0) {
