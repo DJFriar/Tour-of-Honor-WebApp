@@ -4,6 +4,8 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const { collectDefaultMetrics } = require('prom-client');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
 
 const passport = require('./config/passport');
 
@@ -37,6 +39,26 @@ if (process.env.NODE_ENV === 'Development') {
 if (process.env.NODE_ENV === 'Testing') {
   app.locals.envIsTest = true;
 }
+
+// Swagger definition
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Tour of Honor API',
+      version: '1.0.0',
+      description: 'API documentation for the TOH Scoring & Registration portal.',
+    },
+    servers: [
+      {
+        url: `http://localhost:${PORT}/api/v1`,
+      },
+    ],
+  },
+  apis: ['./routes/api/v1/*.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -76,6 +98,7 @@ require('./private/routes/web/fe-routes')(app);
 
 app.use('/api/v1/restriction', restriction);
 app.use('/api/v1/scoring', scoring);
+app.use('/api/v1/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // =============================================================================
 // LISTENER

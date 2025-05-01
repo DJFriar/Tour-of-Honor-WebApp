@@ -5,6 +5,61 @@
  *
  */
 
+/**
+ * @swagger
+ * tags:
+ *  name: Bike
+ *  description: Bike related endpoints
+ * components:
+ *  schemas:
+ *   Bike:
+ *    type: object
+ *    properties:
+ *     id:
+ *      type: integer
+ *      description: The bike ID
+ *      example: 1
+ *     Year:
+ *      type: integer
+ *      description: The bike year
+ *      example: 2021
+ *     Make:
+ *      type: string
+ *      description: The bike make
+ *      example: Harley Davidson
+ *     Model:
+ *      type: string
+ *      description: The bike model
+ *      example: Street Glide
+ *     make_id:
+ *      type: integer
+ *      description: The bike make ID
+ *      example: 1
+ */
+
+/**
+ * @swagger
+ * /bike:
+ *  get:
+ *   tags: [Bike]
+ *   summary: Retrieve a list of all bikes.
+ *   responses:
+ *    200:
+ *     description: A list of bikes.
+ *  post:
+ *   tags: [Bike]
+ *   summary: Create a new bike.
+ *   requestBody:
+ *    required: true
+ *    content:
+ *     application/json:
+ *      schema:
+ *       $ref: '../../components/schemas/Bike'
+ *   responses:
+ *    201:
+ *     description: Bike created.
+ */
+
 const ApiBikeRouter = require('express').Router();
 
 const db = require('../../../models');
