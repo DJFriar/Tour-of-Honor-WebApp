@@ -56,6 +56,18 @@ module.exports.queryAllCategories = async function queryAllCategories() {
   }
 };
 
+module.exports.queryAllCategoriesAdmin = async function queryAllCategoriesAdmin() {
+  try {
+    const result = await db.Category.findAll();
+    return result;
+  } catch (err) {
+    logger.error('An error was encountered in queryAllCategoriesAdmin()', {
+      calledFrom: 'queries.js',
+    });
+    throw err;
+  }
+};
+
 module.exports.queryAllRestrictions = async function queryAllRestrictions() {
   try {
     const result = await db.Restriction.findAll({
