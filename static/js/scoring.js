@@ -303,6 +303,18 @@ $(document).ready(() => {
     $('.showSOLMemorials').removeClass('uk-button-secondary').addClass('uk-button-primary');
     setSubmissionFilter('Statue of Liberty');
   });
+  $('.showMerciTrainMemorials').on('click', () => {
+    $('.MemorialFilterButton')
+      .prevAll()
+      .removeClass('uk-button-primary')
+      .addClass('uk-button-secondary');
+    $('.MemorialFilterButton')
+      .nextAll()
+      .removeClass('uk-button-primary')
+      .addClass('uk-button-secondary');
+    $('.showMerciTrainMemorials').removeClass('uk-button-secondary').addClass('uk-button-primary');
+    setSubmissionFilter('Merci Train');
+  });
   $('.showCemeteryMemorials').on('click', () => {
     $('.MemorialFilterButton')
       .prevAll()

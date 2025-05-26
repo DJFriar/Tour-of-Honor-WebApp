@@ -245,9 +245,9 @@ module.exports = function (app) {
       activeUser = true;
     }
     try {
-      categoryData = await q.queryAllCategories();
+      categoryData = await q.queryAllCategoriesAdmin();
     } catch (err) {
-      logger.error(`Error encountered: queryAllCategories().${err}`, {
+      logger.error(`Error encountered: queryAllCategoriesAdmin().${err}`, {
         calledFrom: 'fe-routes.js',
       });
     }
