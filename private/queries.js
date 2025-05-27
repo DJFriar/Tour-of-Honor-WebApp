@@ -306,6 +306,24 @@ module.exports.queryMemorial = async function queryMemorial(memId) {
   }
 };
 
+module.exports.queryMemorialAdmin = async function queryMemorialAdmin(memId) {
+  try {
+    const result = await sequelize.query(
+      'SELECT m.* FROM Memorials m INNER JOIN Categories c ON m.Category = c.id WHERE m.id = ?',
+      {
+        replacements: [memId],
+        type: QueryTypes.SELECT,
+      },
+    );
+    return result;
+  } catch (err) {
+    logger.error(`An error was encountered in queryMemorialAdmin(${memId})`, {
+      calledFrom: 'queries.js',
+    });
+    throw err;
+  }
+};
+
 module.exports.queryMemorialText = async function queryMemorialText(memId) {
   try {
     const result = await sequelize.query(
@@ -575,6 +593,7 @@ module.exports.queryMemorialIDbyMemCode = async function queryMemorialIDbyMemCod
         type: QueryTypes.SELECT,
       },
     );
+    console.log(`queryMemorialIDbyMemCode(${memCode})`, result);
     return result;
   } catch (err) {
     logger.error(`An error was encountered in queryMemorialIDbyMemCode(${memCode})`, {
