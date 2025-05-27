@@ -152,15 +152,16 @@ WebAdminRouter.route('/memorial-text/:memCode').get(async (req, res) => {
   try {
     const memIDResponse = await q.queryMemorialIDbyMemCode(memCode);
     MemID = memIDResponse[0].id;
+    console.log(`Memorial ID for code ${memCode} is ${MemID}`);
   } catch (err) {
     logger.error(`Error encountered: queryMemorialIDbyMemCode(${memCode}).${err}`, {
       calledFrom: 'fe-routes.js',
     });
   }
   try {
-    MemorialData = await q.queryMemorial(MemID);
+    MemorialData = await q.queryMemorialAdmin(MemID);
   } catch (err) {
-    logger.error(`Error encountered: queryMemorial(${MemID}).${err}`, {
+    logger.error(`Error encountered: queryMemorialAdmin(${MemID}).${err}`, {
       calledFrom: 'fe-routes.js',
     });
   }
