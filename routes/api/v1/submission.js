@@ -182,7 +182,7 @@ ApiSubmissionRouter.route('/pendingHeld').get(async (req, res) => {
     INNER JOIN Memorials m ON s.MemorialID = m.id	
     INNER JOIN Categories c ON m.Category = c.id 
     INNER JOIN Flags f ON f.UserID = u.id AND f.RallyYear = ${currentRallyYear}
-  WHERE s.Status IN (0,3)
+  WHERE s.Status IN (0,3) AND YEAR(s.createdAt) = ${currentRallyYear}
   `;
   try {
     const allPendingSubmissions = await sequelize.query(sqlQuery, {
