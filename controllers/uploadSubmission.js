@@ -29,7 +29,7 @@ const uploadMultiple = upload.fields([
 const uploadImages = (req, res, next) => {
   uploadMultiple(req, res, (err) => {
     if (err) {
-      logger.error(`uploadMultiple errored:${err}`, { calledFrom: 'uploadSubmission.js' });
+      logger.warn(`uploadMultiple errored:${err}`, { calledFrom: 'uploadSubmission.js' });
       return res.send(err);
     }
     next();

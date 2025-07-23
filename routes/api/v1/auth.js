@@ -53,7 +53,7 @@ ApiAuthRouter.route('/').post(async (req, res) => {
   }
   if (UserData) storedZipCode = UserData.ZipCode.slice(0, 5);
   if (storedZipCode !== zipcode) {
-    logger.error(
+    logger.warn(
       `The provided zip code (${zipcode}) doesn't match the zip code on record for Flag ${flag}`,
       {
         calledFrom: 'api/v1/auth.js',
