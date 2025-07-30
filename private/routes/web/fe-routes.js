@@ -418,7 +418,7 @@ module.exports = function (app) {
       memID = memIDResponse[0].id;
     } catch (err) {
       const todaysDate = DateTime.now().toISODate();
-      if (todaysDate >= rallyStartDate && todaysDate <= rallyEndDate) {
+      if (todaysDate >= rallyStartDate && todaysDate <= rallyEndDate && memID > 0) {
         logger.warn(`Error encountered when getting details for memorial ID ${memCode}: ${err}`, {
           calledFrom: 'fe-routes.js',
         });
